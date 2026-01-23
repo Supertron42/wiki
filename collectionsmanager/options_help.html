@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 180px;
+    min-width: 180px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 180px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Overview</h3>
+    <a href="#purpose">Purpose</a>
+
+    <h3>Basic Settings</h3>
+    <a href="#startup-tab">Startup Tab</a>
+    <a href="#api-key">API Key</a>
+
+    <h3>Automation</h3>
+    <a href="#auto-install">Auto-install</a>
+    <a href="#auto-activate">Auto-activate</a>
+    <a href="#silent-install">Silent Install</a>
+    <a href="#detect-root">Detect Root-install</a>
+    <a href="#maintenance">Maintenance on Load</a>
+
+    <h3>Developer Options</h3>
+    <a href="#dev-overview">Overview</a>
+    <a href="#dev-tab">Show Dev Tab</a>
+    <a href="#timing">Timing Settings</a>
+    <a href="#advanced">Advanced Settings</a>
+
+    <h3>Configuration</h3>
+    <a href="#7zip">7-zip Configuration</a>
+    <a href="#maintenance-buttons">Maintenance Buttons</a>
+
+    <h3>Tips</h3>
+    <a href="#recommended">Recommended Settings</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="purpose">Purpose of the Options Tab</h1>
+<p>The Options tab lets you configure Collections Manager's behavior. Settings include:</p>
+<ul>
+    <li>API key for Nexus Mods downloads</li>
+    <li>Automation preferences (auto-install, auto-activate)</li>
+    <li>Timing and performance tuning</li>
+    <li>7-zip configuration for bundle extraction</li>
+    <li>Developer/debug options</li>
+</ul>
+
+<div class="info">
+<b>Settings are saved automatically</b> when you change them. They persist between MO2 sessions.
+</div>
+
+
+<h1 id="startup-tab">Startup Tab</h1>
+<p>Choose which tab opens when you launch Collections Manager:</p>
+<ul>
+    <li><b>Mods</b> - The main mod list (default for active collections)</li>
+    <li><b>FOMODs</b> - FOMOD installer management</li>
+    <li><b>Sort</b> - Mod list sorting tool</li>
+    <li><b>Tools</b> - Utility tools</li>
+    <li><b>Collections</b> - Saved collections list</li>
+    <li><b>Options</b> - This settings tab</li>
+    <li><b>Help</b> - Instructions and documentation</li>
+</ul>
+
+
+<h1 id="api-key">API Key</h1>
+<p>Your Nexus Mods API key is required for downloading mods. To get your key:</p>
+<ol>
+    <li>Click the <b>"Get my API key"</b> link</li>
+    <li>Log in to Nexus Mods if prompted</li>
+    <li>Scroll to the bottom of the API keys page</li>
+    <li>Copy your <b>PERSONAL API KEY</b> (not the SSO key)</li>
+    <li>Paste it into the API Key field</li>
+</ol>
+
+<div class="warning">
+<b>Important:</b> Use your PERSONAL API KEY, not the SSO key. The personal key is a long string of letters and numbers at the bottom of the page.
+</div>
+
+<h3>Premium vs Free</h3>
+<ul>
+    <li><b>Premium members:</b> Downloads happen automatically through the API</li>
+    <li><b>Free members:</b> Browser tabs open for manual download clicks</li>
+</ul>
+
+
+<h1 id="auto-install">Auto-install</h1>
+<p>When enabled, mods are automatically installed after downloading:</p>
+<ul>
+    <li>Download completes → Install starts immediately</li>
+    <li>No need to click "Install" for each mod</li>
+    <li>Works with the download queue for hands-free installation</li>
+</ul>
+
+<div class="success">
+<b>Recommended:</b> Enable for streamlined collection installation.
+</div>
+
+
+<h1 id="auto-activate">Auto-activate</h1>
+<p>When enabled, mods are automatically activated (enabled) after installation:</p>
+<ul>
+    <li>Mod installs → Mod is enabled in MO2</li>
+    <li>No need to manually check the mod in MO2's left pane</li>
+</ul>
+
+<div class="info">
+<b>Note:</b> You may want to disable this if you prefer to review mods before enabling them.
+</div>
+
+
+<h1 id="silent-install">Silent Install</h1>
+<p>Automatically advances through installer dialogs:</p>
+<ul>
+    <li>FOMOD installers use saved choices or defaults</li>
+    <li>Confirmation dialogs are auto-accepted</li>
+    <li>Minimizes user interaction during batch installs</li>
+</ul>
+
+<div class="warning">
+<b>Note:</b> Silent install uses collection author's saved FOMOD choices. If you want to customize FOMOD options, disable this or use the FOMODs tab to reinstall specific mods.
+</div>
+
+
+<h1 id="detect-root">Detect Root-install Mods</h1>
+<p>Scans for mods that need manual installation to the game folder:</p>
+<ul>
+    <li>Detects mods containing only exe/dll files (SKSE, ENB, etc.)</li>
+    <li>Moves detected mods to top of list</li>
+    <li>Disables them automatically (they won't work through MO2's VFS)</li>
+    <li>Flags them for manual installation via the Root Install tool</li>
+</ul>
+
+<div class="info">
+<b>Why this matters:</b> Some mods must be in the actual game folder, not MO2's virtual file system. This setting helps identify them.
+</div>
+
+
+<h1 id="maintenance">Maintenance on Load</h1>
+<p>Automatically runs maintenance before loading a collection:</p>
+<ul>
+    <li>Cleans up orphaned index entries</li>
+    <li>Ensures mod status detection is accurate</li>
+    <li>Prevents stale data from causing issues</li>
+</ul>
+
+<div class="success">
+<b>Recommended:</b> Keep enabled unless you experience slow load times with very large collections.
+</div>
+
+
+<h1 id="dev-overview">Developer Options</h1>
+<p>Click <b>Show</b> next to "Developer Options" to reveal advanced settings. These are for troubleshooting and fine-tuning.</p>
+
+<div class="warning">
+<b>Caution:</b> Only change these settings if you understand what they do. Incorrect values can cause issues.
+</div>
+
+
+<h1 id="dev-tab">Show Dev Tab</h1>
+<p>Enables a hidden "Dev" tab with experimental features:</p>
+<ul>
+    <li>Debug logging controls</li>
+    <li>Testing utilities</li>
+    <li>Diagnostic information</li>
+</ul>
+<p>Only enable if you need to troubleshoot issues or test new features.</p>
+
+
+<h1 id="timing">Timing Settings</h1>
+<table>
+    <tr><th>Setting</th><th>Description</th><th>Default</th></tr>
+    <tr><td><b>Stuck timeout</b></td><td>Seconds before a download is considered stuck</td><td>60 sec</td></tr>
+    <tr><td><b>Timeout scale</b></td><td>Multiplier for all timeouts (0.5x-4x)</td><td>1.0x</td></tr>
+    <tr><td><b>Install delay</b></td><td>Wait time between install operations</td><td>1.0 sec</td></tr>
+    <tr><td><b>FOMOD delay</b></td><td>Extra wait time for FOMOD installers</td><td>0.5 sec</td></tr>
+    <tr><td><b>Timer speed</b></td><td>Speed of dialog detection timers</td><td>1.0x</td></tr>
+</table>
+
+<h3>When to Adjust Timing</h3>
+<ul>
+    <li><b>Slow system:</b> Increase timeout scale (1.5x-2x)</li>
+    <li><b>Fast system:</b> Decrease for quicker installs (0.75x)</li>
+    <li><b>Frequent stuck errors:</b> Increase stuck timeout</li>
+    <li><b>FOMOD issues:</b> Increase FOMOD delay</li>
+</ul>
+
+
+<h1 id="advanced">Advanced Settings</h1>
+<table>
+    <tr><th>Setting</th><th>Description</th></tr>
+    <tr><td><b>Background download</b></td><td>Download next mod while current one installs</td></tr>
+    <tr><td><b>Skip mod renaming</b></td><td>Don't rename mods to match collection names (helps with 2000+ mod lists)</td></tr>
+    <tr><td><b>UI chunk size</b></td><td>Rows processed per UI update (affects table performance)</td></tr>
+    <tr><td><b>Tip rotation</b></td><td>How often tips rotate in the Mods tab (seconds)</td></tr>
+    <tr><td><b>UI Version</b></td><td>Custom version label override</td></tr>
+</table>
+
+<h3>Save to Code</h3>
+<p>The <b>Save to Code</b> button saves current developer settings as new defaults in the source code. This is for plugin developers to persist optimized values.</p>
+
+
+<h1 id="7zip">7-zip Configuration</h1>
+<p>7-zip is required for extracting collection bundles (.7z files). The plugin auto-detects common installation locations.</p>
+
+<h3>If Not Detected</h3>
+<ol>
+    <li>Click <b>Browse...</b> to manually locate 7z.exe</li>
+    <li>Or click <b>Re-detect</b> after installing 7-zip</li>
+</ol>
+
+<h3>Common Locations</h3>
+<ul>
+    <li><code>C:\Program Files\7-Zip\7z.exe</code></li>
+    <li><code>C:\Program Files (x86)\7-Zip\7z.exe</code></li>
+</ul>
+
+<div class="info">
+<b>Download 7-zip:</b> <a href="https://7-zip.org">https://7-zip.org</a> (free, open source)
+</div>
+
+
+<h1 id="maintenance-buttons">Maintenance Buttons</h1>
+
+<h3>Clear Python Cache</h3>
+<p>Deletes cached .pyc files to force Python to reload plugin code:</p>
+<ul>
+    <li>Use after updating the plugin</li>
+    <li>Requires MO2 restart to take effect</li>
+    <li>Fixes issues caused by stale compiled code</li>
+</ul>
+
+<h3>Reset to Defaults</h3>
+<p>Resets all settings to their default values:</p>
+<ul>
+    <li>Does NOT affect your API key</li>
+    <li>Resets timing, automation, and developer options</li>
+    <li>Useful if settings become corrupted or misconfigured</li>
+</ul>
+
+
+<h1 id="recommended">Recommended Settings</h1>
+
+<div class="success">
+<h3>For Most Users</h3>
+<ul>
+    <li><b>Auto-install:</b> Enabled</li>
+    <li><b>Auto-activate:</b> Enabled</li>
+    <li><b>Silent install:</b> Enabled</li>
+    <li><b>Detect root-install:</b> Enabled</li>
+    <li><b>Maintenance on load:</b> Enabled</li>
+    <li><b>Developer options:</b> Hidden (default)</li>
+</ul>
+
+<h3>For Slow Systems</h3>
+<ul>
+    <li>Increase <b>Timeout scale</b> to 1.5x or 2x</li>
+    <li>Increase <b>Install delay</b> to 2-3 seconds</li>
+    <li>Decrease <b>UI chunk size</b> to 50 rows</li>
+</ul>
+
+<h3>For Large Collections (2000+ mods)</h3>
+<ul>
+    <li>Enable <b>Skip mod renaming</b></li>
+    <li>Increase <b>UI chunk size</b> to 200-500 rows</li>
+    <li>Disable <b>Maintenance on load</b> (run manually instead)</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>

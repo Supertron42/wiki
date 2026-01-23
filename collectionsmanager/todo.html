@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 18px;
+    color: #dcdcaa;
+    margin: 30px 0 10px;
+    border-bottom: 1px solid #3c3c3c;
+    padding-bottom: 5px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 0;
+    list-style: none;
+}
+li {
+    margin: 5px 0;
+    color: #ffffff;
+}
+.priority-high {
+    color: #f44336;
+    font-weight: bold;
+}
+.priority-med {
+    color: #ffffff;
+}
+.priority-low {
+    color: #ffffff;
+}
+.done {
+    text-decoration: line-through;
+    color: #6a6a6a;
+}
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-bug {
+    background: #c42b1c;
+    color: white;
+}
+.tag-feature {
+    background: #2E7D32;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+.tag-idea {
+    background: #7B1FA2;
+    color: white;
+}
+.tag-research {
+    background: #1565c0;
+    color: white;
+}
+.note {
+    background: #2d2d30;
+    border-left: 3px solid #569cd6;
+    padding: 10px 15px;
+    margin: 10px 0;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Sections</h3>
+    <a href="#high">High Priority</a>
+    <a href="#medium">Medium Priority</a>
+    <a href="#low">Low Priority</a>
+    <a href="#ideas">Ideas / Maybe</a>
+    <a href="#done">Done</a>
+</div>
+
+<div id="content">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <img src="cm_logo.png" alt="Collections Manager" style="width: 64px; height: 64px;">
+        <h1 style="margin: 0; border: none; padding: 0;">Todo List</h1>
+    </div>
+    <p>Personal todo list for Collections Manager development. Often inaccurate, always ambitious.</p>
+
+    <div class="note">
+        Tags: <span class="tag tag-bug">BUG</span> <span class="tag tag-feature">FEATURE</span> <span class="tag tag-improve">IMPROVE</span> <span class="tag tag-idea">IDEA</span> <span class="tag tag-research">RESEARCH</span>
+    </div>
+
+    <h2 id="high">High Priority</h2>
+    <ul>
+        <li><span class="tag tag-feature">FEATURE</span> Modlist sharing system - simple by default, powerful when needed</li>
+    </ul>
+
+    <h2 id="medium">Medium Priority</h2>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVE</span> External mods with no IDs use non-standard filename to avoid conflicts</li>
+    </ul>
+
+    <h2 id="low">Low Priority</h2>
+    <ul>
+    </ul>
+
+    <h2 id="ideas">Ideas / Maybe</h2>
+    <ul>
+    </ul>
+
+    <h2 id="done">Done</h2>
+    <ul>
+        <li class="done"><span class="tag tag-improve">IMPROVE</span> Fix Markers migrates legacy root_install_marker.json to standard format (v2.4.2)</li>
+        <li class="done"><span class="tag tag-bug">BUG</span> Fixed mods being deleted that didn't belong to the collection (v2.4.1)</li>
+    </ul>
+
+</div>
+
+</body>
+</html>

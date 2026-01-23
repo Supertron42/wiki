@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 180px;
+    min-width: 180px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 180px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Overview</h3>
+    <a href="#purpose">Purpose</a>
+    <a href="#what-is-fomod">What is a FOMOD?</a>
+
+    <h3>Using the Tab</h3>
+    <a href="#table-columns">Table Columns</a>
+    <a href="#status-icons">Status Icons</a>
+    <a href="#filtering">Filtering & Sorting</a>
+
+    <h3>Actions</h3>
+    <a href="#installing">Installing FOMODs</a>
+    <a href="#reinstalling">Reinstalling</a>
+    <a href="#skipping">Skipping Mods</a>
+    <a href="#downloading">Downloading</a>
+
+    <h3>Saved Choices</h3>
+    <a href="#viewing-choices">Viewing Choices</a>
+    <a href="#editing-choices">Editing Choices</a>
+    <a href="#saving-choices">Saving Your Choices</a>
+
+    <h3>Tips</h3>
+    <a href="#best-practices">Best Practices</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="purpose">Purpose of the FOMODs Tab</h1>
+<p>The FOMODs tab provides a centralized view of all mods with FOMOD installers across your loaded collections. It allows you to:</p>
+<ul>
+    <li>See which FOMODs are installed, downloaded, or missing</li>
+    <li>View the saved installer choices for each mod</li>
+    <li>Reinstall FOMODs with their saved choices (no clicking through pages)</li>
+    <li>Edit and save your own custom FOMOD choices</li>
+    <li>Download missing archives directly from this tab</li>
+</ul>
+
+<div class="info">
+<b>Key Benefit:</b> Collection authors save their FOMOD choices when creating collections. This tab lets you apply those choices automatically, or customize them to your preference.
+</div>
+
+
+<h1 id="what-is-fomod">What is a FOMOD?</h1>
+<p>FOMOD (Fallout Mod Archive) is an installer format that lets mod authors provide options during installation. Common examples include:</p>
+<ul>
+    <li><b>Texture resolution</b> - Choose between 1K, 2K, or 4K textures</li>
+    <li><b>Compatibility patches</b> - Select patches for other mods you have</li>
+    <li><b>Optional features</b> - Enable or disable certain mod features</li>
+    <li><b>Visual variants</b> - Pick color schemes, styles, or appearances</li>
+</ul>
+
+<p>When you install a FOMOD manually, you click through installer pages making selections. With Collections Manager, these choices can be saved and applied automatically.</p>
+
+
+<h1 id="table-columns">Table Columns</h1>
+<table>
+    <tr><th>Column</th><th>Description</th></tr>
+    <tr><td><b>No.</b></td><td>Row number in the current view</td></tr>
+    <tr><td><b>Status</b></td><td>Icon showing current state (see Status Icons below)</td></tr>
+    <tr><td><b>Mod Name</b></td><td>The mod's display name</td></tr>
+    <tr><td><b>Choices</b></td><td>Number of saved installer choices (e.g., "5 choices")</td></tr>
+    <tr><td><b>Skip</b></td><td>Checkbox to skip this mod during batch operations</td></tr>
+    <tr><td><b>Collection</b></td><td>Which collection(s) this FOMOD belongs to</td></tr>
+    <tr><td><b>Action</b></td><td>Install or Download button depending on state</td></tr>
+</table>
+
+
+<h1 id="status-icons">Status Icons</h1>
+<table>
+    <tr><th>Icon</th><th>Status</th><th>Meaning</th></tr>
+    <tr><td style="font-size:16px; color:#4ec9b0;">&#10004;</td><td>Installed</td><td>Mod is installed in your MO2 mods folder</td></tr>
+    <tr><td style="font-size:16px; color:#4ec9b0;">&#10004;</td><td>Installed (Session)</td><td>Installed during this session</td></tr>
+    <tr><td style="font-size:16px;">&#11015;</td><td>Downloaded</td><td>Archive downloaded, ready to install</td></tr>
+    <tr><td style="font-size:16px;">&#9654;</td><td>Not Installed</td><td>Not installed, archive status unknown</td></tr>
+    <tr><td style="font-size:16px; color:#f0c020;">&#9888;</td><td>Archive Missing</td><td>Not installed and archive not found in downloads</td></tr>
+    <tr><td style="font-size:16px;">&#10006;</td><td>Skipped</td><td>User chose to skip this mod</td></tr>
+</table>
+
+
+<h1 id="filtering">Filtering & Sorting</h1>
+
+<h3>Search Box</h3>
+<p>Type in the search box to filter mods by name. The filter applies instantly as you type.</p>
+
+<h3>Filter Dropdown</h3>
+<ul>
+    <li><b>All</b> - Show all FOMODs</li>
+    <li><b>Installed</b> - Show only installed FOMODs (default)</li>
+    <li><b>Not Installed</b> - Show FOMODs that need to be installed</li>
+    <li><b>Downloaded</b> - Show FOMODs with archives ready to install</li>
+</ul>
+
+<h3>Sort Options</h3>
+<ul>
+    <li><b>Regular</b> - Sort alphabetically by collection name, then mod name</li>
+    <li><b>Load Order</b> - Sort by the collection's intended install order</li>
+</ul>
+
+<div class="info">
+Click any column header to sort by that column. Click again to reverse the sort order.
+</div>
+
+
+<h1 id="installing">Installing FOMODs</h1>
+
+<h3>Single Install</h3>
+<ol>
+    <li>Find the mod in the table</li>
+    <li>Click the <b>Install</b> button in the Action column</li>
+    <li>If saved choices exist, they're applied automatically</li>
+    <li>The mod installs without any installer dialogs</li>
+</ol>
+
+<h3>Batch Install (Reinstall All)</h3>
+<ol>
+    <li>Filter to show the mods you want (e.g., "Installed" filter)</li>
+    <li>Check the <b>Silent install</b> checkbox for unattended operation</li>
+    <li>Click <b>Reinstall All</b></li>
+    <li>All visible, non-skipped FOMODs will be reinstalled in order</li>
+</ol>
+
+<div class="warning">
+<b>Note:</b> Reinstalling a mod will replace its current installation. Make sure you want to overwrite any manual changes you've made.
+</div>
+
+
+<h1 id="reinstalling">Reinstalling FOMODs</h1>
+<p>Reinstalling is useful when:</p>
+<ul>
+    <li>You want to change your FOMOD choices</li>
+    <li>The mod installation became corrupted</li>
+    <li>You updated the collection and want fresh installs</li>
+    <li>You edited the saved choices and want to apply them</li>
+</ul>
+
+<h3>How to Reinstall</h3>
+<ol>
+    <li>Select the mod(s) in the table</li>
+    <li>Click <b>Install</b> for single mod, or <b>Reinstall All</b> for batch</li>
+    <li>The existing mod folder is replaced with a fresh install</li>
+</ol>
+
+
+<h1 id="skipping">Skipping Mods</h1>
+<p>Use the Skip checkbox to exclude mods from batch operations:</p>
+<ul>
+    <li>Skipped mods won't be included in <b>Reinstall All</b></li>
+    <li>Skip status is remembered between sessions</li>
+    <li>Useful for mods you've customized manually</li>
+</ul>
+
+<h3>Context Menu Options</h3>
+<p>Right-click selected mods for:</p>
+<ul>
+    <li><b>Toggle Skip</b> - Flip the skip status</li>
+    <li><b>Install Selected</b> - Install only selected mods</li>
+</ul>
+
+
+<h1 id="downloading">Downloading Archives</h1>
+<p>If a FOMOD shows "Archive Missing" status, you need to download it first:</p>
+<ol>
+    <li>Find the mod with the warning icon</li>
+    <li>Click the <b>Download</b> button in the Action column</li>
+    <li>Wait for the download to complete</li>
+    <li>The button changes to <b>Install</b> when ready</li>
+</ol>
+
+<div class="info">
+<b>Premium users:</b> Downloads happen automatically via the Nexus API.<br>
+<b>Free users:</b> A browser tab opens to the download page. Click download there.
+</div>
+
+
+<h1 id="viewing-choices">Viewing Saved Choices</h1>
+<p>Select any FOMOD in the table to see its saved installer choices in the preview panel below.</p>
+
+<h3>Choices Display</h3>
+<p>The preview shows:</p>
+<ul>
+    <li><b>Page name</b> - The installer page/step name</li>
+    <li><b>Selected options</b> - Which options were chosen on that page</li>
+</ul>
+
+<p>Example:</p>
+<pre><code>Page: Main Installation
+  - Core Files
+  - High Resolution Textures
+
+Page: Compatibility
+  - Patch for Other Mod</code></pre>
+
+
+<h1 id="editing-choices">Editing Saved Choices</h1>
+<p>You can customize the FOMOD choices to match your preferences:</p>
+
+<h3>Method 1: Manual Install with Capture</h3>
+<ol>
+    <li>Install the mod manually through MO2's Downloads tab</li>
+    <li>Make your selections in the FOMOD installer</li>
+    <li>Your choices are automatically captured and saved</li>
+    <li>Future installs will use your custom choices</li>
+</ol>
+
+<h3>Method 2: Edit the Choices File</h3>
+<ol>
+    <li>Find the archive in your downloads folder</li>
+    <li>Look for a <code>.collectionsmanager.fomod.json</code> file nearby</li>
+    <li>Edit the JSON to change selections</li>
+    <li>Reinstall the mod to apply changes</li>
+</ol>
+
+<div class="warning">
+<b>Advanced:</b> Editing JSON files directly requires understanding the FOMOD structure. The manual install method is easier for most users.
+</div>
+
+
+<h1 id="saving-choices">Saving Your Own Choices</h1>
+<p>Collections Manager automatically saves your FOMOD choices when you:</p>
+<ul>
+    <li>Install a FOMOD manually and click through the installer</li>
+    <li>The choices are stored alongside the archive</li>
+    <li>They persist even if you delete and redownload the mod</li>
+</ul>
+
+<h3>Choice Priority</h3>
+<p>When installing, choices are looked up in this order:</p>
+<ol>
+    <li><b>Your saved choices</b> - From manual installs you've done</li>
+    <li><b>Collection choices</b> - From the collection author</li>
+    <li><b>No choices</b> - Opens the installer normally</li>
+</ol>
+
+<div class="success">
+<b>Tip:</b> If you don't like the collection author's choices, just install the mod manually once. Your choices will override theirs for future installs.
+</div>
+
+
+<h1 id="best-practices">Best Practices</h1>
+
+<div class="success">
+<ul>
+    <li><b>Use "Installed" filter</b> - Focus on mods you actually have installed</li>
+    <li><b>Check choices before reinstalling</b> - Make sure the saved choices are what you want</li>
+    <li><b>Skip customized mods</b> - If you've manually tweaked a mod, skip it to preserve changes</li>
+    <li><b>Silent install for batches</b> - Enable silent install when reinstalling many mods</li>
+    <li><b>Download first</b> - Make sure archives are downloaded before batch operations</li>
+    <li><b>One at a time for testing</b> - Install individually if you're unsure about choices</li>
+</ul>
+</div>
+
+<h3>When to Use This Tab</h3>
+<ul>
+    <li>After loading a new collection - see what FOMODs are included</li>
+    <li>After updating a collection - reinstall FOMODs with new choices</li>
+    <li>When troubleshooting - check if correct options were installed</li>
+    <li>For customization - override collection choices with your own</li>
+</ul>
+
+</div>
+</body>
+</html>

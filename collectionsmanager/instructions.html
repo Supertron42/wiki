@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+pre {
+    background: #2d2d2d;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3c3c3c;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.danger {
+    background: #4d1f1f;
+    border-left: 4px solid #f44747;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Keyboard shortcuts */
+kbd {
+    background: #3c3c3c;
+    border: 1px solid #555;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-family: Consolas, monospace;
+    font-size: 11px;
+    box-shadow: 0 1px 0 #222;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Getting Started</h3>
+    <a href="#api-key">API Key Setup</a>
+    <a href="#loading">Loading a Collection</a>
+    <a href="#installing">Installing Mods</a>
+
+    <h3>Main Interface</h3>
+    <a href="#mods-tab">Mods Tab</a>
+    <a href="#install-order-tab">Sort Tab</a>
+    <a href="#fomods-tab">FOMODs Tab</a>
+    <a href="#tools-tab">Tools Tab</a>
+    <a href="#collections-tab">Collections Tab</a>
+    <a href="#options-tab">Options Tab</a>
+
+    <h3>Tools</h3>
+    <a href="#tool-sort">Sort Mod List</a>
+    <a href="#tool-masters">Missing Masters</a>
+    <a href="#tool-maintenance">Maintenance</a>
+    <a href="#tool-duplicates">Duplicate Finder</a>
+
+    <h3>Features</h3>
+    <a href="#fomod-auto">FOMOD Automation</a>
+    <a href="#root-mods">Root/Program Mods</a>
+    <a href="#status-tracking">Status Tracking</a>
+
+    <h3>Troubleshooting</h3>
+    <a href="#trouble-download">Download Issues</a>
+    <a href="#trouble-install">Install Issues</a>
+    <a href="#trouble-crash">Crashes</a>
+
+    <h3>Reference</h3>
+    <a href="#tips">Tips & Best Practices</a>
+    <a href="#premium-vs-free">Premium vs Free</a>
+    <a href="#reporting-bugs">Reporting Bugs</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="api-key">API Key Setup</h1>
+<p>The Collections Manager needs your Nexus Mods API key to download mods automatically.</p>
+
+<h3>How to Get Your API Key</h3>
+<ol>
+    <li>Go to <a href="https://www.nexusmods.com/users/myaccount?tab=api" target="_blank">nexusmods.com/users/myaccount?tab=api</a></li>
+    <li>Log in if needed</li>
+    <li>Scroll down to <b>Personal API Key</b></li>
+    <li>Click <b>Request an API Key</b> if you don't have one</li>
+    <li>Copy the key (it's a long string of letters and numbers)</li>
+</ol>
+
+<h3>Entering the Key</h3>
+<ol>
+    <li>Open Collections Manager in MO2</li>
+    <li>Go to the <b>Options</b> tab</li>
+    <li>Paste your API key in the <b>Nexus API Key</b> field</li>
+    <li>The key is saved automatically</li>
+</ol>
+
+<div class="info">
+<b>Your API key is stored locally</b> in MO2's plugin settings. It is never shared or transmitted except to Nexus Mods servers for authentication.
+</div>
+
+
+<h1 id="loading">Loading a Collection</h1>
+
+<h3>From a URL</h3>
+<ol>
+    <li>Find a collection on <a href="https://www.nexusmods.com" target="_blank">nexusmods.com</a></li>
+    <li>Copy the collection URL from your browser</li>
+    <li>Paste it in the URL box at the top of the plugin</li>
+    <li>Click <b>Load</b></li>
+</ol>
+
+<h3>Choosing a Revision</h3>
+<p>After loading, you'll see a revision dropdown. Collections can have multiple revisions (versions). The author may update the collection over time.</p>
+<ul>
+    <li>The latest revision is usually selected by default</li>
+    <li>You can choose an older revision if needed</li>
+    <li>Each revision may have different mods or FOMOD choices</li>
+</ul>
+
+<h3>From Saved Collections</h3>
+<p>Previously loaded collections appear in the <b>Collections</b> tab. Click <b>Load</b> on any saved collection to load it again.</p>
+
+
+<h1 id="installing">Installing Mods</h1>
+
+<h3>Starting Installation</h3>
+<ol>
+    <li>After loading a collection, click <b>Begin/Resume Install</b></li>
+    <li>The plugin downloads and installs mods one at a time, in order</li>
+    <li>Progress is shown in the status bar and mod table</li>
+</ol>
+
+<h3>What Happens During Install</h3>
+<ul>
+    <li><b>Download</b> - The mod archive is downloaded from Nexus</li>
+    <li><b>Install</b> - MO2 extracts and installs the mod</li>
+    <li><b>FOMOD</b> - If the mod has a FOMOD installer, choices are applied automatically (if available)</li>
+    <li><b>Rename</b> - The mod is renamed to match the collection's naming convention</li>
+    <li><b>Next</b> - After a short delay, the next mod begins</li>
+</ul>
+
+<h3>Essential vs Optional Mods</h3>
+<p>Collections have three types of mods:</p>
+<table>
+    <tr><th>Type</th><th>Description</th></tr>
+    <tr><td><b>Essential</b></td><td>Required for the collection to work. Installed first.</td></tr>
+    <tr><td><b>Optional</b></td><td>Recommended but not required. Installed after essentials.</td></tr>
+    <tr><td><b>External</b></td><td>From other sites (not Nexus). Requires manual download.</td></tr>
+</table>
+
+<div class="info">
+After essential mods finish, you'll be asked whether to continue with optional mods. You can also skip individual mods using the Skip checkbox.
+</div>
+
+
+<h1 id="mods-tab">Mods Tab</h1>
+<p>The main tab showing all mods in the collection.</p>
+
+<h3>Table Columns</h3>
+<table>
+    <tr><th>Column</th><th>Description</th></tr>
+    <tr><td><b>No.</b></td><td>Install order number</td></tr>
+    <tr><td><b>Status</b></td><td>Current status icon (see Status Tracking)</td></tr>
+    <tr><td><b>Mod Name</b></td><td>Mod name with section grouping</td></tr>
+    <tr><td><b>Type</b></td><td>Essential, Optional, or External</td></tr>
+    <tr><td><b>Skip</b></td><td>Checkbox to skip this mod during install</td></tr>
+    <tr><td><b>Action</b></td><td>Quick action buttons (Nexus page, Install)</td></tr>
+</table>
+
+<h3>Right-Click Context Menu</h3>
+<p>Right-click selected mods for actions:</p>
+<ul>
+    <li><b>Download Selected</b> - Download selected mods</li>
+    <li><b>Open Download Links</b> - Open Nexus download pages in browser (for free users)</li>
+    <li><b>Open Mod Pages</b> - Open the Nexus mod page in browser</li>
+    <li><b>Copy Links</b> - Copy download links to clipboard</li>
+    <li><b>Skip/Unskip</b> - Toggle skip status for selected mods</li>
+    <li><b>Unskip All</b> - Remove skip from all mods in collection</li>
+    <li><b>Install Selected</b> - Install already-downloaded mods</li>
+    <li><b>Retry Failed</b> - Retry failed downloads</li>
+    <li><b>Rescan Stuck</b> - Rescan a stuck download to check if it completed</li>
+</ul>
+
+<h3>Filtering</h3>
+<p>Use the search box and status filter to find specific mods:</p>
+<ul>
+    <li>Type in the search box to filter by name</li>
+    <li>Use the status dropdown to show only certain statuses</li>
+</ul>
+
+
+<h1 id="install-order-tab">Sort Tab</h1>
+<p>Organize your MO2 mod list to match the collection's intended load order.</p>
+
+<h3>Purpose</h3>
+<p>The Sort tool helps you ensure mods are in the correct order for compatibility. Collection authors carefully arrange mods so patches load after the mods they modify.</p>
+
+<h3>Features</h3>
+<ul>
+    <li>Preview your current mod order with conflict detection</li>
+    <li>Automatic sorting based on collection install order</li>
+    <li>Drag-and-drop reordering for manual adjustments</li>
+    <li>Visual highlighting of mods that overwrite each other</li>
+</ul>
+
+
+<h1 id="fomods-tab">FOMODs Tab</h1>
+<p>Manage FOMOD installer choices for mods in the collection.</p>
+
+<h3>What are FOMODs?</h3>
+<p>FOMOD (Fallout Mod Archive) installers let mod authors provide options during installation, like texture resolution, compatibility patches, or optional features.</p>
+
+<h3>Collection Choices</h3>
+<p>Collection authors can include their FOMOD choices. When you install, these choices are applied automatically - no clicking through installer pages!</p>
+
+<h3>Managing Choices</h3>
+<ul>
+    <li>View all mods with FOMOD choices in this tab</li>
+    <li>Export choices to share with others</li>
+    <li>Import choices from a file</li>
+    <li>Edit choices if you want different options</li>
+</ul>
+
+
+<h1 id="tools-tab">Tools Tab</h1>
+<p>Collection of utility tools for mod management. Select a tool from the left pane to see its interface.</p>
+
+
+<h1 id="collections-tab">Collections Tab</h1>
+<p>View and manage your saved collections.</p>
+
+<h3>Collection Cards</h3>
+<p>Each saved collection shows:</p>
+<ul>
+    <li>Collection name and game</li>
+    <li>Number of mods</li>
+    <li>Last loaded date</li>
+    <li><b>Load</b> button to reload the collection</li>
+    <li><b>Delete</b> button to remove from saved list</li>
+</ul>
+
+
+<h1 id="options-tab">Options Tab</h1>
+<p>Configure plugin settings.</p>
+
+<h3>Key Settings</h3>
+<table>
+    <tr><th>Setting</th><th>Description</th></tr>
+    <tr><td><b>Nexus API Key</b></td><td>Your personal API key for downloads</td></tr>
+    <tr><td><b>Download Ahead</b></td><td>How many mods to pre-download (0-5)</td></tr>
+    <tr><td><b>Install Delay</b></td><td>Delay between installs for stability (default 2.5s)</td></tr>
+    <tr><td><b>Max Browser Tabs</b></td><td>Limit for opening mod pages in browser</td></tr>
+    <tr><td><b>7-Zip Path</b></td><td>Path to 7-Zip for bundle extraction</td></tr>
+    <tr><td><b>Maintenance on Load</b></td><td>Run maintenance before loading collections</td></tr>
+</table>
+
+
+<h1 id="tool-sort">Tool: Sort Mod List</h1>
+<p>Reorder your MO2 mod list to match the collection's intended order.</p>
+
+<h3>Why Use This?</h3>
+<p>Mod order matters! The collection author arranged mods in a specific order for compatibility. If you've moved mods around or installed additional mods, this tool helps restore the correct order.</p>
+
+<h3>How to Use</h3>
+<ol>
+    <li>Load a collection first</li>
+    <li>Go to <b>Tools</b> > <b>Sort Mod List</b></li>
+    <li>Click <b>Sort Mods</b></li>
+    <li>Mods from the collection will be reordered to match</li>
+</ol>
+
+
+<h1 id="tool-masters">Tool: Missing Masters</h1>
+<p>Scan your plugins for missing master dependencies.</p>
+
+<h3>What are Masters?</h3>
+<p>Plugins (.esp, .esm, .esl files) can depend on other plugins called "masters." If a master is missing, the plugin won't work correctly.</p>
+
+<h3>How to Use</h3>
+<ol>
+    <li>Go to <b>Tools</b> > <b>Missing Masters</b></li>
+    <li>Click <b>Scan</b></li>
+    <li>The tool shows which plugins have missing masters</li>
+    <li>For each missing master, you can search Nexus or the collection</li>
+</ol>
+
+
+<h1 id="tool-maintenance">Tool: Maintenance</h1>
+<p>Rebuild index, fix markers, and fix mod names.</p>
+
+<h3>Operations</h3>
+<table>
+    <tr><th>Operation</th><th>What it Does</th></tr>
+    <tr><td><b>Rebuild Index</b></td><td>Scans downloads and mods folders to rebuild the tracking index</td></tr>
+    <tr><td><b>Fix Markers</b></td><td>Migrates old markers to .mohidden format (for correct conflict detection), fixes markers with missing mod IDs, creates markers for mods without them</td></tr>
+    <tr><td><b>Fix Names</b></td><td>Renames mods to match their collection display names</td></tr>
+</table>
+
+<h3>When to Use</h3>
+<ul>
+    <li>After manually moving or renaming mods</li>
+    <li>If mod status detection seems wrong</li>
+    <li>After recovering from a crash</li>
+    <li>If you've installed mods outside of Collections Manager</li>
+</ul>
+
+<div class="info">
+<b>Run All Maintenance</b> performs all three operations at once. This is also run automatically before loading a collection if "Maintenance on Load" is enabled in Options.
+</div>
+
+
+<h1 id="tool-duplicates">Tool: Duplicate Finder</h1>
+<p>Find and remove duplicate mod installations.</p>
+
+<h3>What are Duplicates?</h3>
+<p>A duplicate is when the same Nexus file (same FileID and ModID) is installed multiple times under different folder names. This wastes disk space and can cause confusion.</p>
+
+<h3>How to Use</h3>
+<ol>
+    <li>Go to <b>Tools</b> > <b>Duplicate Finder</b></li>
+    <li>Click <b>Scan for Duplicates</b></li>
+    <li>Duplicate groups are shown color-coded in the table</li>
+    <li>Select the rows you want to <b>remove</b> (keep the others)</li>
+    <li>Click <b>Remove Selected</b></li>
+</ol>
+
+<div class="warning">
+<b>Removal is permanent!</b> The selected mods will be deleted. Make sure you're removing the ones you don't want.
+</div>
+
+
+<h1 id="fomod-auto">FOMOD Automation</h1>
+<p>Collections Manager can automatically apply FOMOD choices during installation.</p>
+
+<h3>How it Works</h3>
+<ol>
+    <li>Collection authors save their FOMOD choices when creating the collection</li>
+    <li>When you install, the plugin detects FOMOD installers</li>
+    <li>If choices are available, they're applied automatically</li>
+    <li>The FOMOD pages are clicked through without user interaction</li>
+</ol>
+
+<h3>What if Choices Aren't Available?</h3>
+<p>If no saved choices exist, the FOMOD installer will open normally and you'll need to make selections manually.</p>
+
+
+<h1 id="root-mods">Root/Program Mods</h1>
+<p>Some mods need files placed in the game's root folder (like ENB, script extenders, or tools).</p>
+
+<h3>Detection</h3>
+<p>Collections Manager detects mods that contain only root-level files (EXE, DLL without game data content). These are flagged as requiring manual installation.</p>
+
+<h3>Handling</h3>
+<p>When root mods are detected, an orange banner appears at the top of the plugin. Click <b>Install to Game Folder</b> to:</p>
+<ul>
+    <li>View detected root mods with their files</li>
+    <li>Open mod folders to manually copy files</li>
+    <li>Mark mods as "Done" when you've installed them</li>
+    <li>Configure rules for future detection (force/never)</li>
+</ul>
+
+<div class="info">
+<b>Tip:</b> After copying files to the game folder, click the <b>Done</b> button on each mod. This hides them from the banner and tracks your progress.
+</div>
+
+
+<h1 id="status-tracking">Status Tracking</h1>
+<p>Each mod has a status indicating its current state.</p>
+
+<h3>Status Types</h3>
+<table>
+    <tr><th>Status</th><th>Meaning</th></tr>
+    <tr><td><b>Pending</b></td><td>Mod hasn't been processed yet</td></tr>
+    <tr><td><b>Opened</b></td><td>Download link opened in browser (free users)</td></tr>
+    <tr><td><b>Downloading</b></td><td>Currently downloading from Nexus</td></tr>
+    <tr><td><b>Stuck</b></td><td>Download appears stuck (0 bytes for too long)</td></tr>
+    <tr><td><b>Downloaded</b></td><td>Archive downloaded, ready to install</td></tr>
+    <tr><td><b>Installing</b></td><td>Currently being installed by MO2</td></tr>
+    <tr><td><b>Installed</b></td><td>Successfully installed</td></tr>
+    <tr><td><b>Failed</b></td><td>Download or install failed</td></tr>
+    <tr><td><b>Skipped</b></td><td>User chose to skip this mod</td></tr>
+</table>
+
+<div class="info">
+Status icons in the table are color-coded: green for success (installed), yellow for in-progress, red for errors, gray for pending/skipped.
+</div>
+
+
+<h1 id="trouble-download">Troubleshooting: Download Issues</h1>
+
+<h3>Download Stuck at 0KB</h3>
+<p>If a download shows 0 bytes and won't progress:</p>
+<ol>
+    <li>Go to MO2's <b>Downloads</b> tab (right panel)</li>
+    <li>Find the stuck download</li>
+    <li>Right-click > <b>Pause</b></li>
+    <li>Right-click > <b>Resume</b></li>
+    <li>Click <b>Begin/Resume Install</b> in Collections Manager</li>
+</ol>
+
+<h3>Download Won't Start</h3>
+<ul>
+    <li>Check your API key is entered correctly in Options</li>
+    <li>Verify you're logged into Nexus in your browser</li>
+    <li>Try clicking <b>Begin/Resume Install</b> again</li>
+    <li>Check if Nexus is having issues (their status page)</li>
+</ul>
+
+<h3>Premium Features Not Working</h3>
+<p>If you have Nexus Premium but downloads open in browser:</p>
+<ul>
+    <li>Re-enter your API key (it may have expired)</li>
+    <li>Generate a new API key on Nexus and enter it</li>
+</ul>
+
+
+<h1 id="trouble-install">Troubleshooting: Install Issues</h1>
+
+<h3>Mod Not Installing</h3>
+<ul>
+    <li>Check if the archive is corrupted (try redownloading)</li>
+    <li>Look for errors in MO2's log panel</li>
+    <li>Try installing manually through MO2's Downloads tab</li>
+</ul>
+
+<h3>Wrong FOMOD Choices Applied</h3>
+<p>If the wrong FOMOD options were selected:</p>
+<ol>
+    <li>Uninstall the mod in MO2</li>
+    <li>Go to the FOMODs tab</li>
+    <li>Find the mod and edit its choices</li>
+    <li>Reinstall the mod</li>
+</ol>
+
+<h3>Mod Has Wrong Name</h3>
+<p>Use the <b>Maintenance</b> tool's <b>Fix Names</b> operation to rename mods to match their collection names.</p>
+
+
+<h1 id="trouble-crash">Troubleshooting: Crashes</h1>
+
+<h3>MO2 Crashes During Install</h3>
+<p>Don't panic! Your progress is saved.</p>
+<ol>
+    <li>Restart MO2</li>
+    <li>Open Collections Manager</li>
+    <li>Go to <b>Collections</b> tab and click <b>Load</b> on your collection</li>
+    <li>Check MO2's Downloads tab for partial downloads</li>
+    <li>Resume any incomplete downloads</li>
+    <li>Click <b>Begin/Resume Install</b> to continue</li>
+</ol>
+
+<div class="info">
+The plugin tracks what's installed. It will skip already-installed mods and continue with the rest.
+</div>
+
+<h3>Frequent Crashes with Large Collections</h3>
+<p>For collections with 1000+ mods:</p>
+<ul>
+    <li>The plugin uses dynamic delays for complex FOMOD mods</li>
+    <li>Try increasing the <b>Install Delay</b> in Options</li>
+    <li>Close other programs to free up memory</li>
+    <li>Install in smaller batches using Skip checkboxes</li>
+</ul>
+
+
+<h1 id="tips">Tips & Best Practices</h1>
+
+<div class="success">
+<ul>
+    <li><b>Be patient</b> - Large collections take time. Let it run.</li>
+    <li><b>Check the logs</b> - MO2's log panel shows what's happening.</li>
+    <li><b>Run Maintenance</b> - If things seem off, run maintenance.</li>
+    <li><b>Save your work</b> - Close unnecessary programs during large installs.</li>
+    <li><b>Use Sort Mod List</b> - After installation, sort mods to match collection order.</li>
+    <li><b>Check Missing Masters</b> - After installation, scan for missing dependencies.</li>
+</ul>
+</div>
+
+
+<h1 id="premium-vs-free">Premium vs Free Nexus Accounts</h1>
+
+<table>
+    <tr><th>Feature</th><th>Premium</th><th>Free</th></tr>
+    <tr><td>Automatic downloads</td><td>Yes</td><td>No - links open in browser</td></tr>
+    <tr><td>Download speed</td><td>Uncapped</td><td>Limited</td></tr>
+    <tr><td>API downloads</td><td>Yes</td><td>Manual only</td></tr>
+    <tr><td>Collection installation</td><td>Fully automatic</td><td>Semi-manual</td></tr>
+</table>
+
+<div class="info">
+<b>Free users:</b> When a download is needed, the Nexus download page will open in your browser. Click the download button there, then return to MO2. The plugin will detect when the download completes and continue.
+</div>
+
+
+<h1 id="reporting-bugs">Reporting Bugs</h1>
+
+<p>Found a bug or have a suggestion? Your feedback is valuable!</p>
+
+<h3>How to Report</h3>
+<ol>
+    <li>Click the <b>Bug</b> button in the plugin (top right)</li>
+    <li>Or visit the GitHub issues page directly</li>
+    <li>Describe what happened and what you expected</li>
+    <li>Include relevant log messages from MO2's log panel</li>
+</ol>
+
+<h3>What to Include</h3>
+<ul>
+    <li>Collection URL (if applicable)</li>
+    <li>MO2 version</li>
+    <li>Any error messages</li>
+    <li>Steps to reproduce the issue</li>
+</ul>
+
+<div class="success">
+<b>Thank you for testing!</b> This plugin is actively developed, and user reports help make it better for everyone.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 18px;
+    color: #dcdcaa;
+    margin: 30px 0 10px;
+    border-bottom: 1px solid #3c3c3c;
+    padding-bottom: 5px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 5px 0;
+}
+.version-date {
+    color: #808080;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #d4d4d4;
+    border: 1px solid #3c3c3c;
+    padding: 10px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #569cd6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #4a8bc2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Change Logs</h3>
+    <a href="#v2.4.2">Version 2.4.2</a>
+    <a href="#v2.4.1">Version 2.4.1</a>
+    <a href="#v2.4">Version 2.4</a>
+</div>
+
+<div id="content">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <img src="cm_logo.png" alt="Collections Manager" style="width: 64px; height: 64px;">
+        <h1 style="margin: 0; border: none; padding: 0;">Change Logs</h1>
+    </div>
+    <p>Release history and change logs for Collections Manager.</p>
+
+    <h2 id="v2.4.2">Version 2.4.2</h2>
+
+    <h3>Marker System Overhaul</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Standardized marker format across the entire plugin.</b> All marker files now use the same "master marker" structure with ALL fields present. No more partial markers or special formats - every marker is complete and consistent.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fix Markers tool now properly reads meta.ini.</b> Fixed bug where meta.ini wasn't being read because the helper function wasn't accessible. Now correctly extracts mod_id, file_id, version, and game name from meta.ini.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed file_id extraction from meta.ini.</b> file_id is stored in the [installedFiles] section (format: <code>1\fileid=489424</code>), not [General]. Now checks both sections.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed Nexus URLs using wrong domain.</b> URLs were using MO2's game name (e.g., "SkyrimSE") instead of Nexus domain (e.g., "skyrimspecialedition"). Added proper mapping for all supported games.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed marker filename not updating when file_id changes.</b> When Fix Markers discovers a file_id, the marker file is now renamed to the correct format.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Fix Markers now migrates legacy root_install_marker.json files.</b> Old root-install markers are automatically upgraded to the standard format with all fields.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed maintenance operation order.</b> "Run All" and silent maintenance now run in correct order: Fix Markers first, then Rebuild Index. The index reads from markers, so markers must be fixed before rebuilding.</li>
+    </ul>
+
+    <h3>Technical Details</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <code>build_marker_data()</code> - Single source of truth for marker structure with all 20+ fields</li>
+        <li><span class="tag tag-new">NEW</span> <code>get_marker_filename()</code> - Consistent filename generation: <code>{mod_id}_{file_id}_mo2collections.json.mohidden</code></li>
+        <li><span class="tag tag-new">NEW</span> <code>get_nexus_domain()</code> - Maps MO2 game names to Nexus URL domains</li>
+        <li><span class="tag tag-change">CHANGE</span> Root install markers now use standard format with <code>source_type: "root"</code></li>
+        <li><span class="tag tag-change">CHANGE</span> Empty bundle markers now use standard format with <code>is_bundle: true</code></li>
+        <li><span class="tag tag-improve">IMPROVED</span> Backwards compatibility - reads both new and legacy marker formats</li>
+    </ul>
+
+    <h3>Files Updated</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <code>common.py</code> - Added centralized marker functions and game name mapping</li>
+        <li><span class="tag tag-change">CHANGE</span> <code>downloads.py</code> - All marker creation now uses <code>build_marker_data()</code></li>
+        <li><span class="tag tag-change">CHANGE</span> <code>ui.py</code> - Fix Markers and external mod marking use standardized format</li>
+        <li><span class="tag tag-change">CHANGE</span> <code>duplicatefinder.py</code> - Orphan matching uses standardized format</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb242')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md242')">Markdown</button>
+    </div>
+    <div id="bb242" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode242" readonly>[size=4][b][color=#dcdcaa]Version 2.4.2[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Marker System Overhaul[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Standardized marker format across the entire plugin.[/b] All marker files now use the same "master marker" structure with ALL fields present. No more partial markers or special formats - every marker is complete and consistent.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fix Markers tool now properly reads meta.ini.[/b] Fixed bug where meta.ini wasn't being read because the helper function wasn't accessible. Now correctly extracts mod_id, file_id, version, and game name from meta.ini.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed file_id extraction from meta.ini.[/b] file_id is stored in the [installedFiles] section (format: 1\fileid=489424), not [General]. Now checks both sections.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed Nexus URLs using wrong domain.[/b] URLs were using MO2's game name (e.g., "SkyrimSE") instead of Nexus domain (e.g., "skyrimspecialedition"). Added proper mapping for all supported games.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed marker filename not updating when file_id changes.[/b] When Fix Markers discovers a file_id, the marker file is now renamed to the correct format.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Fix Markers now migrates legacy root_install_marker.json files.[/b] Old root-install markers are automatically upgraded to the standard format with all fields.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed maintenance operation order.[/b] "Run All" and silent maintenance now run in correct order: Fix Markers first, then Rebuild Index. The index reads from markers, so markers must be fixed before rebuilding.
+[/list]
+[size=3][b][color=#9cdcfe]Technical Details[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [font=Courier New]build_marker_data()[/font] - Single source of truth for marker structure with all 20+ fields
+[*][color=#2E7D32][b]NEW[/b][/color] [font=Courier New]get_marker_filename()[/font] - Consistent filename generation
+[*][color=#2E7D32][b]NEW[/b][/color] [font=Courier New]get_nexus_domain()[/font] - Maps MO2 game names to Nexus URL domains
+[*][color=#1565c0][b]CHANGE[/b][/color] Root install markers now use standard format with source_type: "root"
+[*][color=#1565c0][b]CHANGE[/b][/color] Empty bundle markers now use standard format with is_bundle: true
+[*][color=#DA8E35][b]IMPROVED[/b][/color] Backwards compatibility - reads both new and legacy marker formats
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyBBCode('bbcode242')">Copy to Clipboard</button>
+    </div>
+    <div id="md242" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown242" readonly># Version 2.4.2
+
+## Marker System Overhaul
+
+- **Standardized marker format across the entire plugin.** All marker files now use the same "master marker" structure with ALL fields present. No more partial markers or special formats - every marker is complete and consistent.
+- **Fix Markers tool now properly reads meta.ini.** Fixed bug where meta.ini wasn't being read because the helper function wasn't accessible. Now correctly extracts mod_id, file_id, version, and game name from meta.ini.
+- **Fixed file_id extraction from meta.ini.** file_id is stored in the [installedFiles] section (format: `1\fileid=489424`), not [General]. Now checks both sections.
+- **Fixed Nexus URLs using wrong domain.** URLs were using MO2's game name (e.g., "SkyrimSE") instead of Nexus domain (e.g., "skyrimspecialedition"). Added proper mapping for all supported games.
+- **Fixed marker filename not updating when file_id changes.** When Fix Markers discovers a file_id, the marker file is now renamed to the correct format.
+- **Fix Markers now migrates legacy root_install_marker.json files.** Old root-install markers are automatically upgraded to the standard format with all fields.
+- **Fixed maintenance operation order.** "Run All" and silent maintenance now run in correct order: Fix Markers first, then Rebuild Index. The index reads from markers, so markers must be fixed before rebuilding.
+
+## Technical Details
+
+- `build_marker_data()` - Single source of truth for marker structure with all 20+ fields
+- `get_marker_filename()` - Consistent filename generation: `{mod_id}_{file_id}_mo2collections.json.mohidden`
+- `get_nexus_domain()` - Maps MO2 game names to Nexus URL domains
+- Root install markers now use standard format with `source_type: "root"`
+- Empty bundle markers now use standard format with `is_bundle: true`
+- Backwards compatibility - reads both new and legacy marker formats</textarea>
+        <button class="copy-btn" onclick="copyBBCode('markdown242')">Copy to Clipboard</button>
+    </div>
+
+    <h2 id="v2.4.1">Version 2.4.1</h2>
+
+    <h3>Critical Safety Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed mods being deleted that didn't belong to the collection.</b> Multiple safety guards added to prevent accidental deletion of user mods during collection installation.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Download cleanup no longer uses name matching.</b> Previously, cleaning up incomplete downloads could delete unrelated user downloads if the name contained the collection mod's name as a substring (e.g., collection mod "Skyrim" would match and delete "Skyrim Parallax.7z"). Now only uses file ID pattern matching.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Mod replacement now validates before removal.</b> When installing a collection mod with the same name as an existing mod, the plugin now checks for collection markers before removing the old version. Refuses to delete mods that have marker files.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Bundle cleanup validates collection name.</b> Old bundle revision cleanup now verifies the folder belongs to the current collection before offering to delete it. Dialog also defaults to "No" and shows a clearer warning about permanent deletion.</li>
+    </ul>
+
+    <h3>Technical Details</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> Added <code>_has_collection_marker()</code> helper to check if a mod folder has collection marker files</li>
+        <li><span class="tag tag-improve">IMPROVED</span> All mod deletion operations now use marker-based validation as a safety check</li>
+        <li><span class="tag tag-change">CHANGE</span> Removed dangerous substring-based name matching from download artifact cleanup</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb241')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md241')">Markdown</button>
+    </div>
+    <div id="bb241" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode241" readonly>[size=4][b][color=#dcdcaa]Version 2.4.1[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Critical Safety Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed mods being deleted that didn't belong to the collection.[/b] Multiple safety guards added to prevent accidental deletion of user mods during collection installation.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Download cleanup no longer uses name matching.[/b] Previously, cleaning up incomplete downloads could delete unrelated user downloads if the name contained the collection mod's name as a substring (e.g., collection mod "Skyrim" would match and delete "Skyrim Parallax.7z"). Now only uses file ID pattern matching.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Mod replacement now validates before removal.[/b] When installing a collection mod with the same name as an existing mod, the plugin now checks for collection markers before removing the old version. Refuses to delete mods that have marker files.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Bundle cleanup validates collection name.[/b] Old bundle revision cleanup now verifies the folder belongs to the current collection before offering to delete it. Dialog also defaults to "No" and shows a clearer warning about permanent deletion.
+[/list]
+[size=3][b][color=#9cdcfe]Technical Details[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] Added [font=Courier New]_has_collection_marker()[/font] helper to check if a mod folder has collection marker files
+[*][color=#DA8E35][b]IMPROVED[/b][/color] All mod deletion operations now use marker-based validation as a safety check
+[*][color=#1565c0][b]CHANGE[/b][/color] Removed dangerous substring-based name matching from download artifact cleanup
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyBBCode('bbcode241')">Copy to Clipboard</button>
+    </div>
+    <div id="md241" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown241" readonly># Version 2.4.1
+
+## Critical Safety Fixes
+
+- **Fixed mods being deleted that didn't belong to the collection.** Multiple safety guards added to prevent accidental deletion of user mods during collection installation.
+- **Download cleanup no longer uses name matching.** Previously, cleaning up incomplete downloads could delete unrelated user downloads if the name contained the collection mod's name as a substring (e.g., collection mod "Skyrim" would match and delete "Skyrim Parallax.7z"). Now only uses file ID pattern matching.
+- **Mod replacement now validates before removal.** When installing a collection mod with the same name as an existing mod, the plugin now checks for collection markers before removing the old version. Refuses to delete mods that have marker files.
+- **Bundle cleanup validates collection name.** Old bundle revision cleanup now verifies the folder belongs to the current collection before offering to delete it. Dialog also defaults to "No" and shows a clearer warning about permanent deletion.
+
+## Technical Details
+
+- Added `_has_collection_marker()` helper to check if a mod folder has collection marker files
+- All mod deletion operations now use marker-based validation as a safety check
+- Removed dangerous substring-based name matching from download artifact cleanup</textarea>
+        <button class="copy-btn" onclick="copyBBCode('markdown241')">Copy to Clipboard</button>
+    </div>
+
+    <h2 id="v2.4">Version 2.4</h2>
+
+    <h3>Biggest Changes</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Bundles actually work!</b> You can now install binary patches, loose files, and INI tweaks directly into your game. No more manual copying. The plugin extracts everything, applies patches to the right mods, and merges INI settings automatically. This is huge.</li>
+        <li><span class="tag tag-new">NEW</span> <b>External mods auto-download.</b> If the collection has a direct download link, you don't need a browser anymore. The plugin grabs it automatically and matches it to your collection. The external panel only shows up for mods that actually need manual downloading.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Rebuilt indexing from the ground up.</b> We completely redesigned how the plugin tracks your downloads, installed mods, and skipped mods. Everything now has a single source of truth. Orphan entries from deleted files get cleaned up automatically every time you load a collection.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Section flow is buttery smooth now.</b> External, Optional, and Bundle sections flow into each other seamlessly. No more getting stuck between sections wondering what's happening. The plugin detects when you're done and moves on.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Live sync with MO2.</b> Install or delete mods outside the plugin? It notices. The UI updates in real-time. No more stale icons lying to you.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Full Wiki documentation.</b> Every tab now has a help guide. There's a landing page, patch notes, the works. Hit the (?) button on any tab to learn how it works.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Category pre-check.</b> Remember that annoying MO2 category popup that would interrupt your install halfway through? Gone. The plugin checks before you start and warns you if categories aren't set up.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI tweak preview.</b> You can now see exactly what INI changes a bundle will make before you apply them.</li>
+    </ul>
+
+    <h3>Fixed</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> Crashes from concurrent timer callbacks modifying data mid-iteration</li>
+        <li><span class="tag tag-fix">FIX</span> Memory leaks when timers weren't cleaned up on dialog close</li>
+        <li><span class="tag tag-fix">FIX</span> Completion popup showing up when loading an already-finished collection (annoying!)</li>
+        <li><span class="tag tag-fix">FIX</span> Memory leaks from lambda closures in timer callbacks</li>
+        <li><span class="tag tag-fix">FIX</span> External section getting stuck when all mods were auto-downloadable</li>
+        <li><span class="tag tag-fix">FIX</span> Orphaned index entries piling up when you deleted files outside the plugin</li>
+        <li><span class="tag tag-fix">FIX</span> Various other fixes</li>
+    </ul>
+
+    <h3>Improved</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> Faster default timing. Install delay dropped from 2.0s to 1.0s, FOMOD delay from 1.0s to 0.7s</li>
+        <li><span class="tag tag-improve">IMPROVED</span> Text is darker and way easier to read throughout the app</li>
+        <li><span class="tag tag-improve">IMPROVED</span> Larger default chunk size (80 instead of 50) for smoother handling of big collections</li>
+        <li><span class="tag tag-improve">IMPROVED</span> Wider columns across all tables so you can actually see what's in them</li>
+        <li><span class="tag tag-change">CHANGE</span> Default startup tab is now Collections instead of Help</li>
+    </ul>
+
+    <h3>Added</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> "Downloaded" filter in FOMODs tab to see which ones are ready to install</li>
+        <li><span class="tag tag-new">NEW</span> Cleanup Orphans tool for fast removal of stale index entries (also runs automatically on load)</li>
+        <li><span class="tag tag-new">NEW</span> Index migration system that upgrades your index seamlessly when you update the plugin</li>
+        <li><span class="tag tag-new">NEW</span> Automatic account type detection from your API key</li>
+        <li><span class="tag tag-new">NEW</span> Premium upsell panel for free users with Go Premium button</li>
+        <li><span class="tag tag-new">NEW</span> This Patch Notes page you're reading right now</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb24')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md24')">Markdown</button>
+    </div>
+    <div id="bb24" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode24" readonly>[size=4][b][color=#dcdcaa]Version 2.4[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Biggest Changes[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Bundles actually work![/b] You can now install binary patches, loose files, and INI tweaks directly into your game. No more manual copying. The plugin extracts everything, applies patches to the right mods, and merges INI settings automatically. This is huge.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]External mods auto-download.[/b] If the collection has a direct download link, you don't need a browser anymore. The plugin grabs it automatically and matches it to your collection. The external panel only shows up for mods that actually need manual downloading.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Rebuilt indexing from the ground up.[/b] We completely redesigned how the plugin tracks your downloads, installed mods, and skipped mods. Everything now has a single source of truth. Orphan entries from deleted files get cleaned up automatically every time you load a collection.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Section flow is buttery smooth now.[/b] External, Optional, and Bundle sections flow into each other seamlessly. No more getting stuck between sections wondering what's happening. The plugin detects when you're done and moves on.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Live sync with MO2.[/b] Install or delete mods outside the plugin? It notices. The UI updates in real-time. No more stale icons lying to you.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Full Wiki documentation.[/b] Every tab now has a help guide. There's a landing page, patch notes, the works. Hit the (?) button on any tab to learn how it works.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Category pre-check.[/b] Remember that annoying MO2 category popup that would interrupt your install halfway through? Gone. The plugin checks before you start and warns you if categories aren't set up.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]INI tweak preview.[/b] You can now see exactly what INI changes a bundle will make before you apply them.
+[/list]
+[size=3][b][color=#9cdcfe]Fixed[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] Crashes from concurrent timer callbacks modifying data mid-iteration
+[*][color=#c42b1c][b]FIX[/b][/color] Memory leaks when timers weren't cleaned up on dialog close
+[*][color=#c42b1c][b]FIX[/b][/color] Completion popup showing up when loading an already-finished collection (annoying!)
+[*][color=#c42b1c][b]FIX[/b][/color] Memory leaks from lambda closures in timer callbacks
+[*][color=#c42b1c][b]FIX[/b][/color] External section getting stuck when all mods were auto-downloadable
+[*][color=#c42b1c][b]FIX[/b][/color] Orphaned index entries piling up when you deleted files outside the plugin
+[*][color=#c42b1c][b]FIX[/b][/color] Various other fixes
+[/list]
+[size=3][b][color=#9cdcfe]Improved[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] Faster default timing. Install delay dropped from 2.0s to 1.0s, FOMOD delay from 1.0s to 0.7s
+[*][color=#DA8E35][b]IMPROVED[/b][/color] Text is darker and way easier to read throughout the app
+[*][color=#DA8E35][b]IMPROVED[/b][/color] Larger default chunk size (80 instead of 50) for smoother handling of big collections
+[*][color=#DA8E35][b]IMPROVED[/b][/color] Wider columns across all tables so you can actually see what's in them
+[*][color=#1565c0][b]CHANGE[/b][/color] Default startup tab is now Collections instead of Help
+[/list]
+[size=3][b][color=#9cdcfe]Added[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] "Downloaded" filter in FOMODs tab to see which ones are ready to install
+[*][color=#2E7D32][b]NEW[/b][/color] Cleanup Orphans tool for fast removal of stale index entries (also runs automatically on load)
+[*][color=#2E7D32][b]NEW[/b][/color] Index migration system that upgrades your index seamlessly when you update the plugin
+[*][color=#2E7D32][b]NEW[/b][/color] Automatic account type detection from your API key
+[*][color=#2E7D32][b]NEW[/b][/color] Premium upsell panel for free users with Go Premium button
+[*][color=#2E7D32][b]NEW[/b][/color] This Patch Notes page you're reading right now
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyBBCode('bbcode24')">Copy to Clipboard</button>
+    </div>
+    <div id="md24" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown24" readonly># Version 2.4
+
+## Biggest Changes
+
+- **Bundles actually work!** You can now install binary patches, loose files, and INI tweaks directly into your game. No more manual copying. The plugin extracts everything, applies patches to the right mods, and merges INI settings automatically. This is huge.
+- **External mods auto-download.** If the collection has a direct download link, you don't need a browser anymore. The plugin grabs it automatically and matches it to your collection. The external panel only shows up for mods that actually need manual downloading.
+- **Rebuilt indexing from the ground up.** We completely redesigned how the plugin tracks your downloads, installed mods, and skipped mods. Everything now has a single source of truth. Orphan entries from deleted files get cleaned up automatically every time you load a collection.
+- **Section flow is buttery smooth now.** External, Optional, and Bundle sections flow into each other seamlessly. No more getting stuck between sections wondering what's happening. The plugin detects when you're done and moves on.
+- **Live sync with MO2.** Install or delete mods outside the plugin? It notices. The UI updates in real-time. No more stale icons lying to you.
+- **Full Wiki documentation.** Every tab now has a help guide. There's a landing page, patch notes, the works. Hit the (?) button on any tab to learn how it works.
+- **Category pre-check.** Remember that annoying MO2 category popup that would interrupt your install halfway through? Gone. The plugin checks before you start and warns you if categories aren't set up.
+- **INI tweak preview.** You can now see exactly what INI changes a bundle will make before you apply them.
+
+## Fixed
+
+- Crashes from concurrent timer callbacks modifying data mid-iteration
+- Memory leaks when timers weren't cleaned up on dialog close
+- Completion popup showing up when loading an already-finished collection (annoying!)
+- Memory leaks from lambda closures in timer callbacks
+- External section getting stuck when all mods were auto-downloadable
+- Orphaned index entries piling up when you deleted files outside the plugin
+- Various other fixes
+
+## Improved
+
+- Faster default timing. Install delay dropped from 2.0s to 1.0s, FOMOD delay from 1.0s to 0.7s
+- Text is darker and way easier to read throughout the app
+- Larger default chunk size (80 instead of 50) for smoother handling of big collections
+- Wider columns across all tables so you can actually see what's in them
+- Default startup tab is now Collections instead of Help
+
+## Added
+
+- "Downloaded" filter in FOMODs tab to see which ones are ready to install
+- Cleanup Orphans tool for fast removal of stale index entries (also runs automatically on load)
+- Index migration system that upgrades your index seamlessly when you update the plugin
+- Automatic account type detection from your API key
+- Premium upsell panel for free users with Go Premium button
+- This Patch Notes page you're reading right now</textarea>
+        <button class="copy-btn" onclick="copyBBCode('markdown24')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    // Close all spoilers
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    // If it wasn't open, open it
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyBBCode(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

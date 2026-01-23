@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 180px;
+    min-width: 180px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 180px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Overview</h3>
+    <a href="#purpose">Purpose</a>
+    <a href="#loading">Loading a Collection</a>
+
+    <h3>Table Interface</h3>
+    <a href="#columns">Table Columns</a>
+    <a href="#status-icons">Status Icons</a>
+    <a href="#sections">Mod Sections</a>
+
+    <h3>Installation</h3>
+    <a href="#premium">Premium Mode</a>
+    <a href="#free">Free Mode</a>
+    <a href="#skipping">Skipping Mods</a>
+
+    <h3>Actions</h3>
+    <a href="#buttons">Action Buttons</a>
+    <a href="#context-menu">Right-Click Menu</a>
+    <a href="#row-actions">Row Actions</a>
+
+    <h3>Features</h3>
+    <a href="#filtering">Search & Filter</a>
+    <a href="#external">External Mods</a>
+    <a href="#bundles">Bundle Files</a>
+
+    <h3>Tips</h3>
+    <a href="#troubleshooting">Troubleshooting</a>
+    <a href="#best-practices">Best Practices</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="purpose">Purpose of the Mods Tab</h1>
+<p>The Mods tab is the main interface for viewing and installing mods from a Nexus collection. It shows all mods in the collection organized by section (Essential, Optional, External) and tracks the status of each mod through the download and installation process.</p>
+
+<div class="info">
+<b>Key Features:</b>
+<ul>
+    <li>View all mods in the loaded collection</li>
+    <li>Download and install mods automatically (Premium) or semi-manually (Free)</li>
+    <li>Track progress with real-time status updates</li>
+    <li>Skip individual mods you don't want</li>
+    <li>Handle external mods from non-Nexus sources</li>
+</ul>
+</div>
+
+
+<h1 id="loading">Loading a Collection</h1>
+<p>Before using the Mods tab, you need to load a collection:</p>
+<ol>
+    <li>Paste a Nexus collection URL in the URL field at the top</li>
+    <li>Click <b>Load</b></li>
+    <li>Select a revision from the dropdown (if multiple exist)</li>
+    <li>The Mods tab will populate with all mods from the collection</li>
+</ol>
+
+<h3>URL Formats Supported</h3>
+<ul>
+    <li><code>https://next.nexusmods.com/skyrimspecialedition/collections/abc123</code></li>
+    <li><code>https://www.nexusmods.com/skyrimspecialedition/collections/abc123</code></li>
+    <li><code>nexusmods.com/skyrimspecialedition/collections/abc123</code></li>
+</ul>
+
+
+<h1 id="columns">Table Columns</h1>
+<table>
+    <tr><th>Column</th><th>Description</th></tr>
+    <tr><td><b>No.</b></td><td>Install order number from the collection</td></tr>
+    <tr><td><b>Status</b></td><td>Current state icon (pending, downloading, installed, etc.)</td></tr>
+    <tr><td><b>Mod Name</b></td><td>Display name of the mod</td></tr>
+    <tr><td><b>Type</b></td><td>Essential, Optional, or External</td></tr>
+    <tr><td><b>Skip</b></td><td>Checkbox to exclude from installation</td></tr>
+    <tr><td><b>Action</b></td><td>Open mod page button, and Install button when downloaded</td></tr>
+</table>
+
+
+<h1 id="status-icons">Status Icons</h1>
+<table>
+    <tr><th>Icon</th><th>Status</th><th>Meaning</th></tr>
+    <tr><td style="font-size:16px;">&#9654;</td><td>Pending</td><td>Waiting to be processed</td></tr>
+    <tr><td style="font-size:16px;">&#127760;</td><td>Opened</td><td>Download link opened in browser (Free mode)</td></tr>
+    <tr><td style="font-size:16px; color:#f0c020;">&#9888;</td><td>Stuck</td><td>Download stalled or failed to start</td></tr>
+    <tr><td style="font-size:16px;">&#11015;</td><td>Downloaded</td><td>Archive ready, waiting to install</td></tr>
+    <tr><td style="font-size:16px; color:#4ec9b0;">&#10004;</td><td>Installed</td><td>Successfully installed</td></tr>
+    <tr><td style="font-size:16px;">&#10006;</td><td>Skipped</td><td>User chose to skip this mod</td></tr>
+</table>
+
+
+<h1 id="sections">Mod Sections</h1>
+<p>Collections organize mods into sections that are processed in order:</p>
+
+<h3>Essential Mods</h3>
+<p>Required mods that the collection author considers necessary. These are installed first and cannot be skipped by default.</p>
+
+<h3>Optional Mods</h3>
+<p>Recommended but not required mods. After essentials complete, you'll be prompted to continue with optionals. You can skip individual optional mods.</p>
+
+<h3>External Mods</h3>
+<p>Mods from sources other than Nexus (Patreon, LoversLab, direct downloads, etc.). These require manual download - the plugin will open the download page for you.</p>
+
+<div class="info">
+Section headers appear as colored rows in the table to help you identify where each section begins.
+</div>
+
+
+<h1 id="premium">Premium Mode Installation</h1>
+<p>If you have Nexus Premium, downloads happen automatically via the API.</p>
+
+<h3>How to Install</h3>
+<ol>
+    <li>Load a collection</li>
+    <li>Click <b>Begin/Resume Install</b></li>
+    <li>The plugin downloads and installs mods one at a time</li>
+    <li>FOMOD installers are handled automatically (if choices are saved)</li>
+    <li>Progress is shown in the status bar</li>
+</ol>
+
+<h3>Download Ahead</h3>
+<p>The plugin can pre-download upcoming mods while the current one installs. Configure this in the Options tab (Download Ahead setting).</p>
+
+<div class="success">
+<b>Tip:</b> For large collections, let it run unattended. The plugin handles everything automatically and resumes where it left off if interrupted.
+</div>
+
+
+<h1 id="free">Free Mode Installation</h1>
+<p>Without Nexus Premium, you need to click download buttons on the Nexus website.</p>
+
+<h3>How to Install</h3>
+<ol>
+    <li>Load a collection</li>
+    <li>Click <b>Open Download Links</b> to open mod pages in your browser</li>
+    <li>Click the download button on each Nexus page</li>
+    <li>MO2 will catch the downloads automatically</li>
+    <li>Once mods are downloaded, click <b>Install Downloaded</b></li>
+</ol>
+
+<h3>Max Tabs Setting</h3>
+<p>Control how many browser tabs open at once with the "Max tabs" spinner. Opening too many can overwhelm your browser.</p>
+
+<div class="warning">
+<b>Note:</b> Free mode is slower but still automates the installation process once archives are downloaded.
+</div>
+
+
+<h1 id="skipping">Skipping Mods</h1>
+<p>Use the Skip checkbox to exclude mods from installation:</p>
+<ul>
+    <li>Skipped mods won't be downloaded or installed</li>
+    <li>Skip status is saved and persists between sessions</li>
+    <li>You can unskip mods later and install them</li>
+</ul>
+
+<h3>When to Skip</h3>
+<ul>
+    <li>You already have a mod installed from another source</li>
+    <li>You don't want a particular optional mod</li>
+    <li>A mod conflicts with something else you're using</li>
+    <li>You want to install a different version manually</li>
+</ul>
+
+
+<h1 id="buttons">Action Buttons</h1>
+<table>
+    <tr><th>Button</th><th>Mode</th><th>Description</th></tr>
+    <tr><td><b>Begin/Resume Install</b></td><td>Premium</td><td>Start or continue automatic download and installation</td></tr>
+    <tr><td><b>Open Download Links</b></td><td>Free</td><td>Open Nexus download pages in browser</td></tr>
+    <tr><td><b>Install Downloaded</b></td><td>Free</td><td>Install all mods that have been downloaded</td></tr>
+    <tr><td><b>Install Bundled Files</b></td><td>Both</td><td>Extract and install bundle archives (patches, tools)</td></tr>
+    <tr><td><b>Open External Links</b></td><td>Both</td><td>Open download pages for external (non-Nexus) mods</td></tr>
+    <tr><td><b>Cancel All</b></td><td>Both</td><td>Stop all downloads and installations</td></tr>
+</table>
+
+
+<h1 id="context-menu">Right-Click Context Menu</h1>
+<p>Right-click selected mods for additional actions:</p>
+
+<h3>Download Actions</h3>
+<ul>
+    <li><b>Download Selected</b> - Download only selected mods (Premium)</li>
+    <li><b>Open Download Links</b> - Open Nexus pages for selected mods (Free)</li>
+    <li><b>Retry Failed Downloads</b> - Retry mods that failed to download</li>
+    <li><b>Rescan / Fix Stuck</b> - Check if a stuck download actually completed</li>
+</ul>
+
+<h3>Install Actions</h3>
+<ul>
+    <li><b>Install Selected</b> - Install selected downloaded mods</li>
+</ul>
+
+<h3>Navigation</h3>
+<ul>
+    <li><b>Open Mod Pages</b> - Open the Nexus mod page (not download page)</li>
+    <li><b>Copy Links</b> - Copy download URLs to clipboard</li>
+</ul>
+
+<h3>Skip Management</h3>
+<ul>
+    <li><b>Toggle Skip</b> - Flip skip status for selected mods</li>
+    <li><b>Remove 'Skip' From All</b> - Unskip all mods in the collection</li>
+</ul>
+
+
+<h1 id="row-actions">Row Actions</h1>
+<p>Each row has action buttons in the rightmost column:</p>
+
+<h3>Open Button</h3>
+<p>Opens the mod's Nexus page in your browser. Useful for reading descriptions, checking requirements, or reporting issues.</p>
+
+<h3>Install Button</h3>
+<p>Appears when the mod's archive is downloaded. Click to install that specific mod immediately.</p>
+
+
+<h1 id="filtering">Search & Filter</h1>
+
+<h3>Search Box</h3>
+<p>Type to filter mods by name. The filter applies instantly as you type. Clear the search to show all mods again.</p>
+
+<h3>Status Filter Dropdown</h3>
+<ul>
+    <li><b>All</b> - Show all mods</li>
+    <li><b>Pending</b> - Mods waiting to be processed</li>
+    <li><b>Downloading</b> - Currently downloading</li>
+    <li><b>Downloaded</b> - Ready to install</li>
+    <li><b>Installed</b> - Successfully installed</li>
+    <li><b>Failed/Stuck</b> - Problem mods needing attention</li>
+    <li><b>Skipped</b> - Mods you've chosen to skip</li>
+</ul>
+
+<div class="info">
+Use filters to focus on specific mods, like finding all failed downloads or checking what's left to install.
+</div>
+
+
+<h1 id="external">External Mods</h1>
+<p>External mods come from sources other than Nexus Mods:</p>
+<ul>
+    <li>Patreon-exclusive mods</li>
+    <li>LoversLab mods</li>
+    <li>Direct download links</li>
+    <li>Other mod hosting sites</li>
+</ul>
+
+<h3>How to Handle External Mods</h3>
+<ol>
+    <li>Click <b>Open External Links</b> to open their download pages</li>
+    <li>Download the files manually from each site</li>
+    <li>Place the archives in MO2's downloads folder</li>
+    <li>The plugin will detect them and mark them as downloaded</li>
+    <li>Continue with installation as normal</li>
+</ol>
+
+<div class="warning">
+<b>Note:</b> External mods may require accounts on other sites or may be behind paywalls. The collection author should provide instructions.
+</div>
+
+
+<h1 id="bundles">Bundle Files</h1>
+<p>Some collections include bundle archives containing:</p>
+<ul>
+    <li>Patches for mod compatibility</li>
+    <li>Configuration files (INI tweaks, MCM settings)</li>
+    <li>Custom assets the author created</li>
+    <li>Tools or utilities</li>
+</ul>
+
+<h3>Bundle Panel Interface</h3>
+<p>After all regular mods are processed, a bundle panel appears on the left side showing a categorized preview of bundle contents:</p>
+<ul>
+    <li><b>Plugins</b> - Plugin files (.esp, .esm, .esl)</li>
+    <li><b>Archives</b> - BSA/BA2 archives</li>
+    <li><b>INI Files</b> - Configuration files for your mod folder</li>
+    <li><b>Patches</b> - Compatibility patches (shown with installation status)</li>
+    <li><b>INI Tweaks</b> - Changes to game INI files</li>
+    <li><b>Other Files</b> - Any other bundled content</li>
+</ul>
+
+<h3>Content Status Indicators</h3>
+<table>
+    <tr><th>Indicator</th><th>Meaning</th></tr>
+    <tr><td style="color:#4CAF50;">&#10003; Green</td><td>Item will be installed</td></tr>
+    <tr><td style="color:#f44336;">&#10007; Red</td><td>Item will be skipped (e.g., patch for uninstalled mod)</td></tr>
+    <tr><td style="color:#888888;">Gray header</td><td>Category label (Plugins, Patches, etc.)</td></tr>
+    <tr><td style="color:#FF9800;">&#9888; Orange</td><td>Files that will be replaced (reinstall scenario)</td></tr>
+</table>
+
+<h3>INI Tweaks Preview</h3>
+<p>If the bundle includes INI tweaks, click <b>Preview INI Changes...</b> to see exactly what will be modified in your game INI files. The preview shows:</p>
+<ul>
+    <li>Target INI file (e.g., Skyrim.ini, SkyrimPrefs.ini)</li>
+    <li>Section and setting names</li>
+    <li>Current values vs new values</li>
+    <li>Changed values are highlighted</li>
+</ul>
+
+<h3>Installing Bundles</h3>
+<ol>
+    <li>Review the content preview in the panel</li>
+    <li>Click <b>Install Bundle</b> to install all applicable content</li>
+    <li>Or click <b>Skip Bundle</b> to complete without bundle files</li>
+</ol>
+
+<div class="info">
+Patches for mods you haven't installed are automatically skipped. This prevents orphaned patches that would cause errors.
+</div>
+
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h3>Download Stuck at 0 KB</h3>
+<ol>
+    <li>Go to MO2's Downloads tab (right panel)</li>
+    <li>Find the stuck download</li>
+    <li>Right-click > Pause, then Resume</li>
+    <li>Return to Collections Manager and click Begin/Resume</li>
+</ol>
+
+<h3>Download Won't Start</h3>
+<ul>
+    <li>Check your API key in the Options tab</li>
+    <li>Verify you're logged into Nexus in your browser</li>
+    <li>Check if Nexus is having server issues</li>
+    <li>Try the download manually from the mod page</li>
+</ul>
+
+<h3>Mod Shows Wrong Status</h3>
+<ul>
+    <li>Use Tools > Maintenance > Rebuild Index</li>
+    <li>Right-click the mod > Rescan / Fix Stuck</li>
+    <li>Check if the archive exists in MO2's downloads folder</li>
+</ul>
+
+<h3>FOMOD Choices Not Applied</h3>
+<ul>
+    <li>The mod may not have saved choices in the collection</li>
+    <li>Check the FOMODs tab to see saved choices</li>
+    <li>Install manually once to capture your preferred choices</li>
+</ul>
+
+
+<h1 id="best-practices">Best Practices</h1>
+
+<div class="success">
+<ul>
+    <li><b>Let it run</b> - Don't interrupt the installation process unnecessarily</li>
+    <li><b>Check logs</b> - MO2's log panel shows what's happening</li>
+    <li><b>Handle failures gracefully</b> - Use Retry Failed for problem downloads</li>
+    <li><b>Skip wisely</b> - Only skip mods you're sure you don't need</li>
+    <li><b>Install bundles last</b> - Wait until main mods are done</li>
+    <li><b>Run maintenance</b> - If status seems wrong, rebuild the index</li>
+    <li><b>Save your progress</b> - The plugin remembers what's installed, so you can resume anytime</li>
+</ul>
+</div>
+
+<h3>For Large Collections (500+ mods)</h3>
+<ul>
+    <li>Close unnecessary programs to free memory</li>
+    <li>Expect the process to take several hours</li>
+    <li>You can close and reopen MO2 - progress is saved</li>
+    <li>Consider doing it in stages using Skip to break into batches</li>
+</ul>
+
+</div>
+</body>
+</html>

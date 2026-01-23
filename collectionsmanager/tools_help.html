@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 180px;
+    min-width: 180px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 180px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Overview</h3>
+    <a href="#purpose">Purpose</a>
+    <a href="#selecting">Selecting Tools</a>
+
+    <h3>Maintenance</h3>
+    <a href="#maintenance">Overview</a>
+    <a href="#rebuild-index">Rebuild Index</a>
+    <a href="#fix-markers">Fix Markers</a>
+    <a href="#fix-names">Fix Names</a>
+    <a href="#cleanup-orphans">Cleanup Orphans</a>
+
+    <h3>Duplicate Finder</h3>
+    <a href="#duplicates">Overview</a>
+    <a href="#scan-modes">Scan Modes</a>
+    <a href="#removing">Removing Duplicates</a>
+    <a href="#orphans">Orphan Matching</a>
+
+    <h3>Missing Masters</h3>
+    <a href="#masters">Overview</a>
+    <a href="#scanning-masters">Scanning</a>
+    <a href="#resolving">Resolving Issues</a>
+
+    <h3>Root Install</h3>
+    <a href="#root">Overview</a>
+    <a href="#game-folder">Game Folder Files</a>
+    <a href="#root-banner">Root Install Banner</a>
+    <a href="#install-rules">Install Rules</a>
+
+    <h3>Tips</h3>
+    <a href="#when-to-use">When to Use</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="purpose">Purpose of the Tools Tab</h1>
+<p>The Tools tab provides a collection of utility tools for maintaining and troubleshooting your mod setup. These tools help you:</p>
+<ul>
+    <li>Keep your collections index in sync with actual files</li>
+    <li>Find and remove duplicate mod installations</li>
+    <li>Identify missing plugin dependencies</li>
+    <li>Manage files that need to be installed to the game folder</li>
+</ul>
+
+<div class="info">
+<b>Tip:</b> Select a tool from the left panel to view its interface on the right. Each tool operates independently.
+</div>
+
+
+<h1 id="selecting">Selecting Tools</h1>
+<p>The Tools tab has a two-panel layout:</p>
+<ul>
+    <li><b>Left panel</b> - List of available tools (click to select)</li>
+    <li><b>Right panel</b> - The selected tool's interface</li>
+</ul>
+
+<p>Available tools:</p>
+<table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td><b>Maintenance</b></td><td>Rebuild index, fix markers, and fix mod names</td></tr>
+    <tr><td><b>Duplicate Finder</b></td><td>Find and remove duplicate mod installations</td></tr>
+    <tr><td><b>Missing Masters</b></td><td>Scan plugins for missing master dependencies</td></tr>
+    <tr><td><b>Root Install</b></td><td>Manage files deployed to the game folder</td></tr>
+</table>
+
+
+<h1 id="maintenance">Maintenance Tool</h1>
+<p>The Maintenance tool helps fix issues with the Collections Manager's internal tracking. Use it when:</p>
+<ul>
+    <li>Mod status detection seems incorrect</li>
+    <li>Mods show <code>mod_id=0</code> in their markers</li>
+    <li>You've manually deleted files outside of MO2</li>
+    <li>Recovering from a crash or data corruption</li>
+</ul>
+
+<h2 id="rebuild-index">Rebuild Index</h2>
+<p>Scans your downloads and mods folders to rebuild the collections index from scratch.</p>
+<h3>What it does:</h3>
+<ul>
+    <li>Scans all <code>.meta</code> files in the downloads folder</li>
+    <li>Scans all mod folders for marker files</li>
+    <li>Rebuilds the downloads and installed sections</li>
+    <li>Preserves skipped entries</li>
+    <li>Removes references to files that no longer exist</li>
+</ul>
+
+<div class="warning">
+<b>Note:</b> This operation can take time on large mod lists. A progress dialog will show the status.
+</div>
+
+<h2 id="fix-markers">Fix Markers</h2>
+<p>Repairs and updates marker files that track collection membership.</p>
+<h3>What it does:</h3>
+<ul>
+    <li>Migrates old marker formats to <code>.mohidden</code> format</li>
+    <li>Fixes markers with missing or incorrect mod IDs</li>
+    <li>Creates markers for untracked mods (requires a loaded collection)</li>
+</ul>
+
+<h2 id="fix-names">Fix Names</h2>
+<p>Renames mod folders to match the collection's naming convention.</p>
+<h3>What it does:</h3>
+<ul>
+    <li>Scans mods with markers for name mismatches</li>
+    <li>Uses the marker's <code>logical_filename</code> field as the authoritative name</li>
+    <li>Renames folders to match (up to 100 characters)</li>
+</ul>
+
+<div class="info">
+<b>Naming Priority:</b> logical_filename &gt; mod_page_name &gt; file_name. Generic names like "Main File" fall back to the mod page name.
+</div>
+
+<h2 id="cleanup-orphans">Cleanup Orphans</h2>
+<p>Removes index entries for files that no longer exist. This is a fast operation that runs automatically when collections load.</p>
+<h3>What it does:</h3>
+<ul>
+    <li>Checks if referenced <code>.meta</code> files still exist</li>
+    <li>Checks if referenced mod folders still exist</li>
+    <li>Removes entries for missing files</li>
+</ul>
+
+<h3>Run All</h3>
+<p>The <b>Run All</b> button executes maintenance operations in the correct order: Fix Markers, Rebuild Index, then Fix Names. This order matters because the index rebuild reads from marker files, so markers must be fixed first.</p>
+
+
+<h1 id="duplicates">Duplicate Finder Tool</h1>
+<p>Scans your installed mods to find duplicates and orphans. Includes smart selection to help choose which copies to keep.</p>
+
+<h2 id="scan-modes">Scan Modes</h2>
+<table>
+    <tr><th>Mode</th><th>Description</th></tr>
+    <tr><td><b>Same Mod ID</b></td><td>Different versions of the same Nexus mod (default)</td></tr>
+    <tr><td><b>Same File ID</b></td><td>Exact duplicates - same file installed multiple times</td></tr>
+    <tr><td><b>Same Name</b></td><td>Match by normalized name - catches renamed duplicates</td></tr>
+    <tr><td><b>Orphans</b></td><td>Mods not in any loaded collection</td></tr>
+</table>
+
+<h3>Smart Keeper Selection</h3>
+<p>When duplicates are found, the tool automatically suggests which copy to keep based on:</p>
+<ol>
+    <li>Whether it belongs to the currently loaded collection</li>
+    <li>Mod type: Essential &gt; Optional &gt; External</li>
+    <li>Folder size (larger = more complete)</li>
+    <li>Installation date (most recent)</li>
+</ol>
+
+<h2 id="removing">Removing Duplicates</h2>
+<ol>
+    <li>Select a scan mode from the dropdown</li>
+    <li>Click <b>Scan</b> to find duplicates</li>
+    <li>Review the results - duplicates are grouped together</li>
+    <li>Select which copies to remove (suggested keepers are pre-selected)</li>
+    <li>Click <b>Remove Selected</b> to delete the duplicates</li>
+</ol>
+
+<div class="warning">
+<b>Caution:</b> Removing mods is permanent. Make sure you're removing the correct copies before confirming.
+</div>
+
+<h2 id="orphans">Orphan Matching</h2>
+<p>In Orphans mode, you can match untracked mods against a loaded collection:</p>
+<ol>
+    <li>Load a collection in Collections Manager</li>
+    <li>Switch to Orphans mode and scan</li>
+    <li>Select orphan mods that belong to the collection</li>
+    <li>Click <b>Match Against Collection</b></li>
+</ol>
+<p>This updates or creates marker files to include the collection info, helping Collections Manager track the mods correctly.</p>
+
+
+<h1 id="masters">Missing Masters Tool</h1>
+<p>Scans your active plugins for missing master dependencies. A missing master means a plugin requires another plugin that isn't present or enabled.</p>
+
+<div class="warning">
+<b>Experimental:</b> This tool is marked experimental. Click "I Understand" to access it.
+</div>
+
+<h2 id="scanning-masters">Scanning for Missing Masters</h2>
+<ol>
+    <li>Click <b>Scan</b> to analyze active plugins</li>
+    <li>The table shows plugins with missing dependencies</li>
+    <li>Each row shows the plugin name and its missing master(s)</li>
+</ol>
+
+<h2 id="resolving">Resolving Missing Masters</h2>
+<p>For each missing master, you can:</p>
+<ul>
+    <li><b>Search</b> - Opens a Nexus Mods search for the missing plugin</li>
+    <li><b>Delete</b> - Removes plugins that depend on unavailable masters</li>
+</ul>
+
+<div class="info">
+<b>Common causes:</b> Missing masters often occur when a patch mod is installed without its required base mod, or when a mod is disabled but its patches remain active.
+</div>
+
+
+<h1 id="root">Root Install Tool</h1>
+<p>Manages files that must be deployed directly to the game folder rather than through MO2's virtual file system.</p>
+
+<h2 id="game-folder">Game Folder Files</h2>
+<p>Some mods include files that need to be in the actual game directory:</p>
+<ul>
+    <li>Script extender files (SKSE, F4SE, etc.)</li>
+    <li>ENB/ReShade presets</li>
+    <li>Root-level configuration files</li>
+    <li>DLL plugins that load before MO2's VFS</li>
+</ul>
+
+<h2 id="root-banner">Root Install Banner</h2>
+<p>When root-install mods are detected, an orange banner appears at the top of the plugin:</p>
+<ul>
+    <li>Shows the count of mods requiring manual installation</li>
+    <li>Click <b>Install to Game Folder</b> to open the Root Install panel</li>
+    <li>The banner updates as you mark mods as done</li>
+    <li>The banner disappears when all mods are handled</li>
+</ul>
+
+<h2 id="install-rules">Install Rules</h2>
+<p>The Root Install tool provides two tabs:</p>
+
+<h3>Install to Game Folder</h3>
+<p>Shows mods that have files requiring game folder installation:</p>
+<ul>
+    <li>Lists detected root-level files for each mod</li>
+    <li>Shows file preview with expandable file list</li>
+    <li>Provides <b>Open Mod Folder</b> button to access the files</li>
+    <li><b>Done</b> button marks the mod as manually handled</li>
+</ul>
+
+<h3>Marking Mods as Done</h3>
+<p>Click the <b>Done</b> button on each mod after you've copied its files to the game folder:</p>
+<ul>
+    <li>The mod is marked as manually installed</li>
+    <li>It won't appear in the root install list again for this collection</li>
+    <li>The banner count decreases accordingly</li>
+    <li>Status is saved and persists between sessions</li>
+</ul>
+
+<h3>Install Rules</h3>
+<p>Manages rules for automatic root file handling:</p>
+<ul>
+    <li>Define patterns for files that should go to game folder</li>
+    <li>Set up "Force root install" rules for specific mods</li>
+    <li>Set up "Never root install" rules to exclude mods from detection</li>
+    <li>Import/export rules to share with others</li>
+</ul>
+
+
+<h1 id="when-to-use">When to Use Each Tool</h1>
+
+<div class="success">
+<h3>Use Maintenance when:</h3>
+<ul>
+    <li>Mods show wrong status (installed vs not installed)</li>
+    <li>You've manually moved or deleted files</li>
+    <li>After recovering from MO2 or system issues</li>
+    <li>Marker files seem corrupted or outdated</li>
+</ul>
+
+<h3>Use Duplicate Finder when:</h3>
+<ul>
+    <li>Your mod list has grown and might have duplicates</li>
+    <li>You've installed multiple versions of the same mod</li>
+    <li>Switching between collections with overlapping mods</li>
+    <li>Cleaning up after trying different mod versions</li>
+</ul>
+
+<h3>Use Missing Masters when:</h3>
+<ul>
+    <li>Game crashes on startup with plugin errors</li>
+    <li>MO2 shows plugin warnings</li>
+    <li>After removing mods that others depend on</li>
+    <li>Troubleshooting load order issues</li>
+</ul>
+
+<h3>Use Root Install when:</h3>
+<ul>
+    <li>Installing script extenders or ENB</li>
+    <li>Mods require files in game folder</li>
+    <li>Setting up new modding environment</li>
+    <li>Managing game folder file deployments</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>

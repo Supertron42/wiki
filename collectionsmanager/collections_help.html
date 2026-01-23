@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 180px;
+    min-width: 180px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 180px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Overview</h3>
+    <a href="#purpose">Purpose</a>
+    <a href="#collection-cards">Collection Cards</a>
+
+    <h3>Card Elements</h3>
+    <a href="#thumbnail">Thumbnail & Info</a>
+    <a href="#progress">Progress Tracking</a>
+    <a href="#badges">Status Badges</a>
+
+    <h3>Actions</h3>
+    <a href="#load">Loading Collections</a>
+    <a href="#view-copy">View & Copy URL</a>
+    <a href="#uninstall">Uninstalling</a>
+    <a href="#delete">Deleting</a>
+    <a href="#reorder">Reordering</a>
+
+    <h3>Header Buttons</h3>
+    <a href="#program-install">Program Installation</a>
+    <a href="#check-updates">Check for Updates</a>
+    <a href="#refresh">Refresh</a>
+
+    <h3>Tips</h3>
+    <a href="#best-practices">Best Practices</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="purpose">Purpose of the Collections Tab</h1>
+<p>The Collections tab shows all your saved collections and provides quick access to manage them. From here you can:</p>
+<ul>
+    <li>Load a previously saved collection to continue installation</li>
+    <li>View collection progress and completion status</li>
+    <li>Access the collection on Nexus Mods</li>
+    <li>Uninstall or delete collections</li>
+    <li>Organize collections by reordering them</li>
+    <li>Check for collection updates</li>
+</ul>
+
+<div class="info">
+<b>Tip:</b> Collections are automatically saved when you load them from a Nexus URL. They persist between MO2 sessions and can be reloaded at any time.
+</div>
+
+
+<h1 id="collection-cards">Collection Cards</h1>
+<p>Each saved collection is displayed as a card showing key information at a glance:</p>
+<ul>
+    <li><b>Thumbnail</b> - The collection's image from Nexus Mods</li>
+    <li><b>Name</b> - The collection title</li>
+    <li><b>Author</b> - Who created the collection</li>
+    <li><b>Progress</b> - How many mods are installed vs total</li>
+    <li><b>Revision</b> - The collection version number</li>
+    <li><b>Action buttons</b> - Load, View, Copy URL, Uninstall, Delete</li>
+</ul>
+
+
+<h1 id="thumbnail">Thumbnail & Info</h1>
+<p>The left side of each card shows:</p>
+<ul>
+    <li><b>Reorder arrows</b> - Move collection up or down in the list</li>
+    <li><b>Thumbnail image</b> - Loaded from Nexus Mods (9:16 aspect ratio)</li>
+</ul>
+<p>The middle section displays:</p>
+<ul>
+    <li><b>Collection name</b> - Bold title text</li>
+    <li><b>Author</b> - "by AuthorName" in muted text</li>
+    <li><b>View/Copy buttons</b> - Quick access to Nexus URL</li>
+    <li><b>Progress stats</b> - Installed count, skipped count, revision</li>
+</ul>
+
+
+<h1 id="progress">Progress Tracking</h1>
+<p>The progress line shows your installation status:</p>
+<pre><code>Progress 45/120 (Installed 42, Skipped 3) | Rev 15</code></pre>
+<ul>
+    <li><b>Progress X/Y</b> - Done count vs total mods in collection</li>
+    <li><b>Installed</b> - Number of mods successfully installed</li>
+    <li><b>Skipped</b> - Mods you chose to skip (counts as "done")</li>
+    <li><b>Rev</b> - Collection revision number from Nexus</li>
+</ul>
+
+<div class="info">
+<b>Done = Installed + Skipped.</b> A collection is "complete" when Done equals Total, regardless of how many were skipped.
+</div>
+
+
+<h1 id="badges">Status Badges</h1>
+<table>
+    <tr><th>Badge</th><th>Meaning</th></tr>
+    <tr><td style="color:#4ec9b0; font-weight:bold;">COMPLETE</td><td>All mods in the collection are installed or skipped</td></tr>
+    <tr><td style="background:#569cd6; color:white; padding:2px 6px; border-radius:3px; font-size:11px;">LOCAL</td><td>Collection was imported from a local mod list file, not Nexus</td></tr>
+</table>
+
+<h3>LOCAL Collections</h3>
+<p>Collections marked LOCAL were imported from a local file (like a mod list export). These have limited functionality:</p>
+<ul>
+    <li>No Nexus URL available</li>
+    <li>View and Copy URL buttons are disabled</li>
+    <li>Cannot check for updates</li>
+</ul>
+
+
+<h1 id="load">Loading Collections</h1>
+<p>Click the <b>Load</b> button on any collection card to load it:</p>
+<ol>
+    <li>The Mods tab populates with the collection's mod list</li>
+    <li>Status of each mod is detected (installed, downloaded, pending)</li>
+    <li>You can continue downloading and installing from where you left off</li>
+</ol>
+
+<div class="success">
+<b>Resume anytime:</b> Your progress is saved automatically. Load a collection days or weeks later and pick up where you stopped.
+</div>
+
+
+<h1 id="view-copy">View & Copy URL</h1>
+<table>
+    <tr><th>Button</th><th>Action</th></tr>
+    <tr><td><b>View</b></td><td>Opens the collection page on Nexus Mods in your browser</td></tr>
+    <tr><td><b>Copy URL</b></td><td>Copies the collection URL to your clipboard for sharing</td></tr>
+</table>
+<p>These buttons are disabled for LOCAL collections that don't have a Nexus URL.</p>
+
+
+<h1 id="uninstall">Uninstalling Collections</h1>
+<p>Click <b>Uninstall</b> to remove installed mods but keep downloads:</p>
+<ul>
+    <li>All mods from this collection are removed from your MO2 mods folder</li>
+    <li>Downloaded archives are kept in your downloads folder</li>
+    <li>The collection remains in your saved list</li>
+    <li>You can reinstall later without re-downloading</li>
+</ul>
+
+<div class="warning">
+<b>Note:</b> This removes the mod folders. Any manual changes you made to installed mods will be lost.
+</div>
+
+
+<h1 id="delete">Deleting Collections</h1>
+<p>Click <b>Delete</b> (red text) to completely remove a collection:</p>
+<ul>
+    <li>All mods from this collection are uninstalled</li>
+    <li>Downloaded archives are deleted</li>
+    <li>The collection is removed from your saved list</li>
+    <li>This action cannot be undone</li>
+</ul>
+
+<div class="warning">
+<b>Caution:</b> Delete permanently removes both mods and downloads. Use Uninstall if you want to keep the downloaded archives.
+</div>
+
+
+<h1 id="reorder">Reordering Collections</h1>
+<p>Use the arrow buttons on the left side of each card to reorder your collections:</p>
+<ul>
+    <li><b>Up arrow</b> - Move collection up in the list</li>
+    <li><b>Down arrow</b> - Move collection down in the list</li>
+</ul>
+<p>The order is saved automatically and persists between sessions.</p>
+
+
+<h1 id="program-install">Program Installation</h1>
+<p>An orange banner appears when mods requiring manual game folder installation are detected. Click <b>Install to Game Folder</b> to manage them:</p>
+<ul>
+    <li>Script extenders (SKSE, F4SE, OBSE, etc.)</li>
+    <li>ENB and ReShade files</li>
+    <li>Engine-level fixes and patches</li>
+    <li>Any files that can't work through MO2's virtual file system</li>
+</ul>
+
+<h3>Two Tabs</h3>
+<ul>
+    <li><b>Install to Game Folder</b> - View detected root mods, open their folders, and mark them as done after copying files</li>
+    <li><b>Install Rules</b> - Configure which mods should always or never be flagged for root installation</li>
+</ul>
+
+<h3>Tracking Progress</h3>
+<p>After manually installing files, click the <b>Done</b> button on each mod. The banner count updates and hides when all mods are handled.</p>
+
+
+<h1 id="check-updates">Check for Updates</h1>
+<p>Click <b>Check for Updates</b> to see if any of your saved collections have new revisions on Nexus Mods:</p>
+<ol>
+    <li>Each collection's current revision is compared to Nexus</li>
+    <li>Collections with updates available are highlighted</li>
+    <li>You can choose to update to get new mod additions or changes</li>
+</ol>
+
+<div class="info">
+<b>Tip:</b> Collection authors may release updates to add new mods, update versions, fix issues, or improve compatibility.
+</div>
+
+
+<h1 id="refresh">Refresh</h1>
+<p>Click <b>Refresh</b> to reload the collections list:</p>
+<ul>
+    <li>Re-reads saved collection data</li>
+    <li>Updates progress counts</li>
+    <li>Reflects any changes made in other tabs</li>
+</ul>
+
+
+<h1 id="best-practices">Best Practices</h1>
+
+<div class="success">
+<ul>
+    <li><b>One collection at a time</b> - Focus on completing one collection before starting another</li>
+    <li><b>Check progress regularly</b> - The progress indicator shows how close you are to completion</li>
+    <li><b>Use Uninstall for testing</b> - Uninstall keeps downloads so you can quickly reinstall</li>
+    <li><b>Organize by priority</b> - Reorder collections to put your most-used ones at the top</li>
+    <li><b>Check for updates</b> - Collection authors often release improvements</li>
+    <li><b>Back up before delete</b> - Once deleted, you'll need to re-download everything</li>
+</ul>
+</div>
+
+<h3>When to Load vs Start Fresh</h3>
+<ul>
+    <li><b>Load existing</b> - Continue from where you left off, keep your progress</li>
+    <li><b>Uninstall + Load</b> - Start fresh but keep downloads</li>
+    <li><b>Delete + Reload URL</b> - Complete fresh start, re-download everything</li>
+</ul>
+
+<h3>Managing Multiple Collections</h3>
+<p>If you have mods from multiple collections:</p>
+<ul>
+    <li>Collections can share mods - duplicates are detected automatically</li>
+    <li>Use the Duplicate Finder tool to clean up overlapping mods</li>
+    <li>Load order matters - check the Sort tool after switching collections</li>
+</ul>
+
+</div>
+</body>
+</html>

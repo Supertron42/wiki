@@ -206,6 +206,21 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Fixed maintenance operation order.</b> "Run All" and silent maintenance now run in correct order: Fix Markers first, then Rebuild Index. The index reads from markers, so markers must be fixed before rebuilding.</li>
     </ul>
 
+    <h3>Revision Update System</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Update detection on load.</b> When loading a saved collection, the plugin now checks if a newer revision exists and prompts you to update.</li>
+        <li><span class="tag tag-new">NEW</span> <b>One-click update button on collection cards.</b> After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 → 7") and an "Update" button.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Revision diff/changelog viewer.</b> Click "Show Changes..." in the update prompt to see what mods were added, removed, or updated between revisions.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Smart update installation.</b> When updating a collection you've already partially installed, the plugin analyzes your installed mods and offers intelligent options:
+            <ul style="margin-top: 5px;">
+                <li>Keep unchanged mods (only update markers)</li>
+                <li>Reinstall mods with new file versions</li>
+                <li>Download new mods added to the collection</li>
+                <li>Optionally uninstall mods removed from the collection</li>
+            </ul>
+        </li>
+    </ul>
+
     <h3>Technical Details</h3>
     <ul>
         <li><span class="tag tag-new">NEW</span> <code>build_marker_data()</code> - Single source of truth for marker structure with all 20+ fields</li>
@@ -240,6 +255,13 @@ li {
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Fix Markers now migrates legacy root_install_marker.json files.[/b] Old root-install markers are automatically upgraded to the standard format with all fields.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed maintenance operation order.[/b] "Run All" and silent maintenance now run in correct order: Fix Markers first, then Rebuild Index. The index reads from markers, so markers must be fixed before rebuilding.
 [/list]
+[size=3][b][color=#9cdcfe]Revision Update System[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Update detection on load.[/b] When loading a saved collection, the plugin now checks if a newer revision exists and prompts you to update.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]One-click update button on collection cards.[/b] After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 → 7") and an "Update" button.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Revision diff/changelog viewer.[/b] Click "Show Changes..." in the update prompt to see what mods were added, removed, or updated between revisions.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Smart update installation.[/b] When updating a collection you've already partially installed, the plugin analyzes your installed mods and offers options to keep unchanged mods, reinstall updated mods, download new mods, or uninstall removed mods.
+[/list]
 [size=3][b][color=#9cdcfe]Technical Details[/color][/b][/size]
 [list]
 [*][color=#2E7D32][b]NEW[/b][/color] [font=Courier New]build_marker_data()[/font] - Single source of truth for marker structure with all 20+ fields
@@ -263,6 +285,13 @@ li {
 - **Fixed marker filename not updating when file_id changes.** When Fix Markers discovers a file_id, the marker file is now renamed to the correct format.
 - **Fix Markers now migrates legacy root_install_marker.json files.** Old root-install markers are automatically upgraded to the standard format with all fields.
 - **Fixed maintenance operation order.** "Run All" and silent maintenance now run in correct order: Fix Markers first, then Rebuild Index. The index reads from markers, so markers must be fixed before rebuilding.
+
+## Revision Update System
+
+- **Update detection on load.** When loading a saved collection, the plugin now checks if a newer revision exists and prompts you to update.
+- **One-click update button on collection cards.** After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 → 7") and an "Update" button.
+- **Revision diff/changelog viewer.** Click "Show Changes..." in the update prompt to see what mods were added, removed, or updated between revisions.
+- **Smart update installation.** When updating a collection you've already partially installed, the plugin analyzes your installed mods and offers options to keep unchanged mods, reinstall updated mods, download new mods, or uninstall removed mods.
 
 ## Technical Details
 

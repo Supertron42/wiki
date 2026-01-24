@@ -84,6 +84,15 @@ h1 {
 .wiki-card a:hover {
     background: #c47d2e;
 }
+
+@keyframes kofi-glow {
+    0% { filter: drop-shadow(0 0 0px #ff5e5b); }
+    50% { filter: drop-shadow(0 0 12px #ff5e5b); }
+    100% { filter: drop-shadow(0 0 0px #ff5e5b); }
+}
+.kofi-btn:hover {
+    animation: kofi-glow 0.6s ease-out;
+}
 </style>
 </head>
 <body>
@@ -108,7 +117,7 @@ h1 {
     </div>
 
     <div style="margin-top: 40px; text-align: center;">
-        <a href="https://ko-fi.com/supertron" target="_blank"><img src="collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+        <a href="https://ko-fi.com/supertron" target="_blank" class="kofi-btn"><img src="collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
     </div>
 </div>
 

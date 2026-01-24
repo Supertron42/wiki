@@ -193,8 +193,12 @@ h1 {
     const ship = { x: 40, width: 24, height: 16 };
 
     canvas.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        shipY = e.clientY - rect.top;
+        if (document.pointerLockElement === canvas) {
+            shipY += e.movementY;
+        } else {
+            const rect = canvas.getBoundingClientRect();
+            shipY = e.clientY - rect.top;
+        }
         shipY = Math.max(ship.height/2, Math.min(canvas.height - ship.height/2, shipY));
     });
 
@@ -202,12 +206,14 @@ h1 {
         initAudio();
         if (gameState === 'waiting') {
             gameState = 'playing';
+            canvas.requestPointerLock();
             spawnTimer = setInterval(spawnRock, 1000);
             return;
         }
         if (gameState === 'gameOver') {
             if (restartCountdown > 0) return;
             gameState = 'playing';
+            canvas.requestPointerLock();
             score = 0;
             baseSpeed = 2;
             rocks = [];
@@ -366,6 +372,7 @@ h1 {
                 if (rocks[i] && r.x - r.radius < ship.x + ship.width && r.x + r.radius > ship.x) {
                     if (r.y + r.radius > shipY - ship.height/2 && r.y - r.radius < shipY + ship.height/2) {
                         gameState = 'gameOver';
+                        document.exitPointerLock();
                         clearInterval(spawnTimer);
                         lastScore = score;
                         highScoreDisplay.textContent = 'PREVIOUS: ' + lastScore;

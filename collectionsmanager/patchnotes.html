@@ -308,8 +308,11 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Cancel Preview now properly closes the progress dialog.</b> Previously, canceling could leave the dialog open or in a stuck state.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Delete User Rules respects collection ordering state.</b> Deleting user rules no longer forces collection ordering back on if the user had it disabled.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Separators excluded from load order rules.</b> Dragging separators no longer creates spurious load-after relationships that could affect mod ordering.</li>
-        <li><span class="tag tag-fix">FIX</span> <b>User load order rules persist across Preview.</b> Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods. The "ALTERED" tag also correctly shows on affected mods.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>User load order rules persist across Preview.</b> Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods.</li>
+        <li><span class="tag tag-new">NEW</span> <b>User rules and settings persist through MO2 restarts.</b> Your custom load order rules and Sort Tool settings (including "Apply strict user rules") are now saved and restored when you restart MO2.</li>
+        <li><span class="tag tag-new">NEW</span> <b>View User Rules dialog.</b> New "View User Rules..." button in Settings lets you see all your custom rules in a table and delete individual rules instead of clearing everything.</li>
         <li><span class="tag tag-new">NEW</span> <b>New "Apply strict user rules" setting.</b> When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution for precise positioning.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Renamed "ALTERED" tag to "User Rule".</b> Mods with custom load order rules now show a more descriptive "User Rule" tag.</li>
     </ul>
 
     <div class="btn-row">
@@ -362,7 +365,10 @@ li {
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Delete User Rules respects collection ordering state.[/b] Deleting user rules no longer forces collection ordering back on if the user had it disabled.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Separators excluded from load order rules.[/b] Dragging separators no longer creates spurious load-after relationships.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]User load order rules persist across Preview.[/b] Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]User rules and settings persist through MO2 restarts.[/b] Your custom load order rules and Sort Tool settings are now saved and restored when you restart MO2.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]View User Rules dialog.[/b] New "View User Rules..." button in Settings lets you see all your custom rules in a table and delete individual rules.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]New "Apply strict user rules" setting.[/b] When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Renamed "ALTERED" tag to "User Rule".[/b] Mods with custom load order rules now show a more descriptive "User Rule" tag.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyBBCode('bbcode244')">Copy to Clipboard</button>
     </div>
@@ -413,7 +419,10 @@ li {
 - **Delete User Rules respects collection ordering state.** Deleting user rules no longer forces collection ordering back on if the user had it disabled.
 - **Separators excluded from load order rules.** Dragging separators no longer creates spurious load-after relationships.
 - **User load order rules persist across Preview.** Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods.
-- **New "Apply strict user rules" setting.** When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.</textarea>
+- **User rules and settings persist through MO2 restarts.** Your custom load order rules and Sort Tool settings are now saved and restored when you restart MO2.
+- **View User Rules dialog.** New "View User Rules..." button in Settings lets you see all your custom rules in a table and delete individual rules.
+- **New "Apply strict user rules" setting.** When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.
+- **Renamed "ALTERED" tag to "User Rule".** Mods with custom load order rules now show a more descriptive "User Rule" tag.</textarea>
         <button class="copy-btn" onclick="copyBBCode('markdown244')">Copy to Clipboard</button>
     </div>
 

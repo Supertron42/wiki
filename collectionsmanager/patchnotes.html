@@ -260,7 +260,23 @@ li {
 
     <h2 id="v2.4.4">Version 2.4.4 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
 
-    <p><i>No changes yet.</i></p>
+    <h3>Share Tab</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Redesigned layout with left sidebar.</b> Profile fields (name, version, author) and action buttons are now stacked vertically in a compact sidebar, giving the mod table more horizontal space.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed checkbox toggle inconsistency after sorting.</b> Essential/External/Optional/Bundle checkboxes now work correctly regardless of table sort order. Previously, clicking checkboxes after sorting could modify the wrong mod entry.</li>
+    </ul>
+
+    <h3>Collections Tab</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Temporary collection cards no longer delete mods.</b> Temp collections (created from Share tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.</li>
+    </ul>
+
+    <h3>FOMOD Installer</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed FOMOD choices dialog showing empty selections.</b> When importing a modlist, the FOMOD choices dialog now properly displays choices from wrapped format structures. Empty or whitespace-only choice names now show "(option N)" or "(none)" instead of blank entries.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>INI settings bundled by default.</b> The "Save INI settings to bundle" option is now enabled by default when creating profiles.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Last profile restored on restart.</b> The Share tab now remembers and restores your last selected profile when MO2 restarts.</li>
+    </ul>
 
     <h2 id="v2.4.3">Version 2.4.3 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
 

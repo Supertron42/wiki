@@ -301,6 +301,11 @@ li {
         <li><span class="tag tag-change">CHANGE</span> <b>CMake warnings enabled.</b> Build warnings are now enabled to catch issues early during development.</li>
     </ul>
 
+    <h3>Tools &amp; Data Handling</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Centralized version format handling.</b> Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.</li>
+    </ul>
+
     <h3>Sort Tool</h3>
     <ul>
         <li><span class="tag tag-fix">FIX</span> <b>Multi-row drag now preserves relative order.</b> When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target. Previously, refreshing or reapplying rules could scramble the moved block.</li>
@@ -357,6 +362,10 @@ li {
 [*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Dialog detection prioritizes reliable matches.[/b] Object name and class name matches are preferred, group box title matches come next, and window title matching is now a fallback only.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]CMake warnings enabled.[/b] Build warnings are now enabled to catch issues early during development.
 [/list]
+[size=3][b][color=#9cdcfe]Tools & Data Handling[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Centralized version format handling.[/b] Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
+[/list]
 [size=3][b][color=#9cdcfe]Sort Tool[/color][/b][/size]
 [list]
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Multi-row drag now preserves relative order.[/b] When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target.
@@ -410,6 +419,10 @@ li {
 - **Single-select groups only click once.** Radio button groups now stop after the first successful click, preventing multiple selections when presets list more than one choice for a group.
 - **Dialog detection prioritizes reliable matches.** Object name and class name matches are preferred, group box title matches come next, and window title matching is now a fallback only.
 - **CMake warnings enabled.** Build warnings are now enabled to catch issues early during development.
+
+## Tools & Data Handling
+
+- **Centralized version format handling.** Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
 
 ## Sort Tool
 

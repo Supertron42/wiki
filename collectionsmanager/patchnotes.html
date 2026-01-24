@@ -276,6 +276,17 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Fixed FOMOD choices dialog showing empty selections.</b> When importing a modlist, the FOMOD choices dialog now properly displays choices from wrapped format structures. Empty or whitespace-only choice names now show "(option N)" or "(none)" instead of blank entries.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>INI settings bundled by default.</b> The "Save INI settings to bundle" option is now enabled by default when creating profiles.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Last profile restored on restart.</b> The Share tab now remembers and restores your last selected profile when MO2 restarts.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Last profile auto-loads on tab entry.</b> When entering the Share tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.</li>
+    </ul>
+
+    <h3>FOMOD Helper Plugin</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Timer stops immediately when FOMOD dialog closes.</b> The auto-apply timer now hooks into the dialog's destroyed signal and stops immediately when the user cancels or completes the installer, instead of continuing to tick until timeout.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Sidecar file lookup is now cached.</b> The expensive downloads folder search for preset files is now cached per install session, preventing repeated directory walks.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>More robust preset path resolution.</b> Paths are now normalized with QDir::cleanPath, and missing archives short-circuit to filename-only search earlier.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Single-select groups only click once.</b> Radio button groups now stop after the first successful click, preventing multiple selections when presets list more than one choice for a group.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Dialog detection prioritizes reliable matches.</b> Object name and class name matches are preferred, group box title matches come next, and window title matching is now a fallback only.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>CMake warnings enabled.</b> Build warnings are now enabled to catch issues early during development.</li>
     </ul>
 
     <h2 id="v2.4.3">Version 2.4.3 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>

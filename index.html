@@ -158,6 +158,11 @@ h1 {
     }
     function shootSound() { playSound(880, 0.08, 'square', 0.08); }
     function explodeSound() { playSound(150, 0.15, 'sawtooth', 0.1); }
+    function powerupSound() {
+        playSound(523, 0.1, 'square', 0.12);
+        setTimeout(() => playSound(659, 0.1, 'square', 0.12), 80);
+        setTimeout(() => playSound(784, 0.15, 'square', 0.12), 160);
+    }
     function gameOverSound() {
         playSound(440, 0.15, 'square', 0.1);
         setTimeout(() => playSound(330, 0.15, 'square', 0.1), 150);
@@ -201,8 +206,15 @@ h1 {
             spawnTimer = setInterval(spawnRock, 1000);
             return;
         }
-        bullets.push({ x: ship.x + ship.width, y: shipY, speed: 10 });
-        shootSound();
+        const shotCount = 1 + Math.floor(score / 5);
+        for (let i = 0; i < shotCount; i++) {
+            setTimeout(() => {
+                if (gameState === 'playing') {
+                    bullets.push({ x: ship.x + ship.width, y: shipY, speed: 10 });
+                    shootSound();
+                }
+            }, i * 30);
+        }
     });
 
     function spawnRock() {
@@ -323,7 +335,11 @@ h1 {
                         explodeSound();
                         rocks.splice(i, 1);
                         bullets.splice(bi, 1);
+                        const prevScore = score;
                         score++;
+                        if (Math.floor(score / 5) > Math.floor(prevScore / 5)) {
+                            powerupSound();
+                        }
                         baseSpeed = 2 + score * 0.08;
                         scoreDisplay.textContent = 'SCORE: ' + score;
                         break;

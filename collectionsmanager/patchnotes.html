@@ -274,6 +274,13 @@ li {
         <li><span class="tag tag-change">CHANGE</span> <b>Wiki button now opens online documentation.</b> The Wiki button in the Help tab now links to the online documentation at GitHub Pages.</li>
     </ul>
 
+    <h3>Help Tab</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Step 2 (Categories) now properly detects when categories are set.</b> Added "Check Status" button for manual refresh if automatic polling doesn't detect the change.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Better logging for category detection.</b> Now logs which paths are searched, file sizes found, and why validation might fail.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Polling timeout now does final UI update.</b> When the 30-second poll times out, it now updates the UI one more time and suggests using the Check Status button.</li>
+    </ul>
+
     <h3>Technical Details</h3>
     <ul>
         <li><span class="tag tag-new">NEW</span> <code>build_marker_data()</code> - Single source of truth for marker structure with all 20+ fields</li>

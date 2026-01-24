@@ -163,6 +163,16 @@ h1 {
         setTimeout(() => playSound(659, 0.1, 'square', 0.12), 80);
         setTimeout(() => playSound(784, 0.15, 'square', 0.12), 160);
     }
+    function newHighScoreSound() {
+        // Star Wars victory fanfare style
+        playSound(392, 0.15, 'square', 0.15); // G
+        setTimeout(() => playSound(523, 0.15, 'square', 0.15), 150); // C
+        setTimeout(() => playSound(466, 0.1, 'square', 0.15), 300); // Bb
+        setTimeout(() => playSound(523, 0.1, 'square', 0.15), 400); // C
+        setTimeout(() => playSound(392, 0.1, 'square', 0.15), 500); // G
+        setTimeout(() => playSound(523, 0.3, 'square', 0.15), 600); // C (hold)
+        setTimeout(() => playSound(659, 0.4, 'square', 0.12), 750); // E (triumphant end)
+    }
     function gameOverSound() {
         playSound(440, 0.15, 'square', 0.1);
         setTimeout(() => playSound(330, 0.15, 'square', 0.1), 150);
@@ -178,6 +188,7 @@ h1 {
     let gameState = 'waiting'; // waiting, playing, gameOver
     let spawnTimer = null;
     let restartCountdown = 0;
+    let beatPreviousScore = false;
 
     const ship = { x: 40, width: 24, height: 16 };
 
@@ -202,6 +213,7 @@ h1 {
             rocks = [];
             bullets = [];
             explosions = [];
+            beatPreviousScore = false;
             scoreDisplay.textContent = 'SCORE: 0';
             spawnTimer = setInterval(spawnRock, 1000);
             return;
@@ -339,6 +351,10 @@ h1 {
                         score++;
                         if (Math.floor(score / 5) > Math.floor(prevScore / 5)) {
                             powerupSound();
+                        }
+                        if (!beatPreviousScore && lastScore > 0 && score > lastScore) {
+                            beatPreviousScore = true;
+                            newHighScoreSound();
                         }
                         baseSpeed = 2 + score * 0.08;
                         scoreDisplay.textContent = 'SCORE: ' + score;

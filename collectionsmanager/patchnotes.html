@@ -245,6 +245,19 @@ li {
     </div>
     <p>Release history and change logs for Collections Manager.</p>
 
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code Link</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown Link</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly style="height: 50px;">[url=https://supertron42.github.io/wiki/collectionsmanager/patchnotes.html]Change Logs[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly style="height: 50px;">[Change Logs](https://supertron42.github.io/wiki/collectionsmanager/patchnotes.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
     <h2 id="v2.4.4">Version 2.4.4 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
 
     <p><i>No changes yet.</i></p>
@@ -584,6 +597,15 @@ function toggleSpoiler(id) {
     }
 }
 function copyBBCode(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+function copyText(id) {
     var textarea = document.getElementById(id);
     textarea.select();
     document.execCommand('copy');

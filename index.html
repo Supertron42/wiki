@@ -101,6 +101,14 @@ h1 {
     <h1>MO2 Collections Wiki</h1>
     <p class="subtitle">Documentation for MO2 plugin extensions and development tools</p>
 
+    <!-- Space Game -->
+    <div style="margin-bottom: 30px;">
+        <canvas id="gameCanvas" width="600" height="200" style="border: 1px solid #3c3c3c; border-radius: 8px; background: #0a0a12; cursor: none;"></canvas>
+        <div style="margin-top: 8px; font-size: 12px; color: #9cdcfe;">
+            <span id="scoreDisplay">Score: 0</span> | <span id="gameStatus">Click to shoot</span>
+        </div>
+    </div>
+
     <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
         <div class="wiki-card" style="border-color: #DA8E35; background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('collectionsmanager/cm02thumbnail.webp') center/cover;">
             <h2 style="color: #fff;">Collections Manager</h2>
@@ -121,5 +129,200 @@ h1 {
     </div>
 </div>
 
+<script>
+(function() {
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const gameStatus = document.getElementById('gameStatus');
+
+    let shipY = canvas.height / 2;
+    let score = 0;
+    let baseSpeed = 2;
+    let bullets = [];
+    let rocks = [];
+    let explosions = [];
+    let gameOver = false;
+
+    // Ship properties
+    const ship = { x: 50, width: 30, height: 20 };
+
+    // Track mouse
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        shipY = e.clientY - rect.top;
+        shipY = Math.max(ship.height/2, Math.min(canvas.height - ship.height/2, shipY));
+    });
+
+    // Shoot on click
+    canvas.addEventListener('click', () => {
+        if (gameOver) {
+            // Restart
+            gameOver = false;
+            score = 0;
+            baseSpeed = 2;
+            rocks = [];
+            bullets = [];
+            explosions = [];
+            gameStatus.textContent = 'Click to shoot';
+            return;
+        }
+        bullets.push({ x: ship.x + ship.width, y: shipY, speed: 8 });
+    });
+
+    // Spawn rocks
+    function spawnRock() {
+        if (gameOver) return;
+        const size = 10 + Math.random() * 25;
+        rocks.push({
+            x: canvas.width + size,
+            y: Math.random() * (canvas.height - size * 2) + size,
+            radius: size,
+            speed: baseSpeed + Math.random() * 2,
+            rotation: Math.random() * Math.PI * 2,
+            rotSpeed: (Math.random() - 0.5) * 0.1
+        });
+    }
+
+    // Create explosion
+    function explode(x, y) {
+        for (let i = 0; i < 8; i++) {
+            const angle = (Math.PI * 2 / 8) * i;
+            explosions.push({
+                x, y,
+                vx: Math.cos(angle) * 3,
+                vy: Math.sin(angle) * 3,
+                life: 20
+            });
+        }
+    }
+
+    // Draw ship
+    function drawShip() {
+        ctx.fillStyle = '#4ec9b0';
+        ctx.beginPath();
+        ctx.moveTo(ship.x + ship.width, shipY);
+        ctx.lineTo(ship.x, shipY - ship.height/2);
+        ctx.lineTo(ship.x + 8, shipY);
+        ctx.lineTo(ship.x, shipY + ship.height/2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Engine glow
+        ctx.fillStyle = '#DA8E35';
+        ctx.beginPath();
+        ctx.moveTo(ship.x, shipY - 5);
+        ctx.lineTo(ship.x - 10 - Math.random() * 5, shipY);
+        ctx.lineTo(ship.x, shipY + 5);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // Draw rock
+    function drawRock(rock) {
+        ctx.save();
+        ctx.translate(rock.x, rock.y);
+        ctx.rotate(rock.rotation);
+        ctx.fillStyle = '#5a5a6a';
+        ctx.strokeStyle = '#7a7a8a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < 7; i++) {
+            const angle = (Math.PI * 2 / 7) * i;
+            const r = rock.radius * (0.7 + Math.sin(i * 2.5) * 0.3);
+            if (i === 0) ctx.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
+            else ctx.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    // Game loop
+    function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw stars
+        ctx.fillStyle = '#ffffff22';
+        for (let i = 0; i < 30; i++) {
+            ctx.fillRect((i * 73 + Date.now() * 0.02) % canvas.width, (i * 37) % canvas.height, 1, 1);
+        }
+
+        if (!gameOver) {
+            // Update bullets
+            bullets.forEach((b, i) => {
+                b.x += b.speed;
+                if (b.x > canvas.width) bullets.splice(i, 1);
+            });
+
+            // Update rocks
+            rocks.forEach((r, i) => {
+                r.x -= r.speed;
+                r.rotation += r.rotSpeed;
+
+                // Check bullet collision
+                bullets.forEach((b, bi) => {
+                    const dx = b.x - r.x;
+                    const dy = b.y - r.y;
+                    if (Math.sqrt(dx*dx + dy*dy) < r.radius) {
+                        explode(r.x, r.y);
+                        rocks.splice(i, 1);
+                        bullets.splice(bi, 1);
+                        score++;
+                        baseSpeed = 2 + score * 0.1;
+                        scoreDisplay.textContent = 'Score: ' + score;
+                    }
+                });
+
+                // Check ship collision
+                if (r.x - r.radius < ship.x + ship.width && r.x + r.radius > ship.x) {
+                    if (r.y + r.radius > shipY - ship.height/2 && r.y - r.radius < shipY + ship.height/2) {
+                        gameOver = true;
+                        gameStatus.textContent = 'Game Over! Click to restart';
+                        explode(ship.x + ship.width/2, shipY);
+                    }
+                }
+
+                if (r.x + r.radius < 0) rocks.splice(i, 1);
+            });
+        }
+
+        // Update explosions
+        explosions.forEach((e, i) => {
+            e.x += e.vx;
+            e.y += e.vy;
+            e.life--;
+            if (e.life <= 0) explosions.splice(i, 1);
+        });
+
+        // Draw bullets
+        ctx.fillStyle = '#ffff00';
+        bullets.forEach(b => {
+            ctx.fillRect(b.x, b.y - 2, 12, 4);
+        });
+
+        // Draw rocks
+        rocks.forEach(drawRock);
+
+        // Draw explosions
+        explosions.forEach(e => {
+            ctx.fillStyle = `rgba(255, ${150 + e.life * 5}, 0, ${e.life / 20})`;
+            ctx.beginPath();
+            ctx.arc(e.x, e.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        // Draw ship
+        if (!gameOver) drawShip();
+
+        requestAnimationFrame(update);
+    }
+
+    // Spawn rocks periodically
+    setInterval(spawnRock, 1200);
+    update();
+})();
+</script>
 </body>
 </html>

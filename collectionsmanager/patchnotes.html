@@ -301,6 +301,15 @@ li {
         <li><span class="tag tag-change">CHANGE</span> <b>CMake warnings enabled.</b> Build warnings are now enabled to catch issues early during development.</li>
     </ul>
 
+    <h3>Sort Tool</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Multi-row drag now preserves relative order.</b> When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target. Previously, refreshing or reapplying rules could scramble the moved block.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed self-drop detection for multi-row selections.</b> Dropping a selection onto one of the selected rows is now properly ignored for any selection size, not just single rows.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Cancel Preview now properly closes the progress dialog.</b> Previously, canceling could leave the dialog open or in a stuck state.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Delete User Rules respects collection ordering state.</b> Deleting user rules no longer forces collection ordering back on if the user had it disabled.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Separators excluded from load order rules.</b> Dragging separators no longer creates spurious load-after relationships that could affect mod ordering.</li>
+    </ul>
+
     <div class="btn-row">
         <button class="spoiler-btn" onclick="toggleSpoiler('bb244')">BB Code for Forums</button>
         <button class="spoiler-btn" onclick="toggleSpoiler('md244')">Markdown</button>
@@ -342,6 +351,14 @@ li {
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Single-select groups only click once.[/b] Radio button groups now stop after the first successful click, preventing multiple selections when presets list more than one choice for a group.
 [*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Dialog detection prioritizes reliable matches.[/b] Object name and class name matches are preferred, group box title matches come next, and window title matching is now a fallback only.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]CMake warnings enabled.[/b] Build warnings are now enabled to catch issues early during development.
+[/list]
+[size=3][b][color=#9cdcfe]Sort Tool[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Multi-row drag now preserves relative order.[/b] When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed self-drop detection for multi-row selections.[/b] Dropping a selection onto one of the selected rows is now properly ignored for any selection size.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Cancel Preview now properly closes the progress dialog.[/b] Previously, canceling could leave the dialog open or in a stuck state.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Delete User Rules respects collection ordering state.[/b] Deleting user rules no longer forces collection ordering back on if the user had it disabled.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Separators excluded from load order rules.[/b] Dragging separators no longer creates spurious load-after relationships.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyBBCode('bbcode244')">Copy to Clipboard</button>
     </div>
@@ -382,7 +399,15 @@ li {
 - **More robust preset path resolution.** Paths are now normalized with QDir::cleanPath, and missing archives short-circuit to filename-only search earlier.
 - **Single-select groups only click once.** Radio button groups now stop after the first successful click, preventing multiple selections when presets list more than one choice for a group.
 - **Dialog detection prioritizes reliable matches.** Object name and class name matches are preferred, group box title matches come next, and window title matching is now a fallback only.
-- **CMake warnings enabled.** Build warnings are now enabled to catch issues early during development.</textarea>
+- **CMake warnings enabled.** Build warnings are now enabled to catch issues early during development.
+
+## Sort Tool
+
+- **Multi-row drag now preserves relative order.** When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target.
+- **Fixed self-drop detection for multi-row selections.** Dropping a selection onto one of the selected rows is now properly ignored for any selection size.
+- **Cancel Preview now properly closes the progress dialog.** Previously, canceling could leave the dialog open or in a stuck state.
+- **Delete User Rules respects collection ordering state.** Deleting user rules no longer forces collection ordering back on if the user had it disabled.
+- **Separators excluded from load order rules.** Dragging separators no longer creates spurious load-after relationships.</textarea>
         <button class="copy-btn" onclick="copyBBCode('markdown244')">Copy to Clipboard</button>
     </div>
 

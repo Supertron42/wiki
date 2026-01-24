@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Install Toolchain</h3>
+    <a href="#overview">Overview</a>
+    <a href="#status">Status Indicators</a>
+    <a href="#vs-build-tools">VS Build Tools</a>
+    <a href="#xmake">xmake</a>
+    <a href="#git">Git</a>
+    <a href="#github-desktop">GitHub Desktop</a>
+
+    <h3>Reference</h3>
+    <a href="#troubleshooting">Troubleshooting</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Install Toolchain Overview</h1>
+<p>The Install Toolchain tool downloads and installs the development tools required for SKSE plugin development.</p>
+
+<h3>Available Tools</h3>
+<table>
+    <tr><th>Tool</th><th>Purpose</th><th>Required</th></tr>
+    <tr><td><b>VS Build Tools</b></td><td>C++ compiler (MSVC)</td><td>Yes</td></tr>
+    <tr><td><b>xmake</b></td><td>Build system</td><td>Yes</td></tr>
+    <tr><td><b>Git</b></td><td>Version control, template cloning</td><td>Yes</td></tr>
+    <tr><td><b>GitHub Desktop</b></td><td>Git GUI</td><td>No (optional)</td></tr>
+</table>
+
+<h3>How to Use</h3>
+<ol>
+    <li>Ensure you have set your <b>Development Root</b> in Set Paths first</li>
+    <li>Go to <b>Install Toolchain</b> in the left panel</li>
+    <li>Click <b>Install</b> next to each tool you need</li>
+    <li>Wait for the installation to complete</li>
+    <li>Green status indicator confirms successful installation</li>
+</ol>
+
+
+<h1 id="status">Status Indicators</h1>
+<p>Each tool shows a colored status orb:</p>
+
+<table>
+    <tr><th>Color</th><th>Meaning</th></tr>
+    <tr><td style="color: #27ae60;">&#9679; Green</td><td>Tool is installed and detected</td></tr>
+    <tr><td style="color: #e74c3c;">&#9679; Red</td><td>Tool is missing or not detected</td></tr>
+    <tr><td style="color: #9aa3b2;">&#9679; Gray</td><td>Tool not yet checked</td></tr>
+</table>
+
+<div class="info">
+<b>Path Display:</b> Each row shows the install path and the environment variable that will be set.
+</div>
+
+
+<h1 id="vs-build-tools">Visual Studio Build Tools</h1>
+<p>The C++ compiler required for building SKSE plugins.</p>
+
+<h3>What Gets Installed</h3>
+<ul>
+    <li>MSVC C++ compiler and linker</li>
+    <li>Windows SDK</li>
+    <li>C++ build tools workload</li>
+</ul>
+
+<h3>Installation</h3>
+<ol>
+    <li>Click <b>Install</b> next to VS Build Tools</li>
+    <li>ClibDT downloads the VS Build Tools installer</li>
+    <li>The installer runs with pre-configured workloads</li>
+    <li>Installation can take 10-30 minutes depending on connection speed</li>
+</ol>
+
+<div class="warning">
+<b>Large Download:</b> VS Build Tools requires a 2-4 GB download. Ensure you have enough disk space and a stable internet connection.
+</div>
+
+<h3>Environment Variable</h3>
+<p><code>XSE_MSVCTOOLS_ROOT</code> is set to the installation path.</p>
+
+
+<h1 id="xmake">xmake</h1>
+<p>A modern, fast build system used to compile SKSE plugins.</p>
+
+<h3>Why xmake?</h3>
+<ul>
+    <li>Faster than CMake for iterative builds</li>
+    <li>Simpler configuration with Lua-based scripts</li>
+    <li>Built-in package management</li>
+    <li>Cross-platform support</li>
+</ul>
+
+<h3>Installation</h3>
+<ol>
+    <li>Click <b>Install</b> next to xmake</li>
+    <li>ClibDT downloads the xmake installer</li>
+    <li>xmake is installed to <code>%DEVROOT%\tools\xmake</code></li>
+</ol>
+
+<h3>Environment Variable</h3>
+<p><code>XSE_XMAKE_ROOT</code> is set to the installation path.</p>
+
+<div class="info">
+<b>Usage:</b> After installation, you can use xmake commands in the terminal:
+<pre style="background: #2d2d2d; padding: 8px; border-radius: 4px; margin-top: 8px;"><code>xmake f -m release    # Configure for release build
+xmake                 # Build the project
+xmake run             # Run the built executable</code></pre>
+</div>
+
+
+<h1 id="git">Git</h1>
+<p>Version control system required for cloning project templates and managing source code.</p>
+
+<h3>What Gets Installed</h3>
+<ul>
+    <li>Git command-line tools</li>
+    <li>Git Bash (optional shell)</li>
+    <li>Git GUI (optional)</li>
+</ul>
+
+<h3>Installation</h3>
+<ol>
+    <li>Click <b>Install</b> next to Git</li>
+    <li>ClibDT downloads the Git for Windows installer</li>
+    <li>Git is installed to the standard Program Files location</li>
+</ol>
+
+<h3>Environment Variable</h3>
+<p><code>XSE_GIT_ROOT</code> is set to the installation path.</p>
+
+<div class="success">
+<b>Required for:</b> Creating new projects (clones templates from GitHub).
+</div>
+
+
+<h1 id="github-desktop">GitHub Desktop</h1>
+<p>Optional graphical interface for Git repositories.</p>
+
+<h3>Why Use It?</h3>
+<ul>
+    <li>Visual diff viewer</li>
+    <li>Easy branch management</li>
+    <li>Simple commit and push workflow</li>
+    <li>GitHub integration</li>
+</ul>
+
+<h3>Installation</h3>
+<ol>
+    <li>Click <b>Install</b> next to GitHub Desktop</li>
+    <li>ClibDT downloads the GitHub Desktop installer</li>
+    <li>GitHub Desktop is installed to LocalAppData</li>
+</ol>
+
+<h3>Environment Variable</h3>
+<p><code>XSE_GITHUB_DESKTOP_PATH</code> is set to the installation path.</p>
+
+<div class="info">
+<b>Optional:</b> GitHub Desktop is not required for ClibDT to function. You can use Git from the command line or any other Git client.
+</div>
+
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h3>Installation Fails</h3>
+<ul>
+    <li>Check your internet connection</li>
+    <li>Ensure you have sufficient disk space</li>
+    <li>Try running ClibDT as administrator</li>
+    <li>Check the terminal output for error messages</li>
+</ul>
+
+<h3>Tool Not Detected After Install</h3>
+<ul>
+    <li>Close and reopen ClibDT to refresh detection</li>
+    <li>Manually set the path in Set Paths</li>
+    <li>Verify the tool was installed correctly</li>
+</ul>
+
+<h3>VS Build Tools Issues</h3>
+<ul>
+    <li>If the installer hangs, check Windows Update is not running</li>
+    <li>Ensure no other Visual Studio installers are running</li>
+    <li>Try downloading and running the installer manually from Microsoft</li>
+</ul>
+
+<h3>xmake Issues</h3>
+<ul>
+    <li>If xmake commands fail, ensure <code>XSE_XMAKE_ROOT</code> is set</li>
+    <li>Add xmake to your system PATH if needed</li>
+    <li>Run <code>xmake --version</code> in terminal to verify installation</li>
+</ul>
+
+</div>
+</body>
+</html>

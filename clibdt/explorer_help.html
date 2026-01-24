@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+
+/* Callout boxes */
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Explorer</h3>
+    <a href="#overview">Overview</a>
+    <a href="#folders">Folder List</a>
+    <a href="#using">Using Explorer</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Explorer Overview</h1>
+<p>The Explorer tool provides quick access to all ClibDT-related folders and directories.</p>
+
+<h3>Features</h3>
+<ul>
+    <li>Quick access to development folders</li>
+    <li>Double-click to open in Windows Explorer</li>
+    <li>Visual indicators for existing/missing folders</li>
+    <li>Tooltips showing full paths and descriptions</li>
+</ul>
+
+
+<h1 id="folders">Folder List</h1>
+
+<p>The Explorer shows these ClibDT folders:</p>
+
+<table>
+    <tr><th>Folder</th><th>Icon</th><th>Description</th></tr>
+    <tr><td><b>Development Root</b></td><td>&#127968;</td><td>Main ClibDT development directory</td></tr>
+    <tr><td><b>Projects</b></td><td>&#128193;</td><td>All your ClibDT projects</td></tr>
+    <tr><td><b>Builds</b></td><td>&#128230;</td><td>Compiled plugin outputs (DLL files)</td></tr>
+    <tr><td><b>Tools</b></td><td>&#128295;</td><td>Development tools and utilities</td></tr>
+    <tr><td><b>Downloads</b></td><td>&#11015;&#65039;</td><td>Downloaded files and archives</td></tr>
+    <tr><td><b>Resources</b></td><td>&#128218;</td><td>Headers, libraries, CommonLibSSE</td></tr>
+    <tr><td><b>Backups</b></td><td>&#128190;</td><td>Automatic project backups</td></tr>
+    <tr><td><b>Config</b></td><td>&#9881;&#65039;</td><td>ClibDT configuration files</td></tr>
+</table>
+
+
+<h1 id="using">Using Explorer</h1>
+
+<h3>Opening Folders</h3>
+<ol>
+    <li>Go to <b>Explorer</b> in the left panel</li>
+    <li>The folder list shows all ClibDT directories</li>
+    <li><b>Double-click</b> any folder to open it in Windows Explorer</li>
+</ol>
+
+<h3>Folder Status</h3>
+<ul>
+    <li>Existing folders are shown normally</li>
+    <li>Missing folders show a warning in the tooltip</li>
+    <li>Hover over any folder to see its full path</li>
+</ul>
+
+<div class="info">
+<b>Missing Folders:</b> If a folder doesn't exist, ClibDT will open the nearest existing parent folder instead.
+</div>
+
+<h3>Quick Navigation</h3>
+<p>Use Explorer to quickly jump to:</p>
+<ul>
+    <li><b>Projects</b> - to open your source code in an editor</li>
+    <li><b>Builds</b> - to find compiled DLL files</li>
+    <li><b>Config</b> - to view or edit settings files</li>
+    <li><b>Backups</b> - to restore previous versions</li>
+</ul>
+
+<div class="success">
+<b>Tip:</b> Keep Explorer open while working to quickly access any folder without navigating through Windows Explorer.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Version headers */
+.version {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 20px 0;
+}
+.version h2 {
+    margin-top: 0;
+    color: #4ec9b0;
+    border-bottom: 1px solid #3c3c3c;
+    padding-bottom: 8px;
+}
+.version h3 {
+    color: #9cdcfe;
+}
+
+/* Change type badges */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.badge-added { background: #27ae60; color: white; }
+.badge-fixed { background: #3498db; color: white; }
+.badge-changed { background: #f39c12; color: white; }
+.badge-removed { background: #e74c3c; color: white; }
+.badge-improved { background: #9b59b6; color: white; }
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Versions</h3>
+    <a href="#v5.2">Version 5.2</a>
+    <a href="#v5.1.1">Version 5.1.1</a>
+</div>
+
+<div id="content">
+
+<h1>ClibDT Change Log</h1>
+<p>All notable changes to ClibDT are documented here.</p>
+
+
+<div class="version" id="v5.2">
+<h2>Version 5.2 <span style="color: #888; font-size: 12px; font-weight: normal;">(Current)</span></h2>
+
+<h3><span class="badge badge-added">ADDED</span> New Features</h3>
+<ul>
+    <li>Edit project version and description when compiling</li>
+    <li>Open changelog button in Developer tool</li>
+    <li>Change program version from Developer tool</li>
+    <li>Faster widget loading when opening Set Paths and Install Tools</li>
+    <li>Show output location after successful project compilation</li>
+    <li>Major improvements to backup tool</li>
+    <li>Program now opens to Create Project if Set Paths is already configured</li>
+</ul>
+
+<h3><span class="badge badge-fixed">FIXED</span> Bug Fixes</h3>
+<ul>
+    <li>Fixed module import errors when running compiled executable</li>
+    <li>Improved MSVC build tools detection and initialization</li>
+    <li>Reduced startup delays for tool widgets</li>
+    <li>Install Tools now uses Build Tools path from Set Paths</li>
+    <li>Compile Project now uses Build Tools path from Set Paths</li>
+    <li>Explorer widget now shows correct backup destination path from settings</li>
+    <li>Project backups now save to devroot/backups/{project_name} folder</li>
+</ul>
+
+<h3><span class="badge badge-changed">CHANGED</span> Changes</h3>
+<ul>
+    <li>Renamed Backup tool to Custom Backup</li>
+    <li>Disabled UPX compression to reduce antivirus false positives</li>
+</ul>
+
+<h3><span class="badge badge-removed">REMOVED</span> Removed</h3>
+<ul>
+    <li>Removed automatic version checking from settings</li>
+</ul>
+</div>
+
+
+<div class="version" id="v5.1.1">
+<h2>Version 5.1.1</h2>
+
+<h3><span class="badge badge-fixed">FIXED</span> Bug Fixes</h3>
+<ul>
+    <li>Create Project now reads Set Paths values from settings when environment variables are not refreshed, so defaults show up reliably</li>
+    <li>Compile Project no longer reads UI widgets from a background thread; values are captured before the build starts</li>
+    <li>Compile Project now uses runtime flags safely during xmake configure/build</li>
+    <li>Clean action no longer fails just because Mods Path is missing</li>
+    <li>Removed dead files and unused PyInstaller hiddenimports to match the actual app wiring</li>
+</ul>
+
+<h3><span class="badge badge-improved">IMPROVED</span> Improvements</h3>
+<ul>
+    <li>Pin bar setup is no longer tied to window sizing logic, reducing UI side effects</li>
+    <li>Tool discovery is simpler and no longer writes debug logs to disk</li>
+    <li>Project list, xmake, and Mods Path lookups now fall back to settings when env vars are missing</li>
+    <li>Project names are sanitized visibly so users see the final folder name</li>
+</ul>
+
+<h3><span class="badge badge-added">ADDED</span> New Features</h3>
+<ul>
+    <li>Settings fallbacks for project roots and tool paths in Create Project and Compile Project</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>

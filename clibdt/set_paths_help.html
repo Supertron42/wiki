@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+pre {
+    background: #2d2d2d;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3c3c3c;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Set Paths</h3>
+    <a href="#overview">Overview</a>
+    <a href="#dev-root">Development Root</a>
+    <a href="#tool-paths">Tool Paths</a>
+    <a href="#game-paths">Game Paths</a>
+
+    <h3>Reference</h3>
+    <a href="#auto-detection">Auto-Detection</a>
+    <a href="#environment">Environment Variables</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Set Paths Overview</h1>
+<p>The Set Paths tool configures your development environment by setting up folder paths and environment variables. This is typically the first step when setting up ClibDT.</p>
+
+<h3>What It Does</h3>
+<ul>
+    <li>Creates a structured development folder hierarchy</li>
+    <li>Auto-detects installed development tools</li>
+    <li>Sets environment variables for build tools</li>
+    <li>Validates that paths exist before applying</li>
+    <li>Updates environment immediately (no restart needed)</li>
+</ul>
+
+
+<h1 id="dev-root">Development Root Folder</h1>
+<p>The Development Root is your main workspace folder where all projects and tools will be organized.</p>
+
+<h3>Choosing a Location</h3>
+<ol>
+    <li>Click <b>Choose Folder</b> in the Development Root section</li>
+    <li>Select or create a folder (e.g., <code>C:\Dev\Skyrim</code>)</li>
+    <li>ClibDT will automatically create the required subfolders</li>
+</ol>
+
+<div class="info">
+<b>Recommended:</b> Use a short path without spaces (e.g., <code>C:\Dev</code> or <code>D:\SKSEDev</code>).
+</div>
+
+<h3>Auto-Created Subfolders</h3>
+<table>
+    <tr><th>Folder</th><th>Purpose</th></tr>
+    <tr><td><code>builds/</code></td><td>Compiled plugin outputs (DLL files)</td></tr>
+    <tr><td><code>projects/</code></td><td>Your SKSE plugin source code projects</td></tr>
+    <tr><td><code>tools/</code></td><td>Downloaded tools and utilities</td></tr>
+    <tr><td><code>tools/BuildTools/</code></td><td>Build Tools workspace (created if missing)</td></tr>
+    <tr><td><code>tools/xmake/</code></td><td>Xmake workspace (created if missing)</td></tr>
+    <tr><td><code>resources/</code></td><td>Headers, libraries, CommonLibSSE</td></tr>
+    <tr><td><code>plugins/</code></td><td>SKSE plugin dependencies</td></tr>
+    <tr><td><code>backups/</code></td><td>Automatic project backups</td></tr>
+</table>
+
+
+<h1 id="tool-paths">Tool Paths</h1>
+<p>These paths are auto-detected when possible, but can be manually set if needed.</p>
+
+<h3>VS Build Tools</h3>
+<p>Path to Visual Studio Build Tools installation. This contains the MSVC C++ compiler.</p>
+<ul>
+    <li><b>Typical location:</b> <code>C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools</code></li>
+    <li><b>Environment variable:</b> <code>XSE_MSVCTOOLS_ROOT</code></li>
+</ul>
+
+<h3>xmake</h3>
+<p>Path to the xmake build system installation.</p>
+<ul>
+    <li><b>Typical location:</b> <code>%DEVROOT%\tools\xmake</code> or <code>%LOCALAPPDATA%\xmake</code></li>
+    <li><b>Environment variable:</b> <code>XSE_XMAKE_ROOT</code></li>
+</ul>
+
+<h3>Git</h3>
+<p>Path to Git installation for version control.</p>
+<ul>
+    <li><b>Typical location:</b> <code>C:\Program Files\Git</code></li>
+    <li><b>Environment variable:</b> <code>XSE_GIT_ROOT</code></li>
+</ul>
+
+<h3>GitHub Desktop (Optional)</h3>
+<p>Path to GitHub Desktop application for easier repository management.</p>
+<ul>
+    <li><b>Typical location:</b> <code>%LOCALAPPDATA%\GitHubDesktop</code></li>
+    <li><b>Environment variable:</b> <code>XSE_GITHUB_DESKTOP_PATH</code></li>
+</ul>
+
+
+<h1 id="game-paths">Game Paths</h1>
+
+<h3>Game Path</h3>
+<p>Path to your Skyrim Special Edition installation folder.</p>
+<ul>
+    <li><b>Steam typical:</b> <code>C:\Program Files (x86)\Steam\steamapps\common\Skyrim Special Edition</code></li>
+    <li><b>Environment variable:</b> <code>XSE_TES5_GAME_PATH</code></li>
+</ul>
+
+<h3>Projects Path</h3>
+<p>Where new projects will be created. Defaults to <code>%DEVROOT%\projects</code>.</p>
+<ul>
+    <li><b>Environment variable:</b> <code>XSE_PROJECTS_ROOT</code></li>
+</ul>
+
+<h3>Mods Path</h3>
+<p>Where compiled plugins can be placed. Useful for MO2 or Vortex users.</p>
+<ul>
+    <li><b>Environment variable:</b> <code>XSE_TES5_MODS_PATH</code></li>
+</ul>
+
+
+<h1 id="auto-detection">Auto-Detection</h1>
+<p>ClibDT attempts to automatically detect installed tools when you set the Development Root:</p>
+
+<ul>
+    <li><b>VS Build Tools:</b> Checks common install locations</li>
+    <li><b>xmake:</b> Checks PATH and common locations</li>
+    <li><b>Git:</b> Checks PATH and Program Files</li>
+    <li><b>GitHub Desktop:</b> Checks LocalAppData</li>
+</ul>
+
+<div class="success">
+<b>Tip:</b> If a tool is detected, its status indicator turns green. Run <b>Install Toolchain</b> to install missing tools.
+</div>
+
+
+<h1 id="environment">Environment Variables</h1>
+<p>Set Paths manages these environment variables:</p>
+
+<table>
+    <tr><th>Variable</th><th>Purpose</th></tr>
+    <tr><td><code>XSE_CLIBDT_DEVROOT</code></td><td>Development root folder</td></tr>
+    <tr><td><code>XSE_MSVCTOOLS_ROOT</code></td><td>Visual Studio Build Tools path</td></tr>
+    <tr><td><code>XSE_XMAKE_ROOT</code></td><td>xmake installation path</td></tr>
+    <tr><td><code>XSE_GIT_ROOT</code></td><td>Git installation path</td></tr>
+    <tr><td><code>XSE_GITHUB_DESKTOP_PATH</code></td><td>GitHub Desktop path</td></tr>
+    <tr><td><code>XSE_TES5_GAME_PATH</code></td><td>Skyrim SE game folder</td></tr>
+    <tr><td><code>XSE_TES5_MODS_PATH</code></td><td>Mods output folder</td></tr>
+    <tr><td><code>XSE_PROJECTS_ROOT</code></td><td>Projects folder override</td></tr>
+</table>
+
+<div class="info">
+<b>Storage:</b> Settings are stored in <code>%LOCALAPPDATA%\ClibDT\clibdt_settings.json</code> and also in the Windows registry under <code>HKCU\Software\ClibDT</code>.
+</div>
+
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h3>Path Not Detected</h3>
+<p>If a tool path is not auto-detected:</p>
+<ol>
+    <li>Click the folder icon next to the path field</li>
+    <li>Navigate to and select the tool's installation folder</li>
+    <li>ClibDT will validate and save the path</li>
+</ol>
+
+<h3>Environment Variables Not Applied</h3>
+<p>If changes don't seem to take effect:</p>
+<ul>
+    <li>Restart ClibDT to reload environment variables</li>
+    <li>Check that paths exist and are accessible</li>
+    <li>Try manually setting the path instead of relying on auto-detection</li>
+</ul>
+
+<h3>Permission Issues</h3>
+<p>If you get permission errors creating folders:</p>
+<ul>
+    <li>Choose a Development Root in a user-accessible location (e.g., <code>C:\Dev</code>)</li>
+    <li>Avoid system-protected folders like <code>C:\Program Files</code></li>
+    <li>Run ClibDT as administrator if necessary</li>
+</ul>
+
+</div>
+</body>
+</html>

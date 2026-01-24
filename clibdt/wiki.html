@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #3D7EFF;
+    color: white;
+    font-weight: bold;
+    border-left-color: #3D7EFF;
+}
+#nav a.highlight:hover {
+    background: #2d6ee0;
+    border-left-color: #2d6ee0;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+}
+.page-card:hover {
+    border-color: #569cd6;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+.page-card a {
+    color: inherit;
+    text-decoration: none;
+}
+.page-card a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Log</a>
+
+    <h3>Documentation</h3>
+    <a href="getting_started.html">Getting Started</a>
+    <a href="set_paths_help.html">Set Paths</a>
+    <a href="install_toolchain_help.html">Install Toolchain</a>
+    <a href="create_project_help.html">Create Project</a>
+    <a href="compile_project_help.html">Compile Project</a>
+    <a href="backup_help.html">Custom Backup</a>
+    <a href="explorer_help.html">Explorer</a>
+    <a href="settings_help.html">Settings</a>
+
+    <!-- Nexus Link -->
+    <div style="margin-top: 40px; padding: 12px; background: #1e1e1e; border-top: 1px solid #3c3c3c;">
+        <div style="color: #3D7EFF; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 10px;">
+            ClibDT on Nexus Mods
+        </div>
+        <div style="font-size: 11px; color: #9cdcfe; line-height: 1.5;">
+            <div style="margin-bottom: 6px;">&#10003; One-click project setup</div>
+            <div style="margin-bottom: 6px;">&#10003; Automated tool installation</div>
+            <div style="margin-bottom: 6px;">&#10003; xmake build system</div>
+            <div style="margin-bottom: 10px;">&#10003; CommonLibSSE-NG support</div>
+        </div>
+        <a href="https://www.nexusmods.com/skyrimspecialedition/mods/154240"
+           target="_blank"
+           style="display: block; background: #3D7EFF; color: white; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+            Download on Nexus
+        </a>
+    </div>
+</div>
+
+<div id="content">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <h1 style="margin: 0; border: none; padding: 0;">ClibDT Wiki</h1>
+    </div>
+    <p style="color: #9cdcfe; font-size: 14px;">CommonLib Developers Toolkit - A PyQt6 modular toolkit for Skyrim SKSE/CommonLib plugin development.</p>
+    <p>Welcome to the ClibDT documentation. Choose a topic below to learn more about each feature.</p>
+
+    <h2>Getting Started</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3><a href="getting_started.html">Getting Started Guide</a></h3>
+            <p>Set up your development environment, install tools, and create your first SKSE plugin project.</p>
+        </div>
+    </div>
+
+    <h2>Setup Tools</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3><a href="set_paths_help.html">Set Paths</a></h3>
+            <p>Configure your development root folder and tool paths for VS Build Tools, xmake, Git, and more.</p>
+        </div>
+        <div class="page-card">
+            <h3><a href="install_toolchain_help.html">Install Toolchain</a></h3>
+            <p>Install required development tools: Visual Studio Build Tools, xmake, Git, and GitHub Desktop.</p>
+        </div>
+    </div>
+
+    <h2>Project Tools</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3><a href="create_project_help.html">Create Project</a></h3>
+            <p>Create new CommonLibSSE-NG projects from a template with Git integration and xmake build system.</p>
+        </div>
+        <div class="page-card">
+            <h3><a href="compile_project_help.html">Compile Project</a></h3>
+            <p>Build your SKSE plugins with xmake. Configure debug/release modes and SE/AE/VR runtime targets.</p>
+        </div>
+    </div>
+
+    <h2>Utilities</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3><a href="backup_help.html">Custom Backup</a></h3>
+            <p>Backup your development root with smart, full, or incremental backup modes.</p>
+        </div>
+        <div class="page-card">
+            <h3><a href="explorer_help.html">Explorer</a></h3>
+            <p>Browse and quickly access ClibDT folders including projects, builds, tools, and backups.</p>
+        </div>
+        <div class="page-card">
+            <h3><a href="settings_help.html">Settings</a></h3>
+            <p>Configure application theme, accent colors, and developer mode options.</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <p style="color: #9cdcfe; margin-bottom: 12px;">ClibDT v5.2 - CommonLib Developers Toolkit</p>
+    </div>
+</div>
+
+</body>
+</html>

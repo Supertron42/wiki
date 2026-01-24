@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+pre {
+    background: #2d2d2d;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3c3c3c;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.danger {
+    background: #4d1f1f;
+    border-left: 4px solid #f44747;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Getting Started</h3>
+    <a href="#overview">Overview</a>
+    <a href="#requirements">Requirements</a>
+    <a href="#setup">Initial Setup</a>
+    <a href="#first-project">First Project</a>
+    <a href="#building">Building</a>
+
+    <h3>Quick Reference</h3>
+    <a href="#folder-structure">Folder Structure</a>
+    <a href="#environment-vars">Environment Variables</a>
+    <a href="#workflow">Development Workflow</a>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<h1 id="overview">Overview</h1>
+<p>ClibDT (CommonLib Developers Toolkit) is a PyQt6 application designed to streamline SKSE plugin development for Skyrim Special Edition. It provides:</p>
+
+<ul>
+    <li><b>Automated tool installation</b> - Install VS Build Tools, xmake, and Git with one click</li>
+    <li><b>Project scaffolding</b> - Create new CommonLibSSE-NG projects from a template</li>
+    <li><b>Build management</b> - Compile projects with xmake for SE, AE, VR, or dual runtimes</li>
+    <li><b>Environment configuration</b> - Manage development paths and environment variables</li>
+    <li><b>Backup utilities</b> - Protect your work with smart backup features</li>
+</ul>
+
+<div class="info">
+<b>Version:</b> This documentation covers ClibDT v5.2
+</div>
+
+
+<h1 id="requirements">Requirements</h1>
+
+<h3>System Requirements</h3>
+<ul>
+    <li>Windows 10 or later (64-bit)</li>
+    <li>At least 10 GB free disk space for tools and projects</li>
+    <li>Internet connection for downloading tools and templates</li>
+</ul>
+
+<h3>Tools (Installed via ClibDT)</h3>
+<table>
+    <tr><th>Tool</th><th>Purpose</th><th>Notes</th></tr>
+    <tr><td><b>Visual Studio Build Tools</b></td><td>C++ compiler (MSVC)</td><td>Required for building plugins</td></tr>
+    <tr><td><b>xmake</b></td><td>Build system</td><td>Modern, fast build automation</td></tr>
+    <tr><td><b>Git</b></td><td>Version control</td><td>Required for cloning templates</td></tr>
+    <tr><td><b>GitHub Desktop</b></td><td>Git GUI (optional)</td><td>Easier repository management</td></tr>
+</table>
+
+
+<h1 id="setup">Initial Setup</h1>
+
+<h3>Step 1: Choose a Development Root</h3>
+<ol>
+    <li>Open ClibDT</li>
+    <li>Go to <b>Set Paths</b> in the left panel</li>
+    <li>Click <b>Choose Folder</b> under "Development Root Folder"</li>
+    <li>Select or create a folder (e.g., <code>C:\Dev\Skyrim</code>)</li>
+</ol>
+
+<p>ClibDT will automatically create the following structure:</p>
+<pre><code>Dev Root/
+├── builds/       # Compiled plugin outputs (DLL files)
+├── projects/     # Your SKSE plugin source code
+├── tools/        # Development tools (xmake, Build Tools)
+├── resources/    # Headers, libraries, CommonLibSSE
+├── plugins/      # SKSE plugin dependencies
+└── backups/      # Automatic project backups</code></pre>
+
+<h3>Step 2: Install Development Tools</h3>
+<ol>
+    <li>Go to <b>Install Toolchain</b> in the left panel</li>
+    <li>Click <b>Install</b> next to each tool:
+        <ul>
+            <li><b>VS Build Tools</b> - The C++ compiler</li>
+            <li><b>xmake</b> - Build system</li>
+            <li><b>Git</b> - Version control</li>
+        </ul>
+    </li>
+    <li>Wait for each installation to complete</li>
+    <li>Green status indicators show installed tools</li>
+</ol>
+
+<div class="warning">
+<b>VS Build Tools</b> requires a large download (~2-4 GB). Ensure you have a stable internet connection.
+</div>
+
+<h3>Step 3: Configure Game Path (Optional)</h3>
+<p>If you want compiled plugins to be automatically copied to your mods folder:</p>
+<ol>
+    <li>Go to <b>Set Paths</b></li>
+    <li>Set <b>Game Path</b> to your Skyrim SE installation folder</li>
+    <li>Set <b>Mods Path</b> to your mod organizer's mods directory</li>
+</ol>
+
+
+<h1 id="first-project">Creating Your First Project</h1>
+
+<h3>Step 1: Open Create Project</h3>
+<ol>
+    <li>Go to <b>Create Project</b> in the left panel</li>
+    <li>Enter a <b>Project Name</b> (e.g., <code>MyFirstPlugin</code>)</li>
+    <li>The <b>Location</b> will default to your projects folder</li>
+</ol>
+
+<h3>Step 2: Configure Project Metadata</h3>
+<table>
+    <tr><th>Field</th><th>Description</th><th>Example</th></tr>
+    <tr><td>Version</td><td>Initial version number</td><td>1.0.0</td></tr>
+    <tr><td>Author</td><td>Your name or username</td><td>YourName</td></tr>
+    <tr><td>Description</td><td>Brief plugin description</td><td>My awesome SKSE plugin</td></tr>
+    <tr><td>Init Git</td><td>Initialize a Git repository</td><td>Recommended: checked</td></tr>
+</table>
+
+<h3>Step 3: Create the Project</h3>
+<ol>
+    <li>Click <b>Create</b></li>
+    <li>ClibDT will:
+        <ul>
+            <li>Clone the CommonLibSSE-NG template</li>
+            <li>Install ClibUtil and xbyak dependencies</li>
+            <li>Generate <code>xmake.lua</code> build configuration</li>
+            <li>Initialize Git repository (if selected)</li>
+        </ul>
+    </li>
+    <li>Your project is ready at <code>projects/MyFirstPlugin</code></li>
+</ol>
+
+<div class="success">
+<b>Template:</b> Projects use the CommonLibSSE-NG-VR-Template which supports SE, AE, and VR builds.
+</div>
+
+
+<h1 id="building">Building Your Project</h1>
+
+<h3>Step 1: Select Your Project</h3>
+<ol>
+    <li>Go to <b>Compile Project</b> in the left panel</li>
+    <li>Select your project from the <b>Project</b> dropdown</li>
+</ol>
+
+<h3>Step 2: Configure Build Options</h3>
+<table>
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td><b>Configuration</b></td><td>Debug (with symbols), Release (optimized), or RelWithDebInfo</td></tr>
+    <tr><td><b>Runtime</b></td><td>SE only, AE only, SE + AE (dual), or VR only</td></tr>
+    <tr><td><b>Clean</b></td><td>Remove previous build artifacts before building</td></tr>
+</table>
+
+<h3>Step 3: Compile</h3>
+<ol>
+    <li>Click <b>Compile</b></li>
+    <li>Build output appears in the terminal panel at the bottom</li>
+    <li>On success, your DLL is in the project's <code>build</code> folder</li>
+</ol>
+
+<div class="info">
+<b>Build Commands:</b> ClibDT uses xmake under the hood:
+<pre><code>xmake f -m release --skse_runtime=ae
+xmake</code></pre>
+</div>
+
+
+<h1 id="folder-structure">Folder Structure Reference</h1>
+
+<table>
+    <tr><th>Folder</th><th>Purpose</th></tr>
+    <tr><td><code>builds/</code></td><td>Compiled plugin outputs (DLL files)</td></tr>
+    <tr><td><code>projects/</code></td><td>Your SKSE plugin source code projects</td></tr>
+    <tr><td><code>tools/</code></td><td>Downloaded tools and utilities</td></tr>
+    <tr><td><code>tools/BuildTools/</code></td><td>Visual Studio Build Tools workspace</td></tr>
+    <tr><td><code>tools/xmake/</code></td><td>xmake build system</td></tr>
+    <tr><td><code>resources/</code></td><td>Headers, libraries, CommonLibSSE</td></tr>
+    <tr><td><code>plugins/</code></td><td>SKSE plugin dependencies</td></tr>
+    <tr><td><code>backups/</code></td><td>Automatic project backups</td></tr>
+</table>
+
+
+<h1 id="environment-vars">Environment Variables</h1>
+
+<p>ClibDT manages these environment variables:</p>
+
+<table>
+    <tr><th>Variable</th><th>Purpose</th></tr>
+    <tr><td><code>XSE_CLIBDT_DEVROOT</code></td><td>Development root folder</td></tr>
+    <tr><td><code>XSE_MSVCTOOLS_ROOT</code></td><td>Visual Studio Build Tools path</td></tr>
+    <tr><td><code>XSE_XMAKE_ROOT</code></td><td>xmake installation path</td></tr>
+    <tr><td><code>XSE_GIT_ROOT</code></td><td>Git installation path</td></tr>
+    <tr><td><code>XSE_TES5_GAME_PATH</code></td><td>Skyrim SE game folder</td></tr>
+    <tr><td><code>XSE_TES5_MODS_PATH</code></td><td>Mods output folder</td></tr>
+    <tr><td><code>XSE_PROJECTS_ROOT</code></td><td>Projects folder override</td></tr>
+</table>
+
+
+<h1 id="workflow">Development Workflow</h1>
+
+<div class="success">
+<b>Typical workflow:</b>
+<ol>
+    <li><b>Create</b> - Use Create Project to scaffold a new plugin</li>
+    <li><b>Edit</b> - Open the project in your IDE (VS Code, Visual Studio)</li>
+    <li><b>Build</b> - Use Compile Project to build your DLL</li>
+    <li><b>Test</b> - Copy DLL to your game's SKSE plugins folder</li>
+    <li><b>Iterate</b> - Make changes and rebuild</li>
+    <li><b>Backup</b> - Use Custom Backup to save your work</li>
+</ol>
+</div>
+
+</div>
+</body>
+</html>

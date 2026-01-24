@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+pre {
+    background: #2d2d2d;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3c3c3c;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Create Project</h3>
+    <a href="#overview">Overview</a>
+    <a href="#fields">Project Fields</a>
+    <a href="#process">Creation Process</a>
+    <a href="#template">Template Details</a>
+
+    <h3>Reference</h3>
+    <a href="#structure">Project Structure</a>
+    <a href="#xmake-config">xmake Configuration</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Create Project Overview</h1>
+<p>The Create Project tool scaffolds new SKSE plugin projects using the CommonLibSSE-NG template.</p>
+
+<h3>What It Does</h3>
+<ul>
+    <li>Clones the CommonLibSSE-NG-VR-Template from GitHub</li>
+    <li>Installs ClibUtil and xbyak dependencies</li>
+    <li>Generates a customized <code>xmake.lua</code> build configuration</li>
+    <li>Optionally initializes a Git repository with initial commit</li>
+</ul>
+
+<h3>Prerequisites</h3>
+<ul>
+    <li>Development Root configured in Set Paths</li>
+    <li>Git installed via Install Toolchain</li>
+    <li>Internet connection for cloning templates</li>
+</ul>
+
+
+<h1 id="fields">Project Fields</h1>
+
+<table>
+    <tr><th>Field</th><th>Description</th><th>Example</th></tr>
+    <tr><td><b>Project Name</b></td><td>Name for your project (alphanumeric, underscores, dashes)</td><td>DynamicChestLoot</td></tr>
+    <tr><td><b>Location</b></td><td>Parent folder for the project</td><td>C:\Dev\Skyrim\projects</td></tr>
+    <tr><td><b>Version</b></td><td>Initial version number</td><td>1.0.0</td></tr>
+    <tr><td><b>Author</b></td><td>Your name or username</td><td>YourName</td></tr>
+    <tr><td><b>Description</b></td><td>Brief description of the plugin</td><td>Adds dynamic loot to chests</td></tr>
+    <tr><td><b>Init Git</b></td><td>Initialize a Git repository</td><td>Checked (recommended)</td></tr>
+</table>
+
+<h3>Project Name Rules</h3>
+<ul>
+    <li>Alphanumeric characters only (A-Z, a-z, 0-9)</li>
+    <li>Underscores (_) and dashes (-) are allowed</li>
+    <li>No spaces or special characters</li>
+    <li>Names are automatically sanitized if needed</li>
+</ul>
+
+<div class="info">
+<b>Location Default:</b> The location defaults to your Projects folder (<code>%DEVROOT%\projects</code>).
+</div>
+
+
+<h1 id="process">Creation Process</h1>
+
+<h3>Step-by-Step</h3>
+<ol>
+    <li><b>Clone Template</b> - Downloads the CommonLibSSE-NG-VR-Template from GitHub</li>
+    <li><b>Remove Template History</b> - Deletes the template's <code>.git</code> folder</li>
+    <li><b>Install ClibUtil</b> - Clones ClibUtil utility library into the project</li>
+    <li><b>Install xbyak</b> - Clones xbyak JIT assembler library into the project</li>
+    <li><b>Generate xmake.lua</b> - Creates a customized build configuration</li>
+    <li><b>Initialize Git</b> - Creates a new repository with initial commit (if selected)</li>
+</ol>
+
+<h3>Header Actions</h3>
+<table>
+    <tr><th>Button</th><th>Action</th></tr>
+    <tr><td><b>Create</b></td><td>Start the project creation process</td></tr>
+    <tr><td><b>Clear</b></td><td>Clear all input fields</td></tr>
+</table>
+
+
+<h1 id="template">Template Details</h1>
+
+<h3>CommonLibSSE-NG-VR-Template</h3>
+<p>The template used is <a href="https://github.com/Supertron42/CommonLibSSE-NG-VR-Template" target="_blank">CommonLibSSE-NG-VR-Template</a> which provides:</p>
+
+<ul>
+    <li>CommonLibSSE-NG support (Next-Gen version)</li>
+    <li>Support for SE, AE, and VR builds</li>
+    <li>Pre-configured xmake build system</li>
+    <li>Modern C++20 project structure</li>
+</ul>
+
+<h3>Included Dependencies</h3>
+<table>
+    <tr><th>Dependency</th><th>Purpose</th></tr>
+    <tr><td><b>CommonLibSSE-NG</b></td><td>SKSE plugin development framework</td></tr>
+    <tr><td><b>ClibUtil</b></td><td>Utility functions for CommonLib</td></tr>
+    <tr><td><b>xbyak</b></td><td>JIT assembler for runtime code generation</td></tr>
+</table>
+
+
+<h1 id="structure">Project Structure</h1>
+
+<p>After creation, your project will have this structure:</p>
+
+<pre><code>MyProject/
+├── src/                    # Source files
+│   └── main.cpp            # Main plugin entry point
+├── include/                # Header files
+├── ClibUtil/               # ClibUtil dependency
+├── xbyak/                  # xbyak dependency
+├── extern/                 # External dependencies (CommonLibSSE)
+├── xmake.lua               # Build configuration
+├── .gitignore              # Git ignore rules
+└── README.md               # Project readme</code></pre>
+
+
+<h1 id="xmake-config">xmake Configuration</h1>
+
+<p>The generated <code>xmake.lua</code> contains your project settings:</p>
+
+<pre><code>set_project("MyProject")
+set_version("1.0.0")
+
+-- Build configuration
+add_rules("mode.debug", "mode.release")
+set_languages("cxx20")
+
+-- SKSE runtime selection
+option("skse_runtime")
+    set_default("ae")
+    set_values("se", "ae", "vr")
+option_end()
+
+target("MyProject")
+    set_kind("shared")
+    add_files("src/*.cpp")
+    add_includedirs("include")
+    -- CommonLibSSE and dependencies configured here</code></pre>
+
+<h3>Common xmake Commands</h3>
+<pre><code># Configure for release build
+xmake f -m release
+
+# Configure for specific runtime
+xmake f -m release --skse_runtime=ae
+
+# Build the project
+xmake
+
+# Clean build artifacts
+xmake c
+
+# Run the built executable (if applicable)
+xmake run</code></pre>
+
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h3>Git Clone Failed</h3>
+<ul>
+    <li>Check your internet connection</li>
+    <li>Verify Git is installed (Install Toolchain)</li>
+    <li>Ensure <code>XSE_GIT_ROOT</code> is set correctly</li>
+    <li>Try cloning the template manually to test</li>
+</ul>
+
+<h3>Target Already Exists</h3>
+<ul>
+    <li>A project with that name already exists in the location</li>
+    <li>Choose a different name or delete the existing folder</li>
+    <li>The folder must be empty if it exists</li>
+</ul>
+
+<h3>Permission Denied</h3>
+<ul>
+    <li>Ensure you have write access to the projects folder</li>
+    <li>Avoid using system-protected locations</li>
+    <li>Try running ClibDT as administrator</li>
+</ul>
+
+<h3>xmake.lua Generation Failed</h3>
+<ul>
+    <li>Check the terminal output for specific errors</li>
+    <li>Verify the template cloned successfully</li>
+    <li>You can manually create <code>xmake.lua</code> if needed</li>
+</ul>
+
+<div class="success">
+<b>Next Step:</b> After creating a project, use <a href="compile_project_help.html">Compile Project</a> to build your plugin.
+</div>
+
+</div>
+</body>
+</html>

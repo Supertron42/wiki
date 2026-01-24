@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+pre {
+    background: #2d2d2d;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #3c3c3c;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Compile Project</h3>
+    <a href="#overview">Overview</a>
+    <a href="#options">Build Options</a>
+    <a href="#actions">Header Actions</a>
+    <a href="#output">Build Output</a>
+
+    <h3>Reference</h3>
+    <a href="#configurations">Configurations</a>
+    <a href="#runtimes">Runtime Targets</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Compile Project Overview</h1>
+<p>The Compile Project tool builds your SKSE plugins using the xmake build system.</p>
+
+<h3>What It Does</h3>
+<ul>
+    <li>Auto-detects projects in your projects folder</li>
+    <li>Configures xmake with your build settings</li>
+    <li>Compiles your plugin to a DLL file</li>
+    <li>Optionally copies output to your mods folder</li>
+</ul>
+
+<h3>Prerequisites</h3>
+<ul>
+    <li>VS Build Tools installed via Install Toolchain</li>
+    <li>xmake installed via Install Toolchain</li>
+    <li>A project created via Create Project</li>
+</ul>
+
+
+<h1 id="options">Build Options</h1>
+
+<table>
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td><b>Project</b></td><td>Select the project to build from the dropdown</td></tr>
+    <tr><td><b>Configuration</b></td><td>Debug, Release, or RelWithDebInfo</td></tr>
+    <tr><td><b>Runtime</b></td><td>SE only, AE only, SE + AE (dual), or VR only</td></tr>
+    <tr><td><b>Clean</b></td><td>Remove previous build artifacts before building</td></tr>
+    <tr><td><b>Version</b></td><td>Override the version number for this build</td></tr>
+    <tr><td><b>Description</b></td><td>Override the plugin description for this build</td></tr>
+</table>
+
+
+<h1 id="actions">Header Actions</h1>
+
+<table>
+    <tr><th>Button</th><th>Action</th></tr>
+    <tr><td><b>Compile</b></td><td>Configure and build the project</td></tr>
+    <tr><td><b>Clean</b></td><td>Remove all build artifacts and configuration files</td></tr>
+    <tr><td><b>Open</b></td><td>Open the build output folder in file explorer</td></tr>
+    <tr><td><b>Stop</b></td><td>Stop a running build process</td></tr>
+</table>
+
+
+<h1 id="output">Build Output</h1>
+
+<h3>Terminal Output</h3>
+<p>Build progress and any errors are shown in the terminal panel at the bottom of the window.</p>
+
+<h3>Output Location</h3>
+<p>After a successful build, your DLL is located at:</p>
+<pre><code>%PROJECT%/build/%PLATFORM%/%CONFIG%/%PROJECT%.dll</code></pre>
+
+<p>For example:</p>
+<pre><code>C:\Dev\Skyrim\projects\MyPlugin\build\windows\x64\release\MyPlugin.dll</code></pre>
+
+<div class="success">
+<b>Mods Path:</b> If you've configured a Mods Path in Set Paths, the DLL can be automatically copied there after a successful build.
+</div>
+
+
+<h1 id="configurations">Build Configurations</h1>
+
+<table>
+    <tr><th>Configuration</th><th>Description</th><th>Use Case</th></tr>
+    <tr><td><b>Debug</b></td><td>No optimization, full debug symbols</td><td>Development, debugging with a debugger</td></tr>
+    <tr><td><b>Release</b></td><td>Full optimization, no debug symbols</td><td>Final release builds</td></tr>
+    <tr><td><b>RelWithDebInfo</b></td><td>Optimization with debug symbols</td><td>Profiling, debugging crashes in release</td></tr>
+</table>
+
+<h3>Recommended Workflow</h3>
+<ul>
+    <li>Use <b>Debug</b> during active development</li>
+    <li>Use <b>RelWithDebInfo</b> for testing performance</li>
+    <li>Use <b>Release</b> for final distribution</li>
+</ul>
+
+
+<h1 id="runtimes">Runtime Targets</h1>
+
+<p>SKSE plugins can target different Skyrim versions:</p>
+
+<table>
+    <tr><th>Runtime</th><th>Description</th><th>Game Version</th></tr>
+    <tr><td><b>SE only</b></td><td>Skyrim Special Edition (pre-AE)</td><td>1.5.97 and earlier</td></tr>
+    <tr><td><b>AE only</b></td><td>Skyrim Anniversary Edition</td><td>1.6.x</td></tr>
+    <tr><td><b>SE + AE (dual)</b></td><td>Both SE and AE in one plugin</td><td>All versions</td></tr>
+    <tr><td><b>VR only</b></td><td>Skyrim VR</td><td>VR version</td></tr>
+</table>
+
+<div class="info">
+<b>Dual Runtime:</b> The "SE + AE (dual)" option creates a plugin that works with both SE and AE versions. This is the recommended choice for maximum compatibility.
+</div>
+
+<h3>xmake Runtime Flags</h3>
+<pre><code># SE only
+xmake f -m release --skse_runtime=se
+
+# AE only
+xmake f -m release --skse_runtime=ae
+
+# Dual (SE + AE)
+xmake f -m release --skse_runtime=dual
+
+# VR only
+xmake f -m release --skse_runtime=vr</code></pre>
+
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h3>Build Fails Immediately</h3>
+<ul>
+    <li>Ensure VS Build Tools is installed</li>
+    <li>Verify <code>XSE_MSVCTOOLS_ROOT</code> is set in Set Paths</li>
+    <li>Try running Clean before building</li>
+</ul>
+
+<h3>Compiler Errors</h3>
+<ul>
+    <li>Check the terminal output for specific error messages</li>
+    <li>Verify your code compiles correctly</li>
+    <li>Ensure all dependencies are present in the project</li>
+</ul>
+
+<h3>Linker Errors</h3>
+<ul>
+    <li>Check for missing libraries</li>
+    <li>Verify CommonLibSSE dependencies are configured</li>
+    <li>Ensure the correct runtime is selected</li>
+</ul>
+
+<h3>xmake Not Found</h3>
+<ul>
+    <li>Install xmake via Install Toolchain</li>
+    <li>Verify <code>XSE_XMAKE_ROOT</code> is set in Set Paths</li>
+    <li>Restart ClibDT after installation</li>
+</ul>
+
+<h3>MSVC Not Found</h3>
+<ul>
+    <li>Run <code>xmake f -c</code> to reset configuration</li>
+    <li>Verify VS Build Tools installation</li>
+    <li>Try: <code>xmake f --toolchain=msvc</code></li>
+</ul>
+
+<h3>Clean Build Doesn't Help</h3>
+<ul>
+    <li>Manually delete the <code>build</code> folder in the project</li>
+    <li>Delete <code>.xmake</code> folder in the project</li>
+    <li>Run <code>xmake f -c</code> to clear configuration cache</li>
+</ul>
+
+<div class="warning">
+<b>Antivirus Warning:</b> Some antivirus software may flag compiled DLLs. Add your build folders to your antivirus exclusions if you encounter false positives.
+</div>
+
+</div>
+</body>
+</html>

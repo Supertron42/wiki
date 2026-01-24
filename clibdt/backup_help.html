@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Custom Backup</h3>
+    <a href="#overview">Overview</a>
+    <a href="#options">Backup Options</a>
+    <a href="#modes">Backup Modes</a>
+    <a href="#using">Using Backups</a>
+
+    <h3>Reference</h3>
+    <a href="#best-practices">Best Practices</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Custom Backup Overview</h1>
+<p>The Custom Backup tool helps protect your development work by creating backups of your source folders.</p>
+
+<h3>Features</h3>
+<ul>
+    <li>Smart backup mode - only copies changed files</li>
+    <li>Full backup mode - complete copy of source</li>
+    <li>Incremental backup mode - stores changes over time</li>
+    <li>Optional checksum verification</li>
+    <li>Progress tracking during backup</li>
+</ul>
+
+
+<h1 id="options">Backup Options</h1>
+
+<table>
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td><b>Source</b></td><td>The folder to backup (your dev root or a project folder)</td></tr>
+    <tr><td><b>Destination</b></td><td>Where to save the backup</td></tr>
+    <tr><td><b>Mode</b></td><td>Smart, Full, or Incremental backup mode</td></tr>
+    <tr><td><b>Verify Checksums</b></td><td>Verify file integrity after copying</td></tr>
+</table>
+
+<h3>Source Selection</h3>
+<p>You can backup:</p>
+<ul>
+    <li>Your entire Development Root</li>
+    <li>A specific project folder</li>
+    <li>Any folder you select</li>
+</ul>
+
+<h3>Destination</h3>
+<p>Recommended destinations:</p>
+<ul>
+    <li>External drive (USB, SSD)</li>
+    <li>Network location</li>
+    <li>Cloud-synced folder (OneDrive, Dropbox)</li>
+    <li>A different drive from your source</li>
+</ul>
+
+<div class="warning">
+<b>Don't backup to the same drive!</b> If your drive fails, you'll lose both the original and the backup.
+</div>
+
+
+<h1 id="modes">Backup Modes</h1>
+
+<h3>Smart Mode</h3>
+<p>Copies only files that have changed since the last backup.</p>
+<ul>
+    <li><b>Pros:</b> Fast, space-efficient</li>
+    <li><b>Cons:</b> Requires previous backup metadata</li>
+    <li><b>Best for:</b> Regular daily/weekly backups</li>
+</ul>
+
+<h3>Full Mode</h3>
+<p>Copies all files from source to destination.</p>
+<ul>
+    <li><b>Pros:</b> Complete copy, no dependencies</li>
+    <li><b>Cons:</b> Slower, uses more space</li>
+    <li><b>Best for:</b> First-time backups, major milestones</li>
+</ul>
+
+<h3>Incremental Mode</h3>
+<p>Stores changes over time, allowing you to restore to any point.</p>
+<ul>
+    <li><b>Pros:</b> Version history, space-efficient</li>
+    <li><b>Cons:</b> More complex restoration</li>
+    <li><b>Best for:</b> Projects with frequent changes</li>
+</ul>
+
+<table>
+    <tr><th>Mode</th><th>Speed</th><th>Space</th><th>Restore Complexity</th></tr>
+    <tr><td>Smart</td><td>Fast</td><td>Low</td><td>Simple</td></tr>
+    <tr><td>Full</td><td>Slow</td><td>High</td><td>Simple</td></tr>
+    <tr><td>Incremental</td><td>Medium</td><td>Medium</td><td>Medium</td></tr>
+</table>
+
+
+<h1 id="using">Using Backups</h1>
+
+<h3>Creating a Backup</h3>
+<ol>
+    <li>Go to <b>Custom Backup</b> in the left panel</li>
+    <li>Set the <b>Source</b> folder (or leave as dev root)</li>
+    <li>Set the <b>Destination</b> folder</li>
+    <li>Choose a backup <b>Mode</b></li>
+    <li>Click <b>Backup</b></li>
+    <li>Wait for the backup to complete</li>
+</ol>
+
+<h3>Restoring from Backup</h3>
+<p>To restore files from a backup:</p>
+<ol>
+    <li>Navigate to your backup destination folder</li>
+    <li>Copy the files/folders you need back to your source location</li>
+    <li>For incremental backups, restore in chronological order</li>
+</ol>
+
+<div class="info">
+<b>Backup Location:</b> Project backups default to <code>%DEVROOT%/backups/{project_name}</code>.
+</div>
+
+
+<h1 id="best-practices">Best Practices</h1>
+
+<div class="success">
+<b>Recommended backup strategy:</b>
+<ul>
+    <li>Run <b>Full backup</b> monthly or after major changes</li>
+    <li>Run <b>Smart backup</b> weekly during active development</li>
+    <li>Enable <b>Verify Checksums</b> for important backups</li>
+    <li>Store backups on a <b>different physical drive</b></li>
+    <li>Keep at least <b>3 backup copies</b></li>
+</ul>
+</div>
+
+<h3>3-2-1 Backup Rule</h3>
+<ul>
+    <li><b>3</b> copies of your data</li>
+    <li><b>2</b> different storage types (SSD + external drive)</li>
+    <li><b>1</b> offsite backup (cloud or different location)</li>
+</ul>
+
+<h3>What to Backup</h3>
+<ul>
+    <li><b>Always:</b> Source code (<code>src/</code>, <code>include/</code>)</li>
+    <li><b>Always:</b> Build configuration (<code>xmake.lua</code>)</li>
+    <li><b>Recommended:</b> Project metadata (<code>.git/</code>)</li>
+    <li><b>Optional:</b> Build artifacts (can be regenerated)</li>
+</ul>
+
+<h3>What Not to Backup</h3>
+<ul>
+    <li><b>Skip:</b> Downloaded tools (can be reinstalled)</li>
+    <li><b>Skip:</b> Build cache (<code>.xmake/</code>, <code>build/</code>)</li>
+    <li><b>Skip:</b> Large binary dependencies</li>
+</ul>
+
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h3>Backup Fails</h3>
+<ul>
+    <li>Check you have write access to the destination</li>
+    <li>Ensure enough disk space is available</li>
+    <li>Close any programs using files in the source folder</li>
+</ul>
+
+<h3>Backup Is Slow</h3>
+<ul>
+    <li>Use Smart mode instead of Full mode</li>
+    <li>Exclude large unnecessary folders</li>
+    <li>Check your destination drive speed</li>
+</ul>
+
+<h3>Verification Fails</h3>
+<ul>
+    <li>File may have been modified during backup</li>
+    <li>Try running the backup again</li>
+    <li>Check for disk errors on source or destination</li>
+</ul>
+
+<h3>Can't Restore Files</h3>
+<ul>
+    <li>Verify the backup completed successfully</li>
+    <li>Check file permissions on the backup</li>
+    <li>For incremental backups, ensure you have all parts</li>
+</ul>
+
+</div>
+</body>
+</html>

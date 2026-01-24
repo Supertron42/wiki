@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+
+/* Callout boxes */
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Color swatches */
+.color-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 6px;
+    border: 1px solid #555;
+}
+
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#3D7EFF; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Settings</h3>
+    <a href="#overview">Overview</a>
+    <a href="#theme">Theme</a>
+    <a href="#accent">Accent Color</a>
+    <a href="#developer">Developer Mode</a>
+
+    <h3>Reference</h3>
+    <a href="#storage">Settings Storage</a>
+    <a href="#reset">Reset Settings</a>
+</div>
+
+<div id="content">
+
+<h1 id="overview">Settings Overview</h1>
+<p>The Settings tool lets you customize the appearance and behavior of ClibDT.</p>
+
+<h3>Available Settings</h3>
+<table>
+    <tr><th>Setting</th><th>Description</th></tr>
+    <tr><td><b>Theme</b></td><td>Dark or Light mode</td></tr>
+    <tr><td><b>Accent Color</b></td><td>UI accent color (buttons, highlights)</td></tr>
+    <tr><td><b>Developer Mode</b></td><td>Enable advanced developer features</td></tr>
+</table>
+
+<h3>Auto-Save</h3>
+<p>Settings are automatically saved when you make changes. There's no need to click a save button.</p>
+
+
+<h1 id="theme">Theme</h1>
+
+<p>ClibDT supports two color themes:</p>
+
+<table>
+    <tr><th>Theme</th><th>Description</th></tr>
+    <tr><td><b>Dark</b></td><td>Dark background with light text (default)</td></tr>
+    <tr><td><b>Light</b></td><td>Light background with dark text</td></tr>
+</table>
+
+<h3>Changing Theme</h3>
+<ol>
+    <li>Go to <b>Settings</b> in the left panel</li>
+    <li>Select <b>Dark</b> or <b>Light</b> from the Theme dropdown</li>
+    <li>The theme applies immediately</li>
+</ol>
+
+<div class="info">
+<b>Default:</b> ClibDT uses the Dark theme by default, which is designed to reduce eye strain during long coding sessions.
+</div>
+
+
+<h1 id="accent">Accent Color</h1>
+
+<p>The accent color is used for buttons, highlights, and interactive elements.</p>
+
+<h3>Preset Colors</h3>
+<table>
+    <tr><th>Color</th><th>Hex Value</th></tr>
+    <tr><td><span class="color-swatch" style="background:#3D7EFF;"></span>Blue</td><td>#3D7EFF</td></tr>
+    <tr><td><span class="color-swatch" style="background:#2ECC71;"></span>Green</td><td>#2ECC71</td></tr>
+    <tr><td><span class="color-swatch" style="background:#F39C12;"></span>Orange</td><td>#F39C12</td></tr>
+    <tr><td><span class="color-swatch" style="background:#8E44AD;"></span>Purple</td><td>#8E44AD</td></tr>
+    <tr><td><span class="color-swatch" style="background:#E74C3C;"></span>Red</td><td>#E74C3C</td></tr>
+    <tr><td><span class="color-swatch" style="background:#1ABC9C;"></span>Teal</td><td>#1ABC9C</td></tr>
+</table>
+
+<h3>Custom Color</h3>
+<ol>
+    <li>Select <b>Custom</b> from the Accent Color dropdown</li>
+    <li>Click the <b>Pick</b> button</li>
+    <li>Choose any color from the color picker</li>
+    <li>The accent color updates immediately</li>
+</ol>
+
+<div class="success">
+<b>Pick Button:</b> The Pick button shows a preview of the current accent color.
+</div>
+
+
+<h1 id="developer">Developer Mode</h1>
+
+<p>Developer Mode enables additional features for advanced users.</p>
+
+<h3>What It Enables</h3>
+<ul>
+    <li>Additional debug output in the terminal</li>
+    <li>Developer-specific tools and options</li>
+    <li>Advanced configuration options</li>
+</ul>
+
+<h3>Enabling Developer Mode</h3>
+<ol>
+    <li>Go to <b>Settings</b> in the left panel</li>
+    <li>Check the <b>Enable developer features</b> checkbox</li>
+    <li>Developer features are now available</li>
+</ol>
+
+<div class="info">
+<b>Note:</b> Developer Mode is intended for ClibDT contributors and advanced users. Most users don't need to enable this.
+</div>
+
+
+<h1 id="storage">Settings Storage</h1>
+
+<p>ClibDT stores settings in two locations:</p>
+
+<h3>JSON Configuration File</h3>
+<p>Primary storage location:</p>
+<pre style="background: #2d2d2d; padding: 8px; border-radius: 4px;"><code>%LOCALAPPDATA%\ClibDT\clibdt_settings.json</code></pre>
+
+<h3>Windows Registry</h3>
+<p>Backup storage (QSettings):</p>
+<pre style="background: #2d2d2d; padding: 8px; border-radius: 4px;"><code>HKEY_CURRENT_USER\Software\ClibDT\ClibDT</code></pre>
+
+<h3>Settings File Contents</h3>
+<p>The JSON file contains:</p>
+<pre style="background: #2d2d2d; padding: 8px; border-radius: 4px;"><code>{
+  "theme": "dark",
+  "accent": "blue",
+  "developer": false
+}</code></pre>
+
+
+<h1 id="reset">Reset Settings</h1>
+
+<h3>Reset to Defaults</h3>
+<ol>
+    <li>Go to <b>Settings</b> in the left panel</li>
+    <li>Click the <b>Reset</b> button</li>
+    <li>Settings are reset to:
+        <ul>
+            <li>Theme: Dark</li>
+            <li>Accent: Blue</li>
+            <li>Developer Mode: Off</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Manual Reset</h3>
+<p>To completely reset settings:</p>
+<ol>
+    <li>Close ClibDT</li>
+    <li>Delete <code>%LOCALAPPDATA%\ClibDT\clibdt_settings.json</code></li>
+    <li>Restart ClibDT</li>
+</ol>
+
+</div>
+</body>
+</html>

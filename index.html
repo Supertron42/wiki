@@ -172,6 +172,7 @@ h1 {
     let explosions = [];
     let gameState = 'waiting'; // waiting, playing, gameOver
     let spawnTimer = null;
+    let restartCountdown = 0;
 
     const ship = { x: 40, width: 24, height: 16 };
 
@@ -189,6 +190,7 @@ h1 {
             return;
         }
         if (gameState === 'gameOver') {
+            if (restartCountdown > 0) return;
             gameState = 'playing';
             score = 0;
             baseSpeed = 2;
@@ -280,7 +282,11 @@ h1 {
         ctx.fillText('Final Score: ' + score, canvas.width / 2, canvas.height / 2 + 12);
         ctx.fillStyle = '#9cdcfe';
         ctx.font = '11px Segoe UI';
-        ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 30);
+        if (restartCountdown > 0) {
+            ctx.fillText('Restart in ' + restartCountdown + '...', canvas.width / 2, canvas.height / 2 + 30);
+        } else {
+            ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 30);
+        }
     }
 
     function update() {
@@ -334,6 +340,11 @@ h1 {
                         highScoreDisplay.style.visibility = 'visible';
                         explode(ship.x + ship.width/2, shipY);
                         gameOverSound();
+                        restartCountdown = 3;
+                        const countdownInterval = setInterval(() => {
+                            restartCountdown--;
+                            if (restartCountdown <= 0) clearInterval(countdownInterval);
+                        }, 1000);
                     }
                 }
 

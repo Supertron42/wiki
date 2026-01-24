@@ -98,16 +98,16 @@ h1 {
 <body>
 
 <div class="landing-container">
-    <h1>MO2 Collections Wiki</h1>
-    <p class="subtitle">Documentation for MO2 plugin extensions and development tools</p>
-
-    <!-- Space Game -->
-    <div style="margin-bottom: 30px;">
-        <canvas id="gameCanvas" width="600" height="200" style="border: 1px solid #3c3c3c; border-radius: 8px; background: #0a0a12; cursor: none;"></canvas>
-        <div style="margin-top: 8px; font-size: 12px; color: #9cdcfe;">
-            <span id="scoreDisplay">Score: 0</span> | <span id="gameStatus">Click to shoot</span>
+    <!-- Space Game at top -->
+    <div style="margin-bottom: 20px;">
+        <canvas id="gameCanvas" width="600" height="150" style="border: 1px solid #3c3c3c; border-radius: 8px; background: #0a0a12; cursor: none;"></canvas>
+        <div style="margin-top: 6px; font-size: 11px; color: #6a6a7a;">
+            <span id="scoreDisplay">Score: 0</span> | <span id="gameStatus">Click to start</span>
         </div>
     </div>
+
+    <h1>MO2 Collections Wiki</h1>
+    <p class="subtitle">Documentation for MO2 plugin extensions and development tools</p>
 
     <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
         <div class="wiki-card" style="border-color: #DA8E35; background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('collectionsmanager/cm02thumbnail.webp') center/cover;">
@@ -136,96 +136,118 @@ h1 {
     const scoreDisplay = document.getElementById('scoreDisplay');
     const gameStatus = document.getElementById('gameStatus');
 
+    // Audio context for retro sounds
+    let audioCtx = null;
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    function playSound(freq, duration, type = 'square', vol = 0.1) {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+    function shootSound() { playSound(880, 0.08, 'square', 0.08); }
+    function explodeSound() { playSound(150, 0.15, 'sawtooth', 0.1); }
+    function gameOverSound() {
+        playSound(440, 0.15, 'square', 0.1);
+        setTimeout(() => playSound(330, 0.15, 'square', 0.1), 150);
+        setTimeout(() => playSound(220, 0.3, 'square', 0.1), 300);
+    }
+
     let shipY = canvas.height / 2;
     let score = 0;
     let baseSpeed = 2;
     let bullets = [];
     let rocks = [];
     let explosions = [];
-    let gameOver = false;
+    let gameState = 'waiting'; // waiting, playing, gameOver
+    let spawnTimer = null;
 
-    // Ship properties
-    const ship = { x: 50, width: 30, height: 20 };
+    const ship = { x: 40, width: 24, height: 16 };
 
-    // Track mouse
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
         shipY = e.clientY - rect.top;
         shipY = Math.max(ship.height/2, Math.min(canvas.height - ship.height/2, shipY));
     });
 
-    // Shoot on click
     canvas.addEventListener('click', () => {
-        if (gameOver) {
-            // Restart
-            gameOver = false;
+        initAudio();
+        if (gameState === 'waiting') {
+            gameState = 'playing';
+            gameStatus.textContent = 'Click to shoot';
+            spawnTimer = setInterval(spawnRock, 1000);
+            return;
+        }
+        if (gameState === 'gameOver') {
+            gameState = 'playing';
             score = 0;
             baseSpeed = 2;
             rocks = [];
             bullets = [];
             explosions = [];
+            scoreDisplay.textContent = 'Score: 0';
             gameStatus.textContent = 'Click to shoot';
+            spawnTimer = setInterval(spawnRock, 1000);
             return;
         }
-        bullets.push({ x: ship.x + ship.width, y: shipY, speed: 8 });
+        bullets.push({ x: ship.x + ship.width, y: shipY, speed: 10 });
+        shootSound();
     });
 
-    // Spawn rocks
     function spawnRock() {
-        if (gameOver) return;
-        const size = 10 + Math.random() * 25;
+        if (gameState !== 'playing') return;
+        const size = 8 + Math.random() * 20;
         rocks.push({
             x: canvas.width + size,
             y: Math.random() * (canvas.height - size * 2) + size,
             radius: size,
-            speed: baseSpeed + Math.random() * 2,
+            speed: baseSpeed + Math.random() * 1.5,
             rotation: Math.random() * Math.PI * 2,
             rotSpeed: (Math.random() - 0.5) * 0.1
         });
     }
 
-    // Create explosion
     function explode(x, y) {
         for (let i = 0; i < 8; i++) {
             const angle = (Math.PI * 2 / 8) * i;
-            explosions.push({
-                x, y,
-                vx: Math.cos(angle) * 3,
-                vy: Math.sin(angle) * 3,
-                life: 20
-            });
+            explosions.push({ x, y, vx: Math.cos(angle) * 2.5, vy: Math.sin(angle) * 2.5, life: 15 });
         }
     }
 
-    // Draw ship
     function drawShip() {
         ctx.fillStyle = '#4ec9b0';
         ctx.beginPath();
         ctx.moveTo(ship.x + ship.width, shipY);
         ctx.lineTo(ship.x, shipY - ship.height/2);
-        ctx.lineTo(ship.x + 8, shipY);
+        ctx.lineTo(ship.x + 6, shipY);
         ctx.lineTo(ship.x, shipY + ship.height/2);
         ctx.closePath();
         ctx.fill();
-
-        // Engine glow
         ctx.fillStyle = '#DA8E35';
         ctx.beginPath();
-        ctx.moveTo(ship.x, shipY - 5);
-        ctx.lineTo(ship.x - 10 - Math.random() * 5, shipY);
-        ctx.lineTo(ship.x, shipY + 5);
+        ctx.moveTo(ship.x, shipY - 4);
+        ctx.lineTo(ship.x - 8 - Math.random() * 4, shipY);
+        ctx.lineTo(ship.x, shipY + 4);
         ctx.closePath();
         ctx.fill();
     }
 
-    // Draw rock
     function drawRock(rock) {
         ctx.save();
         ctx.translate(rock.x, rock.y);
         ctx.rotate(rock.rotation);
         ctx.fillStyle = '#5a5a6a';
         ctx.strokeStyle = '#7a7a8a';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
         for (let i = 0; i < 7; i++) {
             const angle = (Math.PI * 2 / 7) * i;
@@ -239,88 +261,109 @@ h1 {
         ctx.restore();
     }
 
-    // Game loop
+    function drawStartScreen() {
+        ctx.fillStyle = '#4ec9b0';
+        ctx.font = 'bold 16px Segoe UI';
+        ctx.textAlign = 'center';
+        ctx.fillText('Click to Start', canvas.width / 2, canvas.height / 2 + 5);
+    }
+
+    function drawGameOver() {
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#f44747';
+        ctx.font = 'bold 18px Segoe UI';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 10);
+        ctx.fillStyle = '#fff';
+        ctx.font = '14px Segoe UI';
+        ctx.fillText('Final Score: ' + score, canvas.width / 2, canvas.height / 2 + 12);
+        ctx.fillStyle = '#9cdcfe';
+        ctx.font = '11px Segoe UI';
+        ctx.fillText('Click to restart', canvas.width / 2, canvas.height / 2 + 30);
+    }
+
     function update() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw stars
+        // Stars
         ctx.fillStyle = '#ffffff22';
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 20; i++) {
             ctx.fillRect((i * 73 + Date.now() * 0.02) % canvas.width, (i * 37) % canvas.height, 1, 1);
         }
 
-        if (!gameOver) {
+        if (gameState === 'waiting') {
+            drawShip();
+            drawStartScreen();
+        } else if (gameState === 'playing') {
             // Update bullets
-            bullets.forEach((b, i) => {
-                b.x += b.speed;
-                if (b.x > canvas.width) bullets.splice(i, 1);
-            });
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                bullets[i].x += bullets[i].speed;
+                if (bullets[i].x > canvas.width) bullets.splice(i, 1);
+            }
 
             // Update rocks
-            rocks.forEach((r, i) => {
+            for (let i = rocks.length - 1; i >= 0; i--) {
+                const r = rocks[i];
                 r.x -= r.speed;
                 r.rotation += r.rotSpeed;
 
-                // Check bullet collision
-                bullets.forEach((b, bi) => {
-                    const dx = b.x - r.x;
-                    const dy = b.y - r.y;
+                // Bullet collision
+                for (let bi = bullets.length - 1; bi >= 0; bi--) {
+                    const b = bullets[bi];
+                    const dx = b.x - r.x, dy = b.y - r.y;
                     if (Math.sqrt(dx*dx + dy*dy) < r.radius) {
                         explode(r.x, r.y);
+                        explodeSound();
                         rocks.splice(i, 1);
                         bullets.splice(bi, 1);
                         score++;
-                        baseSpeed = 2 + score * 0.1;
+                        baseSpeed = 2 + score * 0.08;
                         scoreDisplay.textContent = 'Score: ' + score;
-                    }
-                });
-
-                // Check ship collision
-                if (r.x - r.radius < ship.x + ship.width && r.x + r.radius > ship.x) {
-                    if (r.y + r.radius > shipY - ship.height/2 && r.y - r.radius < shipY + ship.height/2) {
-                        gameOver = true;
-                        gameStatus.textContent = 'Game Over! Click to restart';
-                        explode(ship.x + ship.width/2, shipY);
+                        break;
                     }
                 }
 
-                if (r.x + r.radius < 0) rocks.splice(i, 1);
-            });
+                // Ship collision
+                if (rocks[i] && r.x - r.radius < ship.x + ship.width && r.x + r.radius > ship.x) {
+                    if (r.y + r.radius > shipY - ship.height/2 && r.y - r.radius < shipY + ship.height/2) {
+                        gameState = 'gameOver';
+                        clearInterval(spawnTimer);
+                        gameStatus.textContent = 'Game Over! Final Score: ' + score;
+                        explode(ship.x + ship.width/2, shipY);
+                        gameOverSound();
+                    }
+                }
+
+                if (rocks[i] && r.x + r.radius < 0) rocks.splice(i, 1);
+            }
+
+            drawShip();
         }
 
-        // Update explosions
-        explosions.forEach((e, i) => {
-            e.x += e.vx;
-            e.y += e.vy;
-            e.life--;
-            if (e.life <= 0) explosions.splice(i, 1);
-        });
+        // Update & draw explosions
+        for (let i = explosions.length - 1; i >= 0; i--) {
+            const e = explosions[i];
+            e.x += e.vx; e.y += e.vy; e.life--;
+            if (e.life <= 0) { explosions.splice(i, 1); continue; }
+            ctx.fillStyle = `rgba(255, ${150 + e.life * 6}, 0, ${e.life / 15})`;
+            ctx.beginPath();
+            ctx.arc(e.x, e.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
 
         // Draw bullets
         ctx.fillStyle = '#ffff00';
-        bullets.forEach(b => {
-            ctx.fillRect(b.x, b.y - 2, 12, 4);
-        });
+        bullets.forEach(b => ctx.fillRect(b.x, b.y - 1.5, 10, 3));
 
         // Draw rocks
         rocks.forEach(drawRock);
 
-        // Draw explosions
-        explosions.forEach(e => {
-            ctx.fillStyle = `rgba(255, ${150 + e.life * 5}, 0, ${e.life / 20})`;
-            ctx.beginPath();
-            ctx.arc(e.x, e.y, 4, 0, Math.PI * 2);
-            ctx.fill();
-        });
-
-        // Draw ship
-        if (!gameOver) drawShip();
+        if (gameState === 'gameOver') drawGameOver();
 
         requestAnimationFrame(update);
     }
 
-    // Spawn rocks periodically
-    setInterval(spawnRock, 1200);
     update();
 })();
 </script>

@@ -147,6 +147,28 @@ tr:nth-child(even) {
     background: #252526;
 }
 
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 0px 4px;
+    margin: 0 2px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: normal;
+}
+.tag-green {
+    background: #2E7D32;
+    color: white;
+}
+.tag-orange {
+    background: #DA8E35;
+    color: white;
+}
+.tag-blue {
+    background: #1565c0;
+    color: white;
+}
+
 /* Scroll margin for anchors */
 [id] {
     scroll-margin-top: 20px;
@@ -162,22 +184,27 @@ tr:nth-child(even) {
     <a href="#purpose">Purpose</a>
     <a href="#workflow">Basic Workflow</a>
 
-    <h3>Table Columns</h3>
-    <a href="#columns">Column Reference</a>
+    <h3>Interface</h3>
+    <a href="#columns">Table Columns</a>
     <a href="#status-indicators">Status Indicators</a>
+    <a href="#tags">Tags</a>
+    <a href="#conflicts-pane">Conflicts Pane</a>
+
+    <h3>Reordering</h3>
+    <a href="#drag-drop">Drag-Drop Basics</a>
+    <a href="#multi-select">Multi-Select Drag</a>
+    <a href="#user-rules">User Rules</a>
+    <a href="#strict-rules">Strict Rules</a>
 
     <h3>Features</h3>
-    <a href="#preview">Preview & Detection</a>
-    <a href="#reordering">Drag-Drop Reordering</a>
-    <a href="#conflicts-pane">Conflicts Pane</a>
     <a href="#isolation">Isolation Mode</a>
+    <a href="#collection-order">Collection Order</a>
 
     <h3>Settings</h3>
     <a href="#filters">Filter Options</a>
-    <a href="#collection-order">Collection Order</a>
-    <a href="#user-rules">User Rules</a>
+    <a href="#managing-rules">Managing Rules</a>
 
-    <h3>Saving & Loading</h3>
+    <h3>Save & Apply</h3>
     <a href="#save-load">Save/Load Order</a>
     <a href="#apply">Applying Changes</a>
 
@@ -210,17 +237,17 @@ tr:nth-child(even) {
 <div id="content">
 
 <h1 id="purpose">Purpose of the Sort Tool</h1>
-<p>The Sort Mod List tool helps you organize your MO2 mod list to match the collection author's intended install order. It provides:</p>
+<p>The Sort Mod List tool helps you organize your MO2 mod list to resolve conflicts and match the collection author's intended install order. It provides:</p>
 <ul>
     <li>Visual preview of your mod list with conflict detection</li>
     <li>Automatic sorting based on collection install order</li>
-    <li>Drag-and-drop reordering for manual adjustments</li>
+    <li>Drag-and-drop reordering with persistent user rules</li>
     <li>Conflict highlighting to identify which mods overwrite each other</li>
     <li>Isolation mode to focus on specific mod conflicts</li>
 </ul>
 
 <div class="info">
-<b>Why Sort Order Matters:</b> In MO2, mods lower in the list overwrite mods higher up. The collection author carefully ordered mods so that patches, fixes, and compatibility files load after the mods they modify. Following this order ensures everything works together correctly.
+<b>Why Sort Order Matters:</b> In MO2, mods lower in the list (higher priority number) overwrite mods higher up. The collection author carefully ordered mods so that patches, fixes, and compatibility files load after the mods they modify. Following this order ensures everything works together correctly.
 </div>
 
 
@@ -233,7 +260,7 @@ tr:nth-child(even) {
 </ol>
 
 <div class="warning">
-<b>Important:</b> The Preview button must be clicked before you can apply changes. This ensures you see the current state before modifying anything.
+<b>Important:</b> You must click Preview before you can apply changes. This ensures you see the current state before modifying anything.
 </div>
 
 
@@ -242,7 +269,7 @@ tr:nth-child(even) {
     <tr><th>Column</th><th>Description</th></tr>
     <tr><td><b>No.</b></td><td>Row number showing the current position in the sort order</td></tr>
     <tr><td><b>Status</b></td><td>Mod status indicators (enabled, disabled, problem, etc.)</td></tr>
-    <tr><td><b>Mod Name</b></td><td>The mod's display name, with collection tags if applicable</td></tr>
+    <tr><td><b>Mod Name</b></td><td>The mod's display name, with tags if applicable</td></tr>
     <tr><td><b>Category</b></td><td>The mod's assigned category from MO2</td></tr>
     <tr><td><b>Version</b></td><td>The mod's version number</td></tr>
     <tr><td><b>Conflicts</b></td><td>Count of overwrites/overwritten files with other mods</td></tr>
@@ -262,71 +289,117 @@ tr:nth-child(even) {
 <h3>Row Highlighting</h3>
 <table>
     <tr><th>Color</th><th>Meaning</th></tr>
-    <tr><td style="background:rgba(255,100,100,0.3); padding:4px;">Red background</td><td>This mod is being overwritten (losing conflicts)</td></tr>
-    <tr><td style="background:rgba(100,255,150,0.3); padding:4px;">Green background</td><td>This mod is overwriting others (winning conflicts)</td></tr>
+    <tr><td style="background:rgba(255,100,100,0.3); padding:4px;">Red background</td><td>This mod is being overwritten by the selected mod (losing)</td></tr>
+    <tr><td style="background:rgba(100,255,150,0.3); padding:4px;">Green background</td><td>This mod is overwriting the selected mod (winning)</td></tr>
 </table>
 
 
-<h1 id="preview">Preview & Conflict Detection</h1>
-<p>Clicking <b>Preview</b> performs several operations:</p>
-<ol>
-    <li>Scans all mods in your MO2 mod list</li>
-    <li>Reads collection markers to identify collection mods</li>
-    <li>Detects file conflicts between mods</li>
-    <li>Applies collection sort order (if enabled)</li>
-    <li>Populates the table with results</li>
-</ol>
+<h1 id="tags">Tags</h1>
+<p>Mods may display tags next to their name indicating special status:</p>
 
-<h3>Conflict Detection</h3>
-<p>The tool analyzes which files each mod provides and identifies overlaps:</p>
-<ul>
-    <li><b>Overwrites</b> - Files this mod provides that overwrite other mods</li>
-    <li><b>Overwritten by</b> - Files from other mods that overwrite this mod</li>
-</ul>
+<table>
+    <tr><th>Tag</th><th>Meaning</th></tr>
+    <tr><td><span class="tag tag-green">User Rule</span></td><td>You've manually reordered this mod. A custom load order rule is active.</td></tr>
+    <tr><td><span class="tag tag-orange">No collection</span></td><td>This mod isn't part of any loaded collection (can be hidden in settings).</td></tr>
+    <tr><td><span class="tag tag-blue">Bundle</span></td><td>This mod was installed from a collection bundle.</td></tr>
+</table>
 
 <div class="info">
-<b>Tip:</b> Click on any mod to see its specific conflicts in the left pane. This helps you understand why certain mods need to be in a specific order.
-</div>
-
-
-<h1 id="reordering">Drag-Drop Reordering</h1>
-<p>You can manually adjust the sort order by dragging mods:</p>
-<ol>
-    <li>Select one or more mods (Ctrl+click for multiple)</li>
-    <li>Drag them to the desired position</li>
-    <li>Release to drop them after the target mod</li>
-</ol>
-
-<h3>How It Works</h3>
-<ul>
-    <li>Dropped mods are placed <b>after</b> the target mod</li>
-    <li>Multiple selected mods maintain their relative order</li>
-    <li>Your changes are tracked as "user rules" for future sorting</li>
-</ul>
-
-<div class="warning">
-<b>Note:</b> Manual reordering creates "load after" rules. These rules persist and will be reapplied when you preview again. Use Settings &gt; Delete User Rules to clear them.
+<b>User Rule Tag:</b> When you drag a mod to reorder it, the tool creates a "load after" rule and shows the <span class="tag tag-green">User Rule</span> tag. This rule persists through restarts and will be reapplied each time you preview.
 </div>
 
 
 <h1 id="conflicts-pane">Conflicts Pane</h1>
 <p>The left pane shows detailed conflict information for the selected mod:</p>
 <ul>
-    <li><b>Title</b> - Shows the selected mod's name</li>
+    <li><b>Title</b> - Shows the selected mod's name and conflict summary</li>
     <li><b>Table</b> - Lists all mods that conflict with the selected mod</li>
-    <li><b>Colors</b> - Red = losing to this mod, Green = winning over this mod</li>
+    <li><b>Colors</b> - Red = this mod overwrites them, Green = they overwrite this mod</li>
 </ul>
 
 <h3>Using the Conflicts Pane</h3>
 <ol>
-    <li>Click any mod in the main table</li>
+    <li>Click any mod in the main table to select it</li>
     <li>The conflicts pane shows all mods that share files with it</li>
     <li>Click a conflict to highlight it in the main table</li>
     <li>Drag mods within the conflicts pane to reorder them</li>
 </ol>
 
 <h3>Collapse/Expand</h3>
-<p>Use the arrow button to collapse or expand the conflicts pane. When collapsed, a highlighted expand button appears on the left edge.</p>
+<p>Use the arrow button (◀/▶) to collapse or expand the conflicts pane. When collapsed, a highlighted expand button appears on the left edge for quick access.</p>
+
+
+<h1 id="drag-drop">Drag-Drop Basics</h1>
+<p>You can manually adjust the sort order by dragging mods:</p>
+<ol>
+    <li>Click a mod to select it</li>
+    <li>Drag it to the desired position</li>
+    <li>Release to drop it <b>after</b> the target mod</li>
+</ol>
+
+<div class="warning">
+<b>Drop Position:</b> Mods are always placed <b>after</b> (below) the mod you drop them on. If you drop mod A onto mod B, mod A will appear directly below mod B.
+</div>
+
+<h3>What Happens When You Drag</h3>
+<ul>
+    <li>A "load after" rule is created: the moved mod will always load after its target</li>
+    <li>The <span class="tag tag-green">User Rule</span> tag appears on the moved mod</li>
+    <li>The rule is saved automatically and persists through MO2 restarts</li>
+    <li>Future previews will reapply your rules automatically</li>
+</ul>
+
+
+<h1 id="multi-select">Multi-Select Drag</h1>
+<p>You can drag multiple mods at once:</p>
+<ol>
+    <li><b>Ctrl+Click</b> to select multiple individual mods</li>
+    <li><b>Shift+Click</b> to select a range of mods</li>
+    <li>Drag the selection to the target position</li>
+    <li>All selected mods are placed after the target, preserving their relative order</li>
+</ol>
+
+<h3>How Multi-Drag Rules Work</h3>
+<p>When you drag multiple mods, the tool creates <b>chained rules</b> to preserve their relative order:</p>
+<ul>
+    <li>First mod → loads after target</li>
+    <li>Second mod → loads after first mod</li>
+    <li>Third mod → loads after second mod</li>
+    <li>...and so on</li>
+</ul>
+
+<div class="info">
+<b>Example:</b> If you select mods A, B, C and drop them on mod X, the rules created are: A loads after X, B loads after A, C loads after B. This keeps A, B, C together in order below X.
+</div>
+
+
+<h1 id="user-rules">User Rules</h1>
+<p>User rules are "load after" relationships you create by dragging mods. They are the primary way to customize your load order beyond what collections provide.</p>
+
+<h3>Rule Behavior</h3>
+<ul>
+    <li><b>Persistent</b> - Rules are saved automatically and survive MO2 restarts</li>
+    <li><b>Override collection order</b> - Your rules take priority over collection sorting</li>
+    <li><b>Visual indicator</b> - Mods with rules show the <span class="tag tag-green">User Rule</span> tag</li>
+    <li><b>Reapplied on Preview</b> - Rules are applied each time you click Preview</li>
+</ul>
+
+<h3>Moving to Top</h3>
+<p>If you drag a mod to the very top of the list (above all other mods), its "load after" rule is removed. The mod returns to its natural position based on collection order.</p>
+
+
+<h1 id="strict-rules">Strict User Rules</h1>
+<p>By default, user rules are "relaxed" - a mod just needs to be <i>somewhere</i> after its target. Enable <b>Apply strict user rules</b> in Settings for precise positioning.</p>
+
+<table>
+    <tr><th>Mode</th><th>Behavior</th></tr>
+    <tr><td><b>Relaxed (default)</b></td><td>Mod loads somewhere after the target. Other mods may be between them.</td></tr>
+    <tr><td><b>Strict</b></td><td>Mod is positioned <b>directly after</b> the target. Always adjacent.</td></tr>
+</table>
+
+<div class="warning">
+<b>Use with caution:</b> Strict rules force mods to be directly adjacent. This can cause unexpected results if you have many rules, as they may conflict with each other. Only enable this if you need precise positioning.
+</div>
 
 
 <h1 id="isolation">Isolation Mode</h1>
@@ -334,35 +407,26 @@ tr:nth-child(even) {
 <ol>
     <li>Right-click any mod in the table</li>
     <li>Select <b>Isolation Mode - Show Only Conflicts</b></li>
-    <li>The table now shows only that mod and its conflicts</li>
+    <li>The table now shows only that mod and mods that conflict with it</li>
+    <li>Make your adjustments in this focused view</li>
     <li>Right-click and select <b>Exit Isolation Mode</b> to return</li>
 </ol>
 
 <h3>Deep Isolation</h3>
-<p>When enabled in Settings, isolation mode also shows "conflicts of conflicts" - mods that conflict with the conflicting mods. This helps you see the full chain of dependencies.</p>
+<p>When <b>Show conflicts of conflicts</b> is enabled in Settings (default: on), isolation mode also shows mods that conflict with the conflicting mods. This reveals the full dependency chain.</p>
 
-
-<h1 id="filters">Filter Options</h1>
-<p>Access these options via the <b>Settings</b> button:</p>
-
-<table>
-    <tr><th>Option</th><th>Description</th></tr>
-    <tr><td><b>Only show mods with conflicts</b></td><td>Hide mods that have no file overlaps</td></tr>
-    <tr><td><b>Show disabled mods</b></td><td>Include inactive mods in the list</td></tr>
-    <tr><td><b>Sort problem mods to top</b></td><td>Always show mods with issues at the top</td></tr>
-    <tr><td><b>Sort unmanaged mods to top</b></td><td>Put DLC and game files at the top</td></tr>
-    <tr><td><b>Sort bundles last</b></td><td>Always keep bundle mods at the bottom</td></tr>
-    <tr><td><b>Show 'No Collection' tag</b></td><td>Mark mods not part of any collection</td></tr>
-</table>
+<div class="info">
+<b>Tip:</b> Isolation mode is ideal for resolving complex conflicts. Focus on one problem mod, see exactly what it conflicts with, reorder as needed, then exit to see the full picture.
+</div>
 
 
 <h1 id="collection-order">Collection Order</h1>
-<p>The tool can automatically sort mods based on collection install order:</p>
+<p>The tool can automatically sort mods based on collection install order. This is applied when you click Preview.</p>
 
 <h3>Collection Selector</h3>
 <p>In Settings, choose which collection's order to use:</p>
 <ul>
-    <li><b>Merge All</b> - Combines order from all loaded collections</li>
+    <li><b>Merge All</b> (default) - Combines order from all loaded collections</li>
     <li><b>Specific collection</b> - Use only that collection's order</li>
 </ul>
 
@@ -370,31 +434,55 @@ tr:nth-child(even) {
 <ol>
     <li>Mods are matched to collection entries by file ID or name</li>
     <li>Matched mods are sorted by their position in the collection</li>
-    <li>Unmatched mods are placed at the end</li>
-    <li>User rules (from manual reordering) are applied on top</li>
+    <li>Collection phases are respected (phase 0 before phase 1, etc.)</li>
+    <li>User rules are applied on top, overriding collection order where specified</li>
+    <li>Unmatched mods appear at the end</li>
+</ol>
+
+
+<h1 id="filters">Filter Options</h1>
+<p>Access these options via the <b>⚙ Settings</b> button:</p>
+
+<table>
+    <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    <tr><td><b>Only show mods with conflicts</b></td><td>Off</td><td>Hide mods that have no file overlaps</td></tr>
+    <tr><td><b>Show disabled mods</b></td><td>Off</td><td>Include inactive mods in the list</td></tr>
+    <tr><td><b>Sort problem mods to top</b></td><td>On</td><td>Always show mods with issues at the top</td></tr>
+    <tr><td><b>Sort unmanaged mods to top</b></td><td>On</td><td>Put DLC and game files at the top</td></tr>
+    <tr><td><b>Sort bundles last</b></td><td>On</td><td>Always keep bundle mods at the bottom</td></tr>
+    <tr><td><b>Show 'No Collection' tag</b></td><td>On</td><td>Mark mods not part of any collection</td></tr>
+</table>
+
+<h3>Isolation Mode Settings</h3>
+<table>
+    <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    <tr><td><b>Show conflicts of conflicts</b></td><td>On</td><td>In isolation, also show mods that conflict with the conflicting mods</td></tr>
+</table>
+
+
+<h1 id="managing-rules">Managing User Rules</h1>
+<p>The Settings dialog includes tools to view and manage your user rules:</p>
+
+<h3>View User Rules</h3>
+<p>Click <b>View User Rules...</b> to open the rules manager:</p>
+<ul>
+    <li>See all your rules in a table (Mod → Loads After)</li>
+    <li>Delete individual rules with the × button</li>
+    <li>Select multiple rules and click <b>Delete Selected</b></li>
+    <li>Changes take effect when you close the dialog</li>
+</ul>
+
+<h3>Delete All Rules</h3>
+<p>Click <b>Delete All</b> to remove all user rules:</p>
+<ol>
+    <li>A confirmation dialog appears</li>
+    <li>Type <code>DELETE</code> (in all caps) to confirm</li>
+    <li>All rules are cleared and mods return to collection order</li>
 </ol>
 
 <div class="info">
-<b>Phases:</b> Collections can have multiple phases (0, 1, etc.). Mods in phase 0 always sort before mods in phase 1. This ensures prerequisites load before the mods that need them.
+<b>Rules persist automatically:</b> Your user rules are saved to MO2's settings and survive restarts. You don't need to save them manually.
 </div>
-
-
-<h1 id="user-rules">User Rules</h1>
-<p>When you drag mods to reorder them, the tool creates "load after" rules:</p>
-<ul>
-    <li>Rules are saved automatically and persist between sessions</li>
-    <li>They override collection order for those specific mods</li>
-    <li>Useful for custom patches or personal preferences</li>
-</ul>
-
-<h3>Clearing User Rules</h3>
-<p>To reset all manual ordering:</p>
-<ol>
-    <li>Click <b>Settings</b></li>
-    <li>Click <b>Delete User Rules</b></li>
-    <li>Confirm the action</li>
-    <li>Click <b>OK</b></li>
-</ol>
 
 
 <h1 id="save-load">Save/Load Order</h1>
@@ -404,7 +492,7 @@ tr:nth-child(even) {
 <ol>
     <li>Click <b>Save Order</b></li>
     <li>Choose a location and filename</li>
-    <li>The file includes mod positions and user rules</li>
+    <li>The file includes mod positions and your user rules</li>
 </ol>
 
 <h3>Load Order</h3>
@@ -417,7 +505,7 @@ tr:nth-child(even) {
 </ol>
 
 <div class="info">
-<b>Sharing:</b> You can share saved order files with others who have the same mod list. This is useful for helping someone troubleshoot or sharing an optimized order.
+<b>Sharing:</b> You can share saved order files with others who have the same mod list. Useful for troubleshooting or sharing an optimized order.
 </div>
 
 
@@ -430,20 +518,20 @@ tr:nth-child(even) {
 </ol>
 
 <div class="warning">
-<b>Caution:</b> Applying changes modifies your actual MO2 mod order. If you're unsure, use Save Order first to create a backup.
+<b>Caution:</b> Applying changes modifies your actual MO2 mod order. If you're unsure, use <b>Save Order</b> first to create a backup you can restore later.
 </div>
 
 
 <h1 id="best-practices">Best Practices</h1>
 
 <div class="success">
+<b>Recommended Workflow:</b>
 <ul>
     <li><b>Preview first</b> - Always preview before making changes</li>
-    <li><b>Check conflicts</b> - Review red-highlighted mods for potential issues</li>
-    <li><b>Trust collection order</b> - Collection authors test their load orders</li>
+    <li><b>Trust collection order</b> - Collection authors test their load orders extensively</li>
     <li><b>Use isolation mode</b> - For complex conflicts, isolate and resolve one at a time</li>
-    <li><b>Save before changes</b> - Export your current order before major adjustments</li>
-    <li><b>Apply and test</b> - Apply changes and test in-game to verify</li>
+    <li><b>Save before major changes</b> - Export your current order before making many adjustments</li>
+    <li><b>Test in-game</b> - After applying, launch the game to verify everything works</li>
 </ul>
 </div>
 
@@ -451,14 +539,24 @@ tr:nth-child(even) {
 <ul>
     <li>Custom patches you've added that aren't in the collection</li>
     <li>Personal preference mods that should override collection mods</li>
-    <li>Troubleshooting specific mod conflicts</li>
+    <li>Troubleshooting specific texture or mesh conflicts</li>
+    <li>Adding compatibility patches for mods from different collections</li>
 </ul>
 
-<h3>When to Use Collection Order</h3>
+<h3>When to Reset to Collection Order</h3>
 <ul>
     <li>Fresh collection installation - let the author's order take effect</li>
     <li>After updating a collection - reset to the new recommended order</li>
     <li>Troubleshooting issues - return to a known-good configuration</li>
+    <li>Something broke after manual reordering - clear rules and start fresh</li>
+</ul>
+
+<h3>Understanding Conflicts</h3>
+<ul>
+    <li><b>Red = losing</b> - The selected mod's files are being overwritten</li>
+    <li><b>Green = winning</b> - The selected mod's files are overwriting others</li>
+    <li><b>Lower in list = wins</b> - Mods at the bottom override mods above them</li>
+    <li><b>Not all conflicts are bad</b> - Patches are meant to overwrite their targets</li>
 </ul>
 
 </div>

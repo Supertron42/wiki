@@ -100,11 +100,11 @@ h1 {
 <div class="landing-container">
     <!-- Space Game at top -->
     <div style="margin-bottom: 20px;">
-        <div id="highScoreDisplay" style="font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; color: #ffff00; text-shadow: 0 0 8px #ffff00, 0 0 2px #ff8800; letter-spacing: 2px; margin-bottom: 6px; visibility: hidden;">LAST SCORE: 0</div>
-        <canvas id="gameCanvas" width="600" height="150" style="border: 1px solid #3c3c3c; border-radius: 8px; background: #0a0a12; cursor: none;"></canvas>
-        <div style="margin-top: 6px; font-size: 11px; color: #6a6a7a;">
-            <span id="scoreDisplay">Score: 0</span> | <span id="gameStatus">Click to start</span>
+        <div style="font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-bottom: 6px; display: flex; justify-content: center; gap: 30px;">
+            <span id="scoreDisplay" style="color: #4ec9b0; text-shadow: 0 0 8px #4ec9b0;">SCORE: 0</span>
+            <span id="highScoreDisplay" style="color: #ffff00; text-shadow: 0 0 8px #ffff00, 0 0 2px #ff8800; visibility: hidden;">PREVIOUS: 0</span>
         </div>
+        <canvas id="gameCanvas" width="600" height="150" style="border: 1px solid #3c3c3c; border-radius: 8px; background: #0a0a12; cursor: none;"></canvas>
     </div>
 
     <h1>MO2 Collections Wiki</h1>
@@ -135,7 +135,6 @@ h1 {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const scoreDisplay = document.getElementById('scoreDisplay');
-    const gameStatus = document.getElementById('gameStatus');
     const highScoreDisplay = document.getElementById('highScoreDisplay');
     let lastScore = 0;
 
@@ -186,7 +185,6 @@ h1 {
         initAudio();
         if (gameState === 'waiting') {
             gameState = 'playing';
-            gameStatus.textContent = 'Click to shoot';
             spawnTimer = setInterval(spawnRock, 1000);
             return;
         }
@@ -197,8 +195,7 @@ h1 {
             rocks = [];
             bullets = [];
             explosions = [];
-            scoreDisplay.textContent = 'Score: 0';
-            gameStatus.textContent = 'Click to shoot';
+            scoreDisplay.textContent = 'SCORE: 0';
             spawnTimer = setInterval(spawnRock, 1000);
             return;
         }
@@ -322,7 +319,7 @@ h1 {
                         bullets.splice(bi, 1);
                         score++;
                         baseSpeed = 2 + score * 0.08;
-                        scoreDisplay.textContent = 'Score: ' + score;
+                        scoreDisplay.textContent = 'SCORE: ' + score;
                         break;
                     }
                 }
@@ -333,9 +330,8 @@ h1 {
                         gameState = 'gameOver';
                         clearInterval(spawnTimer);
                         lastScore = score;
-                        highScoreDisplay.textContent = 'LAST SCORE: ' + lastScore;
+                        highScoreDisplay.textContent = 'PREVIOUS: ' + lastScore;
                         highScoreDisplay.style.visibility = 'visible';
-                        gameStatus.textContent = 'Game Over! Final Score: ' + score;
                         explode(ship.x + ship.width/2, shipY);
                         gameOverSound();
                     }

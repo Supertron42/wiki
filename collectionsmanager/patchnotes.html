@@ -264,6 +264,11 @@ li {
     <ul>
         <li><span class="tag tag-change">CHANGE</span> <b>Redesigned layout with left sidebar.</b> Profile fields (name, version, author) and action buttons are now stacked vertically in a compact sidebar, giving the mod table more horizontal space.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Fixed checkbox toggle inconsistency after sorting.</b> Essential/External/Optional/Bundle checkboxes now work correctly regardless of table sort order. Previously, clicking checkboxes after sorting could modify the wrong mod entry.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Loading progress dialog.</b> First load and manual refresh now show a blocking progress dialog, preventing interaction with a partially loaded table.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Smart refresh.</b> The table no longer reloads every time you switch to the Share tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Automatic maintenance.</b> Opening the Share tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Button renamed.</b> "Refresh Table" is now "Refresh Data" to better reflect that it runs maintenance tasks, not just a table refresh.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Better error handling.</b> Added comprehensive logging and widget validation to diagnose blank table issues. Detects if the table widget was deleted or if MO2's modlist is unavailable.</li>
     </ul>
 
     <h3>Collections Tab</h3>
@@ -277,6 +282,11 @@ li {
         <li><span class="tag tag-change">CHANGE</span> <b>INI settings bundled by default.</b> The "Save INI settings to bundle" option is now enabled by default when creating profiles.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Last profile restored on restart.</b> The Share tab now remembers and restores your last selected profile when MO2 restarts.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Last profile auto-loads on tab entry.</b> When entering the Share tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.</li>
+    </ul>
+
+    <h3>Downloads</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Cross-game downloads no longer require confirmation.</b> Mods from different game domains (like "site" for tools such as BethINI Pie) now download automatically without MO2's cross-game confirmation dialog. Uses direct CDN URLs for Premium users.</li>
     </ul>
 
     <h3>FOMOD Helper Plugin</h3>

@@ -309,6 +309,7 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Delete User Rules respects collection ordering state.</b> Deleting user rules no longer forces collection ordering back on if the user had it disabled.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Separators excluded from load order rules.</b> Dragging separators no longer creates spurious load-after relationships that could affect mod ordering.</li>
         <li><span class="tag tag-fix">FIX</span> <b>User load order rules persist across Preview.</b> Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods. The "ALTERED" tag also correctly shows on affected mods.</li>
+        <li><span class="tag tag-new">NEW</span> <b>New "Apply strict user rules" setting.</b> When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution for precise positioning.</li>
     </ul>
 
     <div class="btn-row">
@@ -361,6 +362,7 @@ li {
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Delete User Rules respects collection ordering state.[/b] Deleting user rules no longer forces collection ordering back on if the user had it disabled.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Separators excluded from load order rules.[/b] Dragging separators no longer creates spurious load-after relationships.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]User load order rules persist across Preview.[/b] Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]New "Apply strict user rules" setting.[/b] When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyBBCode('bbcode244')">Copy to Clipboard</button>
     </div>
@@ -410,7 +412,8 @@ li {
 - **Cancel Preview now properly closes the progress dialog.** Previously, canceling could leave the dialog open or in a stuck state.
 - **Delete User Rules respects collection ordering state.** Deleting user rules no longer forces collection ordering back on if the user had it disabled.
 - **Separators excluded from load order rules.** Dragging separators no longer creates spurious load-after relationships.
-- **User load order rules persist across Preview.** Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods.</textarea>
+- **User load order rules persist across Preview.** Custom drag-drop ordering is now properly remembered and restored when running Preview again after adding mods.
+- **New "Apply strict user rules" setting.** When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.</textarea>
         <button class="copy-btn" onclick="copyBBCode('markdown244')">Copy to Clipboard</button>
     </div>
 

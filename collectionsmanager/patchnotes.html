@@ -210,6 +210,8 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
+    <a href="#v2.4.4">Version 2.4.4</a>
+    <a href="#v2.4.3">Version 2.4.3</a>
     <a href="#v2.4.2">Version 2.4.2</a>
     <a href="#v2.4.1">Version 2.4.1</a>
     <a href="#v2.4">Version 2.4</a>
@@ -243,7 +245,20 @@ li {
     </div>
     <p>Release history and change logs for Collections Manager.</p>
 
-    <h2 id="v2.4.2">Version 2.4.2 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
+    <h2 id="v2.4.4">Version 2.4.4 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
+
+    <p><i>No changes yet.</i></p>
+
+    <h2 id="v2.4.3">Version 2.4.3 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
+
+    <h3>Help Tab</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Removed tab locking from setup steps.</b> All tabs are now always enabled. Users no longer need to complete setup steps before accessing other tabs.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Default landing tab is now Help.</b> New users will land on the Help tab by default to guide them through setup.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Better logging for category detection.</b> Now logs which paths are searched, file sizes found, and why validation might fail.</li>
+    </ul>
+
+    <h2 id="v2.4.2">Version 2.4.2 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
 
     <h3>Marker System Overhaul</h3>
     <ul>
@@ -272,13 +287,6 @@ li {
         </li>
         <li><span class="tag tag-new">NEW</span> <b>"View Update" button on collection cards.</b> Cards with available updates now display a prominent green "View Update" button next to the title for quick access to the revision diff.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Wiki button now opens online documentation.</b> The Wiki button in the Help tab now links to the online documentation at GitHub Pages.</li>
-    </ul>
-
-    <h3>Help Tab</h3>
-    <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Step 2 (Categories) now properly detects when categories are set.</b> Added "Check Status" button for manual refresh if automatic polling doesn't detect the change.</li>
-        <li><span class="tag tag-improve">IMPROVED</span> <b>Better logging for category detection.</b> Now logs which paths are searched, file sizes found, and why validation might fail.</li>
-        <li><span class="tag tag-improve">IMPROVED</span> <b>Polling timeout now does final UI update.</b> When the 30-second poll times out, it now updates the UI one more time and suggests using the Check Status button.</li>
     </ul>
 
     <h3>Technical Details</h3>

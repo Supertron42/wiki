@@ -175,6 +175,7 @@ tr:nth-child(even) {
     <a href="#reorder">Reordering</a>
 
     <h3>Header Buttons</h3>
+    <a href="#settings">Settings</a>
     <a href="#program-install">Program Installation</a>
     <a href="#check-updates">Check for Updates</a>
     <a href="#refresh">Refresh</a>
@@ -249,7 +250,17 @@ tr:nth-child(even) {
     <tr><th>Badge</th><th>Meaning</th></tr>
     <tr><td style="color:#4ec9b0; font-weight:bold;">COMPLETE</td><td>All mods in the collection are installed or skipped</td></tr>
     <tr><td style="background:#569cd6; color:white; padding:2px 6px; border-radius:3px; font-size:11px;">LOCAL</td><td>Collection was imported from a local mod list file, not Nexus</td></tr>
+    <tr><td style="background:#f0c020; color:black; padding:2px 6px; border-radius:3px; font-size:11px;">Rev X → Y</td><td>A newer revision is available (shown after checking for updates)</td></tr>
 </table>
+
+<h3>View Update Button</h3>
+<p>When a collection has an update available, a green <b>View Update</b> button appears next to the collection title. Clicking it shows a comparison of what changed between your current revision and the latest revision:</p>
+<ul>
+    <li><b>Added</b> - New mods in the updated revision</li>
+    <li><b>Removed</b> - Mods no longer in the collection</li>
+    <li><b>Updated</b> - Mods with different file versions</li>
+    <li><b>Unchanged</b> - Mods that remain the same</li>
+</ul>
 
 <h3>LOCAL Collections</h3>
 <p>Collections marked LOCAL were imported from a local file (like a mod list export). These have limited functionality:</p>
@@ -319,6 +330,23 @@ tr:nth-child(even) {
 <p>The order is saved automatically and persists between sessions.</p>
 
 
+<h1 id="settings">Settings</h1>
+<p>Click the <b>⚙ Settings</b> button next to "Saved Collections" to configure tab-specific options:</p>
+
+<h3>Check for revision updates automatically</h3>
+<p>When enabled (default), the plugin automatically checks for collection updates the first time you view the Collections tab each session. This is equivalent to clicking "Check for Updates" manually.</p>
+<ul>
+    <li>Only runs once per MO2 session</li>
+    <li>Happens in the background when you first open the Collections tab</li>
+    <li>Collections with updates will show the revision badge and View Update button</li>
+    <li>Disable this if you prefer to check manually or have a slow connection</li>
+</ul>
+
+<div class="info">
+<b>Tip:</b> This setting persists between MO2 restarts.
+</div>
+
+
 <h1 id="program-install">Program Installation</h1>
 <p>An orange banner appears when mods requiring manual game folder installation are detected. Click <b>Install to Game Folder</b> to manage them:</p>
 <ul>
@@ -342,12 +370,17 @@ tr:nth-child(even) {
 <p>Click <b>Check for Updates</b> to see if any of your saved collections have new revisions on Nexus Mods:</p>
 <ol>
     <li>Each collection's current revision is compared to Nexus</li>
-    <li>Collections with updates available are highlighted</li>
+    <li>Collections with updates show a <b>Rev X → Y</b> badge</li>
+    <li>A green <b>View Update</b> button appears to preview changes</li>
     <li>You can choose to update to get new mod additions or changes</li>
 </ol>
 
 <div class="info">
-<b>Tip:</b> Collection authors may release updates to add new mods, update versions, fix issues, or improve compatibility.
+<b>Tip:</b> If "Check for revision updates automatically" is enabled in Settings, this happens automatically when you first view the Collections tab each session.
+</div>
+
+<div class="success">
+<b>Collection authors</b> may release updates to add new mods, update versions, fix issues, or improve compatibility.
 </div>
 
 

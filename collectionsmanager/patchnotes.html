@@ -294,6 +294,11 @@ li {
     <ul>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Cross-game downloads no longer require confirmation.</b> Mods from different game domains (like "site" for tools such as BethINI Pie) now download automatically without MO2's cross-game confirmation dialog. Uses direct CDN URLs for Premium users.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Removed legacy category file creation.</b> The plugin no longer creates categories.dat on fresh MO2 instances. Only nexuscatmap.dat is now checked, which is the file MO2 actually needs for Nexus downloads. This simplifies setup - users just need to import Nexus categories once.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Repair Downloads button.</b> New button in Options tab scans all downloads and repairs broken cache entries by re-reading actual file paths. Fixes issues where the plugin can't find archives that exist.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Smarter download completion detection.</b> Cached download paths are now validated against the .meta file's fileID before use. Stale cache entries from moved or renamed files are automatically invalidated and re-scanned.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Two stable reads before cache commit.</b> Download path caching now waits for two consecutive identical size readings before committing, preventing cache corruption from partially-written files.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Adaptive download polling.</b> Download completion checks now start fast (100ms), gradually slow down to save resources, and speed back up when progress is detected. More responsive while using less CPU.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Strict zero-KB recovery ladder.</b> Zero-KB downloads now follow a strict recovery sequence: pause/resume first, then duplicate detection, then fail. Each strategy is tried only once to prevent infinite loops.</li>
     </ul>
 
     <h3>FOMOD Helper Plugin</h3>
@@ -309,6 +314,7 @@ li {
     <h3>Tools &amp; Data Handling</h3>
     <ul>
         <li><span class="tag tag-fix">FIX</span> <b>Centralized version format handling.</b> Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Mods tab version display matches MO2.</b> The Mods tab now uses MO2's native displayString() for installed and skipped mods, ensuring versions match exactly with MO2's own Mods tab. Pending mods show versions from collection.json.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Version column repositioned in all tables.</b> The Version column is now placed directly after the Mod Name column for better visibility. Affected tools: Sort Tool, Duplicate Finder, and main Mods tab.</li>
         <li><span class="tag tag-new">NEW</span> <b>Version column added to multiple tables.</b> The Mods tab, Missing Mods table, External Files table, and Install Order table now display mod versions right next to mod names.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Collection revision diff shows versions.</b> The update dialog now displays version info for added and removed mods, not just updated mods.</li>
@@ -332,6 +338,10 @@ li {
     <h3>Performance</h3>
     <ul>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Reduced startup log verbosity.</b> Internal diagnostic logs (mod state changes, category checks, index loading) are now debug-level instead of info-level. This dramatically reduces log noise during startup and collection loading.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Bundle flow eliminates redundant refreshes.</b> Installing bundle mods no longer triggers multiple table refreshes. The bundle completion handler now skips the redundant refresh since a debounced refresh is already scheduled.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Faster missing mods table.</b> The missing mods table now uses a two-pass approach: first builds data in memory, then populates the table with updates disabled. Significantly faster for large collections.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Smoother table population.</b> Increased the processEvents threshold from 200 to 500 rows, reducing UI stutter during large table updates while maintaining responsiveness.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Repair loop skips redundant scans.</b> The download repair loop no longer triggers full force-scans for each file, relying on incremental updates instead. Faster repair operations for large download folders.</li>
     </ul>
 
     <div class="btn-row">
@@ -366,6 +376,11 @@ li {
 [list]
 [*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Cross-game downloads no longer require confirmation.[/b] Mods from different game domains (like "site" for tools such as BethINI Pie) now download automatically without MO2's cross-game confirmation dialog. Uses direct CDN URLs for Premium users.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Removed legacy category file creation.[/b] The plugin no longer creates categories.dat on fresh MO2 instances. Only nexuscatmap.dat is now checked, which is the file MO2 actually needs for Nexus downloads. This simplifies setup - users just need to import Nexus categories once.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Repair Downloads button.[/b] New button in Options tab scans all downloads and repairs broken cache entries by re-reading actual file paths. Fixes issues where the plugin can't find archives that exist.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Smarter download completion detection.[/b] Cached download paths are now validated against the .meta file's fileID before use. Stale cache entries from moved or renamed files are automatically invalidated and re-scanned.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Two stable reads before cache commit.[/b] Download path caching now waits for two consecutive identical size readings before committing, preventing cache corruption from partially-written files.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Adaptive download polling.[/b] Download completion checks now start fast (100ms), gradually slow down to save resources, and speed back up when progress is detected. More responsive while using less CPU.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Strict zero-KB recovery ladder.[/b] Zero-KB downloads now follow a strict recovery sequence: pause/resume first, then duplicate detection, then fail. Each strategy is tried only once to prevent infinite loops.
 [/list]
 [size=3][b][color=#9cdcfe]FOMOD Helper Plugin[/color][/b][/size]
 [list]
@@ -379,6 +394,7 @@ li {
 [size=3][b][color=#9cdcfe]Tools & Data Handling[/color][/b][/size]
 [list]
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Centralized version format handling.[/b] Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Mods tab version display matches MO2.[/b] The Mods tab now uses MO2's native displayString() for installed and skipped mods, ensuring versions match exactly with MO2's own Mods tab. Pending mods show versions from collection.json.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]Version column repositioned in all tables.[/b] The Version column is now placed directly after the Mod Name column for better visibility. Affected tools: Sort Tool, Duplicate Finder, and main Mods tab.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Version column added to multiple tables.[/b] The Mods tab, Missing Mods table, External Files table, and Install Order table now display mod versions right next to mod names.
 [*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Collection revision diff shows versions.[/b] The update dialog now displays version info for added and removed mods, not just updated mods.
@@ -395,6 +411,14 @@ li {
 [*][color=#2E7D32][b]NEW[/b][/color] [b]View User Rules dialog.[/b] New "View User Rules..." button in Settings lets you see all your custom rules in a table and delete individual rules.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]New "Apply strict user rules" setting.[/b] When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]Renamed "ALTERED" tag to "User Rule".[/b] Mods with custom load order rules now show a more descriptive "User Rule" tag.
+[/list]
+[size=3][b][color=#9cdcfe]Performance[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Reduced startup log verbosity.[/b] Internal diagnostic logs are now debug-level instead of info-level, reducing log noise during startup.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Bundle flow eliminates redundant refreshes.[/b] Installing bundle mods no longer triggers multiple table refreshes.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Faster missing mods table.[/b] Uses a two-pass approach: first builds data in memory, then populates with updates disabled.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Smoother table population.[/b] Increased processEvents threshold from 200 to 500 rows.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Repair loop skips redundant scans.[/b] The download repair loop no longer triggers full force-scans for each file.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyBBCode('bbcode244')">Copy to Clipboard</button>
     </div>
@@ -427,6 +451,11 @@ li {
 
 - **Cross-game downloads no longer require confirmation.** Mods from different game domains (like "site" for tools such as BethINI Pie) now download automatically without MO2's cross-game confirmation dialog. Uses direct CDN URLs for Premium users.
 - **Removed legacy category file creation.** The plugin no longer creates categories.dat on fresh MO2 instances. Only nexuscatmap.dat is now checked, which is the file MO2 actually needs for Nexus downloads. This simplifies setup - users just need to import Nexus categories once.
+- **Repair Downloads button.** New button in Options tab scans all downloads and repairs broken cache entries by re-reading actual file paths.
+- **Smarter download completion detection.** Cached download paths are now validated against the .meta file's fileID before use. Stale cache entries are automatically invalidated.
+- **Two stable reads before cache commit.** Download path caching waits for two consecutive identical size readings before committing.
+- **Adaptive download polling.** Download completion checks start fast, slow down to save resources, and speed back up when progress is detected.
+- **Strict zero-KB recovery ladder.** Zero-KB downloads follow a strict recovery sequence: pause/resume, duplicate detection, then fail.
 
 ## FOMOD Helper Plugin
 
@@ -440,6 +469,7 @@ li {
 ## Tools & Data Handling
 
 - **Centralized version format handling.** Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
+- **Mods tab version display matches MO2.** The Mods tab now uses MO2's native displayString() for installed and skipped mods, ensuring versions match exactly with MO2's own Mods tab. Pending mods show versions from collection.json.
 - **Version column repositioned in all tables.** The Version column is now placed directly after the Mod Name column for better visibility. Affected tools: Sort Tool, Duplicate Finder, and main Mods tab.
 - **Version column added to multiple tables.** The Mods tab, Missing Mods table, External Files table, and Install Order table now display mod versions right next to mod names.
 - **Collection revision diff shows versions.** The update dialog now displays version info for added and removed mods, not just updated mods.
@@ -455,7 +485,15 @@ li {
 - **User rules and settings persist through MO2 restarts.** Your custom load order rules and Sort Tool settings are now saved and restored when you restart MO2.
 - **View User Rules dialog.** New "View User Rules..." button in Settings lets you see all your custom rules in a table and delete individual rules.
 - **New "Apply strict user rules" setting.** When enabled, mods are positioned DIRECTLY after their drop target instead of just somewhere after. Disabled by default. Use with caution.
-- **Renamed "ALTERED" tag to "User Rule".** Mods with custom load order rules now show a more descriptive "User Rule" tag.</textarea>
+- **Renamed "ALTERED" tag to "User Rule".** Mods with custom load order rules now show a more descriptive "User Rule" tag.
+
+## Performance
+
+- **Reduced startup log verbosity.** Internal diagnostic logs are now debug-level instead of info-level.
+- **Bundle flow eliminates redundant refreshes.** Installing bundle mods no longer triggers multiple table refreshes.
+- **Faster missing mods table.** Uses a two-pass approach: first builds data in memory, then populates with updates disabled.
+- **Smoother table population.** Increased processEvents threshold from 200 to 500 rows.
+- **Repair loop skips redundant scans.** The download repair loop no longer triggers full force-scans for each file.</textarea>
         <button class="copy-btn" onclick="copyBBCode('markdown244')">Copy to Clipboard</button>
     </div>
 

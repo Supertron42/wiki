@@ -25,6 +25,46 @@ body {
     text-align: center;
     padding: 40px;
 }
+.hero-header {
+    width: min(900px, 92vw);
+    margin: 0 auto 18px;
+}
+.hero-title {
+    font-family: "Orbitron", "Bank Gothic", "Eurostile", "Rajdhani", "Trebuchet MS", sans-serif;
+    font-size: clamp(30px, 5.2vw, 54px);
+    letter-spacing: 8px;
+    color: #dff6ff;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(120, 220, 255, 0.55), 0 0 30px rgba(120, 220, 255, 0.25);
+}
+.hero-bar {
+    height: 2px;
+    width: min(420px, 70vw);
+    margin: 12px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(218, 142, 53, 0.75), rgba(86, 156, 214, 0.75), transparent);
+    box-shadow: 0 0 10px rgba(86, 156, 214, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+.hero-bar::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -20%;
+    width: 20%;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    filter: blur(1px);
+    animation: sweep-light 2.2s linear infinite;
+}
+@keyframes sweep-light {
+    0% { transform: translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    50% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { transform: translateX(600%); opacity: 0; }
+}
 
 h1 {
     font-size: 28px;
@@ -49,12 +89,23 @@ h1 {
     align-items: center;
     width: 320px;
     aspect-ratio: 16 / 9;
-    transition: all 0.15s;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s, box-shadow 0.2s;
+    --glow-border: #569cd6;
+    --glow-core: rgba(86, 156, 214, 0.6);
+    --glow-outer: rgba(86, 156, 214, 0.35);
+    user-select: none;
+    -webkit-user-select: none;
+}
+.wiki-card h2,
+.wiki-card p,
+.wiki-card img {
+    pointer-events: none;
 }
 .wiki-card:hover {
-    border-color: #569cd6;
+    border-color: var(--glow-border);
     background: #2a2d2e;
     transform: translateY(-5px);
+    box-shadow: 0 0 6px 1px var(--glow-core), 0 0 14px 2px var(--glow-outer);
 }
 
 .wiki-card img {
@@ -91,24 +142,6 @@ h1 {
     background: #c47d2e;
 }
 
-.wiki-card {
-    position: relative;
-    overflow: hidden;
-}
-.lightning-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.1s;
-    z-index: 10;
-}
-.wiki-card:hover .lightning-canvas {
-    opacity: 1;
-}
 .kofi-container {
     position: relative;
     display: inline-block;
@@ -130,6 +163,10 @@ h1 {
 <body>
 
 <div class="landing-container">
+    <div class="hero-header">
+        <div class="hero-title">SUPERTRON</div>
+        <div class="hero-bar"></div>
+    </div>
     <!-- Space Game at top -->
     <div style="margin-bottom: 20px;">
         <div style="font-family: 'Courier New', monospace; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-bottom: 6px; display: flex; justify-content: center; gap: 30px;">
@@ -143,15 +180,13 @@ h1 {
     <p class="subtitle">Enjoy your stay</p>
 
     <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
-        <div class="wiki-card" style="border-color: #DA8E35; background: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.80)), url('collectionsmanager/cm02thumbnail.webp') center/cover;">
-            <canvas class="lightning-canvas"></canvas>
+        <div class="wiki-card" style="border-color: #DA8E35; --glow-border: #DA8E35; --glow-core: rgba(218, 142, 53, 0.6); --glow-outer: rgba(218, 142, 53, 0.35); background: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.80)), url('collectionsmanager/cm02thumbnail.webp') center/cover;">
             <h2 style="color: #fff;">Collections Manager</h2>
             <p style="color: #ddd;">Complete documentation for installing and managing Nexus collections in MO2.</p>
             <a href="collectionsmanager/wiki.html">Open Wiki</a>
         </div>
 
-        <div class="wiki-card" style="border-color: #3D7EFF; background: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.80)), url('clibdt/clibdt_bg.png') center/cover;">
-            <canvas class="lightning-canvas"></canvas>
+        <div class="wiki-card" style="border-color: #3D7EFF; --glow-border: #3D7EFF; --glow-core: rgba(61, 126, 255, 0.6); --glow-outer: rgba(61, 126, 255, 0.35); background: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.80)), url('clibdt/clibdt_bg.png') center/cover;">
             <h2 style="color: #fff;">ClibDT</h2>
             <p style="color: #ddd;">CommonLib Developers Toolkit - lower the barrier to SKSE plugin development.</p>
             <a href="clibdt/wiki.html" style="background: #3D7EFF;">Open Wiki</a>
@@ -485,122 +520,6 @@ h1 {
     });
 })();
 
-// Lightning effect on card hover - strikes the Open Wiki button
-(function() {
-    const cards = document.querySelectorAll('.wiki-card');
-
-    cards.forEach(card => {
-        const canvas = card.querySelector('.lightning-canvas');
-        const ctx = canvas.getContext('2d');
-        const button = card.querySelector('a');
-        let animationId = null;
-        let bolts = [];
-        let nextStrikeTime = 0;
-
-        function resize() {
-            canvas.width = card.offsetWidth;
-            canvas.height = card.offsetHeight;
-        }
-
-        function getButtonCenter() {
-            const cardRect = card.getBoundingClientRect();
-            const btnRect = button.getBoundingClientRect();
-            return {
-                x: btnRect.left - cardRect.left + btnRect.width / 2,
-                y: btnRect.top - cardRect.top + btnRect.height / 2
-            };
-        }
-
-        function drawBolt(x1, y1, x2, y2, segments, seed) {
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-
-            for (let i = 1; i < segments; i++) {
-                const t = i / segments;
-                const jitter = (1 - t) * 50; // More jitter at top, less near button
-                const x = x1 + (x2 - x1) * t + (Math.sin(seed + i * 3) * jitter);
-                const y = y1 + (y2 - y1) * t;
-                ctx.lineTo(x, y);
-
-                // Random branches
-                if (i > 1 && i < segments - 2 && Math.sin(seed * i) > 0.5) {
-                    ctx.moveTo(x, y);
-                    const branchLen = 15 + Math.abs(Math.sin(seed * i * 2)) * 25;
-                    const branchDir = Math.sin(seed * i) > 0 ? 1 : -1;
-                    ctx.lineTo(x + branchDir * branchLen, y + 10);
-                    ctx.moveTo(x, y);
-                }
-            }
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-        }
-
-        function spawnStrikes() {
-            const btnPos = getButtonCenter();
-            const numStrikes = 1 + Math.floor(Math.random() * 3); // 1-3 strikes
-
-            for (let i = 0; i < numStrikes; i++) {
-                const offsetX = (Math.random() - 0.5) * 40;
-                bolts.push({
-                    x1: btnPos.x + (Math.random() - 0.5) * 80,
-                    y1: 0,
-                    x2: btnPos.x + offsetX,
-                    y2: btnPos.y,
-                    life: 1,
-                    segments: 6 + Math.floor(Math.random() * 4),
-                    seed: Math.random() * 100
-                });
-            }
-        }
-
-        function animate(timestamp) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Spawn new strikes periodically
-            if (timestamp > nextStrikeTime) {
-                spawnStrikes();
-                nextStrikeTime = timestamp + 400 + Math.random() * 600; // Every 400-1000ms
-            }
-
-            bolts.forEach(bolt => {
-                // Main bolt - bright core
-                ctx.strokeStyle = `rgba(255, 255, 255, ${bolt.life})`;
-                ctx.lineWidth = 3;
-                ctx.shadowColor = '#aaccff';
-                ctx.shadowBlur = 20;
-                drawBolt(bolt.x1, bolt.y1, bolt.x2, bolt.y2, bolt.segments, bolt.seed);
-
-                // Outer glow
-                ctx.strokeStyle = `rgba(150, 180, 255, ${bolt.life * 0.6})`;
-                ctx.lineWidth = 6;
-                ctx.shadowBlur = 30;
-                drawBolt(bolt.x1, bolt.y1, bolt.x2, bolt.y2, bolt.segments, bolt.seed);
-
-                bolt.life -= 0.06;
-            });
-
-            bolts = bolts.filter(b => b.life > 0);
-            ctx.shadowBlur = 0;
-
-            animationId = requestAnimationFrame(animate);
-        }
-
-        card.addEventListener('mouseenter', () => {
-            resize();
-            bolts = [];
-            nextStrikeTime = 0;
-            animationId = requestAnimationFrame(animate);
-        });
-
-        card.addEventListener('mouseleave', () => {
-            cancelAnimationFrame(animationId);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            bolts = [];
-        });
-
-        window.addEventListener('resize', resize);
-    });
-})();
 </script>
 </body>
 </html>

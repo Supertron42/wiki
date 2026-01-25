@@ -273,10 +273,12 @@ li {
     </div>
 
     <h2 id="v3.0">Version 3.0 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
-    <p class="version-summary">This release focuses on making shared modlists work reliably across different machines. External mods (those not from Nexus) now download automatically when possible, and your mod flags and settings transfer perfectly when someone else imports your modlist. No more losing your carefully organized Essential/Optional tags or having buttons break after sorting the table.</p>
+    <p class="version-summary">This release focuses on making shared modlists work reliably across different machines. External mods (those not from Nexus) now download automatically when possible, your mod flags and settings transfer perfectly when someone else imports your modlist, and FOMOD detection/exports are more reliable. No more losing your carefully organized Essential/Optional tags or having buttons break after sorting the table.</p>
 
     <h3>Creations Tab</h3>
     <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Export gate for missing FOMOD choices.</b> If any installed FOMODs lack saved choices, export is blocked and a warning banner appears with a "View" button listing the missing mods.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Deep FOMOD scan setting (default on).</b> A new setting enables deep archive scanning to find FOMOD installers even when nested in subfolders (slower but more accurate).</li>
         <li><span class="tag tag-fix">FIX</span> <b>INI editor and FOMOD buttons now work after sorting.</b> Buttons now use stable keys instead of row numbers, ensuring the correct mod is always opened regardless of table sort order.</li>
         <li><span class="tag tag-fix">FIX</span> <b>External mods now properly persist flags.</b> Mods without Nexus file IDs now use marker UUIDs, allowing Essential/Optional/External/Bundle flags to be saved and restored correctly across machines.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Backwards compatible profile loading.</b> Profiles now match mods by stable_key first, with fallback to file_id for profiles created in older versions.</li>
@@ -317,9 +319,17 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>FOMOD indicators show immediately after import.</b> Imported FOMOD choices now populate the UI cache immediately, so "has saved choices" indicators appear without requiring a refresh.</li>
     </ul>
 
+    <h3>FOMOD Detection</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Deep archive search for installers.</b> FOMOD discovery now scans nested folders inside downloads archives, matching how MO2 detects installers.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Deeper installed-mod search.</b> Installed mods are now searched recursively to find nested <code>fomod/ModuleConfig.xml</code> folders.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>7zip-backed archive listing.</b> When available, 7zip is used to list archive contents for more reliable detection.</li>
+    </ul>
+
     <h3>Markers</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Fixed marker detection pattern typo.</b> Corrected a double-suffix bug that searched for non-existent files. Marker detection now correctly finds both current format (.mohidden) and legacy format markers, ensuring all marked mods are visible during export.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Marker filename format updated.</b> Install markers now use <code>{mod_id}_{file_id}_{marker_id}.json.creationsmanager</code> for clearer ownership and uniqueness.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Marker detection now includes legacy formats.</b> The scan finds both new and old marker suffixes so existing setups still export correctly.</li>
         <li><span class="tag tag-new">NEW</span> <b>Persistent marker IDs.</b> All marker types (install, root, bundle) now include a UUID that's generated once and preserved across updates. This enables exact mod identity matching when importing profiles on another machine.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Tiered stable key system.</b> Mod identification now uses a priority system: Nexus file_id first, then marker UUID, then normalized name as legacy fallback.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Legacy marker migration.</b> Old markers without UUIDs are automatically upgraded when accessed.</li>

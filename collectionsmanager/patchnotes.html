@@ -263,6 +263,45 @@ li {
         <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
     </div>
 
+    <h2 id="v3.0">Version 3.0 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
+
+    <h3>Creations Tab</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>INI editor and FOMOD buttons now work after sorting.</b> Buttons now use stable keys instead of row numbers, ensuring the correct mod is always opened regardless of table sort order.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>External mods now properly persist flags.</b> Mods without Nexus file IDs now use marker UUIDs, allowing Essential/Optional/External/Bundle flags to be saved and restored correctly across machines.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Backwards compatible profile loading.</b> Profiles now match mods by stable_key first, with fallback to file_id for profiles created in older versions.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>UI state preserved during refresh.</b> Sort column, sort order, scroll position, and selected rows are now restored after table refresh.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Dependency check with warning banner.</b> A red warning banner now appears if required plugin methods are missing, helping diagnose compatibility issues.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Profile status indicator.</b> Sidebar now shows whether a profile is active with color-coded status: orange when no profile is selected, green when editing.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Checkboxes disabled without active profile.</b> Flag checkboxes are now disabled when no profile is loaded, preventing accidental changes.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Removed dual persistence system.</b> Flag overrides are now stored exclusively in profiles, eliminating the separate overrides file that could cause conflicts.</li>
+    </ul>
+
+    <h3>Structure Capture</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Capture toggle now works immediately.</b> Enabling the Capture checkbox now captures the mod's file structure right away, not just on next action.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Structure persists to marker files.</b> Captured structures are now written to marker files on toggle and context menu capture, ensuring they survive restarts.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fallback path resolution.</b> Structure capture now tries alternate path resolution if the mod path is missing.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Orphan folders excluded from capture and apply.</b> Folders named "orphaned/" or "orphaned_*/" are now skipped during structure capture, scanning, and orphaning to prevent recursion issues.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>External mod support for structure apply.</b> Structure manifests can now be applied to mods identified by stable_key, enabling external mod support.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Better file matching with parent folder heuristic.</b> Structure apply now uses parent folder context to improve accuracy when matching files.</li>
+    </ul>
+
+    <h3>Import</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Slug and revision validation.</b> Import now sanitizes collection slugs and ensures revision is a valid positive number, falling back to timestamps when needed.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Collection.json path matching.</b> Path validation ensures the generated collection.json can be found at the expected location during installation.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>FOMOD indicators show immediately after import.</b> Imported FOMOD choices now populate the UI cache immediately, so "has saved choices" indicators appear without requiring a refresh.</li>
+    </ul>
+
+    <h3>Markers</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed marker detection pattern typo.</b> Corrected a double-suffix bug that searched for non-existent files. Marker detection now correctly finds both current format (.mohidden) and legacy format markers, ensuring all marked mods are visible during export.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Persistent marker IDs.</b> All marker types (install, root, bundle) now include a UUID that's generated once and preserved across updates. This enables exact mod identity matching when importing profiles on another machine.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Tiered stable key system.</b> Mod identification now uses a priority system: Nexus file_id first, then marker UUID, then normalized name as legacy fallback.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Legacy marker migration.</b> Old markers without UUIDs are automatically upgraded when accessed.</li>
+    </ul>
+
     <h2 id="v2.5">Version 2.5 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
 
     <h3>Creations Tab</h3>

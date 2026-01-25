@@ -98,6 +98,15 @@ li {
     font-size: 12px;
     margin-left: 10px;
 }
+.version-summary {
+    background: #2d2d30;
+    border-left: 3px solid #569cd6;
+    padding: 12px 15px;
+    margin: 10px 0 20px;
+    color: #9cdcfe;
+    font-size: 13px;
+    line-height: 1.5;
+}
 .tag {
     display: inline-block;
     padding: 2px 8px;
@@ -264,6 +273,7 @@ li {
     </div>
 
     <h2 id="v3.0">Version 3.0 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
+    <p class="version-summary">This release focuses on making shared modlists work reliably across different machines. External mods (those not from Nexus) now download automatically when possible, and your mod flags and settings transfer perfectly when someone else imports your modlist. No more losing your carefully organized Essential/Optional tags or having buttons break after sorting the table.</p>
 
     <h3>Creations Tab</h3>
     <ul>
@@ -275,6 +285,16 @@ li {
         <li><span class="tag tag-new">NEW</span> <b>Profile status indicator.</b> Sidebar now shows whether a profile is active with color-coded status: orange when no profile is selected, green when editing.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Checkboxes disabled without active profile.</b> Flag checkboxes are now disabled when no profile is loaded, preventing accidental changes.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Removed dual persistence system.</b> Flag overrides are now stored exclusively in profiles, eliminating the separate overrides file that could cause conflicts.</li>
+        <li><span class="tag tag-new">NEW</span> <b>External URL and Link Type columns.</b> External mods now have editable URL and link type fields directly in the table.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Link type modes.</b> Choose Auto (detect from URL), Direct (force direct download), or Page (open in browser) for external downloads.</li>
+    </ul>
+
+    <h3>External Downloads</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Direct download support for external mods.</b> External mods with direct download URLs (.7z, .zip, etc.) can now be downloaded automatically through MO2's download manager.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Expected filename matching.</b> Markers can store the expected archive filename, improving download detection accuracy.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Archive hash verification.</b> Markers can store SHA256 hashes for download verification.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>HTTPS security validation.</b> Non-HTTPS URLs are rejected for direct downloads to ensure secure transfers.</li>
     </ul>
 
     <h3>Structure Capture</h3>
@@ -303,6 +323,7 @@ li {
     </ul>
 
     <h2 id="v2.5">Version 2.5 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
+    <p class="version-summary">A major usability update for creating and sharing modlists. The Creations tab got a cleaner sidebar layout, the Sort Tool now remembers your custom rules between sessions, and downloads are faster and more reliable. Cross-game mods like BethINI no longer pop up annoying confirmation dialogs.</p>
 
     <h3>Creations Tab</h3>
     <ul>
@@ -537,6 +558,7 @@ li {
     </div>
 
     <h2 id="v2.4.3">Version 2.4.3 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
+    <p class="version-summary">Quick fix to remove the annoying tab locking that blocked new users from exploring the plugin. All tabs are now available immediately, and new users start on the Help tab for guidance.</p>
 
     <h3>Help Tab</h3>
     <ul>
@@ -571,6 +593,7 @@ li {
     </div>
 
     <h2 id="v2.4.2">Version 2.4.2 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
+    <p class="version-summary">Major infrastructure update that makes collection updates easy. You can now check for new revisions with one click and see exactly what changed before updating. Behind the scenes, all the tracking files now use a consistent format, fixing various bugs where mods weren't being detected properly.</p>
 
     <h3>Marker System Overhaul</h3>
     <ul>
@@ -691,6 +714,7 @@ li {
     </div>
 
     <h2 id="v2.4.1">Version 2.4.1 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
+    <p class="version-summary">Emergency safety patch. Fixed a serious bug where the plugin could accidentally delete your personal mods that weren't part of the collection. If you're on 2.4, update immediately.</p>
 
     <h3>Critical Safety Fixes</h3>
     <ul>
@@ -747,6 +771,7 @@ li {
     </div>
 
     <h2 id="v2.4">Version 2.4 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
+    <p class="version-summary">The biggest release yet. Bundles finally work - install patches, loose files, and INI tweaks automatically. External mods can now auto-download when the collection author provides direct links. The entire mod tracking system was rebuilt for reliability, and there's now full documentation for every feature.</p>
 
     <h3>Biggest Changes</h3>
     <ul>

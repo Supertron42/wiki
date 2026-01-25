@@ -13,11 +13,12 @@ body {
     font-size: 13px;
     line-height: 1.6;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
     background: #1e1e1e;
     color: #d4d4d4;
+    padding-top: 30px;
 }
 
 .landing-container {
@@ -42,7 +43,12 @@ h1 {
     border: 1px solid #3c3c3c;
     border-radius: 8px;
     padding: 30px 40px;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    aspect-ratio: 16 / 9;
     transition: all 0.15s;
 }
 .wiki-card:hover {
@@ -85,13 +91,39 @@ h1 {
     background: #c47d2e;
 }
 
-@keyframes kofi-glow {
-    0% { filter: drop-shadow(0 0 0px #ff5e5b); }
-    50% { filter: drop-shadow(0 0 12px #ff5e5b); }
-    100% { filter: drop-shadow(0 0 0px #ff5e5b); }
+.wiki-card {
+    position: relative;
+    overflow: hidden;
 }
-.kofi-btn:hover {
-    animation: kofi-glow 0.6s ease-out;
+.lightning-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+    z-index: 10;
+}
+.wiki-card:hover .lightning-canvas {
+    opacity: 1;
+}
+.kofi-container {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+@keyframes poop-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(120px) rotate(360deg); opacity: 0; }
+}
+.poop-drop {
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    animation: poop-fall 1s ease-in forwards;
+    z-index: 100;
 }
 </style>
 </head>
@@ -107,17 +139,19 @@ h1 {
         <canvas id="gameCanvas" width="600" height="150" style="border: 1px solid #3c3c3c; border-radius: 8px; background: #0a0a12; cursor: none;"></canvas>
     </div>
 
-    <h1>MO2 Collections Wiki</h1>
-    <p class="subtitle">Documentation for MO2 plugin extensions and development tools</p>
+    <h1>Welcome to my Wiki</h1>
+    <p class="subtitle">Enjoy your stay</p>
 
     <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
-        <div class="wiki-card" style="border-color: #DA8E35; background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('collectionsmanager/cm02thumbnail.webp') center/cover;">
+        <div class="wiki-card" style="border-color: #DA8E35; background: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.80)), url('collectionsmanager/cm02thumbnail.webp') center/cover;">
+            <canvas class="lightning-canvas"></canvas>
             <h2 style="color: #fff;">Collections Manager</h2>
             <p style="color: #ddd;">Complete documentation for installing and managing Nexus collections in MO2.</p>
             <a href="collectionsmanager/wiki.html">Open Wiki</a>
         </div>
 
-        <div class="wiki-card" style="border-color: #3D7EFF; background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('clibdt/clibdt_bg.png') center/cover;">
+        <div class="wiki-card" style="border-color: #3D7EFF; background: linear-gradient(rgba(0,0,0,0.80), rgba(0,0,0,0.80)), url('clibdt/clibdt_bg.png') center/cover;">
+            <canvas class="lightning-canvas"></canvas>
             <h2 style="color: #fff;">ClibDT</h2>
             <p style="color: #ddd;">CommonLib Developers Toolkit - lower the barrier to SKSE plugin development.</p>
             <a href="clibdt/wiki.html" style="background: #3D7EFF;">Open Wiki</a>
@@ -125,7 +159,9 @@ h1 {
     </div>
 
     <div style="margin-top: 40px; text-align: center;">
-        <a href="https://ko-fi.com/supertron" target="_blank" class="kofi-btn"><img src="collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+        <div class="kofi-container" id="kofiContainer">
+            <a href="https://ko-fi.com/supertron" target="_blank" class="kofi-btn"><img src="collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+        </div>
     </div>
 </div>
 
@@ -423,6 +459,147 @@ h1 {
     }
 
     update();
+})();
+
+// Poop rain on kofi hover
+(function() {
+    const container = document.getElementById('kofiContainer');
+    let poopInterval = null;
+
+    function spawnPoop() {
+        const poop = document.createElement('span');
+        poop.className = 'poop-drop';
+        poop.textContent = '\u{1F4A9}';
+        poop.style.left = (Math.random() * 100) + '%';
+        poop.style.top = '0';
+        container.appendChild(poop);
+        setTimeout(() => poop.remove(), 1000);
+    }
+
+    container.addEventListener('mouseenter', () => {
+        poopInterval = setInterval(spawnPoop, 80);
+    });
+
+    container.addEventListener('mouseleave', () => {
+        clearInterval(poopInterval);
+    });
+})();
+
+// Lightning effect on card hover - strikes the Open Wiki button
+(function() {
+    const cards = document.querySelectorAll('.wiki-card');
+
+    cards.forEach(card => {
+        const canvas = card.querySelector('.lightning-canvas');
+        const ctx = canvas.getContext('2d');
+        const button = card.querySelector('a');
+        let animationId = null;
+        let bolts = [];
+        let nextStrikeTime = 0;
+
+        function resize() {
+            canvas.width = card.offsetWidth;
+            canvas.height = card.offsetHeight;
+        }
+
+        function getButtonCenter() {
+            const cardRect = card.getBoundingClientRect();
+            const btnRect = button.getBoundingClientRect();
+            return {
+                x: btnRect.left - cardRect.left + btnRect.width / 2,
+                y: btnRect.top - cardRect.top + btnRect.height / 2
+            };
+        }
+
+        function drawBolt(x1, y1, x2, y2, segments, seed) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+
+            for (let i = 1; i < segments; i++) {
+                const t = i / segments;
+                const jitter = (1 - t) * 50; // More jitter at top, less near button
+                const x = x1 + (x2 - x1) * t + (Math.sin(seed + i * 3) * jitter);
+                const y = y1 + (y2 - y1) * t;
+                ctx.lineTo(x, y);
+
+                // Random branches
+                if (i > 1 && i < segments - 2 && Math.sin(seed * i) > 0.5) {
+                    ctx.moveTo(x, y);
+                    const branchLen = 15 + Math.abs(Math.sin(seed * i * 2)) * 25;
+                    const branchDir = Math.sin(seed * i) > 0 ? 1 : -1;
+                    ctx.lineTo(x + branchDir * branchLen, y + 10);
+                    ctx.moveTo(x, y);
+                }
+            }
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        function spawnStrikes() {
+            const btnPos = getButtonCenter();
+            const numStrikes = 1 + Math.floor(Math.random() * 3); // 1-3 strikes
+
+            for (let i = 0; i < numStrikes; i++) {
+                const offsetX = (Math.random() - 0.5) * 40;
+                bolts.push({
+                    x1: btnPos.x + (Math.random() - 0.5) * 80,
+                    y1: 0,
+                    x2: btnPos.x + offsetX,
+                    y2: btnPos.y,
+                    life: 1,
+                    segments: 6 + Math.floor(Math.random() * 4),
+                    seed: Math.random() * 100
+                });
+            }
+        }
+
+        function animate(timestamp) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Spawn new strikes periodically
+            if (timestamp > nextStrikeTime) {
+                spawnStrikes();
+                nextStrikeTime = timestamp + 400 + Math.random() * 600; // Every 400-1000ms
+            }
+
+            bolts.forEach(bolt => {
+                // Main bolt - bright core
+                ctx.strokeStyle = `rgba(255, 255, 255, ${bolt.life})`;
+                ctx.lineWidth = 3;
+                ctx.shadowColor = '#aaccff';
+                ctx.shadowBlur = 20;
+                drawBolt(bolt.x1, bolt.y1, bolt.x2, bolt.y2, bolt.segments, bolt.seed);
+
+                // Outer glow
+                ctx.strokeStyle = `rgba(150, 180, 255, ${bolt.life * 0.6})`;
+                ctx.lineWidth = 6;
+                ctx.shadowBlur = 30;
+                drawBolt(bolt.x1, bolt.y1, bolt.x2, bolt.y2, bolt.segments, bolt.seed);
+
+                bolt.life -= 0.06;
+            });
+
+            bolts = bolts.filter(b => b.life > 0);
+            ctx.shadowBlur = 0;
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        card.addEventListener('mouseenter', () => {
+            resize();
+            bolts = [];
+            nextStrikeTime = 0;
+            animationId = requestAnimationFrame(animate);
+        });
+
+        card.addEventListener('mouseleave', () => {
+            cancelAnimationFrame(animationId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            bolts = [];
+        });
+
+        window.addEventListener('resize', resize);
+    });
 })();
 </script>
 </body>

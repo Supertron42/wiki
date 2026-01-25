@@ -265,13 +265,13 @@ li {
 
     <h2 id="v2.5">Version 2.5 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
 
-    <h3>Share Tab</h3>
+    <h3>Creations Tab</h3>
     <ul>
         <li><span class="tag tag-change">CHANGE</span> <b>Redesigned layout with left sidebar.</b> Profile fields (name, version, author) and action buttons are now stacked vertically in a compact sidebar, giving the mod table more horizontal space.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Fixed checkbox toggle inconsistency after sorting.</b> Essential/External/Optional/Bundle checkboxes now work correctly regardless of table sort order. Previously, clicking checkboxes after sorting could modify the wrong mod entry.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Loading progress dialog.</b> First load and manual refresh now show a blocking progress dialog, preventing interaction with a partially loaded table.</li>
-        <li><span class="tag tag-improve">IMPROVED</span> <b>Smart refresh.</b> The table no longer reloads every time you switch to the Share tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".</li>
-        <li><span class="tag tag-improve">IMPROVED</span> <b>Automatic maintenance.</b> Opening the Share tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Smart refresh.</b> The table no longer reloads every time you switch to the Creations tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Automatic maintenance.</b> Opening the Creations tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Button renamed.</b> "Refresh Table" is now "Refresh Data" to better reflect that it runs maintenance tasks, not just a table refresh.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Better error handling.</b> Added comprehensive logging and widget validation to diagnose blank table issues. Detects if the table widget was deleted or if MO2's modlist is unavailable.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Column order adjusted.</b> Swapped the Optional and External columns so the order is now: Essential, Optional, External, Bundle.</li>
@@ -279,15 +279,15 @@ li {
 
     <h3>Collections Tab</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Temporary collection cards no longer delete mods.</b> Temp collections (created from Share tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Temporary collection cards no longer delete mods.</b> Temp collections (created from Creations tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.</li>
     </ul>
 
     <h3>FOMOD Installer</h3>
     <ul>
         <li><span class="tag tag-fix">FIX</span> <b>Fixed FOMOD choices dialog showing empty selections.</b> When importing a modlist, the FOMOD choices dialog now properly displays choices from wrapped format structures. Empty or whitespace-only choice names now show "(option N)" or "(none)" instead of blank entries.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>INI settings bundled by default.</b> The "Save INI settings to bundle" option is now enabled by default when creating profiles.</li>
-        <li><span class="tag tag-fix">FIX</span> <b>Last profile restored on restart.</b> The Share tab now remembers and restores your last selected profile when MO2 restarts.</li>
-        <li><span class="tag tag-fix">FIX</span> <b>Last profile auto-loads on tab entry.</b> When entering the Share tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Last profile restored on restart.</b> The Creations tab now remembers and restores your last selected profile when MO2 restarts.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Last profile auto-loads on tab entry.</b> When entering the Creations tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.</li>
     </ul>
 
     <h3>Downloads</h3>
@@ -313,7 +313,7 @@ li {
 
     <h3>Tools &amp; Data Handling</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Centralized version format handling.</b> Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Centralized version format handling.</b> Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Creations Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Mods tab version display matches MO2.</b> The Mods tab now uses MO2's native displayString() for installed and skipped mods, ensuring versions match exactly with MO2's own Mods tab. Pending mods show versions from collection.json.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Version column repositioned in all tables.</b> The Version column is now placed directly after the Mod Name column for better visibility. Affected tools: Sort Tool, Duplicate Finder, and main Mods tab.</li>
         <li><span class="tag tag-new">NEW</span> <b>Version column added to multiple tables.</b> The Mods tab, Missing Mods table, External Files table, and Install Order table now display mod versions right next to mod names.</li>
@@ -350,27 +350,27 @@ li {
     </div>
     <div id="bb244" class="spoiler-content">
         <textarea class="bbcode-area" id="bbcode244" readonly>[size=4][b][color=#dcdcaa]Version 2.5[/color][/b][/size]
-[size=3][b][color=#9cdcfe]Share Tab[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Creations Tab[/color][/b][/size]
 [list]
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]Redesigned layout with left sidebar.[/b] Profile fields (name, version, author) and action buttons are now stacked vertically in a compact sidebar, giving the mod table more horizontal space.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed checkbox toggle inconsistency after sorting.[/b] Essential/External/Optional/Bundle checkboxes now work correctly regardless of table sort order. Previously, clicking checkboxes after sorting could modify the wrong mod entry.
 [*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Loading progress dialog.[/b] First load and manual refresh now show a blocking progress dialog, preventing interaction with a partially loaded table.
-[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Smart refresh.[/b] The table no longer reloads every time you switch to the Share tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".
-[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Automatic maintenance.[/b] Opening the Share tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Smart refresh.[/b] The table no longer reloads every time you switch to the Creations tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Automatic maintenance.[/b] Opening the Creations tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]Button renamed.[/b] "Refresh Table" is now "Refresh Data" to better reflect that it runs maintenance tasks, not just a table refresh.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Better error handling.[/b] Added comprehensive logging and widget validation to diagnose blank table issues. Detects if the table widget was deleted or if MO2's modlist is unavailable.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]Column order adjusted.[/b] Swapped the Optional and External columns so the order is now: Essential, Optional, External, Bundle.
 [/list]
 [size=3][b][color=#9cdcfe]Collections Tab[/color][/b][/size]
 [list]
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Temporary collection cards no longer delete mods.[/b] Temp collections (created from Share tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Temporary collection cards no longer delete mods.[/b] Temp collections (created from Creations tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.
 [/list]
 [size=3][b][color=#9cdcfe]FOMOD Installer[/color][/b][/size]
 [list]
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed FOMOD choices dialog showing empty selections.[/b] When importing a modlist, the FOMOD choices dialog now properly displays choices from wrapped format structures. Empty or whitespace-only choice names now show "(option N)" or "(none)" instead of blank entries.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]INI settings bundled by default.[/b] The "Save INI settings to bundle" option is now enabled by default when creating profiles.
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Last profile restored on restart.[/b] The Share tab now remembers and restores your last selected profile when MO2 restarts.
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Last profile auto-loads on tab entry.[/b] When entering the Share tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Last profile restored on restart.[/b] The Creations tab now remembers and restores your last selected profile when MO2 restarts.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Last profile auto-loads on tab entry.[/b] When entering the Creations tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.
 [/list]
 [size=3][b][color=#9cdcfe]Downloads[/color][/b][/size]
 [list]
@@ -393,7 +393,7 @@ li {
 [/list]
 [size=3][b][color=#9cdcfe]Tools & Data Handling[/color][/b][/size]
 [list]
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Centralized version format handling.[/b] Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Centralized version format handling.[/b] Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Creations Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Mods tab version display matches MO2.[/b] The Mods tab now uses MO2's native displayString() for installed and skipped mods, ensuring versions match exactly with MO2's own Mods tab. Pending mods show versions from collection.json.
 [*][color=#1565c0][b]CHANGE[/b][/color] [b]Version column repositioned in all tables.[/b] The Version column is now placed directly after the Mod Name column for better visibility. Affected tools: Sort Tool, Duplicate Finder, and main Mods tab.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Version column added to multiple tables.[/b] The Mods tab, Missing Mods table, External Files table, and Install Order table now display mod versions right next to mod names.
@@ -425,27 +425,27 @@ li {
     <div id="md244" class="spoiler-content">
         <textarea class="bbcode-area" id="markdown244" readonly># Version 2.5
 
-## Share Tab
+## Creations Tab
 
 - **Redesigned layout with left sidebar.** Profile fields (name, version, author) and action buttons are now stacked vertically in a compact sidebar, giving the mod table more horizontal space.
 - **Fixed checkbox toggle inconsistency after sorting.** Essential/External/Optional/Bundle checkboxes now work correctly regardless of table sort order. Previously, clicking checkboxes after sorting could modify the wrong mod entry.
 - **Loading progress dialog.** First load and manual refresh now show a blocking progress dialog, preventing interaction with a partially loaded table.
-- **Smart refresh.** The table no longer reloads every time you switch to the Share tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".
-- **Automatic maintenance.** Opening the Share tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.
+- **Smart refresh.** The table no longer reloads every time you switch to the Creations tab. It only refreshes on first load, when the modlist changes, or when you click "Refresh Data".
+- **Automatic maintenance.** Opening the Creations tab or clicking "Refresh Data" now automatically runs marker fix and index rebuild to ensure accurate mod status detection.
 - **Button renamed.** "Refresh Table" is now "Refresh Data" to better reflect that it runs maintenance tasks, not just a table refresh.
 - **Better error handling.** Added comprehensive logging and widget validation to diagnose blank table issues. Detects if the table widget was deleted or if MO2's modlist is unavailable.
 - **Column order adjusted.** Swapped the Optional and External columns so the order is now: Essential, Optional, External, Bundle.
 
 ## Collections Tab
 
-- **Temporary collection cards no longer delete mods.** Temp collections (created from Share tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.
+- **Temporary collection cards no longer delete mods.** Temp collections (created from Creations tab) now show a "Remove Card" button instead of Delete/Uninstall. Removing a temp card only removes the UI card - mods, archives, and metadata are kept safe.
 
 ## FOMOD Installer
 
 - **Fixed FOMOD choices dialog showing empty selections.** When importing a modlist, the FOMOD choices dialog now properly displays choices from wrapped format structures. Empty or whitespace-only choice names now show "(option N)" or "(none)" instead of blank entries.
 - **INI settings bundled by default.** The "Save INI settings to bundle" option is now enabled by default when creating profiles.
-- **Last profile restored on restart.** The Share tab now remembers and restores your last selected profile when MO2 restarts.
-- **Last profile auto-loads on tab entry.** When entering the Share tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.
+- **Last profile restored on restart.** The Creations tab now remembers and restores your last selected profile when MO2 restarts.
+- **Last profile auto-loads on tab entry.** When entering the Creations tab, the last used profile is now automatically loaded instead of just being selected in the dropdown.
 
 ## Downloads
 
@@ -468,7 +468,7 @@ li {
 
 ## Tools & Data Handling
 
-- **Centralized version format handling.** Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Share Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
+- **Centralized version format handling.** Version strings are now consistently formatted across all tools (Sort Tool, Duplicate Finder, Creations Tab). Previously, some tools displayed raw meta.ini versions with extra characters like "v" prefixes or build metadata. Now all tools use MO2's native format or normalized fallback for consistent display.
 - **Mods tab version display matches MO2.** The Mods tab now uses MO2's native displayString() for installed and skipped mods, ensuring versions match exactly with MO2's own Mods tab. Pending mods show versions from collection.json.
 - **Version column repositioned in all tables.** The Version column is now placed directly after the Mod Name column for better visibility. Affected tools: Sort Tool, Duplicate Finder, and main Mods tab.
 - **Version column added to multiple tables.** The Mods tab, Missing Mods table, External Files table, and Install Order table now display mod versions right next to mod names.

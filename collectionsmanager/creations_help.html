@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 180px;
+    min-width: 180px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 20px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 180px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+a {
+    color: #569cd6;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    border: 1px solid #3c3c3c;
+    color: #ce9178;
+}
+
+/* Callout boxes */
+.warning {
+    background: #3d3520;
+    border-left: 4px solid #f0c020;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info {
+    background: #1e3a5f;
+    border-left: 4px solid #569cd6;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.success {
+    background: #1e3d2b;
+    border-left: 4px solid #4ec9b0;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+ul, ol {
+    margin: 10px 0;
+    padding-left: 25px;
+}
+li {
+    margin: 6px 0;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+th, td {
+    border: 1px solid #3c3c3c;
+    padding: 8px 12px;
+    text-align: left;
+}
+th {
+    background: #2d2d2d;
+    color: #4ec9b0;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Scroll margin for anchors */
+[id] {
+    scroll-margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Left Navigation -->
+<div id="nav">
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Overview</h3>
+    <a href="#purpose">Purpose</a>
+    <a href="#enabling">Toggling Creations Tab</a>
+
+    <h3>Exporting</h3>
+    <a href="#export-modlist">Export Modlist</a>
+    <a href="#export-fomod">Export FOMOD Choices</a>
+    <a href="#export-format">Export Format</a>
+
+    <h3>Importing</h3>
+    <a href="#import-modlist">Import Modlist</a>
+    <a href="#import-process">Import Process</a>
+
+    <h3>Mod Table</h3>
+    <a href="#mod-table">Mod Table Overview</a>
+    <a href="#mod-flags">Mod Flags</a>
+    <a href="#configure-fomod">Configure FOMOD</a>
+
+    <h3>Use Cases</h3>
+    <a href="#sharing">Sharing Collections</a>
+    <a href="#backup">Backup & Restore</a>
+    <a href="#offline">Offline Collections</a>
+
+    <!-- Premium Ad -->
+    <div style="margin-top: 40px; padding: 12px; background: #1e1e1e; border-top: 1px solid #3c3c3c;">
+        <div style="color: #DA8E35; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 10px;">
+            Collections for MO2 Are Here
+        </div>
+        <div style="font-size: 11px; color: #9cdcfe; line-height: 1.5;">
+            <div style="margin-bottom: 6px;">&#10003; Save thousands of clicks</div>
+            <div style="margin-bottom: 6px;">&#10003; One-click collection setups</div>
+            <div style="margin-bottom: 6px;">&#10003; Faster downloads</div>
+            <div style="margin-bottom: 10px;">&#10003; Support the community</div>
+        </div>
+        <a href="https://users.nexusmods.com/account/billing/premium?utm_source=collaboration&utm_medium=link&utm_campaign=MO2_upsell&utm_term=MO2_user&utm_content=upsell_link_1"
+           target="_blank"
+           style="display: block; background: #DA8E35; color: white; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+            Go Premium
+        </a>
+        <div style="text-align: center; margin-top: 12px;">
+            <img src="nexus mods logo.png" alt="Nexus Mods" style="width: 80px; height: auto;">
+        </div>
+    </div>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div id="content">
+
+<div class="warning">
+<b>Work in Progress:</b> This documentation is currently inaccurate and subject to many changes and improvements. Features described here may not reflect the current state of the Creations tab.
+</div>
+
+<h1 id="purpose">Creations Tab - Creating & Sharing Collections</h1>
+<p>The Creations tab allows you to export your modlist as a shareable JSON file, import previously exported modlists, and manage FOMOD installer choices. This is useful for:</p>
+<ul>
+    <li>Sharing your curated mod setup with friends</li>
+    <li>Creating backups of your collection configuration</li>
+    <li>Building offline-friendly modlists</li>
+    <li>Preserving FOMOD choices for reinstallation</li>
+</ul>
+
+<div class="info">
+<b>Note:</b> The Creations tab visibility can be toggled in Options. See <a href="#enabling">Toggling Creations Tab</a> for details.
+</div>
+
+
+<h1 id="enabling">Toggling the Creations Tab</h1>
+<p>The Creations tab visibility can be controlled in the Options:</p>
+<ol>
+    <li>Go to the <b>Options</b> tab</li>
+    <li>Click <b>Show</b> next to "Developer Options"</li>
+    <li>Toggle the <b>Show Creations Tab</b> checkbox</li>
+</ol>
+
+<div class="success">
+<b>Tip:</b> The Creations tab setting is saved automatically and will persist between sessions.
+</div>
+
+
+<h1 id="export-modlist">Exporting a Modlist</h1>
+<p>Export your current collection as a JSON file that can be shared or imported later.</p>
+
+<h3>How to Export</h3>
+<ol>
+    <li>Load a collection or have mods in your mod list</li>
+    <li>Go to the <b>Creations</b> tab</li>
+    <li>Review the mod table to see what will be exported</li>
+    <li>Optionally configure mod flags (essential, optional, external, bundle)</li>
+    <li>Click <b>Export Modlist</b></li>
+    <li>Choose a save location and filename</li>
+</ol>
+
+<h3>What's Included in the Export</h3>
+<ul>
+    <li><b>Mod metadata:</b> Name, version, file ID, mod ID</li>
+    <li><b>Install order:</b> The sequence mods should be installed</li>
+    <li><b>FOMOD choices:</b> Saved installer selections</li>
+    <li><b>Mod flags:</b> Essential, optional, external, or bundle status</li>
+    <li><b>Collection info:</b> Author name, version, description</li>
+</ul>
+
+<div class="info">
+<b>Note:</b> The export does NOT include the actual mod files, only the metadata needed to download and install them.
+</div>
+
+
+<h1 id="export-fomod">Exporting FOMOD Choices</h1>
+<p>You can export just your FOMOD installer choices separately from the full modlist. This is useful for:</p>
+<ul>
+    <li>Backing up your installer preferences</li>
+    <li>Sharing specific FOMOD configurations</li>
+    <li>Transferring choices to another profile</li>
+</ul>
+
+<h3>How to Export FOMOD Choices</h3>
+<ol>
+    <li>Go to the <b>Creations</b> tab</li>
+    <li>Click <b>Export FOMOD Choices</b></li>
+    <li>Choose a save location</li>
+</ol>
+
+<p>The exported file contains all your saved FOMOD selections in JSON format.</p>
+
+
+<h1 id="export-format">Export File Format</h1>
+<p>Exported modlists use a JSON format compatible with Collections Manager. The structure includes:</p>
+
+<table>
+    <tr><th>Field</th><th>Description</th></tr>
+    <tr><td><code>name</code></td><td>Collection name</td></tr>
+    <tr><td><code>author</code></td><td>Author name</td></tr>
+    <tr><td><code>version</code></td><td>Collection version string</td></tr>
+    <tr><td><code>description</code></td><td>Collection description</td></tr>
+    <tr><td><code>game</code></td><td>Target game (e.g., "skyrimspecialedition")</td></tr>
+    <tr><td><code>mods</code></td><td>Array of mod objects with metadata</td></tr>
+    <tr><td><code>fomod_choices</code></td><td>FOMOD installer selections per mod</td></tr>
+</table>
+
+<h3>Mod Object Fields</h3>
+<table>
+    <tr><th>Field</th><th>Description</th></tr>
+    <tr><td><code>name</code></td><td>Mod display name</td></tr>
+    <tr><td><code>mod_id</code></td><td>Nexus mod ID</td></tr>
+    <tr><td><code>file_id</code></td><td>Nexus file ID</td></tr>
+    <tr><td><code>version</code></td><td>File version</td></tr>
+    <tr><td><code>optional</code></td><td>Whether the mod is optional</td></tr>
+    <tr><td><code>external</code></td><td>Whether downloaded from external source</td></tr>
+    <tr><td><code>bundle</code></td><td>Whether included in a bundle archive</td></tr>
+</table>
+
+
+<h1 id="import-modlist">Importing a Modlist</h1>
+<p>Import a previously exported modlist JSON file to recreate a collection.</p>
+
+<h3>How to Import</h3>
+<ol>
+    <li>Go to the <b>Creations</b> tab</li>
+    <li>Click <b>Import Modlist</b></li>
+    <li>Select the JSON file to import</li>
+    <li>The collection will be loaded into Collections Manager</li>
+    <li>You can then download and install the mods normally</li>
+</ol>
+
+<div class="warning">
+<b>Important:</b> Importing creates a new collection entry. Make sure you're importing into the correct MO2 profile.
+</div>
+
+
+<h1 id="import-process">Import Process Details</h1>
+<p>When you import a modlist, Collections Manager:</p>
+<ol>
+    <li>Parses the JSON file and validates the format</li>
+    <li>Generates a collection.json compatible with the download engine</li>
+    <li>Stores FOMOD choices for automatic application during install</li>
+    <li>Adds the collection to your Collections tab history</li>
+    <li>Switches to the Mods tab ready for installation</li>
+</ol>
+
+<h3>After Import</h3>
+<ul>
+    <li>Click <b>Begin Install</b> (Premium) or <b>Open Download Links</b> (Free) to start</li>
+    <li>Mods will download and install in the specified order</li>
+    <li>FOMOD choices will be automatically applied</li>
+</ul>
+
+
+<h1 id="mod-table">Mod Table Overview</h1>
+<p>The Creations tab displays a table of all mods in your current collection with their export settings.</p>
+
+<h3>Table Columns</h3>
+<table>
+    <tr><th>Column</th><th>Description</th></tr>
+    <tr><td><b>Name</b></td><td>Mod display name</td></tr>
+    <tr><td><b>Version</b></td><td>File version</td></tr>
+    <tr><td><b>Mod ID</b></td><td>Nexus mod page ID</td></tr>
+    <tr><td><b>File ID</b></td><td>Specific file ID</td></tr>
+    <tr><td><b>Flags</b></td><td>Essential/Optional/External/Bundle status</td></tr>
+    <tr><td><b>FOMOD</b></td><td>Whether FOMOD choices are saved</td></tr>
+</table>
+
+<h3>Sorting and Filtering</h3>
+<ul>
+    <li>Click column headers to sort</li>
+    <li>Use the search box to filter mods by name</li>
+    <li>Right-click for context menu options</li>
+</ul>
+
+
+<h1 id="mod-flags">Mod Flags</h1>
+<p>Each mod can have flags that affect how it's handled during installation:</p>
+
+<table>
+    <tr><th>Flag</th><th>Icon</th><th>Description</th></tr>
+    <tr><td><b>Essential</b></td><td>Star</td><td>Required mod - cannot be skipped</td></tr>
+    <tr><td><b>Optional</b></td><td>Question mark</td><td>User will be prompted to install or skip</td></tr>
+    <tr><td><b>External</b></td><td>Globe</td><td>Downloaded from external source (not Nexus API)</td></tr>
+    <tr><td><b>Bundle</b></td><td>Package</td><td>Included in a bundle archive with the collection</td></tr>
+</table>
+
+<h3>Setting Flags</h3>
+<ol>
+    <li>Select one or more mods in the table</li>
+    <li>Right-click to open the context menu</li>
+    <li>Choose the flag to toggle</li>
+</ol>
+
+<div class="info">
+<b>Tip:</b> Flag changes are saved automatically and included in exports.
+</div>
+
+
+<h1 id="configure-fomod">Configuring FOMOD Choices</h1>
+<p>You can pre-configure FOMOD installer choices before exporting:</p>
+
+<h3>How to Configure</h3>
+<ol>
+    <li>Select a mod with a FOMOD installer</li>
+    <li>Click <b>Configure FOMOD</b> or right-click and select it</li>
+    <li>A dialog appears showing available options</li>
+    <li>Select your preferred choices</li>
+    <li>Click <b>Save</b></li>
+</ol>
+
+<p>These choices will be:</p>
+<ul>
+    <li>Automatically applied when installing the mod</li>
+    <li>Included in modlist exports</li>
+    <li>Transferred when sharing the collection</li>
+</ul>
+
+
+<h1 id="sharing">Sharing Collections with Others</h1>
+<p>To share your collection with friends or the community:</p>
+
+<h3>Step-by-Step</h3>
+<ol>
+    <li>Set up your modlist exactly how you want it</li>
+    <li>Configure FOMOD choices for complex installers</li>
+    <li>Mark optional mods appropriately</li>
+    <li>Export the modlist to a JSON file</li>
+    <li>Share the JSON file (Discord, email, cloud storage, etc.)</li>
+</ol>
+
+<h3>What Recipients Need</h3>
+<ul>
+    <li>MO2 with Collections Manager installed</li>
+    <li>Nexus Mods account (Premium recommended for auto-download)</li>
+    <li>The same game installed</li>
+</ul>
+
+<div class="success">
+<b>Best Practice:</b> Include a README with your export explaining any manual steps, recommended settings, or mod conflicts to watch for.
+</div>
+
+
+<h1 id="backup">Backup and Restore</h1>
+<p>Use the Creations tab to backup your collection configuration:</p>
+
+<h3>Creating a Backup</h3>
+<ol>
+    <li>Load your collection</li>
+    <li>Export the modlist with all FOMOD choices</li>
+    <li>Save to a backup location (cloud storage recommended)</li>
+</ol>
+
+<h3>Restoring from Backup</h3>
+<ol>
+    <li>Create a fresh MO2 profile</li>
+    <li>Import the modlist JSON</li>
+    <li>Run the installation process</li>
+</ol>
+
+<div class="warning">
+<b>Note:</b> Backups don't include actual mod files. You'll need to re-download everything. For full offline backups, consider creating a bundle.
+</div>
+
+
+<h1 id="offline">Creating Offline Collections</h1>
+<p>For collections that don't require internet to install, you can create bundles:</p>
+
+<h3>Bundle Features</h3>
+<ul>
+    <li>Include mod archives directly in the collection</li>
+    <li>Add INI tweaks that apply automatically</li>
+    <li>Include binary patches (using bsdiff4)</li>
+    <li>Everything needed in a single archive</li>
+</ul>
+
+<h3>Creating a Bundle</h3>
+<ol>
+    <li>Export your modlist</li>
+    <li>Mark mods as "Bundle" that should be included</li>
+    <li>Gather the mod archives</li>
+    <li>Package with the collection.json</li>
+    <li>Compress as .7z archive</li>
+</ol>
+
+<div class="info">
+<b>Advanced:</b> Bundle creation is a manual process. See the Tools tab for the Bundle Installation tool that handles extraction and patching.
+</div>
+
+<h2>Tips for Sharing</h2>
+<div class="success">
+<ul>
+    <li>Test your exported collection by importing it into a fresh profile</li>
+    <li>Document any mods that require special handling</li>
+    <li>Include version numbers so users know what they're getting</li>
+    <li>Consider creating separate "core" and "optional" exports for large collections</li>
+</ul>
+</div>
+
+</div>
+</body>
+</html>

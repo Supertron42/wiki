@@ -287,6 +287,8 @@ li {
         <li><span class="tag tag-change">CHANGE</span> <b>Removed dual persistence system.</b> Flag overrides are now stored exclusively in profiles, eliminating the separate overrides file that could cause conflicts.</li>
         <li><span class="tag tag-new">NEW</span> <b>External URL and Link Type columns.</b> External mods now have editable URL and link type fields directly in the table.</li>
         <li><span class="tag tag-new">NEW</span> <b>Link type modes.</b> Choose Auto (detect from URL), Direct (force direct download), or Page (open in browser) for external downloads.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Nexus link help dialog.</b> A "?" button next to the URL field for Nexus mods opens a guide explaining how to get the direct download link from the Nexus Files tab.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Version history per profile.</b> Each profile now remembers its version history. Previous versions appear in a dropdown for easy selection when creating new releases.</li>
     </ul>
 
     <h3>External Downloads</h3>
@@ -295,6 +297,7 @@ li {
         <li><span class="tag tag-new">NEW</span> <b>Expected filename matching.</b> Markers can store the expected archive filename, improving download detection accuracy.</li>
         <li><span class="tag tag-new">NEW</span> <b>Archive hash verification.</b> Markers can store SHA256 hashes for download verification.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>HTTPS security validation.</b> Non-HTTPS URLs are rejected for direct downloads to ensure secure transfers.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed 404 errors from game name mismatch.</b> Game names are now normalized to Nexus domain format before API calls, preventing download failures caused by format inconsistencies (e.g., "skyrimse" vs "skyrimspecialedition").</li>
     </ul>
 
     <h3>Structure Capture</h3>

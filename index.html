@@ -202,8 +202,10 @@ h1 {
         shipY = Math.max(ship.height/2, Math.min(canvas.height - ship.height/2, shipY));
     });
 
-    canvas.addEventListener('click', () => {
+    canvas.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return; // Left click only
         initAudio();
+
         if (gameState === 'waiting') {
             gameState = 'playing';
             canvas.requestPointerLock();
@@ -222,6 +224,11 @@ h1 {
             beatPreviousScore = false;
             scoreDisplay.textContent = 'SCORE: 0';
             spawnTimer = setInterval(spawnRock, 1000);
+            return;
+        }
+        // Re-lock pointer if lost during gameplay
+        if (document.pointerLockElement !== canvas) {
+            canvas.requestPointerLock();
             return;
         }
         const shotCount = 1 + Math.floor(score / 5);

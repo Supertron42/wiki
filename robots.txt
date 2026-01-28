@@ -1,0 +1,8 @@
+# Robots.txt for Supertron's Mod Wiki
+# https://supertron42.github.io/wiki/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://supertron42.github.io/wiki/sitemap.xml

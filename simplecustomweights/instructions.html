@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Getting Started - Simple Custom Weights</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #DA8E35;
+}
+#nav a.highlight:hover {
+    background: #c47d2e;
+    border-left-color: #c47d2e;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul, ol {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 6px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a1a;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 15px 0;
+    overflow-x: auto;
+}
+pre code {
+    background: none;
+    padding: 0;
+    color: #d4d4d4;
+}
+
+/* Info boxes */
+.tip {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warning {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p, .warning p {
+    margin: 0;
+    font-size: 12px;
+}
+
+/* Steps */
+.step {
+    display: flex;
+    gap: 12px;
+    margin: 15px 0;
+    padding: 12px;
+    background: #252526;
+    border-radius: 4px;
+}
+.step-num {
+    background: #4ec9b0;
+    color: #1e1e1e;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.step-content {
+    flex: 1;
+}
+.step-content p {
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="instructions.html" class="current">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+    <a href="papyrus_help.html">Reload &amp; Papyrus</a>
+    <a href="compatibility.html">Compatibility</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #3c3c3c; color: #9cdcfe; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px; border: 1px solid #569cd6;">Dev Todo</a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Getting Started</h1>
+    <p>This guide walks you through installing Simple Custom Weights and verifying it's working correctly.</p>
+
+    <h2>Installation</h2>
+
+    <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+            <p><strong>Install with your mod manager</strong> — Install the mod like any other SKSE plugin. MO2, Vortex, or manual installation all work.</p>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+            <p><strong>Verify the DLL location</strong> — Confirm the DLL is at: <code>Data/SKSE/Plugins/SimpleCustomWeights.dll</code></p>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+            <p><strong>Create or edit the INI</strong> — The settings file goes at: <code>Data/SKSE/Plugins/SimpleCustomWeights.ini</code></p>
+        </div>
+    </div>
+
+    <div class="tip">
+        <p><strong>Tip:</strong> If the INI doesn't exist, the plugin will use default values. You only need to create it if you want to customize weights.</p>
+    </div>
+
+    <h2>First Run Verification</h2>
+    <ol>
+        <li>Launch the game to the main menu, then load a save or start a new game.</li>
+        <li>Open your SKSE log directory (usually <code>Documents/My Games/Skyrim Special Edition/SKSE</code>).</li>
+        <li>Look for <code>SimpleCustomWeights.log</code> and open it.</li>
+        <li>You should see:
+            <ul>
+                <li>INI load attempt and the settings that were read</li>
+                <li>Patch summaries like "Patched X weapons", "Patched X armors", etc.</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h2>When Weights Are Applied</h2>
+    <ul>
+        <li><strong>On initial load:</strong> Patches apply when the <code>DataLoaded</code> message fires</li>
+        <li><strong>On save load:</strong> Patches reapply on <code>PostLoadGame</code></li>
+        <li><strong>On demand:</strong> Use the <a href="papyrus_help.html">Papyrus reload function</a> to apply changes without reloading</li>
+    </ul>
+
+    <div class="tip">
+        <p><strong>Tip:</strong> If you edit the INI while the game is running, just load a save and your changes will take effect — no game restart needed.</p>
+    </div>
+
+    <h2>Recommended Workflow</h2>
+    <ul>
+        <li><strong>Start small:</strong> Make small adjustments first. Drastically reducing weights can trivialize carrying capacity and change gameplay balance.</li>
+        <li><strong>Keep zero-weight protection on:</strong> Leave <code>ApplyMinimumWeightToZero=true</code> unless you have a specific reason to allow true zero weights.</li>
+        <li><strong>Test your changes:</strong> After editing the INI, reload weights and check a few items in your inventory to confirm the changes.</li>
+    </ul>
+
+    <div class="warning">
+        <p><strong>Note:</strong> Quest items and items with the <code>VendorNoSale</code> keyword are always skipped to prevent breaking quests or game mechanics.</p>
+    </div>
+
+    <h2>Next Steps</h2>
+    <p>Now that you're set up, check out the <a href="settings_help.html">INI Settings</a> page for a complete reference of all available options.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Change Logs - Simple Custom Weights</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #DA8E35;
+}
+#nav a.highlight:hover {
+    background: #c47d2e;
+    border-left-color: #c47d2e;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+
+/* Version cards */
+.version {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+}
+.version-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.version-num {
+    background: #4ec9b0;
+    color: #1e1e1e;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
+.version-date {
+    color: #9cdcfe;
+    font-size: 12px;
+}
+.version h3 {
+    color: #dcdcaa;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+.version ul {
+    margin: 6px 0 6px 20px;
+}
+.version li {
+    margin: 3px 0;
+    font-size: 12px;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #569cd6;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+    <a href="papyrus_help.html">Reload &amp; Papyrus</a>
+    <a href="compatibility.html">Compatibility</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #3c3c3c; color: #9cdcfe; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px; border: 1px solid #569cd6;">Dev Todo</a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for Simple Custom Weights.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <div class="version">
+        <div class="version-header">
+            <span class="version-num">1.0.0</span>
+            <span class="version-date">Initial Release</span>
+        </div>
+        <h3>Features</h3>
+        <ul>
+            <li>Runtime weight patching for weapons, armor, potions, scrolls, food, books, ingredients, soul gems, misc items, and tools</li>
+            <li>Dedicated gold weight override</li>
+            <li>Optional fixed weights for keys and lockpicks</li>
+            <li>Automatic reload on save load</li>
+            <li>Papyrus function for manual reload</li>
+            <li>Zero-weight protection with configurable minimum</li>
+            <li>Quest item and VendorNoSale blacklist</li>
+        </ul>
+    </div>
+
+    <!-- Template for future releases:
+    <div class="version">
+        <div class="version-header">
+            <span class="version-num">X.Y.Z</span>
+            <span class="version-date">YYYY-MM-DD</span>
+        </div>
+        <h3>Changes</h3>
+        <ul>
+            <li>Change description</li>
+        </ul>
+        <h3>Fixes</h3>
+        <ul>
+            <li>Fix description</li>
+        </ul>
+        <h3>Notes</h3>
+        <ul>
+            <li>Additional notes</li>
+        </ul>
+    </div>
+    -->
+</div>
+
+</body>
+</html>

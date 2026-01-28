@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Dev Todo - Simple Custom Weights</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #DA8E35;
+}
+#nav a.highlight:hover {
+    background: #c47d2e;
+    border-left-color: #c47d2e;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+
+/* Todo items */
+.todo-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+.todo-item.planned {
+    border-left: 3px solid #569cd6;
+}
+.todo-item.considering {
+    border-left: 3px solid #9cdcfe;
+}
+.todo-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #569cd6;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.todo-content h3 {
+    color: #4ec9b0;
+    font-size: 13px;
+    margin: 0 0 4px 0;
+}
+.todo-content p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.tag.planned {
+    background: #569cd6;
+    color: #1e1e1e;
+}
+.tag.considering {
+    background: #3c3c3c;
+    color: #9cdcfe;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+    <a href="papyrus_help.html">Reload &amp; Papyrus</a>
+    <a href="compatibility.html">Compatibility</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #4ec9b0; color: #1e1e1e; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px;">Dev Todo</a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Dev Todo</h1>
+    <p>Planned features and ideas under consideration for future releases.</p>
+
+    <h2>Planned Features</h2>
+
+    <div class="todo-item planned">
+        <div class="todo-checkbox"></div>
+        <div class="todo-content">
+            <h3>MCM Support <span class="tag planned">Planned</span></h3>
+            <p>Add a SkyUI MCM menu to adjust weights in-game and write changes back to the INI file.</p>
+        </div>
+    </div>
+
+    <div class="todo-item planned">
+        <div class="todo-checkbox"></div>
+        <div class="todo-content">
+            <h3>Exclusion List <span class="tag planned">Planned</span></h3>
+            <p>Support an optional config file for excluding specific items by EditorID or FormID.</p>
+        </div>
+    </div>
+
+    <h2>Under Consideration</h2>
+
+    <div class="todo-item considering">
+        <div class="todo-checkbox"></div>
+        <div class="todo-content">
+            <h3>Per-Category Rounding <span class="tag considering">Considering</span></h3>
+            <p>Add precision or rounding controls for each item category to fine-tune weight display.</p>
+        </div>
+    </div>
+
+    <div class="todo-item considering">
+        <div class="todo-checkbox"></div>
+        <div class="todo-content">
+            <h3>Custom Keyword Lists <span class="tag considering">Considering</span></h3>
+            <p>Allow users to define custom keyword lists for mods that use non-vanilla vendor keywords.</p>
+        </div>
+    </div>
+
+    <div class="todo-item considering">
+        <div class="todo-checkbox"></div>
+        <div class="todo-content">
+            <h3>Weight Presets <span class="tag considering">Considering</span></h3>
+            <p>Provide preset configurations (e.g., "Survival Lite", "Weightless Clutter") for quick setup.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

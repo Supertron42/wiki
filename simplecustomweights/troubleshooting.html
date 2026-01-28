@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Troubleshooting - Simple Custom Weights</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #DA8E35;
+}
+#nav a.highlight:hover {
+    background: #c47d2e;
+    border-left-color: #c47d2e;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #f44747;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 6px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+.problem {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 15px 0;
+}
+.problem h3 {
+    margin-top: 0;
+    color: #f44747;
+}
+.solution {
+    margin-top: 10px;
+    padding-left: 15px;
+    border-left: 2px solid #4ec9b0;
+}
+.solution p {
+    margin: 5px 0;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+    <a href="papyrus_help.html">Reload &amp; Papyrus</a>
+    <a href="compatibility.html">Compatibility</a>
+    <a href="troubleshooting.html" class="current">Troubleshooting</a>
+
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #3c3c3c; color: #9cdcfe; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px; border: 1px solid #569cd6;">Dev Todo</a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Troubleshooting</h1>
+    <p>Common issues and how to resolve them.</p>
+
+    <div class="problem">
+        <h3>Nothing changes in game</h3>
+        <div class="solution">
+            <p><strong>Check the DLL location:</strong></p>
+            <ul>
+                <li>Verify the DLL is at <code>Data/SKSE/Plugins/SimpleCustomWeights.dll</code></li>
+            </ul>
+            <p><strong>Check the log file:</strong></p>
+            <ul>
+                <li>Open <code>SimpleCustomWeights.log</code> in your SKSE log directory</li>
+                <li>Look for <code>DataLoaded</code> and <code>PostLoadGame</code> messages</li>
+                <li>If these are missing, SKSE may not be loading the plugin</li>
+            </ul>
+            <p><strong>Check the INI path:</strong></p>
+            <ul>
+                <li>Confirm the INI is at <code>Data/SKSE/Plugins/SimpleCustomWeights.ini</code></li>
+                <li>If the INI fails to load, the log will show a failure message</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="problem">
+        <h3>Some items change but others don't</h3>
+        <div class="solution">
+            <p><strong>These items are intentionally skipped:</strong></p>
+            <ul>
+                <li>Quest items (items flagged as Quest Item)</li>
+                <li>Items with the <code>VendorNoSale</code> keyword</li>
+            </ul>
+            <p><strong>These require specific settings:</strong></p>
+            <ul>
+                <li>Keys only change if <code>KeyWeight</code> is set to 0 or higher</li>
+                <li>Lockpicks only change if <code>LockpickWeight</code> is set to 0 or higher</li>
+            </ul>
+            <p><strong>Category detection:</strong></p>
+            <ul>
+                <li>Food, raw food, tools, and some book types depend on vanilla vendor keywords</li>
+                <li>Items without those keywords may be handled as misc instead</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="problem">
+        <h3>Items become weightless and something feels off</h3>
+        <div class="solution">
+            <ul>
+                <li>Make sure <code>ApplyMinimumWeightToZero=true</code> is set in your INI</li>
+                <li>This prevents items from reaching true zero weight</li>
+                <li>If you want near-zero weights, use a small <code>MinimumNonZeroWeight</code> like <code>0.01</code></li>
+                <li>Don't go smaller than <code>0.01</code> — extremely tiny weights can cause odd behavior</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="problem">
+        <h3>How do I verify what settings were loaded?</h3>
+        <div class="solution">
+            <ul>
+                <li>Open <code>SimpleCustomWeights.log</code></li>
+                <li>The plugin logs every loaded setting value on startup</li>
+                <li>You'll see lines like <code>WeaponWeight = 1.0</code> for each setting</li>
+                <li>Patch summaries show how many items were modified per category</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="problem">
+        <h3>Changes don't apply after editing the INI</h3>
+        <div class="solution">
+            <ul>
+                <li>Settings reload automatically when you load a save</li>
+                <li>For immediate effect without loading a save, use the <a href="papyrus_help.html">Papyrus reload function</a></li>
+                <li>Make sure you saved the INI file before loading the save</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Getting Help</h2>
+    <div class="tip">
+        <p>When reporting issues, include your <code>SimpleCustomWeights.log</code> file and your <code>SimpleCustomWeights.ini</code> contents. This helps diagnose problems quickly.</p>
+    </div>
+</div>
+
+</body>
+</html>

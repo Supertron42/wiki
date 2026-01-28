@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Simple Custom Weights Wiki</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #DA8E35;
+}
+#nav a.highlight:hover {
+    background: #c47d2e;
+    border-left-color: #c47d2e;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #569cd6;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "✓";
+    color: #4ec9b0;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #569cd6;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+    <a href="papyrus_help.html">Reload &amp; Papyrus</a>
+    <a href="compatibility.html">Compatibility</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+
+    <!-- Dev Todo -->
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #3c3c3c; color: #9cdcfe; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px; border: 1px solid #569cd6;">Dev Todo</a>
+    </div>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <img src="cardthumbnail.webp" alt="Simple Custom Weights" style="width: 80px; height: 45px; border-radius: 4px; object-fit: cover;">
+        <h1 style="margin: 0; border: none; padding: 0;">Simple Custom Weights Wiki</h1>
+    </div>
+    <p>A lightweight SKSE plugin that adjusts item weights at runtime using a simple INI file. Patches are applied after game data loads and can be reloaded on demand without restarting the game.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install via your mod manager, edit the INI at <code>Data/SKSE/Plugins/SimpleCustomWeights.ini</code>, and launch the game. Check the log file to verify it's working.</p>
+    </div>
+
+    <h2>What You Can Adjust</h2>
+    <div class="feature-list">
+        <div class="feature-item">Weapons &amp; Armor</div>
+        <div class="feature-item">Potions &amp; Poisons</div>
+        <div class="feature-item">Scrolls</div>
+        <div class="feature-item">Food &amp; Drinks</div>
+        <div class="feature-item">Raw Food</div>
+        <div class="feature-item">Books &amp; Notes</div>
+        <div class="feature-item">Ingredients</div>
+        <div class="feature-item">Soul Gems</div>
+        <div class="feature-item">Misc Items</div>
+        <div class="feature-item">Gold (fixed weight)</div>
+        <div class="feature-item">Keys (optional)</div>
+        <div class="feature-item">Lockpicks (optional)</div>
+    </div>
+
+    <h2>Key Features</h2>
+    <ul>
+        <li><strong>Runtime patching</strong> — No ESP required, works with all mods</li>
+        <li><strong>Auto-reload on save load</strong> — Changes reapply when loading saves</li>
+        <li><strong>Papyrus reload function</strong> — Trigger reloads from scripts or MCM</li>
+        <li><strong>Smart blacklist</strong> — Quest items and VendorNoSale items are skipped</li>
+        <li><strong>Zero-weight protection</strong> — Prevents items from becoming weightless</li>
+    </ul>
+
+    <h2>Documentation</h2>
+    <div class="page-grid">
+        <a class="page-card" href="instructions.html">
+            <h3>Getting Started</h3>
+            <p>Install, verify it's working, and make your first INI edits.</p>
+        </a>
+        <a class="page-card" href="settings_help.html">
+            <h3>INI Settings</h3>
+            <p>Complete reference for all settings with defaults and examples.</p>
+        </a>
+        <a class="page-card" href="papyrus_help.html">
+            <h3>Reload &amp; Papyrus</h3>
+            <p>How to reload weights at runtime and use the Papyrus function.</p>
+        </a>
+        <a class="page-card" href="compatibility.html">
+            <h3>Compatibility</h3>
+            <p>How it works with other mods and what items are affected.</p>
+        </a>
+        <a class="page-card" href="troubleshooting.html">
+            <h3>Troubleshooting</h3>
+            <p>Common problems, quick checks, and debugging tips.</p>
+        </a>
+        <a class="page-card" href="patchnotes.html">
+            <h3>Change Logs</h3>
+            <p>Version history and release notes.</p>
+        </a>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

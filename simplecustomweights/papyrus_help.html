@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Reload &amp; Papyrus - Simple Custom Weights</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #DA8E35;
+}
+#nav a.highlight:hover {
+    background: #c47d2e;
+    border-left-color: #c47d2e;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 6px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a1a;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 15px 0;
+    overflow-x: auto;
+}
+pre code {
+    background: none;
+    padding: 0;
+    color: #d4d4d4;
+}
+.keyword { color: #569cd6; }
+.type { color: #4ec9b0; }
+.string { color: #ce9178; }
+.comment { color: #6a9955; }
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+    <a href="papyrus_help.html" class="current">Reload &amp; Papyrus</a>
+    <a href="compatibility.html">Compatibility</a>
+    <a href="troubleshooting.html">Troubleshooting</a>
+
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #3c3c3c; color: #9cdcfe; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px; border: 1px solid #569cd6;">Dev Todo</a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Reload &amp; Papyrus</h1>
+    <p>Simple Custom Weights supports runtime reloading of settings, allowing you to tweak weights without restarting the game.</p>
+
+    <h2>Automatic Reload Behavior</h2>
+    <ul>
+        <li><strong>DataLoaded:</strong> The plugin loads the INI and applies patches when the game finishes loading data.</li>
+        <li><strong>PostLoadGame:</strong> Settings are reloaded and patches reapplied every time you load a save.</li>
+    </ul>
+
+    <div class="tip">
+        <p><strong>Tip:</strong> This means INI edits take effect the next time you load a save — no full game restart needed.</p>
+    </div>
+
+    <h2>Papyrus Function</h2>
+    <p>The plugin registers a global Papyrus function that lets you trigger a reload from scripts:</p>
+
+    <ul>
+        <li><strong>Script Class:</strong> <code>SimpleCustomWeights</code></li>
+        <li><strong>Function:</strong> <code>ReloadSimpleCustomWeights()</code></li>
+    </ul>
+
+    <p>Calling this function will:</p>
+    <ol>
+        <li>Re-read the INI file from disk</li>
+        <li>Reapply all weight patches immediately</li>
+    </ol>
+
+    <h2>Papyrus Example</h2>
+    <pre><code><span class="keyword">Scriptname</span> <span class="type">MySCWHelper</span> <span class="keyword">extends</span> <span class="type">Quest</span>
+
+<span class="keyword">Event</span> OnInit()
+    <span class="comment">; Reload the INI and reapply all weight patches</span>
+    <span class="type">SimpleCustomWeights</span>.ReloadSimpleCustomWeights()
+<span class="keyword">EndEvent</span></code></pre>
+
+    <h2>MCM Integration Example</h2>
+    <p>If you want to trigger a reload from an MCM menu:</p>
+
+    <pre><code><span class="keyword">Scriptname</span> <span class="type">MySCW_MCM</span> <span class="keyword">extends</span> <span class="type">SKI_ConfigBase</span>
+
+<span class="keyword">Event</span> OnOptionSelect(<span class="type">int</span> option)
+    <span class="keyword">if</span> (option == reloadOption)
+        <span class="type">SimpleCustomWeights</span>.ReloadSimpleCustomWeights()
+        ShowMessage(<span class="string">"Weights reloaded!"</span>)
+    <span class="keyword">endif</span>
+<span class="keyword">EndEvent</span></code></pre>
+
+    <h2>When to Use Manual Reload</h2>
+    <ul>
+        <li><strong>Live testing:</strong> Edit <code>SimpleCustomWeights.ini</code> and trigger a reload without loading a save</li>
+        <li><strong>MCM integration:</strong> Let users reload weights from an in-game menu</li>
+        <li><strong>Dynamic setups:</strong> Build scripts that modify the INI and then reload</li>
+    </ul>
+
+    <div class="tip">
+        <p><strong>Note:</strong> The reload function re-reads the INI from disk. If you're modifying settings programmatically, write to the INI file first, then call the reload function.</p>
+    </div>
+</div>
+
+</body>
+</html>

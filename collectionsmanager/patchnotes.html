@@ -219,6 +219,7 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
+    <a href="#v3.0">Version 3.0</a>
     <a href="#v2.5">Version 2.5</a>
     <a href="#v2.4.3">Version 2.4.3</a>
     <a href="#v2.4.2">Version 2.4.2</a>
@@ -294,6 +295,20 @@ li {
         <li><span class="tag tag-new">NEW</span> <b>Link type modes.</b> Choose Auto (detect from URL), Direct (force direct download), or Page (open in browser) for external downloads.</li>
         <li><span class="tag tag-new">NEW</span> <b>Nexus link help dialog.</b> A "?" button next to the URL field for Nexus mods opens a guide explaining how to get the direct download link from the Nexus Files tab.</li>
         <li><span class="tag tag-new">NEW</span> <b>Version history per profile.</b> Each profile now remembers its version history. Previous versions appear in a dropdown for easy selection when creating new releases.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Settings button style.</b> The Creations settings button now uses the gear label style to match other tabs.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Mod INI export mode.</b> In Creations &gt; Settings, choose how mod INI edits are exported: <b>Export mod INI edits as diffs (recommended)</b> for smaller bundles via bsdiff, or <b>Export mod INI edits as full INI files</b> for entire edited files with no diff tool needed. Applies to all exported mods that have INI edits; import/install applies the format automatically.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI editor redesign.</b> The INI editor now uses a text editor on the left and a "changes only" panel on the right. Added/changed lines are highlighted green, removed lines red, and the list updates live as you type. Click a line on the right to jump to it on the left. Panes split 1:1 by default.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Restore Original button.</b> Red-text button in the INI editor reverts the current INI file to its backup, removing all stored edits for that file (with confirmation). Only the selected INI file is reverted.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Export checkboxes in Share tab.</b> The Status column is now an Export column with checkboxes. Mods are included in the export only when checked; default is checked when the mod is installed. FOMOD and export logic respect this choice.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Green outline on INI button when edited.</b> When a mod has any INI file that differs from its backup, the INI button in the Share tab shows a green outline so you can see at a glance which mods have saved INI edits.</li>
+    </ul>
+
+    <h3>Mods Tab</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Timers settings dialog.</b> Install Delay, FOMOD Delay, Stuck Timeout, and Timer Speed moved out of Dev Options into a dedicated Mods Settings dialog.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Timers guidance.</b> The dialog includes a tip to double values on non-SSD drives.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Settings access.</b> A gear-style Settings button now sits next to the install progress row.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Author Notes expanded by default.</b> Notes now open automatically when present.</li>
     </ul>
 
     <h3>External Downloads</h3>

@@ -367,6 +367,12 @@ li {
         <li><span class="tag tag-new">NEW</span> <b>Cached FOMOD flag in markers.</b> Install markers now store <code>has_fomod</code> and <code>has_fomod_checked</code>, and these values export/import with modlists.</li>
     </ul>
 
+    <h3>Internal</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Structured trace logging.</b> State transitions now log in a consistent format: <code>[TRACE] file_id | mod_name | old -> new | reason</code>. Debug any mod's history with a single grep command.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Consolidated flow control timers.</b> Five separate timers (stuck check, blocking check, stuck resume, FOMOD capture, FOMOD auto) are now consolidated into a single 200ms heartbeat. Reduces timer complexity and potential race conditions.</li>
+    </ul>
+
     <h2 id="v2.5">Version 2.5 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
     <p class="version-summary">A major usability update for creating and sharing modlists. The Creations tab got a cleaner sidebar layout, the Sort Tool now remembers your custom rules between sessions, and downloads are faster and more reliable. Cross-game mods like BethINI no longer pop up annoying confirmation dialogs.</p>
 

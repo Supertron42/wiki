@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>More Colorful UI - Customize Skyrim Activation Text Colors</title>
+<meta name="description" content="More Colorful UI is an SKSE plugin that lets you customize the color of activation text in Skyrim SE, AE, and VR based on configurable prefixes.">
+<meta name="keywords" content="More Colorful UI, SKSE plugin, Skyrim mods, activation text, UI colors, Skyrim SE, Skyrim AE, Skyrim VR, Nexus Mods">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="More Colorful UI - SKSE Plugin for Custom Activation Text Colors">
+<meta property="og:description" content="Customize activation text colors in Skyrim based on item prefixes.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://supertron42.github.io/wiki/morecolorfului/wiki.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"More Colorful UI","applicationCategory":"Game Mod","operatingSystem":"Windows","description":"SKSE plugin for customizing Skyrim activation text colors","author":{"@type":"Person","name":"Supertron"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #9B59B6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #9B59B6;
+}
+#nav a.highlight {
+    background: #9B59B6;
+    color: white;
+    font-weight: bold;
+    border-left-color: #9B59B6;
+}
+#nav a.highlight:hover {
+    background: #8E44AD;
+    border-left-color: #8E44AD;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #BB8FCE;
+    border-bottom: 2px solid #9B59B6;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+}
+.page-card:hover {
+    border-color: #9B59B6;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #BB8FCE;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+.page-card a {
+    color: inherit;
+    text-decoration: none;
+}
+.page-card a:hover {
+    text-decoration: underline;
+}
+
+/* Code blocks */
+code {
+    background: #1e1e1e;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1e1e1e;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    padding: 0;
+}
+
+/* Feature list */
+.feature-list {
+    list-style: none;
+    margin: 15px 0;
+}
+.feature-list li {
+    padding: 8px 0;
+    padding-left: 24px;
+    position: relative;
+}
+.feature-list li::before {
+    content: "\2713";
+    color: #9B59B6;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+
+    <!-- Nexus Download -->
+    <div style="margin-top: 40px; padding: 12px; background: #1e1e1e; border-top: 1px solid #3c3c3c;">
+        <div style="color: #9B59B6; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 10px;">
+            More Colorful UI on Nexus
+        </div>
+        <div style="font-size: 11px; color: #9cdcfe; line-height: 1.5;">
+            <div style="margin-bottom: 6px;">&#10003; Custom activation text colors</div>
+            <div style="margin-bottom: 6px;">&#10003; Prefix-based color mapping</div>
+            <div style="margin-bottom: 6px;">&#10003; Simple INI configuration</div>
+            <div style="margin-bottom: 10px;">&#10003; SE, AE, and VR support</div>
+        </div>
+        <a href="https://www.nexusmods.com/skyrimspecialedition/mods/XXXXX"
+           target="_blank"
+           style="display: block; background: #9B59B6; color: white; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+            Download on Nexus
+        </a>
+        <div style="text-align: center; margin-top: 12px;">
+            <img src="../collectionsmanager/nexus mods logo.png" alt="Nexus Mods" style="width: 80px; height: auto;">
+        </div>
+    </div>
+
+    <!-- Dev Todo -->
+    <div style="margin-top: 20px; padding: 0 15px;">
+        <a href="todo.html" style="display: block; background: #3c3c3c; color: #9cdcfe; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 11px; border: 1px solid #9B59B6;">Dev Todo</a>
+    </div>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin: 0; border: none; padding: 0;">More Colorful UI Wiki</h1>
+    <p>Welcome to the More Colorful UI documentation. This SKSE plugin lets you customize the color of activation text in Skyrim based on configurable prefixes.</p>
+
+    <h2>What It Does</h2>
+    <p>More Colorful UI hooks into Skyrim's activation text system (the text that appears when you look at interactive objects) and applies custom colors based on text prefixes you define in an INI file.</p>
+
+    <ul class="feature-list">
+        <li>Color-code activation text by item type or custom prefix</li>
+        <li>Simple INI-based configuration - no ESP required</li>
+        <li>Works with Skyrim SE, AE, and VR</li>
+        <li>Lightweight with minimal performance impact</li>
+    </ul>
+
+    <h2>Quick Example</h2>
+    <p>Configure colors in <code>Data\SKSE\Plugins\MoreColorfulUI.ini</code>:</p>
+    <pre><code>[Colors]
+Take=#00FF00
+Open=#FFD700
+Read=#87CEEB
+Steal=#FF0000</code></pre>
+    <p>Now "Take Iron Sword" appears green, "Open Chest" appears gold, and "Steal Sweetroll" appears red!</p>
+
+    <h2>Documentation</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3><a href="instructions.html">Getting Started</a></h3>
+            <p>Installation instructions and requirements for SE, AE, and VR.</p>
+        </div>
+        <div class="page-card">
+            <h3><a href="settings_help.html">INI Settings</a></h3>
+            <p>Configure color mappings and learn about prefix matching.</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

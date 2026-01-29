@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patch Notes - More Colorful UI</title>
+<meta name="description" content="Changelog and version history for More Colorful UI SKSE plugin.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/morecolorfului/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #9B59B6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #9B59B6;
+}
+#nav a.active {
+    background: #2a2d2e;
+    border-left-color: #9B59B6;
+    color: #fff;
+}
+#nav a.highlight {
+    background: #9B59B6;
+    color: white;
+    font-weight: bold;
+    border-left-color: #9B59B6;
+}
+#nav a.highlight:hover {
+    background: #8E44AD;
+    border-left-color: #8E44AD;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #BB8FCE;
+    border-bottom: 2px solid #9B59B6;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 25px;
+}
+li {
+    margin: 5px 0;
+}
+
+.version {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 15px 0;
+}
+.version h3 {
+    color: #BB8FCE;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+.version .date {
+    color: #808080;
+    font-size: 11px;
+    margin-bottom: 10px;
+}
+.version ul {
+    margin-left: 20px;
+}
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-right: 6px;
+    text-transform: uppercase;
+}
+.tag-new { background: #27ae60; color: white; }
+.tag-fix { background: #e74c3c; color: white; }
+.tag-change { background: #f39c12; color: white; }
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight active" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="instructions.html">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+
+    <div style="margin-top: 40px; padding: 12px; background: #1e1e1e; border-top: 1px solid #3c3c3c;">
+        <div style="color: #9B59B6; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 10px;">
+            More Colorful UI on Nexus
+        </div>
+        <a href="https://www.nexusmods.com/skyrimspecialedition/mods/XXXXX"
+           target="_blank"
+           style="display: block; background: #9B59B6; color: white; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+            Download on Nexus
+        </a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Patch Notes</h1>
+    <p>Version history and changelog for More Colorful UI.</p>
+
+    <div class="version">
+        <h3>Version 1.0.0</h3>
+        <div class="date">January 2026</div>
+        <ul>
+            <li><span class="tag tag-new">New</span> Initial release</li>
+            <li><span class="tag tag-new">New</span> Prefix-based activation text coloring</li>
+            <li><span class="tag tag-new">New</span> INI-based configuration</li>
+            <li><span class="tag tag-new">New</span> Support for Skyrim SE, AE, and VR</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

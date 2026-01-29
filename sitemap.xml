@@ -132,6 +132,38 @@
         <priority>0.5</priority>
     </url>
 
+    <!-- More Colorful UI Wiki -->
+    <url>
+        <loc>https://supertron42.github.io/wiki/morecolorfului/wiki.html</loc>
+        <lastmod>2026-01-28</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://supertron42.github.io/wiki/morecolorfului/instructions.html</loc>
+        <lastmod>2026-01-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://supertron42.github.io/wiki/morecolorfului/settings_help.html</loc>
+        <lastmod>2026-01-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://supertron42.github.io/wiki/morecolorfului/patchnotes.html</loc>
+        <lastmod>2026-01-28</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://supertron42.github.io/wiki/morecolorfului/todo.html</loc>
+        <lastmod>2026-01-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
     <!-- ClibDT Wiki -->
     <url>
         <loc>https://supertron42.github.io/wiki/clibdt/wiki.html</loc>

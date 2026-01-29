@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started - More Colorful UI</title>
+<meta name="description" content="Installation guide for More Colorful UI SKSE plugin for Skyrim SE, AE, and VR.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/morecolorfului/instructions.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #9B59B6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #9B59B6;
+}
+#nav a.active {
+    background: #2a2d2e;
+    border-left-color: #9B59B6;
+    color: #fff;
+}
+#nav a.highlight {
+    background: #9B59B6;
+    color: white;
+    font-weight: bold;
+    border-left-color: #9B59B6;
+}
+#nav a.highlight:hover {
+    background: #8E44AD;
+    border-left-color: #8E44AD;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #BB8FCE;
+    border-bottom: 2px solid #9B59B6;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #BB8FCE;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul, ol {
+    margin: 10px 0 10px 25px;
+}
+li {
+    margin: 5px 0;
+}
+code {
+    background: #1e1e1e;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1e1e1e;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+pre code {
+    padding: 0;
+}
+.note {
+    background: #2d2d30;
+    border-left: 3px solid #9B59B6;
+    padding: 10px 15px;
+    margin: 15px 0;
+}
+.note strong {
+    color: #BB8FCE;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="instructions.html" class="active">Getting Started</a>
+    <a href="settings_help.html">INI Settings</a>
+
+    <div style="margin-top: 40px; padding: 12px; background: #1e1e1e; border-top: 1px solid #3c3c3c;">
+        <div style="color: #9B59B6; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 10px;">
+            More Colorful UI on Nexus
+        </div>
+        <a href="https://www.nexusmods.com/skyrimspecialedition/mods/XXXXX"
+           target="_blank"
+           style="display: block; background: #9B59B6; color: white; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">
+            Download on Nexus
+        </a>
+    </div>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Getting Started</h1>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li><strong>Skyrim SE</strong> (1.5.97 or 1.6.x), <strong>AE</strong>, or <strong>VR</strong></li>
+        <li><strong>SKSE64</strong> (or SKSEVR for VR) - <a href="https://skse.silverlock.org/" style="color: #9B59B6;">Download here</a></li>
+        <li><strong>Address Library for SKSE Plugins</strong> - <a href="https://www.nexusmods.com/skyrimspecialedition/mods/32444" style="color: #9B59B6;">Nexus page</a></li>
+    </ul>
+
+    <h2>Installation</h2>
+    <h3>Using a Mod Manager (Recommended)</h3>
+    <ol>
+        <li>Download the mod from Nexus</li>
+        <li>Install through MO2, Vortex, or your preferred mod manager</li>
+        <li>Enable the mod</li>
+        <li>Configure <code>MoreColorfulUI.ini</code> to your liking</li>
+    </ol>
+
+    <h3>Manual Installation</h3>
+    <ol>
+        <li>Extract the archive</li>
+        <li>Copy <code>MoreColorfulUI.dll</code> to <code>Data\SKSE\Plugins\</code></li>
+        <li>Copy <code>MoreColorfulUI.ini</code> to <code>Data\SKSE\Plugins\</code></li>
+    </ol>
+
+    <h2>File Structure</h2>
+    <pre><code>Data/
+  SKSE/
+    Plugins/
+      MoreColorfulUI.dll
+      MoreColorfulUI.ini</code></pre>
+
+    <h2>Quick Configuration</h2>
+    <p>Open <code>MoreColorfulUI.ini</code> and add color mappings under <code>[Colors]</code>:</p>
+    <pre><code>[Colors]
+Take=#00FF00
+Open=#FFD700
+Steal=#FF0000
+Read=#87CEEB
+Activate=#FFFFFF</code></pre>
+    <p>Colors are applied based on the prefix of the activation text. See <a href="settings_help.html" style="color: #9B59B6;">INI Settings</a> for full details.</p>
+
+    <div class="note">
+        <strong>Note:</strong> Changes to the INI file require a game restart to take effect.
+    </div>
+
+    <h2>Troubleshooting</h2>
+    <h3>Plugin not loading</h3>
+    <ul>
+        <li>Verify SKSE is installed correctly by checking the main menu (should show SKSE version)</li>
+        <li>Make sure Address Library is installed for your game version</li>
+        <li>Check <code>Documents\My Games\Skyrim Special Edition\SKSE\MoreColorfulUI.log</code> for errors</li>
+    </ul>
+
+    <h3>Colors not applying</h3>
+    <ul>
+        <li>Ensure your prefix matches the start of the activation text exactly (case-sensitive)</li>
+        <li>Use valid hex color codes (e.g., <code>#FF0000</code> or <code>FF0000</code>)</li>
+        <li>Restart the game after making INI changes</li>
+    </ul>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

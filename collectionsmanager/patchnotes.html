@@ -168,6 +168,49 @@ li {
 .download-link:hover {
     background: #4a8bc2;
 }
+
+/* Sparkle effect for Top Changes */
+.top-changes {
+    position: relative;
+    background: linear-gradient(135deg, #2d2d30 0%, #1e1e1e 100%);
+    border: 1px solid #3c3c3c;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin: 15px 0 25px;
+    overflow: hidden;
+}
+.top-changes::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.03) 45%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.03) 55%,
+        transparent 60%
+    );
+    animation: sparkle 8s linear infinite;
+    pointer-events: none;
+}
+@keyframes sparkle {
+    0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+}
+.top-changes h3 {
+    color: #dcdcaa;
+    margin: 0 0 10px 0;
+}
+.top-changes ul {
+    margin: 0 0 0 20px;
+}
+.top-changes li {
+    margin: 8px 0;
+}
 .spoiler-btn {
     background: #3c3c3c;
     color: #d4d4d4;
@@ -227,7 +270,7 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
-    <a href="#v3.0">Version 3.0</a>
+    <a href="#v3.0a">Version 3.0a</a>
     <a href="#v2.5">Version 2.5</a>
     <a href="#v2.4.3">Version 2.4.3</a>
     <a href="#v2.4.2">Version 2.4.2</a>
@@ -281,8 +324,19 @@ li {
         <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
     </div>
 
-    <h2 id="v3.0">Version 3.0 <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
+    <h2 id="v3.0a">Version 3.0a <span class="tag tag-dev">UNDER DEVELOPMENT</span></h2>
     <p class="version-summary"><b>Collections Manager is now Creations Manager!</b> The plugin has been renamed to better reflect its expanded capabilities beyond just Nexus Collections. This release also focuses on making shared modlists work reliably across different machines. External mods now download automatically when possible, your mod flags and settings transfer perfectly when importing modlists, and FOMOD detection is more reliable and faster.</p>
+
+    <div class="top-changes">
+        <h3>✨ Top Changes</h3>
+        <ul>
+            <li><b>Create and share modlists that work on other PCs.</b> Build a modlist from your installed mods, save FOMOD choices, include INI edits, add external mods, and export it. Everything transfers correctly when others import it.</li>
+            <li><b>Stuck downloads recover automatically.</b> Downloads that freeze at 0KB or get stuck are now detected and resumed without manual pause/resume, keeping automation running.</li>
+            <li><b>External mods download automatically.</b> Mods from non-Nexus sites with direct download links now download through MO2 just like Nexus mods.</li>
+            <li><b>Version numbers are consistent everywhere.</b> All tables now show the same version for each mod. No more confusion from mismatched displays.</li>
+            <li><b>Stable during long sessions.</b> Fixed memory leaks and callback issues that caused slowdowns. The plugin no longer degrades over time.</li>
+        </ul>
+    </div>
 
     <h3>App Rename: Collections Manager → Creations Manager</h3>
     <ul>
@@ -334,6 +388,7 @@ li {
         <li><span class="tag tag-improve">IMPROVED</span> <b>Timer tips.</b> Suggests doubling values if you're not on an SSD.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Easier settings access.</b> Gear button next to progress bar opens settings.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Author notes open automatically.</b> Notes section expands by default when present.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Version column now consistent across all tables.</b> All tables (Mods, FOMODs, Sort Tool, Duplicate Finder) now show the same version by reading from marker files first. Previously, different tables could show different versions for the same mod.</li>
     </ul>
 
     <h3>Sort Tab</h3>
@@ -395,6 +450,17 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Old markers get upgraded.</b> Markers without UUIDs get one added automatically.</li>
     </ul>
 
+    <h3>Stability & Performance</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed memory leak in download tracking.</b> Downloads that failed or got stuck were never removed from tracking, causing memory to grow over time. Now properly cleaned up on failure.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed timer callbacks stacking up.</b> Stopping and restarting downloads could cause multiple callbacks to fire at once. Timer signals are now properly disconnected before reconnecting.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed callbacks firing after stop.</b> Delayed callbacks (like download pacing) could still run after you canceled. Now checks if the manager is still active first.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed network signal accumulation.</b> GraphQL queries weren't disconnecting their completion signals, causing them to stack up. Now properly cleaned up after each request.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed tracking data not clearing on cancel.</b> Download tracking dicts (<code>_active_downloads</code>, <code>_files_needing_cleanup</code>) now clear when you cancel or close the dialog.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Added size limits to tracking dicts.</b> Dicts that track retry attempts and logged dialog titles now clear themselves when they get too large, preventing unbounded growth during long sessions.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Dialog handler cleans up better.</b> Timer signals and logged title sets are now properly cleared when the handler stops.</li>
+    </ul>
+
     <h3>Internal</h3>
     <ul>
         <li><span class="tag tag-new">NEW</span> <b>Better debug logging.</b> State changes log in a searchable format: <code>[TRACE] file_id | mod_name | old -> new | reason</code>.</li>
@@ -402,6 +468,16 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>No more crash on open.</b> Fixed null reference error when building the dialog.</li>
         <li><span class="tag tag-fix">FIX</span> <b>WeakMethod detection fixed.</b> Callbacks to class methods now work correctly.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Sort Tool cleanup fixed.</b> No more callbacks to destroyed objects.</li>
+    </ul>
+
+    <h3>Maintenance Tool</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Fix Versions button.</b> Updates marker and meta.ini version fields to match the newest available version. Fixes outdated version numbers in one click.</li>
+    </ul>
+
+    <h3>Modlist Export</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Exports use newest version.</b> When exporting a modlist, mods now show their newest available version instead of the installed version. No need to run Fix Versions first.</li>
     </ul>
 
     <h2 id="v2.5">Version 2.5 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>

@@ -270,6 +270,7 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
+    <a href="#v3.0.1a">Version 3.0.1a</a>
     <a href="#v3.0a">Version 3.0a</a>
     <a href="#v2.5">Version 2.5</a>
     <a href="#v2.4.3">Version 2.4.3</a>
@@ -323,6 +324,39 @@ li {
         <textarea class="bbcode-area" id="md-link" readonly style="height: 50px;">[Change Logs](https://supertron42.github.io/wiki/collectionsmanager/patchnotes.html)</textarea>
         <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
     </div>
+
+    <h2 id="v3.0.1a">Version 3.0.1a <span class="tag tag-dev">DEV</span></h2>
+    <p class="version-summary">Smart external download handlers and quality of life improvements. External mods from ModDB, Google Drive, MediaFire, Dropbox, GitHub, and OneDrive now download automatically instead of opening in the browser.</p>
+
+    <h3>Smart External Download Handlers</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Auto-download from external sites.</b> External mods now attempt automatic download instead of always opening in the browser. Falls back to browser if the handler fails.</li>
+        <li><span class="tag tag-new">NEW</span> <b>ModDB support.</b> Automatically selects the lowest-load mirror and downloads directly.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Google Drive support.</b> Bypasses the virus scan warning page for large files.</li>
+        <li><span class="tag tag-new">NEW</span> <b>MediaFire support.</b> Extracts the direct download link from the file page.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Dropbox support.</b> Converts share links to direct downloads instantly.</li>
+        <li><span class="tag tag-new">NEW</span> <b>GitHub Releases support.</b> Downloads release assets, with smart filtering for mod file types (.zip, .7z, etc.).</li>
+        <li><span class="tag tag-new">NEW</span> <b>OneDrive/SharePoint support.</b> Handles both personal OneDrive and SharePoint/OneDrive for Business links.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Circuit breaker protection.</b> If a site fails repeatedly, the handler backs off with exponential delay to avoid hammering the server.</li>
+        <li><span class="tag tag-new">NEW</span> <b>URL resolution cache.</b> Successful URL resolutions are cached for 15 minutes to speed up repeated downloads.</li>
+        <li><span class="tag tag-new">NEW</span> <b>DLL Debug Log integration.</b> Smart handler activity shows in the DLL Debug Window with color-coded status (green=success, orange=warning, red=error).</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fast mode integration.</b> External mods with smart handler support now download automatically in smooth/fast mode. Previously, external mods were marked as failed because the fast mode downloader didn't know how to resolve external URLs.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Browser-only filtering.</b> The external mods panel now correctly shows only browser-only mods. Auto-downloadable mods (ModDB, etc.) skip the panel and download in the background.</li>
+    </ul>
+
+    <h3>Global API Key Storage</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Shared API key across installations.</b> Your Nexus API key is now stored globally and shared across all MO2 installations. No need to enter it separately for each game.</li>
+    </ul>
+
+    <h3>Download Engine Overhaul</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Complete engine rewrite.</b> The download and install engine has been overhauled for much better stability and reliability.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Multiple simultaneous downloads.</b> Downloads now run in parallel (up to 10 concurrent) instead of one at a time. Configurable in Mods Settings.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Install first available.</b> Installs whichever mod finishes downloading first instead of waiting for strict collection order. Enabled by default.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Adaptive concurrency.</b> Automatically reduces parallel downloads if the network is struggling, then ramps back up when stable.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Better error recovery.</b> Failed downloads retry automatically with exponential backoff instead of stalling the queue.</li>
+    </ul>
 
     <h2 id="v3.0a">Version 3.0a <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
     <p class="version-summary"><b>Collections Manager is now Creations Manager!</b> The plugin has been renamed to better reflect its expanded capabilities beyond just Nexus Collections. This release also focuses on making shared modlists work reliably across different machines. External mods now download automatically when possible, your mod flags and settings transfer perfectly when importing modlists, and FOMOD detection is more reliable and faster.</p>

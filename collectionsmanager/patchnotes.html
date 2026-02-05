@@ -326,7 +326,7 @@ li {
     </div>
 
     <h2 id="v3.0.2a">Version 3.0.2a <span class="tag tag-dev">DEV</span></h2>
-    <p class="version-summary">Major performance improvements and smoother experience. Collection preparation is now 10x faster, the UI is snappier, and background processes use far less resources.</p>
+    <p class="version-summary">New Description Maker for creating Nexus Mods page descriptions, plus major performance improvements. Block-based editor with drag-and-drop, formatting toolbar, YouTube embeds, and auto-generated mod lists.</p>
 
     <h3>Performance</h3>
     <ul>
@@ -347,6 +347,9 @@ li {
         <li><span class="tag tag-new">NEW</span> <b>Use your MO2 order.</b> New button: <b>Set MO2 Order As Default</b> in the Sort tab and Create tab.</li>
         <li><span class="tag tag-new">NEW</span> <b>Restore Default Load Order.</b> In Sort settings, you can remove the saved MO2 order and go back to the normal default.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Collections fit into your order.</b> The Sort tab keeps the order you already set in MO2, and only places new collection mods into the gaps where they make sense.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>"Refresh Data" renamed to "Show Sorted Preview".</b> Clearer name that describes what the button actually does.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Save Current Order shows confirmation.</b> Clicking "Set MO2 Order As Default" now shows a confirmation dialog explaining what will happen, including that user rules will be cleared (since they're now baked into the baseline).</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Auto-loads Create tab profile.</b> Clicking "Show Sorted Preview" now automatically loads your selected Create tab profile if one isn't already loaded. No need to manually switch tabs first.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Separators stay in place.</b> "Preserve relative separator positions" now works correctly. Previously, separators would all end up at the bottom due to an index calculation bug.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Saved MO2 order includes separators.</b> "Set MO2 Order As Default" now saves separator positions along with mod positions. Previously, separators were excluded and would drift when sorting.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Separators always visible in Sort tab.</b> Separators now bypass the "Show only conflicts" and "Show disabled" filters so they're always visible to maintain list structure.</li>
@@ -365,6 +368,8 @@ li {
 
     <h3>Tools Tab</h3>
     <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Copy to Game Folder button.</b> Root Install tool now has a "Copy to Game Folder" button on each mod card. Shows a warning dialog first, lets you inspect files in Explorer, then copies the mod's files directly to your game folder.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>View on Nexus Mods button works reliably.</b> The button now uses multiple fallback methods to find the mod ID (marker files, meta.ini), so it works even when one source is missing.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Missing Masters tool simplified.</b> Removed the experimental warning gate, the "EXPERIMENTAL" badge, and the dangerous "Delete Plugins" button. The tool now opens directly to the scanner.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Maintenance section reorganized.</b> "Run All Maintenance" button is now the header of the operations section with a divider line extending to the right. Fresh State has its own separate section with a red button for visibility.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Run All now includes Clean Up Orphans.</b> The full maintenance sequence is now: Rebuild Index → Fix Markers → Fix Versions → Fix Names → Clean Up Orphans.</li>
@@ -372,6 +377,10 @@ li {
 
     <h3>Create Tab</h3>
     <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Description Maker.</b> New tool to create BB code descriptions for your Nexus Mods page. Block-based editor with drag-and-drop reordering, formatting toolbar (bold, italic, underline, center, links), and auto-generated mod lists with Nexus links.</li>
+        <li><span class="tag tag-new">NEW</span> <b>YouTube video embeds.</b> Add YouTube videos to your description. Paste any YouTube URL and it automatically extracts the video ID for the <code>[youtube]</code> tag.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Block types.</b> Heading (3 sizes), Text, Bullet List, Numbered List, Quote/Tip, Divider, YouTube Video, and Mod List.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Description persistence.</b> Descriptions save to your profile and carry over when you create new versions.</li>
         <li><span class="tag tag-new">NEW</span> <b>Config column supports JSON and TOML.</b> The "INI" column is now "Config" and detects INI, JSON, and TOML configuration files. Edit any of these formats with the built-in diff editor.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Config editor displays properly.</b> Fixed tab width (4 spaces) and added horizontal scrolling so JSON and TOML files with long lines or aligned formatting display correctly.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Backup folder renamed.</b> Config backups now use <code>.collectionsmanager_config_backup</code>. Existing <code>.collectionsmanager_ini_backup</code> folders still work.</li>

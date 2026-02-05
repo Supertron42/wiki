@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -270,6 +270,7 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
+    <a href="#v3.0.2a">Version 3.0.2a</a>
     <a href="#v3.0.1a">Version 3.0.1a</a>
     <a href="#v3.0a">Version 3.0a</a>
     <a href="#v2.5">Version 2.5</a>
@@ -277,7 +278,6 @@ li {
     <a href="#v2.4.2">Version 2.4.2</a>
     <a href="#v2.4.1">Version 2.4.1</a>
     <a href="#v2.4">Version 2.4</a>
-
     <!-- Premium Ad -->
     <div style="margin-top: 40px; padding: 12px; background: #1e1e1e; border-top: 1px solid #3c3c3c;">
         <div style="color: #DA8E35; font-weight: bold; font-size: 12px; text-align: center; margin-bottom: 10px;">
@@ -325,6 +325,59 @@ li {
         <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
     </div>
 
+    <h2 id="v3.0.2a">Version 3.0.2a <span class="tag tag-dev">DEV</span></h2>
+    <p class="version-summary">Major performance improvements and smoother experience. Collection preparation is now 10x faster, the UI is snappier, and background processes use far less resources.</p>
+
+    <h3>Performance</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>10x faster collection prep.</b> The wait time before a collection starts installing is now a fraction of what it used to be.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Lighter logging.</b> Messages written to the log no longer slow things down, even during heavy activity.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Gentler failure recovery.</b> The system that retries stuck downloads now runs much lighter in the background without bogging down your PC.</li>
+    </ul>
+
+    <h3>User Interface</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>General UI polish.</b> Many small tweaks across the plugin for a smoother, more responsive experience.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Full manual mode in Create tab.</b> When you're in the Create tab, all automatic behavior is paused. No auto-install, no silent-install, and no auto-clicking dialogs. You get complete manual control over every install step. Settings restore when you leave.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Create tab locked during installs.</b> You can't switch to the Create tab while a collection is actively installing. This prevents conflicts between creating and installing at the same time.</li>
+    </ul>
+
+    <h3>Sorting</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Use your MO2 order.</b> New button: <b>Set MO2 Order As Default</b> in the Sort tab and Create tab.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Restore Default Load Order.</b> In Sort settings, you can remove the saved MO2 order and go back to the normal default.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Collections fit into your order.</b> The Sort tab keeps the order you already set in MO2, and only places new collection mods into the gaps where they make sense.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Separators stay in place.</b> "Preserve relative separator positions" now works correctly. Previously, separators would all end up at the bottom due to an index calculation bug.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Saved MO2 order includes separators.</b> "Set MO2 Order As Default" now saves separator positions along with mod positions. Previously, separators were excluded and would drift when sorting.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Separators always visible in Sort tab.</b> Separators now bypass the "Show only conflicts" and "Show disabled" filters so they're always visible to maintain list structure.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Old global user rules cleaned up.</b> Legacy user rules stored globally (before profile-specific storage was added) are now automatically removed. This fixes cases where old rules were still being applied even after switching to profile-only rules.</li>
+    </ul>
+
+    <h3>Installs</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Fewer surprise choice screens.</b> When <b>Install first available</b> is on, mods that open a choices window will wait until earlier mods in the same group are handled first.</li>
+    </ul>
+
+    <h3>FOMODs Tab</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Status now matches reality.</b> The FOMODs tab now shows the correct status (Installed, Downloaded, Skipped) based on what the download engine actually knows. Previously, filters like "Installed" or "Downloaded" would show wrong results because the tab wasn't checking the engine's records.</li>
+    </ul>
+
+    <h3>Tools Tab</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Missing Masters tool simplified.</b> Removed the experimental warning gate, the "EXPERIMENTAL" badge, and the dangerous "Delete Plugins" button. The tool now opens directly to the scanner.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Maintenance section reorganized.</b> "Run All Maintenance" button is now the header of the operations section with a divider line extending to the right. Fresh State has its own separate section with a red button for visibility.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Run All now includes Clean Up Orphans.</b> The full maintenance sequence is now: Rebuild Index → Fix Markers → Fix Versions → Fix Names → Clean Up Orphans.</li>
+    </ul>
+
+    <h3>Create Tab</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Config column supports JSON and TOML.</b> The "INI" column is now "Config" and detects INI, JSON, and TOML configuration files. Edit any of these formats with the built-in diff editor.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Config editor displays properly.</b> Fixed tab width (4 spaces) and added horizontal scrolling so JSON and TOML files with long lines or aligned formatting display correctly.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Backup folder renamed.</b> Config backups now use <code>.collectionsmanager_config_backup</code>. Existing <code>.collectionsmanager_ini_backup</code> folders still work.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Refresh Data preserves checkboxes.</b> Clicking "Refresh Data" no longer resets your include/exclude checkbox selections. Your choices are now preserved across refreshes.</li>
+    </ul>
+
     <h2 id="v3.0.1a">Version 3.0.1a <span class="tag tag-dev">DEV</span></h2>
     <p class="version-summary">Smart external download handlers and quality of life improvements. External mods from ModDB, Google Drive, MediaFire, Dropbox, GitHub, and OneDrive now download automatically instead of opening in the browser.</p>
 
@@ -361,7 +414,7 @@ li {
     <h2 id="v3.0a">Version 3.0a <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
     <p class="version-summary"><b>Collections Manager is now Creations Manager!</b> The plugin has been renamed to better reflect its expanded capabilities beyond just Nexus Collections. This release also focuses on making shared modlists work reliably across different machines. External mods now download automatically when possible, your mod flags and settings transfer perfectly when importing modlists, and FOMOD detection is more reliable and faster.</p>
 
-    <h3>App Rename: Collections Manager → Creations Manager</h3>
+    <h3>App Rename: Collections Manager â†’ Creations Manager</h3>
     <ul>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Works with old files.</b> All your existing marker files, saved presets, and collections still work. The plugin reads both old and new file formats.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Plugin renamed.</b> The main file is now <code>CreationsManager.py</code> and shows as "Creations Manager" in MO2's Tools menu.</li>
@@ -564,7 +617,7 @@ li {
 
     <h3>Sort Tool</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Multi-row drag now preserves relative order.</b> When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target. Previously, refreshing or reapplying rules could scramble the moved block.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Multi-row drag now preserves relative order.</b> When dragging multiple mods, their relative order is now maintained via chained rules (Aâ†’target, Bâ†’A, Câ†’B) instead of all pointing to the same target. Previously, refreshing or reapplying rules could scramble the moved block.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Fixed self-drop detection for multi-row selections.</b> Dropping a selection onto one of the selected rows is now properly ignored for any selection size, not just single rows.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Cancel Preview now properly closes the progress dialog.</b> Previously, canceling could leave the dialog open or in a stuck state.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Delete User Rules respects collection ordering state.</b> Deleting user rules no longer forces collection ordering back on if the user had it disabled.</li>
@@ -642,7 +695,7 @@ li {
 [/list]
 [size=3][b][color=#9cdcfe]Sort Tool[/color][/b][/size]
 [list]
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Multi-row drag now preserves relative order.[/b] When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Multi-row drag now preserves relative order.[/b] When dragging multiple mods, their relative order is now maintained via chained rules (Aâ†’target, Bâ†’A, Câ†’B) instead of all pointing to the same target.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed self-drop detection for multi-row selections.[/b] Dropping a selection onto one of the selected rows is now properly ignored for any selection size.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Cancel Preview now properly closes the progress dialog.[/b] Previously, canceling could leave the dialog open or in a stuck state.
 [*][color=#c42b1c][b]FIX[/b][/color] [b]Delete User Rules respects collection ordering state.[/b] Deleting user rules no longer forces collection ordering back on if the user had it disabled.
@@ -717,7 +770,7 @@ li {
 
 ## Sort Tool
 
-- **Multi-row drag now preserves relative order.** When dragging multiple mods, their relative order is now maintained via chained rules (A→target, B→A, C→B) instead of all pointing to the same target.
+- **Multi-row drag now preserves relative order.** When dragging multiple mods, their relative order is now maintained via chained rules (Aâ†’target, Bâ†’A, Câ†’B) instead of all pointing to the same target.
 - **Fixed self-drop detection for multi-row selections.** Dropping a selection onto one of the selected rows is now properly ignored for any selection size.
 - **Cancel Preview now properly closes the progress dialog.** Previously, canceling could leave the dialog open or in a stuck state.
 - **Delete User Rules respects collection ordering state.** Deleting user rules no longer forces collection ordering back on if the user had it disabled.
@@ -790,8 +843,8 @@ li {
     <h3>Revision Update System</h3>
     <ul>
         <li><span class="tag tag-new">NEW</span> <b>Automatic update checking.</b> The Collections tab now automatically checks for updates when first viewed each session. This can be toggled via the new Settings button next to "Saved Collections".</li>
-        <li><span class="tag tag-new">NEW</span> <b>Collections tab settings.</b> Added a Settings button (⚙) to the Collections tab header for configuring tab-specific options.</li>
-        <li><span class="tag tag-new">NEW</span> <b>One-click update button on collection cards.</b> After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 → 7") and an "Update" button.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Collections tab settings.</b> Added a Settings button (âš™) to the Collections tab header for configuring tab-specific options.</li>
+        <li><span class="tag tag-new">NEW</span> <b>One-click update button on collection cards.</b> After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 â†’ 7") and an "Update" button.</li>
         <li><span class="tag tag-new">NEW</span> <b>Revision diff/changelog viewer.</b> Click "Show Changes..." in the update prompt to see what mods were added, removed, or updated between revisions.</li>
         <li><span class="tag tag-new">NEW</span> <b>Smart update installation.</b> When updating a collection you've already partially installed, the plugin analyzes your installed mods and offers intelligent options:
             <ul style="margin-top: 5px;">
@@ -843,7 +896,7 @@ li {
 [list]
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Automatic update checking.[/b] The Collections tab now automatically checks for updates when first viewed each session. This can be toggled via the new Settings button.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Collections tab settings.[/b] Added a Settings button to the Collections tab header for configuring tab-specific options.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]One-click update button on collection cards.[/b] After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 → 7") and an "Update" button.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]One-click update button on collection cards.[/b] After running "Check for Updates", cards with available updates show a badge (e.g., "Rev 5 â†’ 7") and an "Update" button.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Revision diff/changelog viewer.[/b] Click "Show Changes..." to see what mods were added, removed, or updated between revisions.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]Smart update installation.[/b] When updating, the plugin analyzes installed mods and offers options to keep unchanged mods, reinstall updated versions, download new mods, or uninstall removed mods.
 [*][color=#2E7D32][b]NEW[/b][/color] [b]"View Update" button on collection cards.[/b] Cards with available updates now display a prominent green "View Update" button next to the title for quick access to the revision diff.
@@ -877,7 +930,7 @@ li {
 
 - **Automatic update checking.** The Collections tab now automatically checks for updates when first viewed each session. This can be toggled via the new Settings button.
 - **Collections tab settings.** Added a Settings button to the Collections tab header for configuring tab-specific options.
-- **One-click update button on collection cards.** Cards with available updates show a badge (e.g., "Rev 5 → 7") and an "Update" button.
+- **One-click update button on collection cards.** Cards with available updates show a badge (e.g., "Rev 5 â†’ 7") and an "Update" button.
 - **Revision diff/changelog viewer.** Click "Show Changes..." to see what mods were added, removed, or updated between revisions.
 - **Smart update installation.** When updating, the plugin analyzes installed mods and offers options to keep unchanged mods, reinstall updated versions, download new mods, or uninstall removed mods.
 - **"View Update" button on collection cards.** Cards with available updates now display a prominent green "View Update" button next to the title for quick access to the revision diff.
@@ -1122,3 +1175,5 @@ function copyText(id) {
 </script>
 </body>
 </html>
+
+

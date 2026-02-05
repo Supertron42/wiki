@@ -177,6 +177,7 @@ tr:nth-child(even) {
     <h3>Mod Table</h3>
     <a href="#columns">Table Columns</a>
     <a href="#flags">Mod Flags</a>
+    <a href="#config-editor">Config Editor</a>
     <a href="#fomod-status">FOMOD Status</a>
 
     <h3>Exporting</h3>
@@ -298,7 +299,7 @@ tr:nth-child(even) {
     <tr><td><b>Export</b></td><td>Checkbox - include this mod in the export</td></tr>
     <tr><td><b>Mod Name</b></td><td>Display name of the mod</td></tr>
     <tr><td><b>Mod Version</b></td><td>Version number</td></tr>
-    <tr><td><b>INIs</b></td><td>Button showing count of INI edits (click to configure)</td></tr>
+    <tr><td><b>Config</b></td><td>Button showing count of config file edits - supports INI, JSON, and TOML files (click to configure)</td></tr>
     <tr><td><b>FOMOD</b></td><td>Button showing FOMOD status (Configured/Unconfigured/-)</td></tr>
     <tr><td><b>Essential</b></td><td>Checkbox - mark as required mod</td></tr>
     <tr><td><b>Optional</b></td><td>Checkbox - user can skip this mod</td></tr>
@@ -330,6 +331,34 @@ tr:nth-child(even) {
 
 <div class="info">
 <b>Tip:</b> Toggle flags directly by clicking the checkboxes in the table. If auto-save is enabled, changes are saved immediately.
+</div>
+
+
+<h1 id="config-editor">Config Editor</h1>
+<p>The Config column shows a gear button for mods that have editable configuration files. Click the button to open the Config Editor.</p>
+
+<h2>Supported File Types</h2>
+<ul>
+    <li><b>INI files</b> - Standard Windows configuration format</li>
+    <li><b>JSON files</b> - JavaScript Object Notation (common for mod settings)</li>
+    <li><b>TOML files</b> - Tom's Obvious Minimal Language (used by newer mods)</li>
+</ul>
+
+<h2>Editor Features</h2>
+<ul>
+    <li><b>Split view</b> - Full config text on the left, changes panel on the right</li>
+    <li><b>Live diff</b> - See exactly what you've changed compared to the original</li>
+    <li><b>Syntax highlighting</b> - Green for additions, red for removals</li>
+    <li><b>Click to jump</b> - Click a change in the right panel to jump to it in the editor</li>
+    <li><b>Horizontal scrolling</b> - Long lines display properly without wrapping</li>
+    <li><b>Restore Original</b> - Revert all changes with one click</li>
+</ul>
+
+<h2>How Config Diffs Work</h2>
+<p>When you first open a config file, a backup is created in a hidden folder (<code>.collectionsmanager_config_backup</code>). The diff panel shows differences between your current edits and this backup.</p>
+
+<div class="success">
+<b>Green border:</b> Mods with saved config changes show a green border on their Config button, so you can see at a glance which mods have custom settings.
 </div>
 
 
@@ -430,7 +459,7 @@ tr:nth-child(even) {
 <table>
     <tr><th>Setting</th><th>Description</th></tr>
     <tr><td><b>Auto-save</b></td><td>Automatically save profile changes when toggling flags</td></tr>
-    <tr><td><b>INI export mode</b></td><td>Export as Diff (smaller, only changes) or Full files</td></tr>
+    <tr><td><b>Config export mode</b></td><td>Export config file edits (INI/JSON/TOML) as Diff (smaller, only changes) or Full files</td></tr>
     <tr><td><b>Deep scan FOMODs</b></td><td>Check inside archives for nested FOMOD installers</td></tr>
     <tr><td><b>Include collection history</b></td><td>Track which collections each mod came from</td></tr>
 </table>

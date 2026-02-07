@@ -270,7 +270,7 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#DA8E35; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
-    <a href="#v3.0.2a">Version 3.0.2a</a>
+    <a href="#v3.1a">Version 3.1a</a>
     <a href="#v3.0.1a">Version 3.0.1a</a>
     <a href="#v3.0a">Version 3.0a</a>
     <a href="#v2.5">Version 2.5</a>
@@ -325,8 +325,8 @@ li {
         <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
     </div>
 
-    <h2 id="v3.0.2a">Version 3.0.2a <span class="tag tag-dev">DEV</span></h2>
-    <p class="version-summary">New Description Maker for creating Nexus Mods page descriptions, plus major performance improvements. Block-based editor with drag-and-drop, formatting toolbar, YouTube embeds, and auto-generated mod lists.</p>
+    <h2 id="v3.1a">Version 3.1a <span class="tag tag-dev">DEV</span></h2>
+    <p class="version-summary">New Description Maker for creating Nexus Mods page descriptions, plus major performance and sorting improvements. Block-based editor with drag-and-drop, formatting toolbar, YouTube embeds, and auto-generated mod lists.</p>
 
     <h3>Performance</h3>
     <ul>
@@ -366,11 +366,13 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Old global user rules cleaned up.</b> Legacy user rules stored globally (before profile-specific storage was added) are now automatically removed. This fixes cases where old rules were still being applied even after switching to profile-only rules.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Local creation mods sort more flexibly.</b> Mods from local creations now use a softer sorting approach. They still follow the order you set, but other rules (like collection order or manual drag-and-drop) can override them when needed. Previously, local creation order was locked in rigidly, which could block other mods from moving where they needed to go.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Reloading a collection no longer triggers a false version conflict.</b> Previously, reloading the same collection could show a "version conflict" warning even when nothing changed, because the version format stored internally didn't match the format from the collection file (e.g., "1.5.2" vs "1.52"). Both formats are now compared correctly.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Collection mods no longer get scattered when using a saved MO2 baseline.</b> Previously, if your saved MO2 order had collection mods in different positions than the collection intended, the Sort tab could place them hundreds of positions apart or even in the wrong order. The collection's intended order now always takes priority over the saved baseline for collection mods.</li>
     </ul>
 
     <h3>Installs</h3>
     <ul>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Fewer surprise choice screens.</b> When <b>Install first available</b> is on, mods that open a choices window will wait until earlier mods in the same group are handled first.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Missing collection file recovered automatically.</b> If a local collection's JSON file goes missing (e.g., you cleaned your downloads folder), the plugin now recovers it from the bundle archive instead of losing it permanently.</li>
     </ul>
 
     <h3>FOMODs Tab</h3>

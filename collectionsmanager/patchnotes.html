@@ -409,7 +409,158 @@ li {
         <li><span class="tag tag-improve">IMPROVED</span> <b>Exporting large collections no longer freezes the UI.</b> Exporting now shows a progress bar so you can see how far along it is. You can also cancel the export at any time if you change your mind.</li>
     </ul>
 
-    <h2 id="v3.0.1a">Version 3.0.1a <span class="tag tag-dev">DEV</span></h2>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb31a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md31a')">Markdown</button>
+    </div>
+    <div id="bb31a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode31a" readonly>[size=4][b][color=#dcdcaa]Version 3.1a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Performance[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]246 million fewer operations per minute.[/b] Rewrote the install queue logic to eliminate redundant work. Large collections (2000+ mods) now run dramatically smoother during downloads and installs.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]4x faster FOMOD deep scan.[/b] The Create tab's archive scanner now runs in parallel and stops the moment it finds a FOMOD. No more reading entire archives byte-by-byte.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]10x faster collection prep.[/b] The wait time before a collection starts installing is now a fraction of what it used to be.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Lighter logging.[/b] Messages written to the log no longer slow things down, even during heavy activity.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Gentler failure recovery.[/b] The system that retries stuck downloads now runs much lighter in the background without bogging down your PC.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Faster Create tab updates.[/b] Changes in the Create tab now apply instantly even with thousands of mods.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Crash risk audit.[/b] Fixed 12 stability issues found during a deep audit: background threads no longer call MO2 APIs directly, Qt objects are properly parented to prevent garbage collection crashes, dialog auto-clicker is wrapped to survive deleted widgets, dict iterations use snapshots to prevent mid-loop crashes, and notification listeners are guarded against re-entrancy.
+[/list]
+[size=3][b][color=#9cdcfe]User Interface[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]General UI polish.[/b] Many small tweaks across the plugin for a smoother, more responsive experience.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Full manual mode in Create tab.[/b] When you're in the Create tab, all automatic behavior is paused. No auto-install, no silent-install, and no auto-clicking dialogs. You get complete manual control over every install step. Settings restore when you leave.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Create tab locked during installs.[/b] You can't switch to the Create tab while a collection is actively installing. This prevents conflicts between creating and installing at the same time.
+[/list]
+[size=3][b][color=#9cdcfe]Account & Validation[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Network hiccups don't break premium mode.[/b] If the plugin can't reach Nexus to verify your account, it now keeps your saved premium status instead of switching you to free mode.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Account check doesn't interrupt your work.[/b] If you're already working with a collection when the account check finishes, it no longer refreshes the screen and loses your place.
+[/list]
+[size=3][b][color=#9cdcfe]Sorting[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Use your MO2 order.[/b] New button: Set MO2 Order As Default in the Sort tab and Create tab.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Restore Default Load Order.[/b] In Sort settings, you can remove the saved MO2 order and go back to the normal default.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Collections fit into your order.[/b] The Sort tab keeps the order you already set in MO2, and only places new collection mods into the gaps where they make sense.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]"Refresh Data" renamed to "Show Sorted Preview".[/b] Clearer name that describes what the button actually does.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Save Current Order shows confirmation.[/b] Clicking "Set MO2 Order As Default" now shows a confirmation dialog explaining what will happen, including that user rules will be cleared (since they're now baked into the baseline).
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Auto-loads Create tab profile.[/b] Clicking "Show Sorted Preview" now automatically loads your selected Create tab profile if one isn't already loaded. No need to manually switch tabs first.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Separators stay in place.[/b] "Preserve relative separator positions" now works correctly. Previously, separators would all end up at the bottom due to an index calculation bug.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Saved MO2 order includes separators.[/b] "Set MO2 Order As Default" now saves separator positions along with mod positions. Previously, separators were excluded and would drift when sorting.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Separators always visible in Sort tab.[/b] Separators now bypass the "Show only conflicts" and "Show disabled" filters so they're always visible to maintain list structure.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Old global user rules cleaned up.[/b] Legacy user rules stored globally (before profile-specific storage was added) are now automatically removed. This fixes cases where old rules were still being applied even after switching to profile-only rules.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Local creation mods sort more flexibly.[/b] Mods from local creations now use a softer sorting approach. They still follow the order you set, but other rules (like collection order or manual drag-and-drop) can override them when needed.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Reloading a collection no longer triggers a false version conflict.[/b] Previously, reloading the same collection could show a "version conflict" warning even when nothing changed, because the version format stored internally didn't match the format from the collection file. Both formats are now compared correctly.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Collection mods no longer get scattered when using a saved MO2 baseline.[/b] Previously, if your saved MO2 order had collection mods in different positions than the collection intended, the Sort tab could place them hundreds of positions apart or even in the wrong order. The collection's intended order now always takes priority over the saved baseline for collection mods.
+[/list]
+[size=3][b][color=#9cdcfe]Installs[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Fewer surprise choice screens.[/b] When Install first available is on, mods that open a choices window will wait until earlier mods in the same group are handled first.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Missing collection file recovered automatically.[/b] If a local collection's JSON file goes missing (e.g., you cleaned your downloads folder), the plugin now recovers it from the bundle archive instead of losing it permanently.
+[/list]
+[size=3][b][color=#9cdcfe]FOMODs Tab[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Status now matches reality.[/b] The FOMODs tab now shows the correct status (Installed, Downloaded, Skipped) based on what the download engine actually knows.
+[/list]
+[size=3][b][color=#9cdcfe]Tools Tab[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Copy to Game Folder button.[/b] Root Install tool now has a "Copy to Game Folder" button on each mod card. Shows a warning dialog first, lets you inspect files in Explorer, then copies the mod's files directly to your game folder.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]View on Nexus Mods button works reliably.[/b] The button now uses multiple fallback methods to find the mod ID (marker files, meta.ini), so it works even when one source is missing.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Missing Masters tool simplified.[/b] Removed the experimental warning gate, the "EXPERIMENTAL" badge, and the dangerous "Delete Plugins" button. The tool now opens directly to the scanner.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Maintenance section reorganized.[/b] "Run All Maintenance" button is now the header of the operations section with a divider line extending to the right. Fresh State has its own separate section with a red button for visibility.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Run All now includes Clean Up Orphans.[/b] The full maintenance sequence is now: Rebuild Index, Fix Markers, Fix Versions, Fix Names, Clean Up Orphans.
+[/list]
+[size=3][b][color=#9cdcfe]Create Tab[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Description Maker.[/b] New tool to create BB code descriptions for your Nexus Mods page. Block-based editor with drag-and-drop reordering, formatting toolbar (bold, italic, underline, center, links), and auto-generated mod lists with Nexus links.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]YouTube video embeds.[/b] Add YouTube videos to your description. Paste any YouTube URL and it automatically extracts the video ID for the [youtube] tag.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Block types.[/b] Heading (3 sizes), Text, Bullet List, Numbered List, Quote/Tip, Divider, YouTube Video, and Mod List.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Description persistence.[/b] Descriptions save to your profile and carry over when you create new versions.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Config column supports JSON and TOML.[/b] The "INI" column is now "Config" and detects INI, JSON, and TOML configuration files. Edit any of these formats with the built-in diff editor.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Config editor displays properly.[/b] Fixed tab width (4 spaces) and added horizontal scrolling so JSON and TOML files with long lines or aligned formatting display correctly.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Backup folder renamed.[/b] Config backups now use .collectionsmanager_config_backup. Existing .collectionsmanager_ini_backup folders still work.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Refresh Data preserves checkboxes.[/b] Clicking "Refresh Data" no longer resets your include/exclude checkbox selections. Your choices are now preserved across refreshes.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]FOMOD warning updates after configuring.[/b] The "X mod(s) missing FOMOD choices" warning now refreshes when you return from the FOMODs tab. Previously, the count stayed stale until you manually refreshed.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]No more "file_id not found" warnings.[/b] Fixed spurious log warnings when loading local modlists with version conflicts or mismatched archives.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]"Needs URL" tag.[/b] Mods without a download URL now show an orange "Needs URL" tag so you know which ones need attention. Right-click to set the URL, and the tag disappears automatically.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Set Download URL shows existing value.[/b] When you open the URL dialog, it now shows the current URL if one exists, so you can edit it instead of starting from scratch.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Instant updates after setting URL.[/b] Setting a URL or changing a link type now updates the row immediately. No need to click Refresh Data to see the change.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Set Download URL works on one mod at a time.[/b] The right-click option now only appears when you select a single mod, preventing accidental changes to the wrong mod.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Refresh Data keeps your load order.[/b] Previously, refreshing could reset the order you set for mods. Now your sorting preferences are preserved.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Exporting large collections no longer freezes the UI.[/b] Exporting now shows a progress bar so you can see how far along it is. You can also cancel the export at any time if you change your mind.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyBBCode('bbcode31a')">Copy to Clipboard</button>
+    </div>
+    <div id="md31a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown31a" readonly># Version 3.1a
+
+## Performance
+- **IMPROVED** **246 million fewer operations per minute.** Rewrote the install queue logic to eliminate redundant work. Large collections (2000+ mods) now run dramatically smoother during downloads and installs.
+- **IMPROVED** **4x faster FOMOD deep scan.** The Create tab's archive scanner now runs in parallel and stops the moment it finds a FOMOD. No more reading entire archives byte-by-byte.
+- **IMPROVED** **10x faster collection prep.** The wait time before a collection starts installing is now a fraction of what it used to be.
+- **IMPROVED** **Lighter logging.** Messages written to the log no longer slow things down, even during heavy activity.
+- **IMPROVED** **Gentler failure recovery.** The system that retries stuck downloads now runs much lighter in the background without bogging down your PC.
+- **IMPROVED** **Faster Create tab updates.** Changes in the Create tab now apply instantly even with thousands of mods.
+- **FIX** **Crash risk audit.** Fixed 12 stability issues found during a deep audit: background threads no longer call MO2 APIs directly, Qt objects are properly parented to prevent garbage collection crashes, dialog auto-clicker is wrapped to survive deleted widgets, dict iterations use snapshots to prevent mid-loop crashes, and notification listeners are guarded against re-entrancy.
+
+## User Interface
+- **IMPROVED** **General UI polish.** Many small tweaks across the plugin for a smoother, more responsive experience.
+- **CHANGE** **Full manual mode in Create tab.** When you're in the Create tab, all automatic behavior is paused. No auto-install, no silent-install, and no auto-clicking dialogs. You get complete manual control over every install step. Settings restore when you leave.
+- **CHANGE** **Create tab locked during installs.** You can't switch to the Create tab while a collection is actively installing. This prevents conflicts between creating and installing at the same time.
+
+## Account & Validation
+- **FIX** **Network hiccups don't break premium mode.** If the plugin can't reach Nexus to verify your account, it now keeps your saved premium status instead of switching you to free mode.
+- **FIX** **Account check doesn't interrupt your work.** If you're already working with a collection when the account check finishes, it no longer refreshes the screen and loses your place.
+
+## Sorting
+- **NEW** **Use your MO2 order.** New button: Set MO2 Order As Default in the Sort tab and Create tab.
+- **NEW** **Restore Default Load Order.** In Sort settings, you can remove the saved MO2 order and go back to the normal default.
+- **IMPROVED** **Collections fit into your order.** The Sort tab keeps the order you already set in MO2, and only places new collection mods into the gaps where they make sense.
+- **CHANGE** **"Refresh Data" renamed to "Show Sorted Preview".** Clearer name that describes what the button actually does.
+- **CHANGE** **Save Current Order shows confirmation.** Clicking "Set MO2 Order As Default" now shows a confirmation dialog explaining what will happen, including that user rules will be cleared (since they're now baked into the baseline).
+- **IMPROVED** **Auto-loads Create tab profile.** Clicking "Show Sorted Preview" now automatically loads your selected Create tab profile if one isn't already loaded. No need to manually switch tabs first.
+- **FIX** **Separators stay in place.** "Preserve relative separator positions" now works correctly. Previously, separators would all end up at the bottom due to an index calculation bug.
+- **FIX** **Saved MO2 order includes separators.** "Set MO2 Order As Default" now saves separator positions along with mod positions. Previously, separators were excluded and would drift when sorting.
+- **FIX** **Separators always visible in Sort tab.** Separators now bypass the "Show only conflicts" and "Show disabled" filters so they're always visible to maintain list structure.
+- **FIX** **Old global user rules cleaned up.** Legacy user rules stored globally (before profile-specific storage was added) are now automatically removed.
+- **IMPROVED** **Local creation mods sort more flexibly.** Mods from local creations now use a softer sorting approach. They still follow the order you set, but other rules can override them when needed.
+- **FIX** **Reloading a collection no longer triggers a false version conflict.** Previously, reloading the same collection could show a "version conflict" warning even when nothing changed. Both formats are now compared correctly.
+- **FIX** **Collection mods no longer get scattered when using a saved MO2 baseline.** Previously, the Sort tab could place collection mods hundreds of positions apart or in the wrong order. The collection's intended order now always takes priority over the saved baseline.
+
+## Installs
+- **IMPROVED** **Fewer surprise choice screens.** When Install first available is on, mods that open a choices window will wait until earlier mods in the same group are handled first.
+- **FIX** **Missing collection file recovered automatically.** If a local collection's JSON file goes missing (e.g., you cleaned your downloads folder), the plugin now recovers it from the bundle archive instead of losing it permanently.
+
+## FOMODs Tab
+- **FIX** **Status now matches reality.** The FOMODs tab now shows the correct status (Installed, Downloaded, Skipped) based on what the download engine actually knows.
+
+## Tools Tab
+- **NEW** **Copy to Game Folder button.** Root Install tool now has a "Copy to Game Folder" button on each mod card.
+- **FIX** **View on Nexus Mods button works reliably.** The button now uses multiple fallback methods to find the mod ID.
+- **CHANGE** **Missing Masters tool simplified.** Removed the experimental warning gate and the dangerous "Delete Plugins" button. The tool now opens directly to the scanner.
+- **CHANGE** **Maintenance section reorganized.** "Run All Maintenance" button is now the header of the operations section. Fresh State has its own separate section.
+- **CHANGE** **Run All now includes Clean Up Orphans.** The full maintenance sequence is now: Rebuild Index, Fix Markers, Fix Versions, Fix Names, Clean Up Orphans.
+
+## Create Tab
+- **NEW** **Description Maker.** New tool to create BB code descriptions for your Nexus Mods page. Block-based editor with drag-and-drop reordering, formatting toolbar, and auto-generated mod lists with Nexus links.
+- **NEW** **YouTube video embeds.** Add YouTube videos to your description. Paste any YouTube URL and it automatically extracts the video ID.
+- **NEW** **Block types.** Heading (3 sizes), Text, Bullet List, Numbered List, Quote/Tip, Divider, YouTube Video, and Mod List.
+- **NEW** **Description persistence.** Descriptions save to your profile and carry over when you create new versions.
+- **NEW** **Config column supports JSON and TOML.** The "INI" column is now "Config" and detects INI, JSON, and TOML configuration files.
+- **IMPROVED** **Config editor displays properly.** Fixed tab width (4 spaces) and added horizontal scrolling for long lines.
+- **CHANGE** **Backup folder renamed.** Config backups now use .collectionsmanager_config_backup. Existing folders still work.
+- **FIX** **Refresh Data preserves checkboxes.** Clicking "Refresh Data" no longer resets your include/exclude checkbox selections.
+- **FIX** **FOMOD warning updates after configuring.** The warning now refreshes when you return from the FOMODs tab.
+- **FIX** **No more "file_id not found" warnings.** Fixed spurious log warnings when loading local modlists.
+- **NEW** **"Needs URL" tag.** Mods without a download URL now show an orange "Needs URL" tag. Right-click to set the URL.
+- **IMPROVED** **Set Download URL shows existing value.** The URL dialog now shows the current URL if one exists.
+- **IMPROVED** **Instant updates after setting URL.** Setting a URL or changing a link type now updates the row immediately.
+- **FIX** **Set Download URL works on one mod at a time.** The right-click option now only appears when you select a single mod.
+- **FIX** **Refresh Data keeps your load order.** Previously, refreshing could reset the order you set for mods.
+- **IMPROVED** **Exporting large collections no longer freezes the UI.** Exporting now shows a progress bar and you can cancel at any time.</textarea>
+        <button class="copy-btn" onclick="copyBBCode('markdown31a')">Copy to Clipboard</button>
+    </div>
+
+    <h2 id="v3.0.1a">Version 3.0.1a <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
     <p class="version-summary">Smart external download handlers and quality of life improvements. External mods from ModDB, Google Drive, MediaFire, Dropbox, GitHub, and OneDrive now download automatically instead of opening in the browser.</p>
 
     <h3>Smart External Download Handlers</h3>
@@ -441,6 +592,70 @@ li {
         <li><span class="tag tag-improve">IMPROVED</span> <b>Adaptive concurrency.</b> Automatically reduces parallel downloads if the network is struggling, then ramps back up when stable.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Better error recovery.</b> Failed downloads retry automatically with exponential backoff instead of stalling the queue.</li>
     </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb301a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md301a')">Markdown</button>
+    </div>
+    <div id="bb301a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode301a" readonly>[size=4][b][color=#dcdcaa]Version 3.0.1a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Smart External Download Handlers[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Auto-download from external sites.[/b] External mods now attempt automatic download instead of always opening in the browser. Falls back to browser if the handler fails.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]ModDB support.[/b] Automatically selects the lowest-load mirror and downloads directly.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Google Drive support.[/b] Bypasses the virus scan warning page for large files.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]MediaFire support.[/b] Extracts the direct download link from the file page.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Dropbox support.[/b] Converts share links to direct downloads instantly.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]GitHub Releases support.[/b] Downloads release assets, with smart filtering for mod file types (.zip, .7z, etc.).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]OneDrive/SharePoint support.[/b] Handles both personal OneDrive and SharePoint/OneDrive for Business links.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Circuit breaker protection.[/b] If a site fails repeatedly, the handler backs off with exponential delay to avoid hammering the server.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]URL resolution cache.[/b] Successful URL resolutions are cached for 15 minutes to speed up repeated downloads.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]DLL Debug Log integration.[/b] Smart handler activity shows in the DLL Debug Window with color-coded status (green=success, orange=warning, red=error).
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fast mode integration.[/b] External mods with smart handler support now download automatically in smooth/fast mode. Previously, external mods were marked as failed because the fast mode downloader didn't know how to resolve external URLs.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Browser-only filtering.[/b] The external mods panel now correctly shows only browser-only mods. Auto-downloadable mods (ModDB, etc.) skip the panel and download in the background.
+[/list]
+[size=3][b][color=#9cdcfe]Global API Key Storage[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Shared API key across installations.[/b] Your Nexus API key is now stored globally and shared across all MO2 installations. No need to enter it separately for each game.
+[/list]
+[size=3][b][color=#9cdcfe]Download Engine Overhaul[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Complete engine rewrite.[/b] The download and install engine has been overhauled for much better stability and reliability.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Multiple simultaneous downloads.[/b] Downloads now run in parallel (up to 10 concurrent) instead of one at a time. Configurable in Mods Settings.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Install first available.[/b] Installs whichever mod finishes downloading first instead of waiting for strict collection order. Enabled by default.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Adaptive concurrency.[/b] Automatically reduces parallel downloads if the network is struggling, then ramps back up when stable.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Better error recovery.[/b] Failed downloads retry automatically with exponential backoff instead of stalling the queue.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyBBCode('bbcode301a')">Copy to Clipboard</button>
+    </div>
+    <div id="md301a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown301a" readonly># Version 3.0.1a
+
+## Smart External Download Handlers
+- **NEW** **Auto-download from external sites.** External mods now attempt automatic download instead of always opening in the browser. Falls back to browser if the handler fails.
+- **NEW** **ModDB support.** Automatically selects the lowest-load mirror and downloads directly.
+- **NEW** **Google Drive support.** Bypasses the virus scan warning page for large files.
+- **NEW** **MediaFire support.** Extracts the direct download link from the file page.
+- **NEW** **Dropbox support.** Converts share links to direct downloads instantly.
+- **NEW** **GitHub Releases support.** Downloads release assets, with smart filtering for mod file types (.zip, .7z, etc.).
+- **NEW** **OneDrive/SharePoint support.** Handles both personal OneDrive and SharePoint/OneDrive for Business links.
+- **NEW** **Circuit breaker protection.** If a site fails repeatedly, the handler backs off with exponential delay to avoid hammering the server.
+- **NEW** **URL resolution cache.** Successful URL resolutions are cached for 15 minutes to speed up repeated downloads.
+- **NEW** **DLL Debug Log integration.** Smart handler activity shows in the DLL Debug Window with color-coded status (green=success, orange=warning, red=error).
+- **FIX** **Fast mode integration.** External mods with smart handler support now download automatically in smooth/fast mode. Previously, external mods were marked as failed because the fast mode downloader didn't know how to resolve external URLs.
+- **FIX** **Browser-only filtering.** The external mods panel now correctly shows only browser-only mods. Auto-downloadable mods (ModDB, etc.) skip the panel and download in the background.
+
+## Global API Key Storage
+- **NEW** **Shared API key across installations.** Your Nexus API key is now stored globally and shared across all MO2 installations. No need to enter it separately for each game.
+
+## Download Engine Overhaul
+- **IMPROVED** **Complete engine rewrite.** The download and install engine has been overhauled for much better stability and reliability.
+- **NEW** **Multiple simultaneous downloads.** Downloads now run in parallel (up to 10 concurrent) instead of one at a time. Configurable in Mods Settings.
+- **NEW** **Install first available.** Installs whichever mod finishes downloading first instead of waiting for strict collection order. Enabled by default.
+- **IMPROVED** **Adaptive concurrency.** Automatically reduces parallel downloads if the network is struggling, then ramps back up when stable.
+- **IMPROVED** **Better error recovery.** Failed downloads retry automatically with exponential backoff instead of stalling the queue.</textarea>
+        <button class="copy-btn" onclick="copyBBCode('markdown301a')">Copy to Clipboard</button>
+    </div>
 
     <h2 id="v3.0a">Version 3.0a <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
     <p class="version-summary"><b>Collections Manager is now Creations Manager!</b> The plugin has been renamed to better reflect its expanded capabilities beyond just Nexus Collections. This release also focuses on making shared modlists work reliably across different machines. External mods now download automatically when possible, your mod flags and settings transfer perfectly when importing modlists, and FOMOD detection is more reliable and faster.</p>
@@ -586,6 +801,261 @@ li {
     <ul>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Exports use newest version.</b> When exporting a modlist, mods now show their newest available version instead of the installed version. No need to run Fix Versions first.</li>
     </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb30a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md30a')">Markdown</button>
+    </div>
+    <div id="bb30a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode30a" readonly>[size=4][b][color=#dcdcaa]Version 3.0a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]App Rename: Collections Manager to Creations Manager[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Works with old files.[/b] All your existing marker files, saved presets, and collections still work. The plugin reads both old and new file formats.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Plugin renamed.[/b] The main file is now CreationsManager.py and shows as "Creations Manager" in MO2's Tools menu.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Window title changed.[/b] Now shows "MO2 Creations Manager".
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Collections tab renamed to Modlists.[/b] Better describes what the tab does.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Creations tab renamed to Create.[/b] Clearer name for the export tab.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Helper DLL renamed.[/b] Now called creationsmanager_fomod.dll. Old DLL names still work.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Module folder renamed.[/b] Moved from lib/mo2collections to lib/creationsmanager.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Log messages updated.[/b] Now use [Creations] instead of [Collections].
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Preset files renamed.[/b] FOMOD presets now use .creationsmanager.fomod.json. Old files still work.
+[/list]
+[size=3][b][color=#9cdcfe]Create Tab[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Blocks export if FOMOD choices are missing.[/b] Shows a warning with a list of mods that need FOMOD choices saved before you can export.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Version history menu.[/b] Previous versions show in a dropdown. Click Load to switch versions instead of accidentally changing them.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Deep FOMOD scan.[/b] Searches inside archive subfolders to find FOMOD installers. Slower but catches more. On by default.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]FOMOD cache.[/b] Remembers which archives have FOMOD installers so it doesn't rescan every time. Clear it in settings if needed.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Loading progress bar.[/b] Shows actual progress when the tab loads instead of freezing.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Warning if MO2 is missing features.[/b] Red banner tells you if required plugin methods aren't available.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Profile status light.[/b] Orange when no profile is selected, green when you're editing one.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]URL and link type columns.[/b] External mods now have URL and link type fields right in the table.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Link type options.[/b] Choose Auto (detect from URL), Direct (force download), or Page (open in browser).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Nexus link help button.[/b] Click "?" next to URL field to see how to get download links from Nexus.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Version history per profile.[/b] Each profile keeps its own version history.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]INI export options.[/b] Choose between diff format (smaller files) or full INI files (no extra tools needed).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]New INI editor layout.[/b] Text editor on the left, changes panel on the right. Green for added lines, red for removed. Click a change to jump to it.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Restore Original button.[/b] Revert an INI file back to its original with one click.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Export checkboxes.[/b] Check which mods to include in your export. Unchecked mods are skipped.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Green outline on INI button.[/b] Shows at a glance which mods have INI edits saved.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Auto-save.[/b] Changes save automatically when enabled. On by default.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Save flash.[/b] UI elements flash green briefly when auto-saved.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Live URL field.[/b] URL field appears/disappears instantly when toggling External flag.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Auto-fill URLs.[/b] When marking a mod as External, the URL field fills in automatically if a URL is known.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Remembers table state.[/b] Sort order, scroll position, and selected rows stay the same after refresh.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Settings button matches other tabs.[/b] Uses the same gear icon style.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Checkboxes disabled without profile.[/b] Can't change flags until you load a profile.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Flags stored only in profiles.[/b] Removed the separate overrides file that caused conflicts.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Buttons work after sorting.[/b] INI editor and FOMOD buttons now open the right mod even after sorting the table.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]External mod flags save correctly.[/b] Mods without Nexus IDs now keep their flags when imported on another machine.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Old profiles still load.[/b] Profiles from older versions work with the new system.
+[/list]
+[size=3][b][color=#9cdcfe]Mods Tab[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Timer settings dialog.[/b] Install delays, FOMOD delays, and timeout settings now have their own dialog instead of being buried in Dev Options.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Timer tips.[/b] Suggests doubling values if you're not on an SSD.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Easier settings access.[/b] Gear button next to progress bar opens settings.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Author notes open automatically.[/b] Notes section expands by default when present.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Version column now consistent across all tables.[/b] All tables (Mods, FOMODs, Sort Tool, Duplicate Finder) now show the same version by reading from marker files first.
+[/list]
+[size=3][b][color=#9cdcfe]Sort Tab[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Shared rules with Creations tab.[/b] Drag-drop changes in Sort tab now sync with Creations tab in real time.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Order change banner.[/b] Creations tab shows a reload banner when you apply a new sort order.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Better sorting algorithm.[/b] Uses load-after rules instead of fixed positions for more accurate ordering.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Rules saved across restarts.[/b] Your custom sort rules now persist when you close MO2.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Collection order preserved.[/b] Sorting by collection keeps mods in the right relative order.
+[/list]
+[size=3][b][color=#9cdcfe]External Downloads[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Auto-download external mods.[/b] Mods with direct download URLs (.7z, .zip, etc.) download automatically through MO2.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Expected filename stored.[/b] Markers remember what the archive should be called for better matching.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Hash verification.[/b] Markers can store SHA256 hashes to verify downloads are correct.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]HTTPS required.[/b] Non-secure URLs are rejected for safety.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Game name format fixed.[/b] No more 404 errors from "skyrimse" vs "skyrimspecialedition" mismatches.
+[/list]
+[size=3][b][color=#9cdcfe]Stuck Download Recovery[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Better download search.[/b] Uses a new method to find downloads that the old Python code couldn't locate.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Resume button works now.[/b] The Resume and Pause buttons in the stuck download dialog actually work, even when downloads get registered late.
+[/list]
+[size=3][b][color=#9cdcfe]Structure Capture[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Smarter file matching.[/b] Uses folder names to match files more accurately.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Capture works immediately.[/b] Checking the Capture box saves the structure right away instead of waiting.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Structures save to disk.[/b] Captured structures now survive restarts.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Handles missing paths.[/b] Tries alternate methods if the mod path can't be found.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Ignores orphan folders.[/b] Folders named "orphaned" are skipped to prevent issues.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Works with external mods.[/b] Structure matching now works for mods without Nexus IDs.
+[/list]
+[size=3][b][color=#9cdcfe]Import[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Handles bad collection names.[/b] Cleans up invalid characters and numbers in collection slugs.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Finds collection.json correctly.[/b] Fixed path issues that caused import failures.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]FOMOD indicators show right away.[/b] No need to refresh after importing to see which mods have saved FOMOD choices.
+[/list]
+[size=3][b][color=#9cdcfe]FOMOD Detection[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Searches inside archives deeper.[/b] Finds FOMOD installers in nested folders like MO2 does.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Searches installed mods deeper.[/b] Finds nested fomod/ModuleConfig.xml folders.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Uses 7zip when available.[/b] More reliable archive scanning.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Caches scan results.[/b] Doesn't rescan the same archive twice.
+[/list]
+[size=3][b][color=#9cdcfe]Markers[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Unique marker IDs.[/b] Each marker gets a UUID that stays the same forever. This lets mods match exactly when importing on another computer.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]FOMOD flag cached.[/b] Markers remember if a mod has a FOMOD installer.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Smarter mod matching.[/b] Uses Nexus file ID first, then marker UUID, then mod name as fallback.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]New marker filename format.[/b] Now uses {mod_id}_{file_id}_{marker_id}.json.creationsmanager.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Old markers still work.[/b] Finds both old and new marker formats.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Old markers get upgraded.[/b] Markers without UUIDs get one added automatically.
+[/list]
+[size=3][b][color=#9cdcfe]Stability & Performance[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed memory leak in download tracking.[/b] Downloads that failed or got stuck were never removed from tracking, causing memory to grow over time. Now properly cleaned up on failure.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed timer callbacks stacking up.[/b] Stopping and restarting downloads could cause multiple callbacks to fire at once. Timer signals are now properly disconnected before reconnecting.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed callbacks firing after stop.[/b] Delayed callbacks (like download pacing) could still run after you canceled. Now checks if the manager is still active first.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed network signal accumulation.[/b] GraphQL queries weren't disconnecting their completion signals, causing them to stack up. Now properly cleaned up after each request.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed tracking data not clearing on cancel.[/b] Download tracking dicts now clear when you cancel or close the dialog.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Added size limits to tracking dicts.[/b] Dicts that track retry attempts and logged dialog titles now clear themselves when they get too large, preventing unbounded growth during long sessions.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Dialog handler cleans up better.[/b] Timer signals and logged title sets are now properly cleared when the handler stops.
+[/list]
+[size=3][b][color=#9cdcfe]Internal[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Better debug logging.[/b] State changes log in a searchable format: [TRACE] file_id | mod_name | old -> new | reason.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Fewer timers.[/b] Consolidated five separate timers into one heartbeat. Less complexity, fewer bugs.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]No more crash on open.[/b] Fixed null reference error when building the dialog.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]WeakMethod detection fixed.[/b] Callbacks to class methods now work correctly.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Sort Tool cleanup fixed.[/b] No more callbacks to destroyed objects.
+[/list]
+[size=3][b][color=#9cdcfe]Maintenance Tool[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Fix Versions button.[/b] Updates marker and meta.ini version fields to match the newest available version. Fixes outdated version numbers in one click.
+[/list]
+[size=3][b][color=#9cdcfe]Modlist Export[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Exports use newest version.[/b] When exporting a modlist, mods now show their newest available version instead of the installed version. No need to run Fix Versions first.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyBBCode('bbcode30a')">Copy to Clipboard</button>
+    </div>
+    <div id="md30a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown30a" readonly># Version 3.0a
+
+## App Rename: Collections Manager to Creations Manager
+- **IMPROVED** **Works with old files.** All your existing marker files, saved presets, and collections still work. The plugin reads both old and new file formats.
+- **CHANGE** **Plugin renamed.** The main file is now CreationsManager.py and shows as "Creations Manager" in MO2's Tools menu.
+- **CHANGE** **Window title changed.** Now shows "MO2 Creations Manager".
+- **CHANGE** **Collections tab renamed to Modlists.** Better describes what the tab does.
+- **CHANGE** **Creations tab renamed to Create.** Clearer name for the export tab.
+- **CHANGE** **Helper DLL renamed.** Now called creationsmanager_fomod.dll. Old DLL names still work.
+- **CHANGE** **Module folder renamed.** Moved from lib/mo2collections to lib/creationsmanager.
+- **CHANGE** **Log messages updated.** Now use [Creations] instead of [Collections].
+- **CHANGE** **Preset files renamed.** FOMOD presets now use .creationsmanager.fomod.json. Old files still work.
+
+## Create Tab
+- **NEW** **Blocks export if FOMOD choices are missing.** Shows a warning with a list of mods that need FOMOD choices saved before you can export.
+- **NEW** **Version history menu.** Previous versions show in a dropdown. Click Load to switch versions instead of accidentally changing them.
+- **NEW** **Deep FOMOD scan.** Searches inside archive subfolders to find FOMOD installers. Slower but catches more. On by default.
+- **NEW** **FOMOD cache.** Remembers which archives have FOMOD installers so it doesn't rescan every time. Clear it in settings if needed.
+- **NEW** **Loading progress bar.** Shows actual progress when the tab loads instead of freezing.
+- **NEW** **Warning if MO2 is missing features.** Red banner tells you if required plugin methods aren't available.
+- **NEW** **Profile status light.** Orange when no profile is selected, green when you're editing one.
+- **NEW** **URL and link type columns.** External mods now have URL and link type fields right in the table.
+- **NEW** **Link type options.** Choose Auto (detect from URL), Direct (force download), or Page (open in browser).
+- **NEW** **Nexus link help button.** Click "?" next to URL field to see how to get download links from Nexus.
+- **NEW** **Version history per profile.** Each profile keeps its own version history.
+- **NEW** **INI export options.** Choose between diff format (smaller files) or full INI files (no extra tools needed).
+- **NEW** **New INI editor layout.** Text editor on the left, changes panel on the right. Green for added lines, red for removed. Click a change to jump to it.
+- **NEW** **Restore Original button.** Revert an INI file back to its original with one click.
+- **NEW** **Export checkboxes.** Check which mods to include in your export. Unchecked mods are skipped.
+- **NEW** **Green outline on INI button.** Shows at a glance which mods have INI edits saved.
+- **NEW** **Auto-save.** Changes save automatically when enabled. On by default.
+- **NEW** **Save flash.** UI elements flash green briefly when auto-saved.
+- **NEW** **Live URL field.** URL field appears/disappears instantly when toggling External flag.
+- **NEW** **Auto-fill URLs.** When marking a mod as External, the URL field fills in automatically if a URL is known.
+- **IMPROVED** **Remembers table state.** Sort order, scroll position, and selected rows stay the same after refresh.
+- **IMPROVED** **Settings button matches other tabs.** Uses the same gear icon style.
+- **CHANGE** **Checkboxes disabled without profile.** Can't change flags until you load a profile.
+- **CHANGE** **Flags stored only in profiles.** Removed the separate overrides file that caused conflicts.
+- **FIX** **Buttons work after sorting.** INI editor and FOMOD buttons now open the right mod even after sorting the table.
+- **FIX** **External mod flags save correctly.** Mods without Nexus IDs now keep their flags when imported on another machine.
+- **FIX** **Old profiles still load.** Profiles from older versions work with the new system.
+
+## Mods Tab
+- **NEW** **Timer settings dialog.** Install delays, FOMOD delays, and timeout settings now have their own dialog instead of being buried in Dev Options.
+- **IMPROVED** **Timer tips.** Suggests doubling values if you're not on an SSD.
+- **IMPROVED** **Easier settings access.** Gear button next to progress bar opens settings.
+- **CHANGE** **Author notes open automatically.** Notes section expands by default when present.
+- **FIX** **Version column now consistent across all tables.** All tables (Mods, FOMODs, Sort Tool, Duplicate Finder) now show the same version by reading from marker files first.
+
+## Sort Tab
+- **NEW** **Shared rules with Creations tab.** Drag-drop changes in Sort tab now sync with Creations tab in real time.
+- **NEW** **Order change banner.** Creations tab shows a reload banner when you apply a new sort order.
+- **NEW** **Better sorting algorithm.** Uses load-after rules instead of fixed positions for more accurate ordering.
+- **IMPROVED** **Rules saved across restarts.** Your custom sort rules now persist when you close MO2.
+- **IMPROVED** **Collection order preserved.** Sorting by collection keeps mods in the right relative order.
+
+## External Downloads
+- **NEW** **Auto-download external mods.** Mods with direct download URLs (.7z, .zip, etc.) download automatically through MO2.
+- **NEW** **Expected filename stored.** Markers remember what the archive should be called for better matching.
+- **NEW** **Hash verification.** Markers can store SHA256 hashes to verify downloads are correct.
+- **IMPROVED** **HTTPS required.** Non-secure URLs are rejected for safety.
+- **FIX** **Game name format fixed.** No more 404 errors from "skyrimse" vs "skyrimspecialedition" mismatches.
+
+## Stuck Download Recovery
+- **NEW** **Better download search.** Uses a new method to find downloads that the old Python code couldn't locate.
+- **FIX** **Resume button works now.** The Resume and Pause buttons in the stuck download dialog actually work, even when downloads get registered late.
+
+## Structure Capture
+- **IMPROVED** **Smarter file matching.** Uses folder names to match files more accurately.
+- **FIX** **Capture works immediately.** Checking the Capture box saves the structure right away instead of waiting.
+- **FIX** **Structures save to disk.** Captured structures now survive restarts.
+- **FIX** **Handles missing paths.** Tries alternate methods if the mod path can't be found.
+- **FIX** **Ignores orphan folders.** Folders named "orphaned" are skipped to prevent issues.
+- **FIX** **Works with external mods.** Structure matching now works for mods without Nexus IDs.
+
+## Import
+- **FIX** **Handles bad collection names.** Cleans up invalid characters and numbers in collection slugs.
+- **FIX** **Finds collection.json correctly.** Fixed path issues that caused import failures.
+- **FIX** **FOMOD indicators show right away.** No need to refresh after importing to see which mods have saved FOMOD choices.
+
+## FOMOD Detection
+- **IMPROVED** **Searches inside archives deeper.** Finds FOMOD installers in nested folders like MO2 does.
+- **IMPROVED** **Searches installed mods deeper.** Finds nested fomod/ModuleConfig.xml folders.
+- **IMPROVED** **Uses 7zip when available.** More reliable archive scanning.
+- **IMPROVED** **Caches scan results.** Doesn't rescan the same archive twice.
+
+## Markers
+- **NEW** **Unique marker IDs.** Each marker gets a UUID that stays the same forever. This lets mods match exactly when importing on another computer.
+- **NEW** **FOMOD flag cached.** Markers remember if a mod has a FOMOD installer.
+- **IMPROVED** **Smarter mod matching.** Uses Nexus file ID first, then marker UUID, then mod name as fallback.
+- **CHANGE** **New marker filename format.** Now uses {mod_id}_{file_id}_{marker_id}.json.creationsmanager.
+- **FIX** **Old markers still work.** Finds both old and new marker formats.
+- **FIX** **Old markers get upgraded.** Markers without UUIDs get one added automatically.
+
+## Stability & Performance
+- **FIX** **Fixed memory leak in download tracking.** Downloads that failed or got stuck were never removed from tracking, causing memory to grow over time. Now properly cleaned up on failure.
+- **FIX** **Fixed timer callbacks stacking up.** Stopping and restarting downloads could cause multiple callbacks to fire at once. Timer signals are now properly disconnected before reconnecting.
+- **FIX** **Fixed callbacks firing after stop.** Delayed callbacks (like download pacing) could still run after you canceled. Now checks if the manager is still active first.
+- **FIX** **Fixed network signal accumulation.** GraphQL queries weren't disconnecting their completion signals, causing them to stack up. Now properly cleaned up after each request.
+- **FIX** **Fixed tracking data not clearing on cancel.** Download tracking dicts now clear when you cancel or close the dialog.
+- **FIX** **Added size limits to tracking dicts.** Dicts that track retry attempts and logged dialog titles now clear themselves when they get too large, preventing unbounded growth during long sessions.
+- **FIX** **Dialog handler cleans up better.** Timer signals and logged title sets are now properly cleared when the handler stops.
+
+## Internal
+- **NEW** **Better debug logging.** State changes log in a searchable format: [TRACE] file_id | mod_name | old -> new | reason.
+- **IMPROVED** **Fewer timers.** Consolidated five separate timers into one heartbeat. Less complexity, fewer bugs.
+- **FIX** **No more crash on open.** Fixed null reference error when building the dialog.
+- **FIX** **WeakMethod detection fixed.** Callbacks to class methods now work correctly.
+- **FIX** **Sort Tool cleanup fixed.** No more callbacks to destroyed objects.
+
+## Maintenance Tool
+- **NEW** **Fix Versions button.** Updates marker and meta.ini version fields to match the newest available version. Fixes outdated version numbers in one click.
+
+## Modlist Export
+- **IMPROVED** **Exports use newest version.** When exporting a modlist, mods now show their newest available version instead of the installed version. No need to run Fix Versions first.</textarea>
+        <button class="copy-btn" onclick="copyBBCode('markdown30a')">Copy to Clipboard</button>
+    </div>
 
     <h2 id="v2.5">Version 2.5 <span class="tag tag-released">RELEASED</span><a href="https://www.nexusmods.com/site/mods/1594?tab=files" target="_blank" class="download-link">Download</a></h2>
     <p class="version-summary">A major usability update for creating and sharing modlists. The Creations tab got a cleaner sidebar layout, the Sort Tool now remembers your custom rules between sessions, and downloads are faster and more reliable. Cross-game mods like BethINI no longer pop up annoying confirmation dialogs.</p>

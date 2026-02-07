@@ -330,9 +330,13 @@ li {
 
     <h3>Performance</h3>
     <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>246 million fewer operations per minute.</b> Rewrote the install queue logic to eliminate redundant work. Large collections (2000+ mods) now run dramatically smoother during downloads and installs.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>4x faster FOMOD deep scan.</b> The Create tab's archive scanner now runs in parallel and stops the moment it finds a FOMOD. No more reading entire archives byte-by-byte.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>10x faster collection prep.</b> The wait time before a collection starts installing is now a fraction of what it used to be.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Lighter logging.</b> Messages written to the log no longer slow things down, even during heavy activity.</li>
         <li><span class="tag tag-improve">IMPROVED</span> <b>Gentler failure recovery.</b> The system that retries stuck downloads now runs much lighter in the background without bogging down your PC.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Faster Create tab updates.</b> Changes in the Create tab now apply instantly even with thousands of mods.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Crash risk audit.</b> Fixed 12 stability issues found during a deep audit: background threads no longer call MO2 APIs directly, Qt objects are properly parented to prevent garbage collection crashes, dialog auto-clicker is wrapped to survive deleted widgets, dict iterations use snapshots to prevent mid-loop crashes, and notification listeners are guarded against re-entrancy.</li>
     </ul>
 
     <h3>User Interface</h3>
@@ -340,6 +344,12 @@ li {
         <li><span class="tag tag-improve">IMPROVED</span> <b>General UI polish.</b> Many small tweaks across the plugin for a smoother, more responsive experience.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Full manual mode in Create tab.</b> When you're in the Create tab, all automatic behavior is paused. No auto-install, no silent-install, and no auto-clicking dialogs. You get complete manual control over every install step. Settings restore when you leave.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Create tab locked during installs.</b> You can't switch to the Create tab while a collection is actively installing. This prevents conflicts between creating and installing at the same time.</li>
+    </ul>
+
+    <h3>Account & Validation</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Network hiccups don't break premium mode.</b> If the plugin can't reach Nexus to verify your account, it now keeps your saved premium status instead of switching you to free mode.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Account check doesn't interrupt your work.</b> If you're already working with a collection when the account check finishes, it no longer refreshes the screen and loses your place.</li>
     </ul>
 
     <h3>Sorting</h3>
@@ -354,6 +364,8 @@ li {
         <li><span class="tag tag-fix">FIX</span> <b>Saved MO2 order includes separators.</b> "Set MO2 Order As Default" now saves separator positions along with mod positions. Previously, separators were excluded and would drift when sorting.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Separators always visible in Sort tab.</b> Separators now bypass the "Show only conflicts" and "Show disabled" filters so they're always visible to maintain list structure.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Old global user rules cleaned up.</b> Legacy user rules stored globally (before profile-specific storage was added) are now automatically removed. This fixes cases where old rules were still being applied even after switching to profile-only rules.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Local creation mods sort more flexibly.</b> Mods from local creations now use a softer sorting approach. They still follow the order you set, but other rules (like collection order or manual drag-and-drop) can override them when needed. Previously, local creation order was locked in rigidly, which could block other mods from moving where they needed to go.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Reloading a collection no longer triggers a false version conflict.</b> Previously, reloading the same collection could show a "version conflict" warning even when nothing changed, because the version format stored internally didn't match the format from the collection file (e.g., "1.5.2" vs "1.52"). Both formats are now compared correctly.</li>
     </ul>
 
     <h3>Installs</h3>
@@ -385,6 +397,14 @@ li {
         <li><span class="tag tag-improve">IMPROVED</span> <b>Config editor displays properly.</b> Fixed tab width (4 spaces) and added horizontal scrolling so JSON and TOML files with long lines or aligned formatting display correctly.</li>
         <li><span class="tag tag-change">CHANGE</span> <b>Backup folder renamed.</b> Config backups now use <code>.collectionsmanager_config_backup</code>. Existing <code>.collectionsmanager_ini_backup</code> folders still work.</li>
         <li><span class="tag tag-fix">FIX</span> <b>Refresh Data preserves checkboxes.</b> Clicking "Refresh Data" no longer resets your include/exclude checkbox selections. Your choices are now preserved across refreshes.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>FOMOD warning updates after configuring.</b> The "X mod(s) missing FOMOD choices" warning now refreshes when you return from the FOMODs tab. Previously, the count stayed stale until you manually refreshed.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>No more "file_id not found" warnings.</b> Fixed spurious log warnings when loading local modlists with version conflicts or mismatched archives.</li>
+        <li><span class="tag tag-new">NEW</span> <b>"Needs URL" tag.</b> Mods without a download URL now show an orange "Needs URL" tag so you know which ones need attention. Right-click to set the URL, and the tag disappears automatically.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Set Download URL shows existing value.</b> When you open the URL dialog, it now shows the current URL if one exists, so you can edit it instead of starting from scratch.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Instant updates after setting URL.</b> Setting a URL or changing a link type now updates the row immediately. No need to click Refresh Data to see the change.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Set Download URL works on one mod at a time.</b> The right-click option now only appears when you select a single mod, preventing accidental changes to the wrong mod.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Refresh Data keeps your load order.</b> Previously, refreshing could reset the order you set for mods. Now your sorting preferences are preserved.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Exporting large collections no longer freezes the UI.</b> Exporting now shows a progress bar so you can see how far along it is. You can also cancel the export at any time if you change your mind.</li>
     </ul>
 
     <h2 id="v3.0.1a">Version 3.0.1a <span class="tag tag-dev">DEV</span></h2>

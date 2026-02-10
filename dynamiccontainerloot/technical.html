@@ -528,7 +528,6 @@ GRUP "CONT" (all container records)
     <!-- ============================================================ -->
 
     <ul>
-        <li><strong>Missing ESP file:</strong> Logs a warning, skips that mod's changes. Other mods still merge correctly</li>
         <li><strong>Corrupt or unreadable record:</strong> Skipped with a warning. The merge continues with whatever data was parseable</li>
         <li><strong>Decompression failure:</strong> Records compressed with zlib that fail to decompress are skipped (safety cap: 64 MB max uncompressed size)</li>
         <li><strong>Unresolvable formID:</strong> If a loser references a form that doesn't exist at runtime, that entry is skipped during addition</li>

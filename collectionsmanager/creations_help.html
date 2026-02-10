@@ -181,12 +181,12 @@ tr:nth-child(even) {
     <a href="#fomod-status">FOMOD Status</a>
 
     <h3>Exporting</h3>
-    <a href="#export-modlist">Export Modlist</a>
+    <a href="#export-modlist">Export Collection</a>
     <a href="#export-requirements">Requirements</a>
     <a href="#whats-included">What's Included</a>
 
     <h3>Importing</h3>
-    <a href="#import-button">Import Button</a>
+    <a href="#import-button">Import Collection</a>
     <a href="#loading-collection">Loading Collection</a>
 
     <h3>Settings</h3>
@@ -235,28 +235,40 @@ tr:nth-child(even) {
     <li>Preserving FOMOD choices for reinstallation</li>
 </ul>
 
-<h2>Toolbar Overview</h2>
-<p>The Create tab toolbar has two rows of controls:</p>
+<h2>Sidebar Overview</h2>
+<p>The Create tab has a left sidebar with four sections and a search box above the mod table:</p>
 
-<h3>Row 1 - Profiles</h3>
+<h3>Export Section</h3>
+<ul>
+    <li><b>Export MO2 Collection</b> - Export your setup as a shareable .zip file</li>
+</ul>
+
+<h3>Actions Section</h3>
+<ul>
+    <li><b>Refresh Data</b> (green) - Run maintenance tasks and reload mod data from MO2</li>
+    <li><b>Rescan FOMODs</b> - Re-detect FOMOD installers for all mods (slower than Refresh)</li>
+    <li><b>Settings</b> - Open settings dialog</li>
+    <li><b>Create Description</b> - Generate a BB code description for your Nexus Mods page</li>
+    <li><b>Create Author Notes</b> - Write install instructions shown to users after import</li>
+</ul>
+
+<h3>Profile Section</h3>
 <ul>
     <li><b>Profile dropdown</b> - Select which profile to work with</li>
-    <li><b>New</b> - Create a new profile</li>
-    <li><b>Edit</b> - Edit the current profile name</li>
-    <li><b>Save</b> - Save current settings to the profile</li>
+    <li><b>New</b> - Create a new profile with name, version, and author</li>
+    <li><b>Edit</b> - Edit the current profile metadata (name, author)</li>
+    <li><b>Save</b> - Save current table state to the profile</li>
     <li><b>Load</b> - Load settings from the profile</li>
-    <li><b>Del</b> - Delete the current profile</li>
-    <li><b>Version dropdown</b> - Select a version of the profile</li>
+    <li><b>Del</b> (red) - Delete the current profile</li>
+</ul>
+
+<h3>Version Section</h3>
+<ul>
+    <li><b>Version dropdown</b> - Select a saved version to load</li>
     <li><b>New Version</b> - Create a new version snapshot</li>
 </ul>
 
-<h3>Row 2 - Actions</h3>
-<ul>
-    <li><b>Refresh Data</b> (green) - Reload mod data from MO2</li>
-    <li><b>Export Modlist</b> (blue) - Export as shareable .zip file</li>
-    <li><b>Settings</b> - Open settings dialog</li>
-    <li><b>Search box</b> - Filter mods by name</li>
-</ul>
+<p>The <b>Search box</b> appears above the mod table in the main content area.</p>
 
 
 <h1 id="profiles">Working with Profiles</h1>
@@ -363,31 +375,31 @@ tr:nth-child(even) {
 
 
 <h1 id="fomod-status">FOMOD Status</h1>
-<p>The FOMOD column shows whether each mod has a FOMOD installer and its configuration status:</p>
+<p>The FOMOD column shows whether each mod has a FOMOD installer and its configuration status using a gear icon:</p>
 
 <table>
-    <tr><th>Status</th><th>Meaning</th></tr>
-    <tr><td><b>Configured</b></td><td>FOMOD installer present and choices have been saved</td></tr>
-    <tr><td><b>Unconfigured</b></td><td>FOMOD installer present but no choices saved yet</td></tr>
+    <tr><th>Display</th><th>Meaning</th></tr>
+    <tr><td style="color:green; font-size:16px;"><b>&#9881;</b> (green gear)</td><td>FOMOD installer present and choices have been saved</td></tr>
+    <tr><td style="color:orange; font-size:16px;"><b>&#9881;</b> (orange gear)</td><td>FOMOD installer present but no choices saved yet</td></tr>
     <tr><td><b>-</b></td><td>No FOMOD installer for this mod</td></tr>
 </table>
 
-<p>Click the FOMOD button to configure or view the installer choices for that mod.</p>
+<p>Click the gear button to run or re-run the FOMOD installer and configure choices for that mod.</p>
 
 <div class="warning">
 <b>Important:</b> All mods with FOMOD installers must have saved choices before you can export. Mods with missing FOMOD choices will show an orange warning.
 </div>
 
 
-<h1 id="export-modlist">Exporting a Modlist</h1>
+<h1 id="export-modlist">Exporting a Collection</h1>
 <p>Export your collection as a .zip file that can be shared or imported later.</p>
 
 <h3>How to Export</h3>
 <ol>
     <li>Select a profile or configure your mod flags</li>
     <li>Check the <b>Export</b> checkbox for mods you want to include</li>
-    <li>Ensure all FOMOD mods have saved choices (no orange warnings)</li>
-    <li>Click <b>Export Modlist</b> (blue button)</li>
+    <li>Ensure all FOMOD mods have saved choices (no orange gear icons)</li>
+    <li>Click <b>Export MO2 Collection</b> in the sidebar</li>
     <li>Choose a save location and filename</li>
 </ol>
 
@@ -403,7 +415,7 @@ tr:nth-child(even) {
 </ul>
 
 <div class="warning">
-<b>FOMOD Validation:</b> If any FOMOD mods are missing saved choices, the export will warn you. Click the FOMOD button to configure each one.
+<b>FOMOD Validation:</b> If any FOMOD mods are missing saved choices, the export will warn you. Click the orange gear icon to configure each one.
 </div>
 
 
@@ -424,26 +436,26 @@ tr:nth-child(even) {
 
 
 <h1 id="import-button">Importing a Collection</h1>
-<p>To import a collection created with Export Modlist:</p>
+<p>To import a collection created with Export MO2 Collection:</p>
 
 <div class="info">
-<b>Important:</b> The <b style="color:#4ec9b0;">Import Modlist</b> button is located in the <b>Modlists tab header</b> (the prominent green button next to Settings).
+<b>Important:</b> The <b style="color:#4ec9b0;">Import MO2 Collection</b> button is located in the <b>Collections tab sidebar</b>.
 </div>
 
 <h3>How to Import</h3>
 <ol>
-    <li>Go to the <b>Modlists</b> tab</li>
-    <li>Click the green <b>Import Modlist</b> button (next to Settings)</li>
-    <li>Select the .zip file from Export Modlist</li>
-    <li>A LOCAL collection card will be created</li>
+    <li>Go to the <b>Collections</b> tab</li>
+    <li>Click the <b>Import MO2 Collection</b> button in the sidebar</li>
+    <li>Select the .zip file from Export MO2 Collection</li>
+    <li>A collection card with a <b>CREATION</b> badge will be created</li>
 </ol>
 
 
 <h1 id="loading-collection">Loading the Imported Collection</h1>
 <p>After importing:</p>
 <ol>
-    <li>The collection appears as a LOCAL card in your Modlists tab</li>
-    <li>Click the card to select it</li>
+    <li>The collection appears as a card with a <b>CREATION</b> badge in your Collections tab</li>
+    <li>Click <b>Load</b> on the card to select it</li>
     <li>Proceed with installation as normal</li>
     <li>FOMOD choices will be automatically applied during mod installation</li>
 </ol>
@@ -454,14 +466,27 @@ tr:nth-child(even) {
 
 
 <h1 id="settings">Settings Dialog</h1>
-<p>Click the <b>Settings</b> button in the toolbar to configure Create tab options:</p>
+<p>Click the <b>Settings</b> button in the sidebar to configure Create tab options:</p>
 
+<h3>General</h3>
 <table>
     <tr><th>Setting</th><th>Description</th></tr>
-    <tr><td><b>Auto-save</b></td><td>Automatically save profile changes when toggling flags</td></tr>
-    <tr><td><b>Config export mode</b></td><td>Export config file edits (INI/JSON/TOML) as Diff (smaller, only changes) or Full files</td></tr>
-    <tr><td><b>Deep scan FOMODs</b></td><td>Check inside archives for nested FOMOD installers</td></tr>
-    <tr><td><b>Include collection history</b></td><td>Track which collections each mod came from</td></tr>
+    <tr><td><b>Save changes automatically</b></td><td>Automatically save profile changes when toggling flags, editing URLs, or other fields. A light green flash confirms each save.</td></tr>
+</table>
+
+<h3>Export</h3>
+<table>
+    <tr><th>Setting</th><th>Description</th></tr>
+    <tr><td><b>Save Skyrim INI settings to bundle</b></td><td>Include your current MO2 profile INI settings in the exported bundle</td></tr>
+    <tr><td><b>Include collection history</b></td><td>Track which collections each mod came from (reveals your collection sources)</td></tr>
+    <tr><td><b>Export mod INI edits as diffs</b> (recommended)</td><td>Store INI changes as binary diffs - smaller bundles, requires bsdiff on install</td></tr>
+    <tr><td><b>Export mod INI edits as full INI files</b></td><td>Store entire edited INI files - larger bundles, no bsdiff needed on install</td></tr>
+</table>
+
+<h3>FOMOD Detection</h3>
+<table>
+    <tr><th>Setting</th><th>Description</th></tr>
+    <tr><td><b>Deep scan archives for FOMODs</b></td><td>Use archive file listings to detect nested FOMOD installers (slower, requires 7-Zip for .7z archives)</td></tr>
 </table>
 
 
@@ -473,7 +498,7 @@ tr:nth-child(even) {
     <li>Set up your modlist with the desired mods enabled</li>
     <li>Configure FOMOD choices for all installers</li>
     <li>Mark mods appropriately (Essential, Optional, etc.)</li>
-    <li>Export the modlist to a .zip file</li>
+    <li>Export the collection to a .zip file</li>
     <li>Share the .zip file (Discord, email, cloud storage, etc.)</li>
 </ol>
 
@@ -495,14 +520,14 @@ tr:nth-child(even) {
 <h3>Creating a Backup</h3>
 <ol>
     <li>Configure your mods and save to a profile</li>
-    <li>Export the modlist with all FOMOD choices</li>
+    <li>Export the collection with all FOMOD choices</li>
     <li>Save the .zip to a backup location (cloud storage recommended)</li>
 </ol>
 
 <h3>Restoring from Backup</h3>
 <ol>
     <li>Create a fresh MO2 profile</li>
-    <li>Import the .zip file via the Modlists tab (green Import Modlist button)</li>
+    <li>Import the .zip file via the Collections tab sidebar (Import MO2 Collection button)</li>
     <li>Run the installation process</li>
 </ol>
 

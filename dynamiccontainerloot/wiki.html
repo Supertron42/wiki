@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Container Loot - SKSE Plugin for Container Merge | Skyrim SE Mod</title>
+<meta name="description" content="Dynamic Container Loot is an SKSE plugin for Skyrim SE that consolidates container loot from all mods at runtime, preventing lost items from mod conflicts.">
+<meta name="keywords" content="Skyrim mod, SKSE plugin, container loot, mod conflicts, container merge, Skyrim SE, Skyrim AE, modding, loot consolidation">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamiccontainerloot/wiki.html">
+
+<!-- Open Graph for social sharing -->
+<meta property="og:title" content="Dynamic Container Loot - Skyrim SE SKSE Plugin">
+<meta property="og:description" content="SKSE plugin that consolidates container loot from all mods at runtime. No patches needed, no lost items.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="thumbnail.webp">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dynamic Container Loot",
+    "applicationCategory": "Game Mod",
+    "operatingSystem": "Windows",
+    "description": "An SKSE plugin that consolidates container loot from all mods at runtime for Skyrim Special Edition, preventing items from being lost due to mod conflicts.",
+    "author": {
+        "@type": "Person",
+        "name": "Supertron"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #00BCD4;
+    color: white;
+    font-weight: bold;
+    border-left-color: #00BCD4;
+}
+#nav a.highlight:hover {
+    background: #00969D;
+    border-left-color: #00969D;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "\2713";
+    color: #00BCD4;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #00BCD4;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #00BCD4;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <img src="thumbnail.webp" alt="Dynamic Container Loot" style="width: 80px; height: 45px; border-radius: 4px; object-fit: cover;">
+        <h1 style="margin: 0; border: none; padding: 0;">Dynamic Container Loot Wiki</h1>
+    </div>
+    <p>An SKSE plugin that consolidates container loot from all mods at runtime. When multiple mods edit the same container, Skyrim's last-loaded-wins rule discards changes from all but the final override. Dynamic Container Loot merges the lost items back in automatically - no patches, no manual conflict resolution.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install via your mod manager and launch the game. The plugin runs automatically on data load. Check <code>Data/SKSE/Plugins/DynamicContainerLoot.log</code> to see what was merged.</p>
+    </div>
+
+    <h2>The Problem</h2>
+    <p>Skyrim uses a "last writer wins" rule for records. If three mods edit the same chest (e.g. <code>BarrelFood01</code>), only the last mod in your load order keeps its changes. Items added by the other two mods are silently lost.</p>
+
+    <h2>The Solution</h2>
+    <p>Dynamic Container Loot reads the original container definition from every plugin that touches it, computes what each "loser" mod added, removed, or changed, and merges those deltas into the winning record at runtime. The result is the same as if you had built a manual Bash Patch - but fully automatic.</p>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li>Fires on <code>kDataLoaded</code> - runs once, before the main menu</li>
+        <li>Scans every <code>CONT</code> (container) form for multi-source conflicts (3+ plugins touching the same record)</li>
+        <li>Parses each plugin's <code>CONT</code> subrecords directly from disk to reconstruct what each mod intended</li>
+        <li>Computes per-mod deltas against the base record: additions, removals, and count changes</li>
+        <li>Applies merged deltas to the winning record in memory</li>
+        <li>Shows an in-game notification with the merge count when you load a save or start a new game</li>
+    </ul>
+
+    <h2>Key Features</h2>
+    <div class="feature-list">
+        <div class="feature-item">Fully automatic</div>
+        <div class="feature-item">No ESP required</div>
+        <div class="feature-item">Works with all mods</div>
+        <div class="feature-item">SE + AE + VR support</div>
+        <div class="feature-item">Additions merged</div>
+        <div class="feature-item">Removals respected</div>
+        <div class="feature-item">Count changes applied</div>
+        <div class="feature-item">Conflict-aware (winner preserved)</div>
+    </div>
+
+    <h2>INI Settings</h2>
+    <p>Configuration is at <code>Data/SKSE/Plugins/DynamicContainerLoot.ini</code>. If the file doesn't exist, it will be auto-generated with defaults on first launch.</p>
+    <pre>[General]
+;Enable detailed merge logging (true/false)
+enablelogs = false
+
+;Show in-game notification with merge count on save load or new game (true/false)
+enablenotification = true</pre>
+
+    <h2>Settings Reference</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>enablelogs</h3>
+            <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual item added, removed, or changed per container. Useful for debugging but adds startup time due to EditorID lookup.</p>
+        </div>
+        <div class="page-card">
+            <h3>enablenotification</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Shows a brief "X Containers Merged" notification in the top-left corner when you load a save or start a new game.</p>
+        </div>
+    </div>
+
+    <h2>Reading the Log</h2>
+    <p>The log at <code>Data/SKSE/Plugins/DynamicContainerLoot.log</code> always shows a summary:</p>
+    <pre>=== DynamicContainerLoot: Merge complete ===
+  Total containers: 1247
+  With overrides (base + winner only): 89
+  With conflicts (3+ sources): 34
+  Actually merged: 12
+  Total items added: 27
+  Total items removed: 3
+  Total items count changed: 2</pre>
+
+    <p>With <code>enablelogs=true</code>, each merged container also gets detailed output:</p>
+    <pre>
+  BarrelFood01 [CONT:0001003E]
+    Sources: Skyrim.esm, FoodExpansion.esp, LootOverhaul.esp
+    -- Changes --
+      + [ALCH] Apple x2 [00064B2F] (added by FoodExpansion.esp)
+      + [ALCH] SweetRoll x1 [00064B40] (added by FoodExpansion.esp)
+    -- Carried forward --
+      . [ALCH] Bread x1 [00064B30]
+    Result: +2 added, -0 removed, ~0 count changed
+    -- Final state --
+      * [ALCH] Bread x1 [00064B30]
+      * [ALCH] Apple x2 [00064B2F]
+      * [ALCH] SweetRoll x1 [00064B40]
+    (3 items total)</pre>
+
+    <div class="warn-box">
+        <p><strong>Performance note:</strong> Detailed logging requires scanning every loaded mod's LVLI records from disk to build an EditorID cache (so leveled list items get readable names in the log). This adds noticeable startup time. Keep <code>enablelogs=false</code> for normal play.</p>
+    </div>
+
+    <h2>Compatibility</h2>
+    <ul>
+        <li>Works alongside Wrye Bash / Mator Smash patches - they handle the same problem at build time, this handles it at runtime for anything they miss</li>
+        <li>Safe with any load order - reads plugin data non-destructively</li>
+        <li>No conflicts with other SKSE plugins - doesn't hook any engine functions</li>
+    </ul>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
+        <li>SKSE64 (matching your game version)</li>
+        <li>Address Library for SKSE Plugins</li>
+    </ul>
+
+    <h2>BBCode (Nexus Mod Page)</h2>
+    <p>Copy this to link to the wiki from your Nexus description:</p>
+    <div style="position: relative; margin: 10px 0;">
+        <textarea id="bbcode" readonly style="width: 100%; height: 48px; background: #1a1a2e; border: 1px solid #3c3c3c; border-radius: 4px; padding: 10px 12px; color: #ce9178; font-family: Consolas, monospace; font-size: 12px; resize: none;">[url=https://supertron42.github.io/wiki/dynamiccontainerloot/wiki.html]Dynamic Container Loot Wiki[/url]</textarea>
+        <button onclick="document.getElementById('bbcode').select();document.execCommand('copy');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position: absolute; top: 8px; right: 8px; background: #00BCD4; color: #fff; border: none; border-radius: 3px; padding: 4px 10px; font-size: 11px; cursor: pointer;">Copy</button>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

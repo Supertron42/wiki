@@ -183,7 +183,6 @@ tr:nth-child(even) {
     <h3>Actions</h3>
     <a href="#buttons">Action Buttons</a>
     <a href="#context-menu">Right-Click Menu</a>
-    <a href="#row-actions">Row Actions</a>
 
     <h3>Features</h3>
     <a href="#filtering">Search & Filter</a>
@@ -260,12 +259,16 @@ tr:nth-child(even) {
 <table>
     <tr><th>Column</th><th>Description</th></tr>
     <tr><td><b>No.</b></td><td>Install order number from the collection</td></tr>
-    <tr><td><b>Status</b></td><td>Current state icon (pending, downloading, installed, etc.)</td></tr>
+    <tr><td><b>Status</b></td><td>Current state icon (pending, downloaded, installed, etc.)</td></tr>
     <tr><td><b>Mod Name</b></td><td>Display name of the mod</td></tr>
-    <tr><td><b>Type</b></td><td>Essential, Optional, or External</td></tr>
+    <tr><td><b>Version</b></td><td>Version number of the mod</td></tr>
+    <tr><td><b>Type</b></td><td>Essential, Optional, External, or Bundle</td></tr>
     <tr><td><b>Skip</b></td><td>Checkbox to exclude from installation</td></tr>
-    <tr><td><b>Action</b></td><td>Open mod page button, and Install button when downloaded</td></tr>
 </table>
+
+<div class="info">
+<b>Tip:</b> Right-click selected mods for additional actions like downloading, installing, opening mod pages, and more.
+</div>
 
 
 <h1 id="status-icons">Status Icons</h1>
@@ -273,44 +276,51 @@ tr:nth-child(even) {
     <tr><th>Icon</th><th>Status</th><th>Meaning</th></tr>
     <tr><td style="font-size:16px;">&#9654;</td><td>Pending</td><td>Waiting to be processed</td></tr>
     <tr><td style="font-size:16px;">&#127760;</td><td>Opened</td><td>Download link opened in browser (Free mode)</td></tr>
-    <tr><td style="font-size:16px; color:#f0c020;">&#9888;</td><td>Stuck</td><td>Download stalled or failed to start</td></tr>
     <tr><td style="font-size:16px;">&#11015;</td><td>Downloaded</td><td>Archive ready, waiting to install</td></tr>
     <tr><td style="font-size:16px; color:#4ec9b0;">&#10004;</td><td>Installed</td><td>Successfully installed</td></tr>
+    <tr><td style="font-size:16px; color:#f0c020;">&#9888;</td><td>Failed</td><td>Download failed, stalled, or stuck (use right-click to retry or rescan)</td></tr>
     <tr><td style="font-size:16px;">&#10006;</td><td>Skipped</td><td>User chose to skip this mod</td></tr>
 </table>
 
 
 <h1 id="sections">Mod Sections</h1>
-<p>Collections organize mods into sections that are processed in order:</p>
+<p>Collections organize mods into sections that are processed in order. Jump buttons above the table let you quickly scroll to each section:</p>
 
 <h3>Essential Mods</h3>
 <p>Required mods that the collection author considers necessary. These are installed first and cannot be skipped by default.</p>
 
-<h3>Optional Mods</h3>
-<p>Recommended but not required mods. After essentials complete, you'll be prompted to continue with optionals. You can skip individual optional mods.</p>
-
 <h3>External Mods</h3>
 <p>Mods from sources other than Nexus (Patreon, LoversLab, direct downloads, etc.). These require manual download - the plugin will open the download page for you.</p>
 
+<h3>Optional Mods</h3>
+<p>Recommended but not required mods. You can skip individual optional mods.</p>
+
+<h3>Bundle</h3>
+<p>Bundled files included directly in the collection (patches, INI tweaks, config files, custom assets). These are installed after all regular mods are processed.</p>
+
 <div class="info">
-Section headers appear as colored rows in the table to help you identify where each section begins.
+Section headers appear as colored rows in the table. Jump buttons at the top show the count for each section (e.g., "Essential (45)").
 </div>
 
 
 <h1 id="premium">Premium Mode Installation</h1>
-<p>If you have Nexus Premium, downloads happen automatically via the API.</p>
+<p>If you have Nexus Premium, downloads happen automatically via the API using concurrent downloads with adaptive concurrency.</p>
 
 <h3>How to Install</h3>
 <ol>
     <li>Load a collection</li>
     <li>Click <b>Begin/Resume Install</b></li>
-    <li>The plugin downloads and installs mods one at a time</li>
+    <li>The plugin downloads multiple mods concurrently and installs them as they complete</li>
     <li>FOMOD installers are handled automatically (if choices are saved)</li>
     <li>Progress is shown in the status bar</li>
 </ol>
 
-<h3>Download Ahead</h3>
-<p>The plugin can pre-download upcoming mods while the current one installs. Configure this in the Options tab (Download Ahead setting).</p>
+<h3>Download Settings</h3>
+<p>Click the <b>Settings</b> gear button on the Mods tab to configure download behavior:</p>
+<ul>
+    <li><b>Max concurrent downloads</b> (1-10) - How many mods download simultaneously. Default is 10. Concurrency automatically adapts based on network health.</li>
+    <li><b>Install first available</b> - When enabled, installs whichever mod finishes first. When disabled, waits for collection order.</li>
+</ul>
 
 <div class="success">
 <b>Tip:</b> For large collections, let it run unattended. The plugin handles everything automatically and resumes where it left off if interrupted.
@@ -360,10 +370,13 @@ Section headers appear as colored rows in the table to help you identify where e
     <tr><td><b>Begin/Resume Install</b></td><td>Premium</td><td>Start or continue automatic download and installation</td></tr>
     <tr><td><b>Open Download Links</b></td><td>Free</td><td>Open Nexus download pages in browser</td></tr>
     <tr><td><b>Install Downloaded</b></td><td>Free</td><td>Install all mods that have been downloaded</td></tr>
-    <tr><td><b>Install Bundled Files</b></td><td>Both</td><td>Extract and install bundle archives (patches, tools)</td></tr>
     <tr><td><b>Open External Links</b></td><td>Both</td><td>Open download pages for external (non-Nexus) mods</td></tr>
     <tr><td><b>Cancel All</b></td><td>Both</td><td>Stop all downloads and installations</td></tr>
 </table>
+
+<div class="info">
+<b>Note:</b> Bundle files are handled separately via the bundle panel that appears after regular mods are processed, with <b>Install Bundle</b> and <b>Skip Bundle</b> buttons.
+</div>
 
 
 <h1 id="context-menu">Right-Click Context Menu</h1>
@@ -395,16 +408,6 @@ Section headers appear as colored rows in the table to help you identify where e
 </ul>
 
 
-<h1 id="row-actions">Row Actions</h1>
-<p>Each row has action buttons in the rightmost column:</p>
-
-<h3>Open Button</h3>
-<p>Opens the mod's Nexus page in your browser. Useful for reading descriptions, checking requirements, or reporting issues.</p>
-
-<h3>Install Button</h3>
-<p>Appears when the mod's archive is downloaded. Click to install that specific mod immediately.</p>
-
-
 <h1 id="filtering">Search & Filter</h1>
 
 <h3>Search Box</h3>
@@ -414,10 +417,9 @@ Section headers appear as colored rows in the table to help you identify where e
 <ul>
     <li><b>All</b> - Show all mods</li>
     <li><b>Pending</b> - Mods waiting to be processed</li>
-    <li><b>Downloading</b> - Currently downloading</li>
     <li><b>Downloaded</b> - Ready to install</li>
     <li><b>Installed</b> - Successfully installed</li>
-    <li><b>Failed/Stuck</b> - Problem mods needing attention</li>
+    <li><b>Failed</b> - Problem mods needing attention (includes stuck downloads)</li>
     <li><b>Skipped</b> - Mods you've chosen to skip</li>
 </ul>
 
@@ -463,7 +465,7 @@ Use filters to focus on specific mods, like finding all failed downloads or chec
 <ul>
     <li><b>Plugins</b> - Plugin files (.esp, .esm, .esl)</li>
     <li><b>Archives</b> - BSA/BA2 archives</li>
-    <li><b>Config Files</b> - Configuration files for your mod folder (INI, JSON, TOML)</li>
+    <li><b>INI Files</b> - INI configuration files for your mod folder</li>
     <li><b>Patches</b> - Compatibility patches (shown with installation status)</li>
     <li><b>INI Tweaks</b> - Changes to game INI files</li>
     <li><b>Other Files</b> - Any other bundled content</li>
@@ -489,9 +491,9 @@ Use filters to focus on specific mods, like finding all failed downloads or chec
 
 <h3>Installing Bundles</h3>
 <ol>
-    <li>Review the content preview in the panel</li>
+    <li>Review the content preview in the left panel</li>
     <li>Click <b>Install Bundle</b> to install all applicable content</li>
-    <li>Or click <b>Skip Bundle</b> to complete without bundle files</li>
+    <li>Or click <b>Skip Bundle</b> to finish without bundle files</li>
 </ol>
 
 <div class="info">
@@ -511,7 +513,7 @@ Patches for mods you haven't installed are automatically skipped. This prevents 
 
 <h3>Download Won't Start</h3>
 <ul>
-    <li>Check your API key in the Options tab</li>
+    <li>Check your Nexus API key in the Options tab</li>
     <li>Verify you're logged into Nexus in your browser</li>
     <li>Check if Nexus is having server issues</li>
     <li>Try the download manually from the mod page</li>
@@ -519,7 +521,7 @@ Patches for mods you haven't installed are automatically skipped. This prevents 
 
 <h3>Mod Shows Wrong Status</h3>
 <ul>
-    <li>Use Tools > Maintenance > Rebuild Index</li>
+    <li>Go to the Tools tab > select Maintenance > click Rebuild Index</li>
     <li>Right-click the mod > Rescan / Fix Stuck</li>
     <li>Check if the archive exists in MO2's downloads folder</li>
 </ul>

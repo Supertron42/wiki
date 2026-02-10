@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Details for Nerds - Dynamic Leveled Lists</title>
+<meta name="description" content="Technical deep-dive into how Dynamic Leveled Lists works: the merge algorithm, ESP parsing, cycle detection, overflow handling, and how it compares to Wrye Bash.">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicleveledlists/details.html">
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #E53935;
+    color: white;
+    font-weight: bold;
+    border-left-color: #E53935;
+}
+#nav a.highlight:hover {
+    background: #C62828;
+    border-left-color: #C62828;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul, ol {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #E53935;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warn Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Comparison Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12px;
+}
+th {
+    background: #2d2d2d;
+    color: #569cd6;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    font-weight: 600;
+}
+td {
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    vertical-align: top;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Flow diagram */
+.flow-step {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    position: relative;
+}
+.flow-step::before {
+    content: attr(data-step);
+    display: inline-block;
+    background: #E53935;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.flow-step .label {
+    color: #4ec9b0;
+    font-weight: 600;
+}
+.flow-arrow {
+    text-align: center;
+    color: #569cd6;
+    font-size: 16px;
+    margin: 2px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="details.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Details for Nerds</a>
+
+    <h3>Companion Mod</h3>
+    <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0; border-bottom-color: #E53935; color: #E53935;">Details for Nerds</h1>
+    <p>A technical deep-dive into how Dynamic Leveled Lists works under the hood  - the merge algorithm, ESP binary parsing, cycle detection, overflow handling, and how it all compares to Wrye Bash's Bashed Patch.</p>
+
+    <!-- ============================================================ -->
+    <h1>Runtime Lifecycle</h1>
+    <!-- ============================================================ -->
+
+    <p>The plugin is a DLL loaded by SKSE. It runs entirely in-process with the Skyrim engine and never touches files on disk.</p>
+
+    <div class="flow-step" data-step="1"><span class="label">SKSE loads the DLL</span>  - <code>SKSEPlugin_Load</code> registers a message listener with the SKSE messaging interface.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded</span>  - All ESPs/ESMs/ESLs have been loaded into memory. Every leveled list form is now accessible through <code>RE::TESDataHandler</code>.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI</span>  - Reads <code>enablelogs</code>, <code>enablenotification</code>, <code>enablecyclenotification</code>. Auto-generates the INI with defaults if missing.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="4"><span class="label">MergeAllLeveledLists()</span>  - Iterates every LVLI form in the game. For each one with 3+ source plugins, runs the three-phase merge. Afterwards, runs cycle detection across the entire leveled list graph.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="5"><span class="label">Player loads a save or starts new game</span>  - <code>kPostLoadGame</code> / <code>kNewGame</code> fires. The plugin schedules notifications on the UI thread, retrying each frame until the HUD menu is confirmed open.</div>
+
+    <div class="info-box">
+        <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h1>How It Decides What to Merge</h1>
+    <!-- ============================================================ -->
+
+    <p>The engine exposes a <strong>source file array</strong> for every form. This array lists every plugin that defines or overrides that record, in load order. The plugin uses this to classify every LVLI:</p>
+
+    <table>
+        <tr>
+            <th>Source Count</th>
+            <th>Meaning</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td><code>1</code></td>
+            <td>Only defined in one plugin (the base). No conflict.</td>
+            <td>Skip</td>
+        </tr>
+        <tr>
+            <td><code>2</code></td>
+            <td>Base + one override. The override is the winner. No lost data  - the game already has the right version.</td>
+            <td>Skip</td>
+        </tr>
+        <tr>
+            <td><code>3+</code></td>
+            <td>Base + one winner + one or more losers. The losers' changes are invisible to the engine. <strong>This is a conflict.</strong></td>
+            <td>Merge</td>
+        </tr>
+    </table>
+
+    <p>No bash tags, no user intervention, no opt-in. If 3+ plugins touch the same <code>LVLI</code>, it gets merged automatically.</p>
+
+    <h2>Identifying Base, Winners, and Losers</h2>
+    <p>From the source file array (in load order):</p>
+    <ul>
+        <li><strong>First</strong> = base (the original definition, usually from <code>Skyrim.esm</code> or a DLC)</li>
+        <li><strong>Last</strong> = winner (what the engine currently has in memory)</li>
+        <li><strong>Everything in between</strong> = losers (their changes were overwritten)</li>
+    </ul>
+    <p>The merge algorithm recovers the losers' changes and folds them into the winner.</p>
+
+    <!-- ============================================================ -->
+    <h1>The Three-Phase Merge Algorithm</h1>
+    <!-- ============================================================ -->
+
+    <p>Each conflicting leveled list goes through three phases. The goal: figure out what every loser mod intended to change, then apply those changes to the winner.</p>
+
+    <!-- Phase 1 -->
+    <h2>Phase 1: Compute Deltas</h2>
+
+    <p>For each loser mod, the plugin reads the loser's version of the list from disk (binary ESP parsing) and compares it against the base. The comparison uses <strong>multiplicity-based diffing</strong>:</p>
+
+    <h3>Entry Identity</h3>
+    <p>Each entry is identified by a triple: <code>(formID, level, count)</code>. Two entries are "the same" only if all three fields match. This matters because leveled lists legitimately use duplicate entries to weight drop probabilities  - three copies of Iron Bow at level 1 means 3x the drop chance.</p>
+
+    <h3>Entry Bags</h3>
+    <p>Both the base and loser versions are converted into an <strong>entry bag</strong> (a multiset): a map from <code>(formID, level, count)</code> to how many times that triple appears.</p>
+    <pre>Base bag:   {(IronBow, 1, 1): 3, (SteelSword, 6, 1): 1}
+Loser bag:  {(IronBow, 1, 1): 3, (SteelSword, 6, 1): 1, (MyWeapon, 1, 1): 2}</pre>
+
+    <h3>Delta Calculation</h3>
+    <ul>
+        <li><strong>Addition:</strong> Entry has higher multiplicity in the loser than the base. Delta = <code>loserMult - baseMult</code>.</li>
+        <li><strong>Removal:</strong> Entry has higher multiplicity in the base than the loser. Delta = <code>baseMult - loserMult</code>.</li>
+    </ul>
+    <pre>Additions: {(MyWeapon, 1, 1): 2}   &lt;- loser added 2 copies
+Removals:  {}                        &lt;- loser didn't remove anything</pre>
+
+    <h3>Cross-Loser Aggregation</h3>
+    <p>When multiple losers add the same entry, the <strong>largest delta wins</strong>. If Mod A adds 3 copies and Mod B adds 2, the merged result adds 3 (not 5). This prevents snowballing  - mods independently decided "this item should appear N times," and the largest intent is honored.</p>
+
+    <h3>List-Level Properties</h3>
+    <p>The plugin also tracks changes to the list's <code>flags</code> (UseAll, CalculateFromAllLevels, etc.) and <code>chanceNone</code>. Last-loser-wins for property conflicts. If the winner already changed a property from the base value, the losers' changes are skipped (winner's explicit choice is respected).</p>
+
+    <!-- Phase 2 -->
+    <h2>Phase 2: Conflict Resolution</h2>
+
+    <p>If the same <code>(formID, level, count)</code> triple appears in both the additions and removals maps (one mod added it, another deliberately removed it), the plugin must pick a side.</p>
+
+    <div class="info-box">
+        <p><strong>Rule: Removal intent wins.</strong> If any mod explicitly removed an item, that decision is respected even if another mod added it. This is critical for mods like Open World Loot and Morrowloot Ultimate that carefully curate loot tables.</p>
+    </div>
+
+    <p>The conflicting entry is dropped from the additions map and a warning is logged naming both mods.</p>
+
+    <!-- Phase 3 -->
+    <h2>Phase 3: Apply Deltas to the Winner</h2>
+
+    <p>The winner's current entry list (what the engine has in memory) is the starting point.</p>
+
+    <h3>3a. Removals</h3>
+    <p>For each removal delta, search the winner's entries for matching <code>(formID, level, count)</code> triples and remove up to <code>multiplicity</code> instances.</p>
+
+    <h3>3b. Additions</h3>
+    <p>For each addition delta, check how many copies already exist in the winner versus the base. Only add copies that the winner is missing:</p>
+    <pre>toAdd = max(0, delta.multiplicity - (winnerMult - baseMult))</pre>
+    <p>This prevents double-adding entries the winner already has from its own override. New entries are created as <code>LEVELED_OBJECT</code> structs with the form pointer, level, and count set.</p>
+
+    <h3>3c. Property Changes</h3>
+    <p>If a loser changed flags or chanceNone and the winner didn't already change them from the base, the loser's values are applied.</p>
+
+    <h3>3d. Overflow Check</h3>
+    <p>If the final entry count exceeds 255, the list is split into overflow sublists before being written back (see <a href="#overflow">Overflow Sublists</a> below).</p>
+
+    <h3>3e. Memory Write</h3>
+    <p>The final entry array is written directly into the engine's <code>SimpleArray&lt;LEVELED_OBJECT&gt;</code> via <code>RE::malloc</code>/<code>RE::free</code>. The old allocation is freed, a new block is allocated with the correct size, entries are copied in, and <code>numEntries</code> is updated.</p>
+
+    <!-- ============================================================ -->
+    <h1>ESP Binary Parsing</h1>
+    <!-- ============================================================ -->
+
+    <p>To reconstruct what each loser mod intended, the plugin reads the raw ESP/ESM/ESL files from disk. This is necessary because the engine only keeps the winning version in memory  - loser data is gone.</p>
+
+    <h2>File Format</h2>
+    <p>ESP files are structured as nested records and groups:</p>
+    <pre>TES4 header (file metadata, master list)
+GRUP "LVLI" (all leveled item records)
+  LVLI record
+    EDID subrecord  -&gt; Editor ID ("LItemWeaponGreatSword")
+    LVLD subrecord  -&gt; Chance None (1 byte)
+    LVLF subrecord  -&gt; Flags (1 byte)
+    LVLO subrecord  -&gt; Entry: level(2) + pad(2) + formID(4) + count(2) + pad(2)
+    LVLO subrecord  -&gt; (repeats for each entry)
+  LVLI record
+    ...</pre>
+
+    <h2>Parsing Flow</h2>
+    <ol>
+        <li>Resolve the file path (handles MO2's virtual filesystem, relative paths, fallback directories)</li>
+        <li>Open as binary stream, skip the TES4 header</li>
+        <li>Scan top-level GRUPs for the LVLI group (label <code>0x494C564C</code>)</li>
+        <li>Within the LVLI group, read each record header (24 bytes: type, size, flags, formID)</li>
+        <li>If the record is compressed (flag <code>0x00040000</code>), decompress with zlib</li>
+        <li>Parse subrecords: EDID, LVLO, LVLF, LVLD</li>
+        <li>Resolve formIDs from local plugin indices to runtime IDs using the master file list</li>
+    </ol>
+
+    <h2>FormID Resolution</h2>
+    <p>Raw formIDs in ESP files use <strong>local indices</strong>. The high byte references a position in the file's master list, not the actual load order index. The parser resolves these to runtime formIDs:</p>
+    <ul>
+        <li><strong>Normal plugins (ESP/ESM):</strong> <code>(compileIndex &lt;&lt; 24) | basePart</code></li>
+        <li><strong>Light plugins (ESL):</strong> <code>0xFE000000 | (smallIndex &lt;&lt; 12) | basePart</code></li>
+    </ul>
+
+    <h2>Caching</h2>
+    <p>Parsed results are cached per filename. If multiple leveled lists reference the same plugin as a loser, it's only parsed once. The cache is cleared after all merges complete.</p>
+
+    <!-- ============================================================ -->
+    <h1 id="overflow">Overflow Sublists (255 Entry Limit)</h1>
+    <!-- ============================================================ -->
+
+    <p>Skyrim's <code>TESLeveledList::numEntries</code> is a <code>uint8_t</code>  - max 255. When many mods add items to popular lists, the merged result easily exceeds this. The plugin handles this by creating overflow sublists at runtime, which no other Skyrim mod does.</p>
+
+    <h2>How Sublists Are Created</h2>
+    <p>The engine's <code>IFormFactory::Create&lt;RE::TESLevItem&gt;()</code> allocates a new leveled list form with a dynamic formID in the <code>0xFF000000+</code> range. These forms exist only in memory and don't persist in saves (which is fine  - the plugin re-merges every launch).</p>
+
+    <h2>Strategy: UseAll Lists</h2>
+    <p>When a list has the <code>kUseAll</code> flag (every entry produces an item):</p>
+    <ol>
+        <li>Keep as many direct entries in the parent as possible</li>
+        <li>Move the overflow into sublists of up to 255 entries each, all marked <code>kUseAll</code></li>
+        <li>Add those sublists as entries in the parent</li>
+    </ol>
+    <pre>Parent (255 entries max):
+  [direct entry 1] [direct entry 2] ... [direct entry 253]
+  [overflow sublist A (255 entries, kUseAll)]
+  [overflow sublist B (remaining entries, kUseAll)]</pre>
+    <p>The formula: <code>numSublists = ceil((total - 255) / 254)</code>, <code>directCount = 255 - numSublists</code>.</p>
+
+    <h2>Strategy: Random Pick Lists</h2>
+    <p>When a list does NOT have <code>kUseAll</code> (engine picks one random entry), probability must be preserved. The solution: move ALL entries into sublists and distribute evenly.</p>
+    <pre>Parent (N entries):
+  [sublist A (200 entries)]
+  [sublist B (200 entries)]
+
+Engine picks 1 of 2 sublists (50%), then sublist picks 1 of 200 (0.5%)
+Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
+    <p>The formula: <code>numSublists = ceil(total / 255)</code>, entries distributed as evenly as possible.</p>
+
+    <div class="warn-box">
+        <p>If <code>IFormFactory::Create</code> returns null (out of dynamic formIDs  - extremely unlikely), the plugin falls back to truncating at 255 entries and logs an error.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h1>Cycle Detection and Breaking</h1>
+    <!-- ============================================================ -->
+
+    <p>Leveled lists can reference other leveled lists (nested lists). Automatic merging can create circular references that didn't exist before  - List A gets an entry pointing to List B from one mod, and List B gets an entry pointing to List A from another. If the engine tries to resolve this, it recurses infinitely and crashes.</p>
+
+    <h2>Detection: Iterative DFS</h2>
+    <p>After all merges complete, the plugin builds a directed graph of every LVLI-to-LVLI reference in the game and runs iterative depth-first search with three-color marking:</p>
+    <ul>
+        <li><strong>White (0):</strong> Unvisited</li>
+        <li><strong>Gray (1):</strong> In the current DFS path (on the stack)</li>
+        <li><strong>Black (2):</strong> Fully explored</li>
+    </ul>
+    <p>A <strong>back-edge</strong> (gray -&gt; gray) means a cycle. The full cycle path is logged:</p>
+    <pre>Circular leveled list reference detected: 00035319 -> 000A1234 -> 00035319</pre>
+
+    <h2>Breaking: Remove the Back-Edge</h2>
+    <p>For each detected cycle, the plugin removes the entry that creates the back-edge from its parent list. This is the minimal change needed to break the cycle. The parent's entry array is rebuilt without the offending entry.</p>
+
+    <p>Each break is logged with instructions for a permanent xEdit fix:</p>
+    <pre>Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVLI:00035319]
+  To permanently fix: open MyMod.esp in xEdit, find MainList [LVLI:00035319],
+  and remove the entry pointing to SomeSublist [LVLI:000A1234]</pre>
+
+    <div class="info-box">
+        <p>Cycle warnings are always logged regardless of <code>enablelogs</code> because they indicate crash risk. The EditorID cache is built even with logging disabled specifically for readable cycle warnings.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h1>Memory Layout: How Entries Are Written</h1>
+    <!-- ============================================================ -->
+
+    <p>Skyrim stores leveled list entries in a <code>SimpleArray&lt;LEVELED_OBJECT&gt;</code>. This is a custom container with a heap-allocated buffer:</p>
+
+    <pre>Heap layout:
+  [size_t count] [LEVELED_OBJECT[0]] [LEVELED_OBJECT[1]] ... [LEVELED_OBJECT[N-1]]
+   ^              ^
+   header         _data pointer (what SimpleArray stores)</pre>
+
+    <p>The plugin's <code>RebuildEntries()</code> function:</p>
+    <ol>
+        <li>Steps back from <code>_data</code> to the <code>size_t</code> header and calls <code>RE::free()</code></li>
+        <li>Allocates a new block: <code>RE::malloc(sizeof(size_t) + sizeof(LEVELED_OBJECT) * count)</code></li>
+        <li>Writes the count into the header, copies entries via <code>memcpy</code></li>
+        <li>Updates the SimpleArray's <code>_data</code> pointer and <code>numEntries</code></li>
+    </ol>
+
+    <p>This directly manipulates engine memory. The engine sees the updated list immediately  - no hooks, no patches, no detours.</p>
+
+    <!-- ============================================================ -->
+    <h1>Comparison: Dynamic Leveled Lists vs. Wrye Bash</h1>
+    <!-- ============================================================ -->
+
+    <p>Wrye Bash's Bashed Patch includes leveled list merging via its <code>ListsMerger</code> patcher. Both tools solve the same problem but take fundamentally different approaches.</p>
+
+    <table>
+        <tr>
+            <th style="width: 25%;">Aspect</th>
+            <th style="width: 37%;">Dynamic Leveled Lists</th>
+            <th style="width: 38%;">Wrye Bash (Bashed Patch)</th>
+        </tr>
+        <tr>
+            <td><strong>When it runs</strong></td>
+            <td>Runtime, every game launch, during the loading screen before the main menu</td>
+            <td>Build-time, manually triggered by the user. Produces an ESP that the game loads normally</td>
+        </tr>
+        <tr>
+            <td><strong>Output</strong></td>
+            <td>In-memory changes only. No files written to disk. Nothing in your save</td>
+            <td>A new ESP file (<code>Bashed Patch, 0.esp</code>) that must be active in your load order</td>
+        </tr>
+        <tr>
+            <td><strong>User intervention</strong></td>
+            <td>None. Install and forget. Merges everything automatically</td>
+            <td>Requires rebuilding the patch after any load order change. May require Bash Tags on plugins for correct behavior</td>
+        </tr>
+        <tr>
+            <td><strong>Bash Tags</strong></td>
+            <td>Not used. The plugin detects additions and removals automatically by comparing each mod against the base record</td>
+            <td>Critical. Tags like <code>Delev</code> (remove items) and <code>Relev</code> (relevel items) control what operations are allowed. Without tags, some changes are silently skipped</td>
+        </tr>
+        <tr>
+            <td><strong>Delta calculation</strong></td>
+            <td>Multiplicity-based. Compares entry bags (multisets) between base and loser. Tracks exact counts of duplicate entries. Largest delta across losers wins</td>
+            <td>Set-based. Compares entry keys between master and mod. Tracks add/remove/change operations per mod. Applies deltas sequentially in load order</td>
+        </tr>
+        <tr>
+            <td><strong>Conflict: add vs. remove</strong></td>
+            <td>Removal wins. If any mod removed an entry, it stays removed even if another mod added it</td>
+            <td>Depends on tags. Without <code>Delev</code>, removals may not be detected. With it, removals win</td>
+        </tr>
+        <tr>
+            <td><strong>Duplicate weighting</strong></td>
+            <td>Fully tracked. Entry identity is <code>(formID, level, count)</code>. Three copies of Iron Bow = 3x weight, and that multiplicity is preserved through merges</td>
+            <td>Tracked via linear search and key matching. Duplicates are generally preserved but behavior depends on tag configuration</td>
+        </tr>
+        <tr>
+            <td><strong>255 entry limit</strong></td>
+            <td>Creates overflow sublists at runtime via <code>IFormFactory::Create</code>. Distributes excess entries into nested leveled lists. Preserves probability for random-pick lists. No data loss</td>
+            <td>Hard truncation at 255 entries with a warning message. Excess entries are dropped. User must fix manually</td>
+        </tr>
+        <tr>
+            <td><strong>Circular references</strong></td>
+            <td>Full cycle detection via iterative DFS across the entire LVLI graph. Automatically breaks cycles by removing back-edges. Logs xEdit fix instructions</td>
+            <td>Empty sublist cascade removal (removes empty lists and propagates). Does not detect actual A-&gt;B-&gt;A cycles</td>
+        </tr>
+        <tr>
+            <td><strong>Scope</strong></td>
+            <td>LVLI records only</td>
+            <td>LVLI, LVLN (NPCs), LVSP (spells), plus many non-leveled-list record types (containers, stats, names, etc.)</td>
+        </tr>
+        <tr>
+            <td><strong>Performance cost</strong></td>
+            <td>Adds a few seconds to the loading screen (ESP parsing + merge). Happens once per launch, before the main menu</td>
+            <td>Zero runtime cost (the ESP loads like any other plugin). Build time varies</td>
+        </tr>
+    </table>
+
+    <h2>Where Each Tool Wins</h2>
+
+    <h3>Dynamic Leveled Lists is better when:</h3>
+    <ul>
+        <li>You don't want to think about patching  - install mods and play</li>
+        <li>Mod authors haven't applied Bash Tags to their plugins</li>
+        <li>You have lists exceeding 255 entries (overflow sublists vs. truncation)</li>
+        <li>You want automatic circular reference detection and breaking</li>
+        <li>You change your load order frequently and don't want to rebuild patches</li>
+    </ul>
+
+    <h3>Wrye Bash is better when:</h3>
+    <ul>
+        <li>You need to merge record types beyond leveled lists (containers, NPC stats, names, etc.)</li>
+        <li>You want fine-grained control over exactly what gets merged</li>
+        <li>You prefer zero runtime overhead</li>
+        <li>You're building a carefully curated load order with explicit tag control</li>
+    </ul>
+
+    <h3>Using Both Together</h3>
+    <p>They don't conflict. Wrye Bash produces an ESP that becomes another plugin in the load order. Dynamic Leveled Lists sees it like any other mod and incorporates its changes. If both fix the same conflict, the result is the same  - no double-counting, because the delta calculation compares against the base, not against zero. Keeping existing patches is harmless.</p>
+
+    <!-- ============================================================ -->
+    <h1>Error Handling</h1>
+    <!-- ============================================================ -->
+
+    <ul>
+        <li><strong>Missing ESP file:</strong> Logs a warning, skips that mod's changes. Other mods still merge correctly</li>
+        <li><strong>Corrupt or unreadable record:</strong> Skipped with a warning. The merge continues with whatever data was parseable</li>
+        <li><strong>Decompression failure:</strong> Records compressed with zlib that fail to decompress are skipped (safety cap: 64 MB max uncompressed size)</li>
+        <li><strong>Unresolvable formID:</strong> If a loser references a form that doesn't exist at runtime, that entry is skipped during addition</li>
+        <li><strong>Sublist creation failure:</strong> Falls back to 255 truncation</li>
+        <li><strong>Uncaught exception:</strong> Caught at the top level. The plugin logs the error and continues  - it will not crash SKSE or the game</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <h1>Stats Glossary</h1>
+    <!-- ============================================================ -->
+
+    <p>The log summary after every merge:</p>
+    <pre>=== DynamicLeveledLists: Merge complete ===
+  Total leveled lists: 6651
+  With overrides (base + winner only): 1470
+  With conflicts (3+ sources): 110
+  Actually merged: 29
+  Total entries added: 76
+  Total entries removed: 7
+  Overflow sublists created: 3
+  No circular references detected</pre>
+
+    <table>
+        <tr><th>Stat</th><th>Meaning</th></tr>
+        <tr><td><strong>Total leveled lists</strong></td><td>Every LVLI form loaded in the game</td></tr>
+        <tr><td><strong>With overrides</strong></td><td>Lists touched by exactly 2 plugins (base + winner). No merge needed</td></tr>
+        <tr><td><strong>With conflicts</strong></td><td>Lists touched by 3+ plugins. These are candidates for merging</td></tr>
+        <tr><td><strong>Actually merged</strong></td><td>How many lists had real changes to apply (some conflicts result in identical entries)</td></tr>
+        <tr><td><strong>Total entries added</strong></td><td>Sum of all individual items added across all merged lists</td></tr>
+        <tr><td><strong>Total entries removed</strong></td><td>Sum of all individual items removed across all merged lists</td></tr>
+        <tr><td><strong>Overflow sublists created</strong></td><td>How many runtime sublists were created to handle the 255 limit. Only shown when &gt; 0</td></tr>
+        <tr><td><strong>Circular references broken</strong></td><td>How many cycles were detected and broken. Shown as "No circular references detected" when 0</td></tr>
+    </table>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

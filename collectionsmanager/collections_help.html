@@ -182,11 +182,13 @@ tr:nth-child(even) {
     <a href="#delete">Deleting</a>
     <a href="#reorder">Reordering</a>
 
-    <h3>Header Buttons</h3>
-    <a href="#settings">Settings</a>
-    <a href="#program-install">Program Installation</a>
+    <h3>Sidebar</h3>
+    <a href="#import">Import Collection</a>
     <a href="#check-updates">Check for Updates</a>
     <a href="#refresh">Refresh</a>
+    <a href="#clear-conflicts">Clear Conflicts</a>
+    <a href="#settings">Settings</a>
+    <a href="#program-install">Program Installation</a>
 
     <h3>Tips</h3>
     <a href="#best-practices">Best Practices</a>
@@ -225,6 +227,7 @@ tr:nth-child(even) {
 <p>The Collections tab shows all your saved collections and provides quick access to manage them. From here you can:</p>
 <ul>
     <li>Load a previously saved collection to continue installation</li>
+    <li>Import MO2 Collections from local files</li>
     <li>View collection progress and completion status</li>
     <li>Access the collection on Nexus Mods</li>
     <li>Uninstall or delete collections</li>
@@ -283,8 +286,9 @@ tr:nth-child(even) {
 <table>
     <tr><th>Badge</th><th>Meaning</th></tr>
     <tr><td style="color:#4ec9b0; font-weight:bold;">COMPLETE</td><td>All mods in the collection are installed or skipped</td></tr>
-    <tr><td style="background:#569cd6; color:white; padding:2px 6px; border-radius:3px; font-size:11px;">LOCAL</td><td>Collection was imported from a local mod list file, not Nexus</td></tr>
-    <tr><td style="background:#f0c020; color:black; padding:2px 6px; border-radius:3px; font-size:11px;">Rev X → Y</td><td>A newer revision is available (shown after checking for updates)</td></tr>
+    <tr><td style="background:#e57373; color:white; padding:2px 6px; border-radius:3px; font-size:11px;">COLLECTION</td><td>Sourced from Nexus Mods</td></tr>
+    <tr><td style="background:#569cd6; color:white; padding:2px 6px; border-radius:3px; font-size:11px;">CREATION</td><td>Imported from a local mod list file (MO2 Collection export)</td></tr>
+    <tr><td style="background:#f0c020; color:black; padding:2px 6px; border-radius:3px; font-size:11px;">Rev X &rarr; Y</td><td>A newer revision is available (shown after checking for updates)</td></tr>
 </table>
 
 <h3>View Update Button</h3>
@@ -296,12 +300,12 @@ tr:nth-child(even) {
     <li><b>Unchanged</b> - Mods that remain the same</li>
 </ul>
 
-<h3>LOCAL Collections</h3>
-<p>Collections marked LOCAL were imported from a local file (like a mod list export). These have limited functionality:</p>
+<h3>Creations (Local Collections)</h3>
+<p>Collections marked <b>CREATION</b> were imported from a local MO2 Collection file. These have limited functionality:</p>
 <ul>
     <li>No Nexus URL available</li>
     <li>View and Copy URL buttons are disabled</li>
-    <li>Cannot check for updates</li>
+    <li>Version displayed as "v1.0" format instead of "Rev X"</li>
 </ul>
 
 
@@ -324,7 +328,7 @@ tr:nth-child(even) {
     <tr><td><b>View</b></td><td>Opens the collection page on Nexus Mods in your browser</td></tr>
     <tr><td><b>Copy URL</b></td><td>Copies the collection URL to your clipboard for sharing</td></tr>
 </table>
-<p>These buttons are disabled for LOCAL collections that don't have a Nexus URL.</p>
+<p>These buttons are disabled for Creations (local collections) that don't have a Nexus URL.</p>
 
 
 <h1 id="uninstall">Uninstalling Collections</h1>
@@ -364,8 +368,25 @@ tr:nth-child(even) {
 <p>The order is saved automatically and persists between sessions.</p>
 
 
+<h1 id="import">Import MO2 Collection</h1>
+<p>Click the <b>Import MO2 Collection</b> button in the sidebar to import a locally exported MO2 Collection file. Select the collection file you downloaded to import it.</p>
+<ul>
+    <li>Imported collections appear as cards with a <b>CREATION</b> badge</li>
+    <li>All the same install and management features apply</li>
+    <li>Nexus URL features (View, Copy URL) are disabled since there is no Nexus page</li>
+</ul>
+
+
+<h1 id="clear-conflicts">Clear Conflict History</h1>
+<p>Click <b>Clear Conflict History</b> in the sidebar to reset the version conflict suppression list. After clearing, version conflicts will appear again when loading collections that were previously dismissed.</p>
+
+<div class="info">
+<b>When to use:</b> If you accidentally dismissed a version conflict dialog and want it to appear again next time you load that collection.
+</div>
+
+
 <h1 id="settings">Settings</h1>
-<p>Click the <b>⚙ Settings</b> button next to "Saved Collections" to configure tab-specific options:</p>
+<p>Click the <b>Settings</b> button in the sidebar to configure tab-specific options:</p>
 
 <h3>Check for revision updates automatically</h3>
 <p>When enabled (default), the plugin automatically checks for collection updates the first time you view the Collections tab each session. This is equivalent to clicking "Check for Updates" manually.</p>
@@ -382,7 +403,7 @@ tr:nth-child(even) {
 
 
 <h1 id="program-install">Program Installation</h1>
-<p>An orange banner appears when mods requiring manual game folder installation are detected. Click <b>Install to Game Folder</b> to manage them:</p>
+<p>An orange banner appears at the top of the plugin window (visible on all tabs) when mods requiring manual game folder installation are detected. Click <b>Install to Game Folder</b> to manage them:</p>
 <ul>
     <li>Script extenders (SKSE, F4SE, OBSE, etc.)</li>
     <li>ENB and ReShade files</li>

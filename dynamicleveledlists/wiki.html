@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Leveled Lists - SKSE Plugin for Leveled List Merge | Skyrim SE Mod</title>
+<meta name="description" content="Dynamic Leveled Lists is an SKSE plugin for Skyrim SE that merges leveled list records from all mods at runtime, eliminating the need for compatibility patches.">
+<meta name="keywords" content="Skyrim mod, SKSE plugin, leveled lists, mod conflicts, leveled list merge, Skyrim SE, Skyrim AE, modding, loot distribution, bashed patch">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicleveledlists/wiki.html">
+
+<!-- Open Graph for social sharing -->
+<meta property="og:title" content="Dynamic Leveled Lists - Skyrim SE SKSE Plugin">
+<meta property="og:description" content="SKSE plugin that merges leveled list records from all mods at runtime. No patches needed, no lost items.">
+<meta property="og:type" content="website">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dynamic Leveled Lists",
+    "applicationCategory": "Game Mod",
+    "operatingSystem": "Windows",
+    "description": "An SKSE plugin that merges leveled list records from all mods at runtime for Skyrim Special Edition, preventing items from being lost due to mod conflicts.",
+    "author": {
+        "@type": "Person",
+        "name": "Supertron"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #E53935;
+    color: white;
+    font-weight: bold;
+    border-left-color: #E53935;
+}
+#nav a.highlight:hover {
+    background: #C62828;
+    border-left-color: #C62828;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "\2713";
+    color: #E53935;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #E53935;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #E53935;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #E53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #C62828;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
+    <a href="details.html">Details for Nerds</a>
+
+    <h3>Companion Mod</h3>
+    <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0; border-bottom-color: #E53935; color: #E53935;">Dynamic Leveled Lists Wiki</h1>
+    <p>An SKSE plugin that merges leveled list records (LVLI) from all mods at runtime. When multiple mods edit the same leveled list, Skyrim's last-loaded-wins rule discards changes from all but the final override. Dynamic Leveled Lists merges the lost items back in automatically, and respects intentional removals.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install via your mod manager and launch the game. The plugin runs automatically on data load. Check <code>Data/SKSE/Plugins/DynamicLeveledLists.log</code> to see what was merged.</p>
+    </div>
+
+    <h2>The Problem</h2>
+    <p>Skyrim uses a "last writer wins" rule for records. If three mods edit the same leveled list (e.g. <code>LItemWeaponGreatSword</code>), only the last mod in your load order keeps its changes. Items added by the other mods are silently lost. This affects loot tables, vendor inventories, encounter zones, and anything else driven by leveled lists.</p>
+    <p>This is why compatibility patches exist for nearly every weapon/armor mod. Without them, half of the items you installed never actually drop.</p>
+
+    <h2>The Solution</h2>
+    <p>Dynamic Leveled Lists reads the original leveled list definition from every plugin that touches it, computes what each "loser" mod added or removed, and merges those deltas into the winning record at runtime. The result is the same as if you had built a manual patch, but fully automatic.</p>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li>Fires on <code>kDataLoaded</code>, runs once before the main menu</li>
+        <li>Scans every <code>LVLI</code> (leveled item) form for multi-source conflicts (3+ plugins touching the same record)</li>
+        <li>Parses each plugin's LVLI subrecords directly from disk to reconstruct what each mod intended</li>
+        <li>Computes per-mod deltas against the base record using multiplicity-based diffing</li>
+        <li>Largest addition/removal wins across losers (no data lost from load order)</li>
+        <li>Intentional removals override additions (a mod that deliberately removes an item wins)</li>
+        <li>Applies merged deltas to the winning record in memory</li>
+    </ul>
+
+    <h2>Key Features</h2>
+    <div class="feature-list">
+        <div class="feature-item">Fully automatic</div>
+        <div class="feature-item">No ESP required</div>
+        <div class="feature-item">Works with all mods</div>
+        <div class="feature-item">SE + AE + VR support</div>
+        <div class="feature-item">Additions merged</div>
+        <div class="feature-item">Removals respected</div>
+        <div class="feature-item">Duplicate weighting preserved</div>
+        <div class="feature-item">Overflow sublists for 255+ entries</div>
+        <div class="feature-item">Circular reference breaking</div>
+    </div>
+
+    <h2>Overflow Sublists (255 Entry Limit)</h2>
+    <p>Skyrim's engine stores the entry count for leveled lists as a single byte, limiting each list to 255 entries. When many mods add items to popular lists like <code>LItemWeaponGreatSword</code>, the merged result can easily exceed this limit.</p>
+    <p>Dynamic Leveled Lists solves this by creating overflow sublists at runtime. The engine natively supports nested leveled lists (a leveled list containing other leveled lists), so excess entries are distributed into sublists that the engine resolves recursively. No existing Skyrim mod does this.</p>
+
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>UseAll Lists</h3>
+            <p>When a list has the UseAll flag (every entry produces an item), direct entries are kept in the parent and overflow entries go into sublists with the same flag. Every item still appears.</p>
+        </div>
+        <div class="page-card">
+            <h3>Random Pick Lists</h3>
+            <p>When a list picks one random entry, all entries are distributed evenly across sublists. The engine picks one sublist, then the sublist picks one item. Equal probability is preserved.</p>
+        </div>
+    </div>
+
+    <h2>Circular Reference Breaking</h2>
+    <p>Leveled lists can reference other leveled lists (nested lists). If the merge creates a circular reference  - List A contains List B, and List B contains List A  - the engine follows the cycle infinitely when resolving loot, causing a crash. This is rare (two unrelated mods would have to independently create both halves of the cycle), but it's a real risk with automatic merging.</p>
+    <p>After all merges complete, Dynamic Leveled Lists builds a directed graph of every leveled list reference and runs cycle detection across the entire graph. When a circular reference is found, the plugin <strong>breaks the cycle at runtime</strong> by removing the back-edge entry from the parent list. This is an in-memory change only  - your plugin files on disk are never modified.</p>
+    <p>Each broken cycle is logged with the full path, the entry that was removed, and instructions for creating a permanent fix in xEdit:</p>
+    <pre>Circular leveled list reference detected: 00035319 -> 000A1234 -> 00035319
+Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVLI:00035319]
+  To permanently fix: open MyMod.esp in xEdit, find MainList [LVLI:00035319], and remove the entry pointing to SomeSublist [LVLI:000A1234]</pre>
+
+    <div class="info-box">
+        <p><strong>Always logged:</strong> Cycle warnings are always written to the log with readable names regardless of the <code>enablelogs</code> setting, since they indicate crash risk. An in-game notification (controlled by <code>enablecyclenotification</code>, default on) reports cycle status when you load a save or start a new game: "No cycles detected. Good to go." or "Cycle Detected. Check logs for fix."</p>
+    </div>
+
+    <h2>Duplicate Weighting</h2>
+    <p>Some mods use duplicate entries to weight drop probabilities. For example, an Iron Bow appearing 3 times in a list gives it 3x the drop chance. Dynamic Leveled Lists tracks <strong>multiplicity</strong> (how many times an identical entry appears) and preserves it correctly during merges. If Mod A adds 3 copies and Mod B adds 2 copies of the same item, the larger count (3) wins.</p>
+
+    <h2>INI Settings</h2>
+    <p>Configuration is at <code>Data/SKSE/Plugins/DynamicLeveledLists.ini</code>. If the file doesn't exist, it will be auto-generated with defaults on first launch.</p>
+    <pre>[General]
+;Enable detailed merge logging (true/false)
+enablelogs = false
+
+;Show in-game notification with merge count on save load or new game (true/false)
+enablenotification = true
+
+;Show in-game notification about circular reference status on save load or new game (true/false)
+enablecyclenotification = true</pre>
+
+    <h2>Settings Reference</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>enablelogs</h3>
+            <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual item added, removed, or skipped per leveled list. Useful for debugging but adds startup time due to EditorID lookup.</p>
+        </div>
+        <div class="page-card">
+            <h3>enablenotification</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Shows a brief "X Leveled Lists Merged" notification in the top-left corner when you load a save or start a new game.</p>
+        </div>
+        <div class="page-card">
+            <h3>enablecyclenotification</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Shows an in-game notification reporting cycle status when you load a save or start a new game. Displays "No cycles detected. Good to go." or "Cycle Detected. Check logs for fix." if cycles were broken.</p>
+        </div>
+    </div>
+
+    <h2>Reading the Log</h2>
+    <p>The log at <code>Data/SKSE/Plugins/DynamicLeveledLists.log</code> always shows a summary:</p>
+    <pre>=== DynamicLeveledLists: Merge complete ===
+  Total leveled lists: 4821
+  With overrides (base + winner only): 312
+  With conflicts (3+ sources): 87
+  Actually merged: 41
+  Total entries added: 156
+  Total entries removed: 12
+  Overflow sublists created: 3
+  Circular references broken: 1</pre>
+    <p>The cycle line always appears: "No circular references detected" when clean, or "Circular references broken: N" when cycles were found. Each cycle is logged individually with the full path, and the entry that was removed to break it:</p>
+    <pre>Circular leveled list reference detected: 00035319 -> 000A1234 -> 00035319
+Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVLI:00035319]
+  To permanently fix: open MyMod.esp in xEdit, find MainList [LVLI:00035319], and remove the entry pointing to SomeSublist [LVLI:000A1234]</pre>
+
+    <p>With <code>enablelogs=true</code>, each merged list also gets detailed output:</p>
+    <pre>
+  LItemWeaponGreatSword [LVLI:00035319]
+    Sources: Skyrim.esm, ImmersiveWeapons.esp, HeavyArmory.esp
+    -- Changes --
+      + GreatSwordOfMight x1 @lvl1 [0A012345] (1x, added by ImmersiveWeapons.esp)
+      + SteelClaymore x1 @lvl6 [0B023456] (2x, added by ImmersiveWeapons.esp)
+    -- Carried forward --
+      . NordicGreatsword x1 @lvl12 [0B034567] (1x)
+    Result: +3 added, -0 removed</pre>
+
+    <div class="warn-box">
+        <p><strong>Performance note:</strong> Detailed logging requires scanning every loaded mod's LVLI records from disk to build an EditorID cache. This adds noticeable startup time. Keep <code>enablelogs=false</code> for normal play.</p>
+    </div>
+
+    <h2>Compatibility</h2>
+    <ul>
+        <li><strong>Open World Loot / Morrowloot Ultimate:</strong> Fully supported. Their intentional removals are respected even if another mod adds the same item back</li>
+        <li><strong>Wrye Bash / Mator Smash:</strong> Works alongside them. They handle it at build time, this handles it at runtime for anything they miss. Keeping existing patches won't cause issues</li>
+        <li><strong>Dynamic Container Loot:</strong> Companion mod. DCL handles container records (CONT), this handles leveled list records (LVLI). They work on completely different record types and do not interfere</li>
+        <li><strong>SPID / KID / CLLF:</strong> Fully compatible. These distribute items through scripts, not LVLI record edits</li>
+        <li><strong>Any load order:</strong> Reads plugin data non-destructively. No conflicts with other SKSE plugins</li>
+    </ul>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
+        <li>SKSE64 (matching your game version)</li>
+        <li>Address Library for SKSE Plugins</li>
+    </ul>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this wiki from your Nexus description or documentation:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/dynamicleveledlists/wiki.html]Dynamic Leveled Lists Wiki[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[Dynamic Leveled Lists Wiki](https://supertron42.github.io/wiki/dynamicleveledlists/wiki.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

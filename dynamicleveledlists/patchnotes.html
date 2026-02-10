@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Logs - Dynamic Leveled Lists | Version History</title>
+<meta name="description" content="Version history and release notes for Dynamic Leveled Lists SKSE plugin. See what's new in each update.">
+<meta name="keywords" content="Dynamic Leveled Lists changelog, version history, release notes, update log">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicleveledlists/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #E53935;
+    color: white;
+    font-weight: bold;
+    border-left-color: #E53935;
+}
+#nav a.highlight:hover {
+    background: #C62828;
+    border-left-color: #C62828;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #E53935;
+    border-bottom: 2px solid #E53935;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+
+/* Version cards */
+.version {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+}
+.version-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.version-num {
+    background: #E53935;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
+.version-date {
+    color: #9cdcfe;
+    font-size: 12px;
+}
+.version h3 {
+    color: #dcdcaa;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+.version ul {
+    margin: 6px 0 6px 20px;
+}
+.version li {
+    margin: 3px 0;
+    font-size: 12px;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #E53935;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+
+    <h3>Companion Mod</h3>
+    <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for Dynamic Leveled Lists.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <div class="version">
+        <div class="version-header">
+            <span class="version-num">0.2a</span>
+            <span class="version-date"></span>
+        </div>
+        <h3>Features</h3>
+        <ul>
+            <li>Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions</li>
+            <li>Overflow sublists for lists exceeding 255 entries (engine limit workaround using nested LVLI)</li>
+            <li>Multiplicity-based diffing preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight)</li>
+            <li>EditorID cache for readable display names in detailed logs and cycle warnings</li>
+            <li>SE, AE, and VR support</li>
+            <li>New INI setting: <code>enablecyclenotification</code> (default: true) for in-game cycle status notification</li>
+            <li>Notifications now display on save load or new game instead of during data load (when the HUD is active)</li>
+            <li><code>enablenotification</code> default changed from <code>false</code> to <code>true</code></li>
+        </ul>
+    </div>
+
+    <div class="version">
+        <div class="version-header">
+            <span class="version-num">0.1.0</span>
+            <span class="version-date">Initial Release</span>
+        </div>
+        <h3>Features</h3>
+        <ul>
+            <li>Runtime leveled list merge for multi-source conflicts (3+ plugins editing the same LVLI record)</li>
+            <li>Intentional removals respected (mods like Open World Loot that remove items win over mods that add them back)</li>
+            <li>Largest delta wins across losers (no data lost from load order position)</li>
+            <li>UseAll and random-pick lists handled with correct splitting strategies</li>
+            <li>Flag and chanceNone conflict detection with warning logs</li>
+            <li>Direct ESP/ESM/ESL parsing for accurate base-record reconstruction</li>
+            <li>INI configuration with auto-generation on first launch</li>
+            <li>Optional detailed per-list logging</li>
+            <li>Optional in-game notification on merge completion</li>
+        </ul>
+    </div>
+
+    <!-- Template for future releases:
+    <div class="version">
+        <div class="version-header">
+            <span class="version-num">X.Y.Z</span>
+            <span class="version-date">YYYY-MM-DD</span>
+        </div>
+        <h3>Changes</h3>
+        <ul>
+            <li>Change description</li>
+        </ul>
+        <h3>Fixes</h3>
+        <ul>
+            <li>Fix description</li>
+        </ul>
+    </div>
+    -->
+</div>
+
+</body>
+</html>

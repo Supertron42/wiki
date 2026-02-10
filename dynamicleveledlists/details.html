@@ -237,7 +237,7 @@ tr:nth-child(even) {
 
 <div id="content">
     <h1 style="margin-top: 0; border-bottom-color: #E53935; color: #E53935;">Details for Nerds</h1>
-    <p>A technical deep-dive into how Dynamic Leveled Lists works under the hood  - the merge algorithm, ESP binary parsing, cycle detection, overflow handling, and how it all compares to Wrye Bash's Bashed Patch.</p>
+    <p>A technical deep-dive into how Dynamic Leveled Lists works under the hood, covering the merge algorithm, ESP binary parsing, cycle detection, overflow handling, and how it all compares to Wrye Bash's Bashed Patch.</p>
 
     <!-- ============================================================ -->
     <h1>Runtime Lifecycle</h1>
@@ -245,15 +245,15 @@ tr:nth-child(even) {
 
     <p>The plugin is a DLL loaded by SKSE. It runs entirely in-process with the Skyrim engine and never touches files on disk.</p>
 
-    <div class="flow-step" data-step="1"><span class="label">SKSE loads the DLL</span>  - <code>SKSEPlugin_Load</code> registers a message listener with the SKSE messaging interface.</div>
+    <div class="flow-step" data-step="1"><span class="label">SKSE loads the DLL.</span> <code>SKSEPlugin_Load</code> registers a message listener with the SKSE messaging interface.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded</span>  - All ESPs/ESMs/ESLs have been loaded into memory. Every leveled list form is now accessible through <code>RE::TESDataHandler</code>.</div>
+    <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded.</span> All ESPs/ESMs/ESLs have been loaded into memory. Every leveled list form is now accessible through <code>RE::TESDataHandler</code>.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI</span>  - Reads <code>enablelogs</code>, <code>enablenotification</code>, <code>enablecyclenotification</code>. Auto-generates the INI with defaults if missing.</div>
+    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code>, <code>enablenotification</code>, <code>enablecyclenotification</code>. Auto-generates the INI with defaults if missing.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="4"><span class="label">MergeAllLeveledLists()</span>  - Iterates every LVLI form in the game. For each one with 3+ source plugins, runs the three-phase merge. Afterwards, runs cycle detection across the entire leveled list graph.</div>
+    <div class="flow-step" data-step="4"><span class="label">MergeAllLeveledLists()</span> iterates every LVLI form in the game. For each one with 3+ source plugins, it runs the three-phase merge. Afterwards, it runs cycle detection across the entire leveled list graph.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="5"><span class="label">Player loads a save or starts new game</span>  - <code>kPostLoadGame</code> / <code>kNewGame</code> fires. The plugin schedules notifications on the UI thread, retrying each frame until the HUD menu is confirmed open.</div>
+    <div class="flow-step" data-step="5"><span class="label">Player loads a save or starts new game.</span> <code>kPostLoadGame</code> / <code>kNewGame</code> fires. The plugin schedules notifications on the UI thread, retrying each frame until the HUD menu is confirmed open.</div>
 
     <div class="info-box">
         <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch.</p>
@@ -278,7 +278,7 @@ tr:nth-child(even) {
         </tr>
         <tr>
             <td><code>2</code></td>
-            <td>Base + one override. The override is the winner. No lost data  - the game already has the right version.</td>
+            <td>Base + one override. The override is the winner. The game already has the right version.</td>
             <td>Skip</td>
         </tr>
         <tr>
@@ -311,7 +311,7 @@ tr:nth-child(even) {
     <p>For each loser mod, the plugin reads the loser's version of the list from disk (binary ESP parsing) and compares it against the base. The comparison uses <strong>multiplicity-based diffing</strong>:</p>
 
     <h3>Entry Identity</h3>
-    <p>Each entry is identified by a triple: <code>(formID, level, count)</code>. Two entries are "the same" only if all three fields match. This matters because leveled lists legitimately use duplicate entries to weight drop probabilities  - three copies of Iron Bow at level 1 means 3x the drop chance.</p>
+    <p>Each entry is identified by a triple: <code>(formID, level, count)</code>. Two entries are "the same" only if all three fields match. This matters because leveled lists legitimately use duplicate entries to weight drop probabilities. Three copies of Iron Bow at level 1 means 3x the drop chance.</p>
 
     <h3>Entry Bags</h3>
     <p>Both the base and loser versions are converted into an <strong>entry bag</strong> (a multiset): a map from <code>(formID, level, count)</code> to how many times that triple appears.</p>
@@ -327,7 +327,7 @@ Loser bag:  {(IronBow, 1, 1): 3, (SteelSword, 6, 1): 1, (MyWeapon, 1, 1): 2}</pr
 Removals:  {}                        &lt;- loser didn't remove anything</pre>
 
     <h3>Cross-Loser Aggregation</h3>
-    <p>When multiple losers add the same entry, the <strong>largest delta wins</strong>. If Mod A adds 3 copies and Mod B adds 2, the merged result adds 3 (not 5). This prevents snowballing  - mods independently decided "this item should appear N times," and the largest intent is honored.</p>
+    <p>When multiple losers add the same entry, the <strong>largest delta wins</strong>. If Mod A adds 3 copies and Mod B adds 2, the merged result adds 3 (not 5). This prevents snowballing because each mod independently decided "this item should appear N times," and the largest intent is honored.</p>
 
     <h3>List-Level Properties</h3>
     <p>The plugin also tracks changes to the list's <code>flags</code> (UseAll, CalculateFromAllLevels, etc.) and <code>chanceNone</code>. Last-loser-wins for property conflicts. If the winner already changed a property from the base value, the losers' changes are skipped (winner's explicit choice is respected).</p>
@@ -369,7 +369,7 @@ Removals:  {}                        &lt;- loser didn't remove anything</pre>
     <h1>ESP Binary Parsing</h1>
     <!-- ============================================================ -->
 
-    <p>To reconstruct what each loser mod intended, the plugin reads the raw ESP/ESM/ESL files from disk. This is necessary because the engine only keeps the winning version in memory  - loser data is gone.</p>
+    <p>To reconstruct what each loser mod intended, the plugin reads the raw ESP/ESM/ESL files from disk. This is necessary because the engine only keeps the winning version in memory. Loser data is gone.</p>
 
     <h2>File Format</h2>
     <p>ESP files are structured as nested records and groups:</p>
@@ -409,10 +409,10 @@ GRUP "LVLI" (all leveled item records)
     <h1 id="overflow">Overflow Sublists (255 Entry Limit)</h1>
     <!-- ============================================================ -->
 
-    <p>Skyrim's <code>TESLeveledList::numEntries</code> is a <code>uint8_t</code>  - max 255. When many mods add items to popular lists, the merged result easily exceeds this. The plugin handles this by creating overflow sublists at runtime, which no other Skyrim mod does.</p>
+    <p>Skyrim's <code>TESLeveledList::numEntries</code> is a <code>uint8_t</code>, so the max is 255. When many mods add items to popular lists, the merged result easily exceeds this. The plugin handles it by creating overflow sublists at runtime, which no other Skyrim mod does.</p>
 
     <h2>How Sublists Are Created</h2>
-    <p>The engine's <code>IFormFactory::Create&lt;RE::TESLevItem&gt;()</code> allocates a new leveled list form with a dynamic formID in the <code>0xFF000000+</code> range. These forms exist only in memory and don't persist in saves (which is fine  - the plugin re-merges every launch).</p>
+    <p>The engine's <code>IFormFactory::Create&lt;RE::TESLevItem&gt;()</code> allocates a new leveled list form with a dynamic formID in the <code>0xFF000000+</code> range. These forms exist only in memory and don't persist in saves, which is fine since the plugin re-merges every launch.</p>
 
     <h2>Strategy: UseAll Lists</h2>
     <p>When a list has the <code>kUseAll</code> flag (every entry produces an item):</p>
@@ -438,14 +438,14 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
     <p>The formula: <code>numSublists = ceil(total / 255)</code>, entries distributed as evenly as possible.</p>
 
     <div class="warn-box">
-        <p>If <code>IFormFactory::Create</code> returns null (out of dynamic formIDs  - extremely unlikely), the plugin falls back to truncating at 255 entries and logs an error.</p>
+        <p>If <code>IFormFactory::Create</code> returns null because the engine ran out of dynamic formIDs (extremely unlikely), the plugin falls back to truncating at 255 entries and logs an error.</p>
     </div>
 
     <!-- ============================================================ -->
     <h1>Cycle Detection and Breaking</h1>
     <!-- ============================================================ -->
 
-    <p>Leveled lists can reference other leveled lists (nested lists). Automatic merging can create circular references that didn't exist before  - List A gets an entry pointing to List B from one mod, and List B gets an entry pointing to List A from another. If the engine tries to resolve this, it recurses infinitely and crashes.</p>
+    <p>Leveled lists can reference other leveled lists (nested lists). Automatic merging can create circular references that didn't exist before. For example, List A gets an entry pointing to List B from one mod, and List B gets an entry pointing to List A from another. If the engine tries to resolve this, it recurses infinitely and crashes.</p>
 
     <h2>Detection: Iterative DFS</h2>
     <p>After all merges complete, the plugin builds a directed graph of every LVLI-to-LVLI reference in the game and runs iterative depth-first search with three-color marking:</p>
@@ -488,7 +488,7 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
         <li>Updates the SimpleArray's <code>_data</code> pointer and <code>numEntries</code></li>
     </ol>
 
-    <p>This directly manipulates engine memory. The engine sees the updated list immediately  - no hooks, no patches, no detours.</p>
+    <p>This directly manipulates engine memory. The engine sees the updated list immediately without any hooks, patches, or detours.</p>
 
     <!-- ============================================================ -->
     <h1>Comparison: Dynamic Leveled Lists vs. Wrye Bash</h1>
@@ -563,7 +563,7 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
 
     <h3>Dynamic Leveled Lists is better when:</h3>
     <ul>
-        <li>You don't want to think about patching  - install mods and play</li>
+        <li>You just want to install mods and play without thinking about patching</li>
         <li>Mod authors haven't applied Bash Tags to their plugins</li>
         <li>You have lists exceeding 255 entries (overflow sublists vs. truncation)</li>
         <li>You want automatic circular reference detection and breaking</li>
@@ -579,7 +579,7 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
     </ul>
 
     <h3>Using Both Together</h3>
-    <p>They don't conflict. Wrye Bash produces an ESP that becomes another plugin in the load order. Dynamic Leveled Lists sees it like any other mod and incorporates its changes. If both fix the same conflict, the result is the same  - no double-counting, because the delta calculation compares against the base, not against zero. Keeping existing patches is harmless.</p>
+    <p>They don't conflict. Wrye Bash produces an ESP that becomes another plugin in the load order. Dynamic Leveled Lists sees it like any other mod and incorporates its changes. If both fix the same conflict, the result is the same. There's no double-counting because the delta calculation compares against the base, not against zero. Keeping existing patches is harmless.</p>
 
     <!-- ============================================================ -->
     <h1>Error Handling</h1>
@@ -591,7 +591,7 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
         <li><strong>Decompression failure:</strong> Records compressed with zlib that fail to decompress are skipped (safety cap: 64 MB max uncompressed size)</li>
         <li><strong>Unresolvable formID:</strong> If a loser references a form that doesn't exist at runtime, that entry is skipped during addition</li>
         <li><strong>Sublist creation failure:</strong> Falls back to 255 truncation</li>
-        <li><strong>Uncaught exception:</strong> Caught at the top level. The plugin logs the error and continues  - it will not crash SKSE or the game</li>
+        <li><strong>Uncaught exception:</strong> Caught at the top level. The plugin logs the error and continues running. It will not crash SKSE or the game</li>
     </ul>
 
     <!-- ============================================================ -->

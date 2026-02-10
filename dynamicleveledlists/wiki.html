@@ -358,8 +358,8 @@ pre {
     </div>
 
     <h2>Circular Reference Breaking</h2>
-    <p>Leveled lists can reference other leveled lists (nested lists). If the merge creates a circular reference  - List A contains List B, and List B contains List A  - the engine follows the cycle infinitely when resolving loot, causing a crash. This is rare (two unrelated mods would have to independently create both halves of the cycle), but it's a real risk with automatic merging.</p>
-    <p>After all merges complete, Dynamic Leveled Lists builds a directed graph of every leveled list reference and runs cycle detection across the entire graph. When a circular reference is found, the plugin <strong>breaks the cycle at runtime</strong> by removing the back-edge entry from the parent list. This is an in-memory change only  - your plugin files on disk are never modified.</p>
+    <p>Leveled lists can reference other leveled lists (nested lists). If the merge creates a circular reference where List A contains List B and List B contains List A, the engine follows the cycle infinitely when resolving loot, causing a crash. This is rare (two unrelated mods would have to independently create both halves of the cycle), but it's a real risk with automatic merging.</p>
+    <p>After all merges complete, Dynamic Leveled Lists builds a directed graph of every leveled list reference and runs cycle detection across the entire graph. When a circular reference is found, the plugin <strong>breaks the cycle at runtime</strong> by removing the back-edge entry from the parent list. This is an in-memory change only. Your plugin files on disk are never modified.</p>
     <p>Each broken cycle is logged with the full path, the entry that was removed, and instructions for creating a permanent fix in xEdit:</p>
     <pre>Circular leveled list reference detected: 00035319 -> 000A1234 -> 00035319
 Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVLI:00035319]

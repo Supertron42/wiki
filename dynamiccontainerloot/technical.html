@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Details for Nerds - Dynamic Container Loot</title>
+<meta name="description" content="Technical deep-dive into how Dynamic Container Loot works: the merge algorithm, ESP parsing, FormID resolution, memory safety, and how it compares to Wrye Bash.">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamiccontainerloot/technical.html">
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #00BCD4;
+    color: white;
+    font-weight: bold;
+    border-left-color: #00BCD4;
+}
+#nav a.highlight:hover {
+    background: #00969D;
+    border-left-color: #00969D;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 20px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul, ol {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #00BCD4;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warn Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Comparison Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12px;
+}
+th {
+    background: #2d2d2d;
+    color: #569cd6;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    font-weight: 600;
+}
+td {
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    vertical-align: top;
+}
+tr:nth-child(even) {
+    background: #252526;
+}
+
+/* Flow diagram */
+.flow-step {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    position: relative;
+}
+.flow-step::before {
+    content: attr(data-step);
+    display: inline-block;
+    background: #00BCD4;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.flow-step .label {
+    color: #4ec9b0;
+    font-weight: 600;
+}
+.flow-arrow {
+    text-align: center;
+    color: #569cd6;
+    font-size: 16px;
+    margin: 2px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+    <a href="technical.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Details for Nerds</a>
+
+    <h3>Companion Mod</h3>
+    <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0; border-bottom-color: #00BCD4; color: #00BCD4;">Details for Nerds</h1>
+    <p>A technical deep-dive into how Dynamic Container Loot works under the hood, covering the merge algorithm, ESP binary parsing, FormID resolution, memory safety, and how it all compares to Wrye Bash's Bashed Patch.</p>
+
+    <!-- ============================================================ -->
+    <h1>Runtime Lifecycle</h1>
+    <!-- ============================================================ -->
+
+    <p>The plugin is a DLL loaded by SKSE. It runs entirely in-process with the Skyrim engine and never touches files on disk.</p>
+
+    <div class="flow-step" data-step="1"><span class="label">SKSE loads the DLL.</span> <code>SKSEPlugin_Load</code> registers a message listener with the SKSE messaging interface.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded.</span> All ESPs/ESMs/ESLs have been loaded into memory. Every container form is now accessible through <code>RE::TESDataHandler</code>.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code> and <code>enablenotification</code>. Auto-generates the INI with defaults if missing.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="4"><span class="label">MergeAllContainers()</span> iterates every CONT form in the game. For each one with 3+ source plugins, it runs the three-phase merge.</div>
+    <div class="flow-arrow">&#x25BC;</div>
+    <div class="flow-step" data-step="5"><span class="label">Player loads a save or starts new game.</span> <code>kPostLoadGame</code> / <code>kNewGame</code> fires. The plugin schedules notifications on the UI thread, retrying each frame until the HUD menu is confirmed open.</div>
+
+    <div class="info-box">
+        <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h1>How It Decides What to Merge</h1>
+    <!-- ============================================================ -->
+
+    <p>The engine exposes a <strong>source file array</strong> for every form. This array lists every plugin that defines or overrides that record, in load order. The plugin uses this to classify every CONT:</p>
+
+    <table>
+        <tr>
+            <th>Source Count</th>
+            <th>Meaning</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td><code>1</code></td>
+            <td>Only defined in one plugin (the base). No conflict.</td>
+            <td>Skip</td>
+        </tr>
+        <tr>
+            <td><code>2</code></td>
+            <td>Base + one override. The override is the winner. The game already has the right version.</td>
+            <td>Skip</td>
+        </tr>
+        <tr>
+            <td><code>3+</code></td>
+            <td>Base + one winner + one or more losers. The losers' changes are invisible to the engine. <strong>This is a conflict.</strong></td>
+            <td>Merge</td>
+        </tr>
+    </table>
+
+    <p>No bash tags, no user intervention, no opt-in. If 3+ plugins touch the same <code>CONT</code>, it gets merged automatically.</p>
+
+    <h2>Identifying Base, Winners, and Losers</h2>
+    <p>From the source file array (in load order):</p>
+    <ul>
+        <li><strong>First</strong> = base (the original definition, usually from <code>Skyrim.esm</code> or a DLC)</li>
+        <li><strong>Last</strong> = winner (what the engine currently has in memory)</li>
+        <li><strong>Everything in between</strong> = losers (their changes were overwritten)</li>
+    </ul>
+    <p>The merge algorithm recovers the losers' changes and folds them into the winner.</p>
+
+    <!-- ============================================================ -->
+    <h1>The Three-Phase Merge Algorithm</h1>
+    <!-- ============================================================ -->
+
+    <p>Each conflicting container goes through three phases. The goal: figure out what every loser mod intended to change, then apply those changes to the winner.</p>
+
+    <!-- Phase 1 -->
+    <h2>Phase 1: Compute Deltas</h2>
+
+    <p>For each loser mod, the plugin reads the loser's version of the container from disk (binary ESP parsing) and compares it against the base.</p>
+
+    <h3>Entry Identity</h3>
+    <p>Each container entry is identified by its <code>formID</code>. The plugin builds a map of <code>formID -> count</code> for both the base and the loser, then compares them:</p>
+
+    <ul>
+        <li><strong>Addition:</strong> Item exists in the loser but not in the base. The loser added it.</li>
+        <li><strong>Removal:</strong> Item exists in the base but not in the loser. The loser deleted it.</li>
+        <li><strong>Count change:</strong> Item exists in both but count differs. The loser changed the quantity.</li>
+    </ul>
+
+    <pre>Base items:   {IronSword: 1, Bread: 2}
+Loser items:  {IronSword: 1, Bread: 2, Apple: 3}
+
+Additions:    {Apple: 3}       &lt;- loser added 3 apples
+Removals:     {}               &lt;- loser didn't remove anything
+Count changes: {}              &lt;- same counts on shared items</pre>
+
+    <h3>Cross-Loser Aggregation</h3>
+    <p>Deltas from all losers are merged into a single set of maps. <strong>Last-loser-wins</strong>: if multiple losers modify the same item, the last one in load order takes precedence. Its delta overwrites earlier ones.</p>
+
+    <!-- Phase 2 -->
+    <h2>Phase 2: Conflict Resolution</h2>
+
+    <p>If the same item appears in both the additions and removals maps (one loser added it, another removed it), the plugin has to pick a side.</p>
+
+    <div class="info-box">
+        <p><strong>Rule: Removal intent wins.</strong> If any mod explicitly removed an item, that decision is respected even if another mod added it. A deliberate deletion is a stronger intent signal than a quantity tweak.</p>
+    </div>
+
+    <p>Conflicting entries are dropped from the count changes map.</p>
+
+    <!-- Phase 3 -->
+    <h2>Phase 3: Apply Deltas to the Winner</h2>
+
+    <p>The winner's current in-memory container is snapshotted before any modifications. Then deltas are applied in order:</p>
+
+    <h3>3a. Removals</h3>
+    <p>For each removal, check if the item exists in the winner. If it does, remove it from the container array. If the winner already removed it independently, skip.</p>
+
+    <h3>3b. Count Changes</h3>
+    <p>For each count change, check if the item exists in the winner AND the winner's count still matches the base count. If so, apply the loser's new count. If the winner independently changed the count (doesn't match base), skip. The winner's explicit choice is respected.</p>
+
+    <h3>3c. Additions</h3>
+    <p>For each addition, check if the item is NOT already in the winner. If absent, add it. If the winner already has it, skip to avoid duplicates.</p>
+
+    <h3>3d. Memory Write</h3>
+    <p>Container entries are stored in a <code>ContainerObject**</code> array. The plugin reallocates this array directly using <code>RE::calloc</code>/<code>RE::free</code> (Skyrim's own allocator). The old array is freed, a new one is allocated, entries are copied in, and <code>numContainerObjects</code> is updated.</p>
+
+    <!-- ============================================================ -->
+    <h1>ESP Binary Parsing</h1>
+    <!-- ============================================================ -->
+
+    <p>To reconstruct what each loser mod intended, the plugin reads the raw ESP/ESM/ESL files from disk. This is necessary because the engine only keeps the winning version in memory. Loser data is gone.</p>
+
+    <h2>File Format</h2>
+    <p>ESP files are structured as nested records and groups:</p>
+    <pre>TES4 header (file metadata, master list)
+GRUP "CONT" (all container records)
+  CONT record
+    EDID subrecord  -> Editor ID ("BarrelFood01")
+    CNTO subrecord  -> Entry: formID(4) + count(4)
+    CNTO subrecord  -> (repeats for each item)
+  CONT record
+    ...</pre>
+
+    <h2>Binary Layout</h2>
+    <pre>Record Header  (24 bytes)    GRUP Header  (24 bytes)    Subrecord Header  (6 bytes)
++-----------+               +-----------+               +-----------+
+| type  [4] | "CONT"       | type  [4] | "GRUP"       | type  [4] | "CNTO"
+| size  [4] | data bytes   | size  [4] | total bytes  | size  [2] | data bytes
+| flags [4] | compressed?  | label [4] | "CONT"       +-----------+
+| formID[4] |              | gType [4] | 0=top-level
+| misc  [8] |              | misc  [8] |               CNTO Data  (8 bytes)
++-----------+              +-----------+               +-----------+
+                                                       | formID[4] | item reference
+                                                       | count [4] | stack size
+                                                       +-----------+</pre>
+
+    <h2>Parsing Flow</h2>
+    <ol>
+        <li>Resolve the file path (handles MO2's virtual filesystem, relative paths, fallback directories)</li>
+        <li>Open as binary stream, skip the TES4 header</li>
+        <li>Scan top-level GRUPs for the CONT group (label <code>0x544E4F43</code>)</li>
+        <li>Within the CONT group, read each record header (24 bytes: type, size, flags, formID)</li>
+        <li>If the record is compressed (flag <code>0x00040000</code>), decompress with zlib</li>
+        <li>Parse subrecords: EDID (editor ID string), CNTO (item formID + count)</li>
+        <li>Resolve formIDs from local plugin indices to runtime IDs using the master file list</li>
+    </ol>
+
+    <h2>FormID Resolution</h2>
+    <p>Raw formIDs in ESP files use <strong>local indices</strong>. The high byte references a position in the file's master list, not the actual load order index. The parser resolves these to runtime formIDs:</p>
+    <ul>
+        <li><strong>Normal plugins (ESP/ESM):</strong> <code>(compileIndex &lt;&lt; 24) | basePart</code></li>
+        <li><strong>Light plugins (ESL):</strong> <code>0xFE000000 | (smallIndex &lt;&lt; 12) | basePart</code></li>
+    </ul>
+    <p>The parser checks <code>sourceFile->IsLight()</code> and picks the right formula. This covers full ESMs, regular ESPs, ESL-flagged ESPs, and compact-form ESLs.</p>
+
+    <h2>Caching</h2>
+    <p>Parsed results are cached per filename. If multiple containers reference the same plugin as a loser, it's only parsed once. The cache is cleared after all merges complete.</p>
+
+    <!-- ============================================================ -->
+    <h1>Memory Safety: The ContainerItemExtra Problem</h1>
+    <!-- ============================================================ -->
+
+    <p>This is the trickiest implementation detail. The engine's built-in <code>AddObjectToContainer</code> always allocates a <code>ContainerItemExtra</code> struct, even when passing null for the owner. But items loaded normally from ESP files that lack a <code>COED</code> subrecord have <code>itemExtra = nullptr</code>.</p>
+
+    <div class="warn-box">
+        <p><strong>The crash:</strong> Other systems (Papyrus VM, EngineFixes, etc.) check <code>if (itemExtra)</code> and then dereference <code>itemExtra->owner</code> without a secondary null check on the owner field. An allocated-but-empty <code>ContainerItemExtra</code> passes the first check but crashes on the second.</p>
+    </div>
+
+    <p>Dynamic Container Loot avoids this entirely by bypassing the engine's add function:</p>
+    <ol>
+        <li>Creates a <code>ContainerObject</code> using the <strong>2-argument constructor</strong> (object + count), which leaves <code>itemExtra = nullptr</code></li>
+        <li>Copies the existing container array into a <code>std::vector</code>, appends the new entry</li>
+        <li>Allocates a new array using <strong>Skyrim's own allocator</strong> (<code>RE::calloc</code>), copies entries in, and frees the old array with <code>RE::free</code></li>
+    </ol>
+    <p>This matches exactly how the engine stores items loaded from ESP files with no COED data. No spurious allocations, no dangling pointers, no crashes.</p>
+
+    <h2>Why Skyrim's Allocator?</h2>
+    <p>Skyrim uses its own memory pools. If we allocated with <code>new</code>/<code>malloc</code> and the engine later tried to <code>RE::free</code> our pointer (or vice versa), it would corrupt the heap. Using <code>RE::calloc</code>/<code>RE::free</code> keeps our arrays in the same memory pool as engine-created ones.</p>
+
+    <!-- ============================================================ -->
+    <h1>EditorID Cache (Logging Only)</h1>
+    <!-- ============================================================ -->
+
+    <p>Skyrim strips EditorIDs from most form types at runtime to save memory. Leveled item lists (<code>LVLI</code>) are among the affected types. When detailed logging is enabled, items like <code>LItemFoodInn</code> would show up as just <code>"LVLI 00035319"</code>, which isn't useful for debugging.</p>
+
+    <p>To fix this, the plugin scans every loaded mod's <code>LVLI</code> GRUP from disk, extracts the <code>EDID</code> subrecord, and builds a FormID-to-name cache. This is <strong>only</strong> done when <code>enablelogs=true</code> because it reads every mod file and adds noticeable startup time.</p>
+
+    <!-- ============================================================ -->
+    <h1>Comparison: Dynamic Container Loot vs. Wrye Bash</h1>
+    <!-- ============================================================ -->
+
+    <p>The merge logic draws from the same principles as Wrye Bash's Bashed Patch, specifically its leveled list merging (Delev/Relev) and record conflict resolution. Both tools solve the same category of problem but take fundamentally different approaches.</p>
+
+    <table>
+        <tr>
+            <th style="width: 25%;">Aspect</th>
+            <th style="width: 37%;">Dynamic Container Loot</th>
+            <th style="width: 38%;">Wrye Bash (Bashed Patch)</th>
+        </tr>
+        <tr>
+            <td><strong>When it runs</strong></td>
+            <td>Runtime, every game launch, during the loading screen before the main menu</td>
+            <td>Build-time, manually triggered by the user. Produces an ESP that the game loads normally</td>
+        </tr>
+        <tr>
+            <td><strong>Output</strong></td>
+            <td>In-memory changes only. No files written to disk. Nothing in your save</td>
+            <td>A new ESP file (<code>Bashed Patch, 0.esp</code>) that must be active in your load order</td>
+        </tr>
+        <tr>
+            <td><strong>User intervention</strong></td>
+            <td>None. Install and forget. Merges everything automatically</td>
+            <td>Requires rebuilding the patch after any load order change. May require Bash Tags on plugins for correct behavior</td>
+        </tr>
+        <tr>
+            <td><strong>Bash Tags</strong></td>
+            <td>Not used. The plugin detects additions, removals, and count changes automatically by comparing each mod against the base record</td>
+            <td>Critical. Tags like <code>Delev</code> (remove items) and <code>Relev</code> (relevel items) control what operations are allowed. Without tags, some changes are silently skipped</td>
+        </tr>
+        <tr>
+            <td><strong>Delta calculation</strong></td>
+            <td>FormID-keyed maps. Each loser is compared against the base. Tracks additions, removals, and count changes as separate delta maps. Last-loser-wins for conflicts</td>
+            <td>Set-based. Compares entry keys between master and mod. Applies deltas sequentially in load order via <code>mergeWith()</code></td>
+        </tr>
+        <tr>
+            <td><strong>Conflict: add vs. remove</strong></td>
+            <td>Removal wins. If any mod removed an entry, it stays removed even if another mod added it</td>
+            <td>Depends on tags. Without <code>Delev</code>, removals may not be detected. With it, removals win</td>
+        </tr>
+        <tr>
+            <td><strong>Winner independence</strong></td>
+            <td>If the winner independently changed an item's count, the loser's count change is skipped. The winner's explicit choice is respected</td>
+            <td>No per-field winner checks. Merge is additive, combining everything into one combined list</td>
+        </tr>
+        <tr>
+            <td><strong>Entry attributes</strong></td>
+            <td>Tracks FormID + count only (CNTO subrecords only store these two values)</td>
+            <td>Tracks rich attributes: minimum level, count, owner, global variable, conditions. Uses <code>gen_coed_key()</code> for unique entry identity</td>
+        </tr>
+        <tr>
+            <td><strong>Scope</strong></td>
+            <td>CONT records only</td>
+            <td>LVLI, LVLN (NPCs), LVSP (spells), plus many non-leveled-list record types (stats, names, graphics, etc.)</td>
+        </tr>
+        <tr>
+            <td><strong>Performance cost</strong></td>
+            <td>Adds a small amount of time to the loading screen (ESP parsing + merge). Happens once per launch, before the main menu</td>
+            <td>Zero runtime cost (the ESP loads like any other plugin). Build time varies</td>
+        </tr>
+    </table>
+
+    <h2>Where Each Tool Wins</h2>
+
+    <h3>Dynamic Container Loot is better when:</h3>
+    <ul>
+        <li>You just want to install mods and play without thinking about patching</li>
+        <li>Mod authors haven't applied Bash Tags to their plugins</li>
+        <li>You change your load order frequently and don't want to rebuild patches</li>
+        <li>You want removals detected automatically without tagging mods with <code>Delev</code></li>
+    </ul>
+
+    <h3>Wrye Bash is better when:</h3>
+    <ul>
+        <li>You need to merge record types beyond containers (leveled lists, NPC stats, names, etc.)</li>
+        <li>You want fine-grained control over exactly what gets merged</li>
+        <li>You prefer zero runtime overhead</li>
+        <li>You're building a carefully curated load order with explicit tag control</li>
+    </ul>
+
+    <h3>Using Both Together</h3>
+    <p>They don't conflict. Wrye Bash produces an ESP that becomes another plugin in the load order. Dynamic Container Loot sees it like any other mod and incorporates its changes. If both fix the same conflict, the result is the same. There's no double-counting because the delta calculation compares against the base, not against zero. Keeping existing patches is harmless.</p>
+
+    <!-- ============================================================ -->
+    <h1>Error Handling</h1>
+    <!-- ============================================================ -->
+
+    <ul>
+        <li><strong>Missing ESP file:</strong> Logs a warning, skips that mod's changes. Other mods still merge correctly</li>
+        <li><strong>Corrupt or unreadable record:</strong> Skipped with a warning. The merge continues with whatever data was parseable</li>
+        <li><strong>Decompression failure:</strong> Records compressed with zlib that fail to decompress are skipped (safety cap: 64 MB max uncompressed size)</li>
+        <li><strong>Unresolvable formID:</strong> If a loser references a form that doesn't exist at runtime, that entry is skipped during addition</li>
+        <li><strong>Uncaught exception:</strong> Caught at the top level. The plugin logs the error and continues running. It will not crash SKSE or the game</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <h1>Stats Glossary</h1>
+    <!-- ============================================================ -->
+
+    <p>The log summary after every merge:</p>
+    <pre>=== DynamicContainerLoot: Merge complete ===
+  Total containers: 1247
+  With overrides (base + winner only): 89
+  With conflicts (3+ sources): 34
+  Actually merged: 12
+  Total items added: 27
+  Total items removed: 3
+  Total items count changed: 2</pre>
+
+    <table>
+        <tr><th>Stat</th><th>Meaning</th></tr>
+        <tr><td><strong>Total containers</strong></td><td>Every CONT form loaded in the game</td></tr>
+        <tr><td><strong>With overrides</strong></td><td>Containers touched by exactly 2 plugins (base + winner). No merge needed</td></tr>
+        <tr><td><strong>With conflicts</strong></td><td>Containers touched by 3+ plugins. These are candidates for merging</td></tr>
+        <tr><td><strong>Actually merged</strong></td><td>How many containers had real changes to apply (some conflicts result in identical entries)</td></tr>
+        <tr><td><strong>Total items added</strong></td><td>Sum of all individual items added across all merged containers</td></tr>
+        <tr><td><strong>Total items removed</strong></td><td>Sum of all individual items removed across all merged containers</td></tr>
+        <tr><td><strong>Total items count changed</strong></td><td>Sum of all count modifications. Only shown when > 0</td></tr>
+    </table>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+</body>
+</html>

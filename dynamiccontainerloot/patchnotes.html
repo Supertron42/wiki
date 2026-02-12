@@ -223,7 +223,7 @@ li {
     <div class="top-changes">
         <h3>Top Changes</h3>
         <ul>
-            <li><span class="tag tag-fix">FIX</span> <b>ESP record removal bug.</b> Fixed a critical issue where the merge could run multiple times per session, corrupting container data.</li>
+            <li><span class="tag tag-fix">FIX</span> <b>ESP record removal bug.</b> The in-game notification system was interfering with the engine during save loads, causing container data corruption. Removed the notification to fix the issue.</li>
             <li><span class="tag tag-improve">IMPROVED</span> <b>Merge logging.</b> Detailed logs now provide better visibility into what was merged and why.</li>
             <li><span class="tag tag-change">CHANGE</span> <b>In-game notification removed.</b> The merge count notification has been disabled until a safe implementation is ready.</li>
         </ul>
@@ -231,8 +231,7 @@ li {
 
     <h3>Fixes</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Container merge runs once per session.</b> The merge now runs exclusively on <code>kDataLoaded</code> (during the loading screen, before the main menu). Previously, the merge could fire on every save load, re-merging already-merged containers and causing item duplication or count corruption.</li>
-        <li><span class="tag tag-fix">FIX</span> <b>No more task thread mutations.</b> Container form arrays are now only modified on the main thread during data load, when no scripts or game systems are accessing them. This eliminates a class of race condition crashes.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>ESP record removal bug.</b> The in-game merge notification was using SKSE's UI task scheduling to check HUD state and display notifications during save loads. This interfered with the engine and caused container data corruption. The notification system has been removed entirely to resolve the issue.</li>
     </ul>
 
     <h3>Improvements</h3>
@@ -243,7 +242,7 @@ li {
 
     <h3>Changes</h3>
     <ul>
-        <li><span class="tag tag-change">CHANGE</span> <b>In-game merge notification removed.</b> The "X Containers Merged" notification has been removed from the plugin. The previous implementation had reliability issues with HUD timing and UI task scheduling. Merge results are always available in the log file. The notification will return in a future version once a safe approach is confirmed.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>In-game merge notification removed.</b> The "X Containers Merged" notification has been removed from the plugin until a safe implementation is ready. Merge results are always available in the log file at <code>Data/SKSE/Plugins/DynamicContainerLoot.log</code>.</li>
         <li><span class="tag tag-change">CHANGE</span> <b><code>enablenotification</code> INI setting removed.</b> This setting is no longer needed and will be ignored if present in existing INI files.</li>
     </ul>
 

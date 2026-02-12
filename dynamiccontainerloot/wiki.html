@@ -255,7 +255,7 @@ pre {
         <img src="thumbnail.webp" alt="Dynamic Container Loot" style="width: 80px; height: 45px; border-radius: 4px; object-fit: cover;">
         <h1 style="margin: 0; border: none; padding: 0;">Dynamic Container Loot Wiki</h1>
     </div>
-    <p>An SKSE plugin that consolidates container loot from all mods at runtime. When multiple mods edit the same container, Skyrim's last-loaded-wins rule discards changes from all but the final override. Dynamic Container Loot merges the lost items back in automatically - no patches, no manual conflict resolution.</p>
+    <p>An SKSE plugin that consolidates container loot from all mods at runtime. When multiple mods edit the same container, Skyrim's last-loaded-wins rule discards changes from all but the final override. Dynamic Container Loot merges the lost items back in automatically. No patches, no manual conflict resolution.</p>
 
     <div class="info-box">
         <p><strong>Quick Start:</strong> Install via your mod manager and launch the game. The plugin runs automatically on data load. Check <code>Data/SKSE/Plugins/DynamicContainerLoot.log</code> to see what was merged.</p>
@@ -265,11 +265,11 @@ pre {
     <p>Skyrim uses a "last writer wins" rule for records. If three mods edit the same chest (e.g. <code>BarrelFood01</code>), only the last mod in your load order keeps its changes. Items added by the other two mods are silently lost.</p>
 
     <h2>The Solution</h2>
-    <p>Dynamic Container Loot reads the original container definition from every plugin that touches it, computes what each "loser" mod added, removed, or changed, and merges those deltas into the winning record at runtime. The result is the same as if you had built a manual Bash Patch - but fully automatic.</p>
+    <p>Dynamic Container Loot reads the original container definition from every plugin that touches it, computes what each "loser" mod added, removed, or changed, and merges those deltas into the winning record at runtime. The result is the same as if you had built a manual Bash Patch, but fully automatic.</p>
 
     <h2>How It Works</h2>
     <ul>
-        <li>Fires on <code>kDataLoaded</code> - runs once, before the main menu</li>
+        <li>Fires on <code>kDataLoaded</code>, runs once before the main menu</li>
         <li>Scans every <code>CONT</code> (container) form for multi-source conflicts (3+ plugins touching the same record)</li>
         <li>Parses each plugin's <code>CONT</code> subrecords directly from disk to reconstruct what each mod intended</li>
         <li>Computes per-mod deltas against the base record: additions, removals, and count changes</li>
@@ -335,9 +335,9 @@ enablelogs = false</pre>
 
     <h2>Compatibility</h2>
     <ul>
-        <li>Works alongside Wrye Bash / Mator Smash patches - they handle the same problem at build time, this handles it at runtime for anything they miss</li>
-        <li>Safe with any load order - reads plugin data non-destructively</li>
-        <li>No conflicts with other SKSE plugins - doesn't hook any engine functions</li>
+        <li>Works alongside Wrye Bash / Mator Smash patches. They handle the same problem at build time, this handles it at runtime for anything they miss</li>
+        <li>Safe with any load order. Reads plugin data non-destructively</li>
+        <li>No conflicts with other SKSE plugins. Doesn't hook any engine functions</li>
     </ul>
 
     <h2>Requirements</h2>

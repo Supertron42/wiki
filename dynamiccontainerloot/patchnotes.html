@@ -147,48 +147,6 @@ li {
     margin-left: 10px;
 }
 
-/* Sparkle effect for Top Changes */
-.top-changes {
-    position: relative;
-    background: linear-gradient(135deg, #2d2d30 0%, #1e1e1e 100%);
-    border: 1px solid #3c3c3c;
-    border-radius: 8px;
-    padding: 15px 20px;
-    margin: 15px 0 25px;
-    overflow: hidden;
-}
-.top-changes::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.03) 45%,
-        rgba(255, 255, 255, 0.05) 50%,
-        rgba(255, 255, 255, 0.03) 55%,
-        transparent 60%
-    );
-    animation: sparkle 8s linear infinite;
-    pointer-events: none;
-}
-@keyframes sparkle {
-    0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
-    100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
-}
-.top-changes h3 {
-    color: #dcdcaa;
-    margin: 0 0 10px 0;
-}
-.top-changes ul {
-    margin: 0 0 0 20px;
-}
-.top-changes li {
-    margin: 8px 0;
-}
 </style>
 </head>
 <body>
@@ -219,15 +177,6 @@ li {
     <h2 id="v0.4a">Version 0.4a <span class="tag tag-released">RELEASED</span></h2>
     <!-- ============================================================ -->
     <p class="version-summary">Stability release. Fixed the ESP record removal bug, improved merge logging, and removed the in-game notification system until a safe implementation is ready.</p>
-
-    <div class="top-changes">
-        <h3>Top Changes</h3>
-        <ul>
-            <li><span class="tag tag-fix">FIX</span> <b>ESP record removal bug.</b> The in-game notification system was interfering with the engine during save loads, causing container data corruption. Removed the notification to fix the issue.</li>
-            <li><span class="tag tag-improve">IMPROVED</span> <b>Merge logging.</b> Detailed logs now provide better visibility into what was merged and why.</li>
-            <li><span class="tag tag-change">CHANGE</span> <b>In-game notification removed.</b> The merge count notification has been disabled until a safe implementation is ready.</li>
-        </ul>
-    </div>
 
     <h3>Fixes</h3>
     <ul>

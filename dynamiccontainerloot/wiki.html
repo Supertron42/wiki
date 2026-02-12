@@ -274,7 +274,6 @@ pre {
         <li>Parses each plugin's <code>CONT</code> subrecords directly from disk to reconstruct what each mod intended</li>
         <li>Computes per-mod deltas against the base record: additions, removals, and count changes</li>
         <li>Applies merged deltas to the winning record in memory</li>
-        <li>Shows an in-game notification with the merge count when you load a save or start a new game</li>
     </ul>
 
     <h2>Key Features</h2>
@@ -293,20 +292,13 @@ pre {
     <p>Configuration is at <code>Data/SKSE/Plugins/DynamicContainerLoot.ini</code>. If the file doesn't exist, it will be auto-generated with defaults on first launch.</p>
     <pre>[General]
 ;Enable detailed merge logging (true/false)
-enablelogs = false
-
-;Show in-game notification with merge count on save load or new game (true/false)
-enablenotification = true</pre>
+enablelogs = false</pre>
 
     <h2>Settings Reference</h2>
     <div class="page-grid">
         <div class="page-card">
             <h3>enablelogs</h3>
             <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual item added, removed, or changed per container. Useful for debugging but adds startup time due to EditorID lookup.</p>
-        </div>
-        <div class="page-card">
-            <h3>enablenotification</h3>
-            <p><strong>Default:</strong> <code>true</code><br>Shows a brief "X Containers Merged" notification in the top-left corner when you load a save or start a new game.</p>
         </div>
     </div>
 

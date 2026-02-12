@@ -215,6 +215,57 @@ tr:nth-child(even) {
     font-size: 16px;
     margin: 2px 0;
 }
+
+/* Spoiler / BBCode */
+.spoiler-btn {
+    background: #00BCD4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+.spoiler-btn:hover {
+    background: #00969D;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 300px;
+}
+.copy-btn {
+    background: #252526;
+    color: #d4d4d4;
+    border: 1px solid #3c3c3c;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 8px;
+}
+.copy-btn:hover {
+    background: #2a2d2e;
+    border-color: #00BCD4;
+    color: #fff;
+}
 </style>
 </head>
 <body>
@@ -225,9 +276,6 @@ tr:nth-child(even) {
     <h3>Documentation</h3>
     <a href="wiki.html">Wiki Home</a>
     <a href="technical.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Details for Nerds</a>
-
-    <h3>Companion Mod</h3>
-    <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
 
     <!-- Other Projects -->
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
@@ -249,11 +297,9 @@ tr:nth-child(even) {
     <div class="flow-arrow">&#x25BC;</div>
     <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded.</span> All ESPs/ESMs/ESLs have been loaded into memory. Every container form is now accessible through <code>RE::TESDataHandler</code>.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code> and <code>enablenotification</code>. Auto-generates the INI with defaults if missing.</div>
+    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code>. Auto-generates the INI with defaults if missing.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="4"><span class="label">MergeAllContainers()</span> iterates every CONT form in the game. For each one with 3+ source plugins, it runs the three-phase merge.</div>
-    <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="5"><span class="label">Player loads a save or starts new game.</span> <code>kPostLoadGame</code> / <code>kNewGame</code> fires. The plugin schedules notifications on the UI thread, retrying each frame until the HUD menu is confirmed open.</div>
+    <div class="flow-step" data-step="4"><span class="label">MergeAllContainers()</span> iterates every CONT form in the game. For each one with 3+ source plugins, it runs the three-phase merge. Results are logged to the plugin log file.</div>
 
     <div class="info-box">
         <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch.</p>
@@ -559,10 +605,78 @@ GRUP "CONT" (all container records)
         <tr><td><strong>Total items count changed</strong></td><td>Sum of all count modifications. Only shown when > 0</td></tr>
     </table>
 
+    <!-- ============================================================ -->
+    <h1>BBCode (Nexus Description)</h1>
+    <!-- ============================================================ -->
+    <p>Simplified version of this page for Nexus mod descriptions.</p>
+    <button class="spoiler-btn" onclick="toggleSpoiler('bbcode-block')">Show BBCode</button>
+    <div id="bbcode-block" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-text" readonly>[size=5][b]How It Works (Details for Nerds)[/b][/size]
+
+When multiple mods edit the same container, Skyrim only keeps the last mod's version. Every other mod's changes are silently lost. Dynamic Container Loot fixes this automatically at runtime.
+
+[size=4][b]What Gets Merged[/b][/size]
+The engine tracks which plugins touch each container record. If 3 or more plugins edit the same container, there's a conflict:
+[list]
+[*][b]1-2 plugins:[/b] No conflict. The game already has the right data. Skipped.
+[*][b]3+ plugins:[/b] One winner, one or more losers. The losers' items are missing. This gets merged.
+[/list]
+No bash tags needed. No user action needed. If there's a conflict, it gets fixed.
+
+[size=4][b]What It Does With Conflicts[/b][/size]
+For each conflict, the plugin reads the original ESP files from disk and figures out what each losing mod intended:
+[list]
+[*][b]Additions:[/b] Items the loser added that the base didn't have get added to the winner.
+[*][b]Removals:[/b] Items the loser deliberately removed get removed from the winner.
+[*][b]Count changes:[/b] If a loser changed an item's quantity and the winner didn't touch it, the new count is applied.
+[/list]
+If the winning mod independently changed something, its version is kept. The plugin won't override a mod that made its own deliberate edits.
+
+If one mod removed an item and another added it, the removal wins. A deliberate deletion is treated as a stronger signal.
+
+[size=4][b]Safe Memory Handling[/b][/size]
+The plugin bypasses the engine's built-in container functions to avoid a known crash. Skyrim's AddObjectToContainer creates extra data structures that other systems (Papyrus, EngineFixes) don't expect on items that came from ESP files. Instead, the plugin writes entries the same way the engine does when loading from disk, using Skyrim's own memory allocator. This prevents crashes that would otherwise happen with certain mod combinations.
+
+[size=4][b]Compared to Wrye Bash[/b][/size]
+Wrye Bash's Bashed Patch solves a similar problem but works differently:
+[list]
+[*]Wrye Bash runs at build time and writes a patch ESP. This plugin runs at runtime and changes nothing on disk.
+[*]Wrye Bash requires Bash Tags on plugins to detect removals. This plugin detects everything automatically.
+[*]Wrye Bash handles leveled lists, NPC stats, names, and many other record types. This plugin only handles containers.
+[*]Wrye Bash has zero runtime cost. This plugin adds a small amount to the loading screen.
+[/list]
+They complement each other. Running both gives you the best coverage. There's no double-counting because the plugin always compares against the original base record.
+
+[size=4][b]Performance[/b][/size]
+The merge runs once during the loading screen before the main menu. Nothing is written to disk and nothing touches your save. Every session re-merges from scratch, so load order changes are always picked up. Uninstalling just means the merges stop happening.</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-text')">Copy to Clipboard</button>
+    </div>
+
     <div style="margin-top: 40px; text-align: center;">
         <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
     </div>
 </div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    if (!isOpen) {
+        el.classList.add('show');
+    } else {
+        el.classList.remove('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
 
 </body>
 </html>

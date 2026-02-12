@@ -25,6 +25,7 @@ body {
     color: #d4d4d4;
 }
 
+/* Left Navigation */
 #nav {
     width: 200px;
     min-width: 200px;
@@ -43,6 +44,9 @@ body {
     padding: 10px 15px 5px;
     margin-top: 10px;
 }
+#nav h3:first-child {
+    margin-top: 0;
+}
 #nav a {
     display: block;
     color: #d4d4d4;
@@ -57,21 +61,8 @@ body {
     color: #fff;
     border-left-color: #569cd6;
 }
-#nav a.highlight {
-    background: #00BCD4;
-    color: white;
-    font-weight: bold;
-    border-left-color: #00BCD4;
-}
-#nav a.highlight:hover {
-    background: #00969D;
-    border-left-color: #00969D;
-}
-#nav a.current {
-    background: #2a2d2e;
-    border-left-color: #4ec9b0;
-}
 
+/* Main Content */
 #content {
     flex: 1;
     padding: 20px 30px;
@@ -90,9 +81,16 @@ h1:first-child {
     margin-top: 0;
 }
 h2 {
-    font-size: 16px;
+    font-size: 18px;
     color: #dcdcaa;
-    margin: 25px 0 10px;
+    margin: 30px 0 10px;
+    border-bottom: 1px solid #3c3c3c;
+    padding-bottom: 5px;
+}
+h3 {
+    font-size: 14px;
+    color: #9cdcfe;
+    margin: 20px 0 8px;
 }
 p {
     margin: 10px 0;
@@ -101,130 +99,169 @@ ul {
     margin: 10px 0 10px 20px;
 }
 li {
-    margin: 4px 0;
-}
-
-/* Version cards */
-.version {
-    background: #252526;
-    border: 1px solid #3c3c3c;
-    border-radius: 6px;
-    padding: 16px 20px;
-    margin: 20px 0;
-}
-.version-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-.version-num {
-    background: #00BCD4;
-    color: #1e1e1e;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 14px;
+    margin: 5px 0;
 }
 .version-date {
+    color: #808080;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.version-summary {
+    background: #2d2d30;
+    border-left: 3px solid #569cd6;
+    padding: 12px 15px;
+    margin: 10px 0 20px;
     color: #9cdcfe;
-    font-size: 12px;
-}
-.version h3 {
-    color: #dcdcaa;
     font-size: 13px;
-    margin: 12px 0 6px;
+    line-height: 1.5;
 }
-.version ul {
-    margin: 6px 0 6px 20px;
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
 }
-.version li {
-    margin: 3px 0;
-    font-size: 12px;
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+.tag-released {
+    background: #2E7D32;
+    color: white;
+    font-size: 10px;
+    vertical-align: middle;
+    margin-left: 10px;
 }
 
-.tip {
-    background: #252526;
-    border-left: 3px solid #00BCD4;
-    padding: 12px 16px;
-    margin: 15px 0;
-    border-radius: 0 4px 4px 0;
+/* Sparkle effect for Top Changes */
+.top-changes {
+    position: relative;
+    background: linear-gradient(135deg, #2d2d30 0%, #1e1e1e 100%);
+    border: 1px solid #3c3c3c;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin: 15px 0 25px;
+    overflow: hidden;
 }
-.tip p {
-    margin: 0;
-    font-size: 12px;
-    color: #9cdcfe;
+.top-changes::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.03) 45%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.03) 55%,
+        transparent 60%
+    );
+    animation: sparkle 8s linear infinite;
+    pointer-events: none;
+}
+@keyframes sparkle {
+    0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+    100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+}
+.top-changes h3 {
+    color: #dcdcaa;
+    margin: 0 0 10px 0;
+}
+.top-changes ul {
+    margin: 0 0 0 20px;
+}
+.top-changes li {
+    margin: 8px 0;
 }
 </style>
 </head>
 <body>
 
 <div id="nav">
-    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+    <a href="wiki.html" style="display:block; padding:10px 15px; background:#00BCD4; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
+    <h3>Change Logs</h3>
+    <a href="#v0.4a">Version 0.4a</a>
+    <a href="#v0.1.0">Version 0.1.0</a>
 
     <h3>Documentation</h3>
-    <a href="wiki.html">Wiki Home</a>
     <a href="technical.html">Details for Nerds</a>
 
+    <!-- Other Projects -->
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
         <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
     </div>
 </div>
 
 <div id="content">
-    <h1>Change Logs</h1>
-    <p>Version history and release notes for Dynamic Container Loot.</p>
-
-    <div class="tip">
-        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <img src="thumbnail.webp" alt="Dynamic Container Loot" style="width: 80px; height: 45px; border-radius: 4px; object-fit: cover;">
+        <h1 style="margin: 0; border: none; padding: 0;">Change Logs</h1>
     </div>
+    <p>Release history and change logs for Dynamic Container Loot.</p>
 
-    <div class="version">
-        <div class="version-header">
-            <span class="version-num">0.3a</span>
-            <span class="version-date"></span>
-        </div>
-        <h3>Changes</h3>
+    <!-- ============================================================ -->
+    <h2 id="v0.4a">Version 0.4a <span class="tag tag-released">RELEASED</span></h2>
+    <!-- ============================================================ -->
+    <p class="version-summary">Stability release. Fixed the ESP record removal bug, improved merge logging, and removed the in-game notification system until a safe implementation is ready.</p>
+
+    <div class="top-changes">
+        <h3>Top Changes</h3>
         <ul>
-            <li>Notifications now display on save load or new game instead of during data load (when the HUD is active)</li>
-            <li><code>enablenotification</code> default changed from <code>false</code> to <code>true</code></li>
+            <li><span class="tag tag-fix">FIX</span> <b>ESP record removal bug.</b> Fixed a critical issue where the merge could run multiple times per session, corrupting container data.</li>
+            <li><span class="tag tag-improve">IMPROVED</span> <b>Merge logging.</b> Detailed logs now provide better visibility into what was merged and why.</li>
+            <li><span class="tag tag-change">CHANGE</span> <b>In-game notification removed.</b> The merge count notification has been disabled until a safe implementation is ready.</li>
         </ul>
     </div>
 
-    <div class="version">
-        <div class="version-header">
-            <span class="version-num">0.1.0</span>
-            <span class="version-date">Initial Release</span>
-        </div>
-        <h3>Features</h3>
-        <ul>
-            <li>Runtime container merge for multi-source conflicts (3+ plugins editing the same CONT record)</li>
-            <li>Additions, removals, and count changes from loser mods merged into the winner</li>
-            <li>Direct ESP/ESM parsing for accurate base-record reconstruction</li>
-            <li>EditorID cache for LVLI display names in detailed logs</li>
-            <li>INI configuration with auto-generation on first launch</li>
-            <li>Optional detailed per-container logging</li>
-            <li>Optional in-game notification on merge completion</li>
-            <li>SE, AE, and VR support</li>
-        </ul>
-    </div>
+    <h3>Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Container merge runs once per session.</b> The merge now runs exclusively on <code>kDataLoaded</code> (during the loading screen, before the main menu). Previously, the merge could fire on every save load, re-merging already-merged containers and causing item duplication or count corruption.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>No more task thread mutations.</b> Container form arrays are now only modified on the main thread during data load, when no scripts or game systems are accessing them. This eliminates a class of race condition crashes.</li>
+    </ul>
 
-    <!-- Template for future releases:
-    <div class="version">
-        <div class="version-header">
-            <span class="version-num">X.Y.Z</span>
-            <span class="version-date">YYYY-MM-DD</span>
-        </div>
-        <h3>Changes</h3>
-        <ul>
-            <li>Change description</li>
-        </ul>
-        <h3>Fixes</h3>
-        <ul>
-            <li>Fix description</li>
-        </ul>
-    </div>
-    -->
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Logging clarity.</b> The log summary now clearly reports total containers, override counts, conflict counts, and merge results. With <code>enablelogs=true</code>, each merged container shows a full breakdown: sources, changes (additions/removals/count changes), carried forward items, and final state.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Aggregate item summary.</b> When detailed logging is enabled, the log includes a "most frequently added items" summary showing which items were added to the most containers and which mod added them.</li>
+    </ul>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>In-game merge notification removed.</b> The "X Containers Merged" notification has been removed from the plugin. The previous implementation had reliability issues with HUD timing and UI task scheduling. Merge results are always available in the log file. The notification will return in a future version once a safe approach is confirmed.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b><code>enablenotification</code> INI setting removed.</b> This setting is no longer needed and will be ignored if present in existing INI files.</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <h2 id="v0.1.0">Version 0.1.0 <span class="version-date">Initial Release</span></h2>
+    <!-- ============================================================ -->
+    <p class="version-summary">First release of Dynamic Container Loot. Runtime container merging for Skyrim SE, AE, and VR.</p>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Runtime container merge.</b> Automatically merges container loot from all mods when 3+ plugins edit the same CONT record.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Three-phase merge algorithm.</b> Additions, removals, and count changes from loser mods are computed and applied to the winner.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Direct ESP/ESM/ESL parsing.</b> Reads plugin files from disk to reconstruct what each mod intended. Supports compressed records and light plugins.</li>
+        <li><span class="tag tag-new">NEW</span> <b>EditorID cache.</b> Scans LVLI records for display names so leveled list items get readable names in detailed logs.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI configuration.</b> Auto-generates <code>DynamicContainerLoot.ini</code> with defaults on first launch.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Detailed per-container logging.</b> Optional verbose logging shows every item added, removed, or changed per container.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</li>
+    </ul>
 </div>
 
 </body>

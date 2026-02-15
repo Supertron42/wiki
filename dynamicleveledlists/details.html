@@ -249,14 +249,12 @@ tr:nth-child(even) {
     <div class="flow-arrow">&#x25BC;</div>
     <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded.</span> All ESPs/ESMs/ESLs have been loaded into memory. Every leveled list form is now accessible through <code>RE::TESDataHandler</code>.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code>, <code>enablenotification</code>, <code>enablecyclenotification</code>. Auto-generates the INI with defaults if missing.</div>
+    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code>. Auto-generates the INI with defaults if missing.</div>
     <div class="flow-arrow">&#x25BC;</div>
     <div class="flow-step" data-step="4"><span class="label">MergeAllLeveledLists()</span> iterates every LVLI form in the game. For each one with 3+ source plugins, it runs the three-phase merge. Afterwards, it runs cycle detection across the entire leveled list graph.</div>
-    <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="5"><span class="label">Player loads a save or starts new game.</span> <code>kPostLoadGame</code> / <code>kNewGame</code> fires. The plugin schedules notifications on the UI thread, retrying each frame until the HUD menu is confirmed open.</div>
 
     <div class="info-box">
-        <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch.</p>
+        <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch. There are no in-game notifications — all output goes to the log file.</p>
     </div>
 
     <!-- ============================================================ -->
@@ -379,7 +377,7 @@ GRUP "LVLI" (all leveled item records)
     EDID subrecord  -&gt; Editor ID ("LItemWeaponGreatSword")
     LVLD subrecord  -&gt; Chance None (1 byte)
     LVLF subrecord  -&gt; Flags (1 byte)
-    LVLO subrecord  -&gt; Entry: level(2) + pad(2) + formID(4) + count(2) + pad(2)
+    LVLO subrecord  -&gt; Entry: level(2) + pad(2) + formID(4) + count(2)  [10 bytes]
     LVLO subrecord  -&gt; (repeats for each entry)
   LVLI record
     ...</pre>

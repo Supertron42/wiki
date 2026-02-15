@@ -94,6 +94,11 @@ h2 {
     color: #dcdcaa;
     margin: 25px 0 10px;
 }
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
 p {
     margin: 10px 0;
 }
@@ -102,45 +107,96 @@ ul {
 }
 li {
     margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
 }
 
-/* Version cards */
-.version {
-    background: #252526;
-    border: 1px solid #3c3c3c;
-    border-radius: 6px;
-    padding: 16px 20px;
-    margin: 20px 0;
-}
-.version-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-.version-num {
-    background: #E53935;
-    color: #fff;
-    padding: 4px 10px;
-    border-radius: 4px;
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
     font-weight: bold;
-    font-size: 14px;
+    margin-right: 6px;
 }
-.version-date {
-    color: #9cdcfe;
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+
+/* Spoiler / BB Code / Markdown buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
     font-size: 12px;
 }
-.version h3 {
-    color: #dcdcaa;
-    font-size: 13px;
-    margin: 12px 0 6px;
+.spoiler-btn:hover {
+    background: #4a4a4a;
 }
-.version ul {
-    margin: 6px 0 6px 20px;
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
 }
-.version li {
-    margin: 3px 0;
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
     font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #569cd6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #4a8bc2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
 }
 
 .tip {
@@ -164,6 +220,7 @@ li {
 
     <h3>Documentation</h3>
     <a href="wiki.html">Wiki Home</a>
+    <a href="details.html">Details for Nerds</a>
 
     <h3>Companion Mod</h3>
     <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
@@ -181,60 +238,230 @@ li {
         <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
     </div>
 
-    <div class="version">
-        <div class="version-header">
-            <span class="version-num">0.2a</span>
-            <span class="version-date"></span>
-        </div>
-        <h3>Features</h3>
-        <ul>
-            <li>Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions</li>
-            <li>Overflow sublists for lists exceeding 255 entries (engine limit workaround using nested LVLI)</li>
-            <li>Multiplicity-based diffing preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight)</li>
-            <li>EditorID cache for readable display names in detailed logs and cycle warnings</li>
-            <li>SE, AE, and VR support</li>
-            <li>New INI setting: <code>enablecyclenotification</code> (default: true) for in-game cycle status notification</li>
-            <li>Notifications now display on save load or new game instead of during data load (when the HUD is active)</li>
-            <li><code>enablenotification</code> default changed from <code>false</code> to <code>true</code></li>
-        </ul>
+    <!-- ============================================================ -->
+    <!-- Version 0.3.4a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3.4a">Version 0.3.4a</h2>
+
+    <h3>Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Duplicate entries being merged incorrectly.</b> Items that appeared multiple times in a leveled list with different counts were treated as the same entry, causing some to disappear after merging.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>"Carried forward" log showing entries that no longer exist.</b> When a mod like Open World Loot removes vanilla entries and replaces them with its own, the old entries were still listed as carried forward in the log. They are now correctly excluded.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>ESP parser failing to read leveled list entries.</b> The plugin parser expected a different data format than what Skyrim SE actually uses, causing it to skip every entry. This resulted in incorrect merge results, wrong mod attribution in logs, and items being added that shouldn't have been.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb031a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md031a')">Markdown</button>
+    </div>
+    <div id="bb031a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode031a" readonly>[size=4][b][color=#dcdcaa]Version 0.3.4a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Duplicate entries being merged incorrectly.[/b] Items that appeared multiple times in a leveled list with different counts were treated as the same entry, causing some to disappear after merging.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]"Carried forward" log showing entries that no longer exist.[/b] When a mod like Open World Loot removes vanilla entries and replaces them with its own, the old entries were still listed as carried forward in the log. They are now correctly excluded.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]ESP parser failing to read leveled list entries.[/b] The plugin parser expected a different data format than what Skyrim SE actually uses, causing it to skip every entry. This resulted in incorrect merge results, wrong mod attribution in logs, and items being added that shouldn't have been.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode031a')">Copy to Clipboard</button>
+    </div>
+    <div id="md031a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown031a" readonly># Version 0.3.4a
+
+## Fixes
+- **FIX** **Duplicate entries being merged incorrectly.** Items that appeared multiple times in a leveled list with different counts were treated as the same entry, causing some to disappear after merging.
+- **FIX** **"Carried forward" log showing entries that no longer exist.** When a mod like Open World Loot removes vanilla entries and replaces them with its own, the old entries were still listed as carried forward in the log. They are now correctly excluded.
+- **FIX** **ESP parser failing to read leveled list entries.** The plugin parser expected a different data format than what Skyrim SE actually uses, causing it to skip every entry. This resulted in incorrect merge results, wrong mod attribution in logs, and items being added that shouldn't have been.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown031a')">Copy to Clipboard</button>
     </div>
 
-    <div class="version">
-        <div class="version-header">
-            <span class="version-num">0.1.0</span>
-            <span class="version-date">Initial Release</span>
-        </div>
-        <h3>Features</h3>
-        <ul>
-            <li>Runtime leveled list merge for multi-source conflicts (3+ plugins editing the same LVLI record)</li>
-            <li>Intentional removals respected (mods like Open World Loot that remove items win over mods that add them back)</li>
-            <li>Largest delta wins across losers (no data lost from load order position)</li>
-            <li>UseAll and random-pick lists handled with correct splitting strategies</li>
-            <li>Flag and chanceNone conflict detection with warning logs</li>
-            <li>Direct ESP/ESM/ESL parsing for accurate base-record reconstruction</li>
-            <li>INI configuration with auto-generation on first launch</li>
-            <li>Optional detailed per-list logging</li>
-            <li>Optional in-game notification on merge completion</li>
-        </ul>
+    <!-- ============================================================ -->
+    <!-- Version 0.3a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3a">Version 0.3a</h2>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Removed in-game notification system.</b> Fixes the <code>AddUITask</code> retry loop bug that could cause issues with ESP removal.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Removed INI settings.</b> <code>enablenotification</code> and <code>enablecyclenotification</code> removed. Only <code>enablelogs</code> remains.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Form type tags in logs.</b> Added <code>[LVLI]</code>, <code>[ARMO]</code>, <code>[WEAP]</code>, etc. to all log entry lines for easier identification.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Final state section.</b> Added <code>-- Final state --</code> section to detailed logs showing all entries after merge with entry count.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Most frequently added items summary.</b> Added aggregate summary to the end of detailed logs (top 15 items by how many leveled lists they were added to).</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Log format consistency.</b> Log format now matches Dynamic Container Loot style for consistency between the two plugins.</li>
+    </ul>
+    <h3>Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Potential crash in overflow sublists.</b> Added defensive zeroing of <code>entries._data</code> in <code>CreateOverflowSublist()</code> before calling <code>RebuildEntries()</code> to prevent potential crash from uninitialized memory.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb03a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md03a')">Markdown</button>
+    </div>
+    <div id="bb03a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode03a" readonly>[size=4][b][color=#dcdcaa]Version 0.3a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Changes[/color][/b][/size]
+[list]
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Removed in-game notification system.[/b] Fixes the AddUITask retry loop bug that could cause issues with ESP removal.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Removed INI settings.[/b] enablenotification and enablecyclenotification removed. Only enablelogs remains.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Form type tags in logs.[/b] Added [LVLI], [ARMO], [WEAP], etc. to all log entry lines for easier identification.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Final state section.[/b] Added -- Final state -- section to detailed logs showing all entries after merge with entry count.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Most frequently added items summary.[/b] Added aggregate summary to the end of detailed logs (top 15 items by how many leveled lists they were added to).
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Log format consistency.[/b] Log format now matches Dynamic Container Loot style for consistency between the two plugins.
+[/list]
+[size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Potential crash in overflow sublists.[/b] Added defensive zeroing of entries._data in CreateOverflowSublist() before calling RebuildEntries() to prevent potential crash from uninitialized memory.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode03a')">Copy to Clipboard</button>
+    </div>
+    <div id="md03a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown03a" readonly># Version 0.3a
+
+## Changes
+- **CHANGE** **Removed in-game notification system.** Fixes the AddUITask retry loop bug that could cause issues with ESP removal.
+- **CHANGE** **Removed INI settings.** enablenotification and enablecyclenotification removed. Only enablelogs remains.
+- **NEW** **Form type tags in logs.** Added [LVLI], [ARMO], [WEAP], etc. to all log entry lines for easier identification.
+- **NEW** **Final state section.** Added -- Final state -- section to detailed logs showing all entries after merge with entry count.
+- **NEW** **Most frequently added items summary.** Added aggregate summary to the end of detailed logs (top 15 items by how many leveled lists they were added to).
+- **IMPROVED** **Log format consistency.** Log format now matches Dynamic Container Loot style for consistency between the two plugins.
+
+## Fixes
+- **FIX** **Potential crash in overflow sublists.** Added defensive zeroing of entries._data in CreateOverflowSublist() before calling RebuildEntries() to prevent potential crash from uninitialized memory.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown03a')">Copy to Clipboard</button>
     </div>
 
-    <!-- Template for future releases:
-    <div class="version">
-        <div class="version-header">
-            <span class="version-num">X.Y.Z</span>
-            <span class="version-date">YYYY-MM-DD</span>
-        </div>
-        <h3>Changes</h3>
-        <ul>
-            <li>Change description</li>
-        </ul>
-        <h3>Fixes</h3>
-        <ul>
-            <li>Fix description</li>
-        </ul>
+    <!-- ============================================================ -->
+    <!-- Version 0.2a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.2a">Version 0.2a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Circular reference detection.</b> Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Overflow sublists.</b> Lists exceeding 255 entries are split into nested sublists at runtime (engine limit workaround).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Multiplicity-based diffing.</b> Preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight).</li>
+        <li><span class="tag tag-new">NEW</span> <b>EditorID cache.</b> Readable display names in detailed logs and cycle warnings.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b></li>
+        <li><span class="tag tag-new">NEW</span> <b>Cycle notification INI setting.</b> New <code>enablecyclenotification</code> setting (default: true) for in-game cycle status notification.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Notification timing.</b> Notifications now display on save load or new game instead of during data load (when the HUD is active).</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Notification default changed.</b> <code>enablenotification</code> default changed from <code>false</code> to <code>true</code>.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb02a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md02a')">Markdown</button>
     </div>
-    -->
+    <div id="bb02a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode02a" readonly>[size=4][b][color=#dcdcaa]Version 0.2a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Circular reference detection.[/b] Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Overflow sublists.[/b] Lists exceeding 255 entries are split into nested sublists at runtime (engine limit workaround).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Multiplicity-based diffing.[/b] Preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]EditorID cache.[/b] Readable display names in detailed logs and cycle warnings.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Cycle notification INI setting.[/b] New enablecyclenotification setting (default: true) for in-game cycle status notification.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Notification timing.[/b] Notifications now display on save load or new game instead of during data load (when the HUD is active).
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Notification default changed.[/b] enablenotification default changed from false to true.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode02a')">Copy to Clipboard</button>
+    </div>
+    <div id="md02a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown02a" readonly># Version 0.2a
+
+## Features
+- **NEW** **Circular reference detection.** Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions.
+- **NEW** **Overflow sublists.** Lists exceeding 255 entries are split into nested sublists at runtime (engine limit workaround).
+- **NEW** **Multiplicity-based diffing.** Preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight).
+- **NEW** **EditorID cache.** Readable display names in detailed logs and cycle warnings.
+- **NEW** **SE, AE, and VR support.**
+- **NEW** **Cycle notification INI setting.** New enablecyclenotification setting (default: true) for in-game cycle status notification.
+- **IMPROVED** **Notification timing.** Notifications now display on save load or new game instead of during data load (when the HUD is active).
+- **CHANGE** **Notification default changed.** enablenotification default changed from false to true.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown02a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.1.0 -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.1.0">Version 0.1.0 - Initial Release</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Runtime leveled list merge.</b> Automatic merge for multi-source conflicts (3+ plugins editing the same LVLI record).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Intentional removals respected.</b> Mods like Open World Loot that remove items win over mods that add them back.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Largest delta wins.</b> No data lost from load order position.</li>
+        <li><span class="tag tag-new">NEW</span> <b>UseAll and random-pick lists.</b> Handled with correct splitting strategies.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Flag and chanceNone conflict detection.</b> Warning logs for property conflicts.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Direct ESP/ESM/ESL parsing.</b> Accurate base-record reconstruction from disk.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI configuration.</b> Auto-generation on first launch.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Optional detailed per-list logging.</b></li>
+        <li><span class="tag tag-new">NEW</span> <b>Optional in-game notification.</b> Notification on merge completion.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb010')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md010')">Markdown</button>
+    </div>
+    <div id="bb010" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode010" readonly>[size=4][b][color=#dcdcaa]Version 0.1.0 - Initial Release[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Runtime leveled list merge.[/b] Automatic merge for multi-source conflicts (3+ plugins editing the same LVLI record).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Intentional removals respected.[/b] Mods like Open World Loot that remove items win over mods that add them back.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Largest delta wins.[/b] No data lost from load order position.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]UseAll and random-pick lists.[/b] Handled with correct splitting strategies.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Flag and chanceNone conflict detection.[/b] Warning logs for property conflicts.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Direct ESP/ESM/ESL parsing.[/b] Accurate base-record reconstruction from disk.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]INI configuration.[/b] Auto-generation on first launch.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional detailed per-list logging.[/b]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional in-game notification.[/b] Notification on merge completion.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode010')">Copy to Clipboard</button>
+    </div>
+    <div id="md010" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown010" readonly># Version 0.1.0 - Initial Release
+
+## Features
+- **NEW** **Runtime leveled list merge.** Automatic merge for multi-source conflicts (3+ plugins editing the same LVLI record).
+- **NEW** **Intentional removals respected.** Mods like Open World Loot that remove items win over mods that add them back.
+- **NEW** **Largest delta wins.** No data lost from load order position.
+- **NEW** **UseAll and random-pick lists.** Handled with correct splitting strategies.
+- **NEW** **Flag and chanceNone conflict detection.** Warning logs for property conflicts.
+- **NEW** **Direct ESP/ESM/ESL parsing.** Accurate base-record reconstruction from disk.
+- **NEW** **INI configuration.** Auto-generation on first launch.
+- **NEW** **Optional detailed per-list logging.**
+- **NEW** **Optional in-game notification.** Notification on merge completion.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown010')">Copy to Clipboard</button>
+    </div>
+
 </div>
 
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
 </body>
 </html>

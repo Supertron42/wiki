@@ -366,7 +366,7 @@ Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVL
   To permanently fix: open MyMod.esp in xEdit, find MainList [LVLI:00035319], and remove the entry pointing to SomeSublist [LVLI:000A1234]</pre>
 
     <div class="info-box">
-        <p><strong>Always logged:</strong> Cycle warnings are always written to the log with readable names regardless of the <code>enablelogs</code> setting, since they indicate crash risk. An in-game notification (controlled by <code>enablecyclenotification</code>, default on) reports cycle status when you load a save or start a new game: "No cycles detected. Good to go." or "Cycle Detected. Check logs for fix."</p>
+        <p><strong>Always logged:</strong> Cycle warnings are always written to the log with readable names regardless of the <code>enablelogs</code> setting, since they indicate crash risk.</p>
     </div>
 
     <h2>Duplicate Weighting</h2>
@@ -376,27 +376,13 @@ Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVL
     <p>Configuration is at <code>Data/SKSE/Plugins/DynamicLeveledLists.ini</code>. If the file doesn't exist, it will be auto-generated with defaults on first launch.</p>
     <pre>[General]
 ;Enable detailed merge logging (true/false)
-enablelogs = false
-
-;Show in-game notification with merge count on save load or new game (true/false)
-enablenotification = true
-
-;Show in-game notification about circular reference status on save load or new game (true/false)
-enablecyclenotification = true</pre>
+enablelogs = false</pre>
 
     <h2>Settings Reference</h2>
     <div class="page-grid">
         <div class="page-card">
             <h3>enablelogs</h3>
-            <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual item added, removed, or skipped per leveled list. Useful for debugging but adds startup time due to EditorID lookup.</p>
-        </div>
-        <div class="page-card">
-            <h3>enablenotification</h3>
-            <p><strong>Default:</strong> <code>true</code><br>Shows a brief "X Leveled Lists Merged" notification in the top-left corner when you load a save or start a new game.</p>
-        </div>
-        <div class="page-card">
-            <h3>enablecyclenotification</h3>
-            <p><strong>Default:</strong> <code>true</code><br>Shows an in-game notification reporting cycle status when you load a save or start a new game. Displays "No cycles detected. Good to go." or "Cycle Detected. Check logs for fix." if cycles were broken.</p>
+            <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual item added, removed, or skipped per leveled list with form type tags, a final state snapshot, and an aggregate summary of most frequently added items. Useful for debugging but adds startup time due to EditorID lookup.</p>
         </div>
     </div>
 
@@ -421,11 +407,22 @@ Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVL
   LItemWeaponGreatSword [LVLI:00035319]
     Sources: Skyrim.esm, ImmersiveWeapons.esp, HeavyArmory.esp
     -- Changes --
-      + GreatSwordOfMight x1 @lvl1 [0A012345] (1x, added by ImmersiveWeapons.esp)
-      + SteelClaymore x1 @lvl6 [0B023456] (2x, added by ImmersiveWeapons.esp)
+      + [WEAP] GreatSwordOfMight x1 @lvl1 [0A012345] (1x, added by ImmersiveWeapons.esp)
+      + [WEAP] SteelClaymore x1 @lvl6 [0B023456] (2x, added by ImmersiveWeapons.esp)
     -- Carried forward --
-      . NordicGreatsword x1 @lvl12 [0B034567] (1x)
-    Result: +3 added, -0 removed</pre>
+      . [WEAP] NordicGreatsword x1 @lvl12 [0B034567] (1x)
+    Result: +3 added, -0 removed
+    -- Final state --
+      * [WEAP] IronGreatsword x1 @lvl1 [00012EB7]
+      * [WEAP] GreatSwordOfMight x1 @lvl1 [0A012345]
+      * [WEAP] SteelClaymore x1 @lvl6 [0B023456]
+      * [WEAP] NordicGreatsword x1 @lvl12 [0B034567]
+    (4 entries total)</pre>
+
+    <p>At the end of the merge, an aggregate summary shows the most frequently added items:</p>
+    <pre>=== Most frequently added items (top 15) ===
+  [WEAP] SteelClaymore [0B023456] - added to 12 leveled lists (from ImmersiveWeapons.esp)
+  [ARMO] NordicShield [0B034568] - added to 8 leveled lists (from HeavyArmory.esp)</pre>
 
     <div class="warn-box">
         <p><strong>Performance note:</strong> Detailed logging requires scanning every loaded mod's LVLI records from disk to build an EditorID cache. This adds noticeable startup time. Keep <code>enablelogs=false</code> for normal play.</p>

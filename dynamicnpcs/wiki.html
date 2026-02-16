@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic NPCs - SKSE Plugin for NPC Record Merge | Skyrim SE Mod</title>
+<meta name="description" content="Dynamic NPCs is an SKSE plugin for Skyrim SE that merges NPC records from all mods at runtime, preventing lost changes from mod conflicts.">
+<meta name="keywords" content="Skyrim mod, SKSE plugin, NPC merge, mod conflicts, NPC records, Skyrim SE, Skyrim AE, modding, NPC compatibility">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicnpcs/wiki.html">
+
+<!-- Open Graph for social sharing -->
+<meta property="og:title" content="Dynamic NPCs - Skyrim SE SKSE Plugin">
+<meta property="og:description" content="SKSE plugin that merges NPC records from all mods at runtime. No patches needed, no lost changes.">
+<meta property="og:type" content="website">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dynamic NPCs",
+    "applicationCategory": "Game Mod",
+    "operatingSystem": "Windows",
+    "description": "An SKSE plugin that merges NPC records from all mods at runtime for Skyrim Special Edition, preventing changes from being lost due to mod conflicts.",
+    "author": {
+        "@type": "Person",
+        "name": "Supertron"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #7E57C2;
+    color: white;
+    font-weight: bold;
+    border-left-color: #7E57C2;
+}
+#nav a.highlight:hover {
+    background: #6A3FB5;
+    border-left-color: #6A3FB5;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "\2713";
+    color: #7E57C2;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #7E57C2;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #7E57C2;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #7E57C2;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #6A3FB5;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
+
+    <h3>Companion Mods</h3>
+    <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
+    <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0; border-bottom-color: #7E57C2; color: #7E57C2;">Dynamic NPCs Wiki</h1>
+    <p>When multiple mods change the same NPC (adding spells, changing stats, giving new items, etc.), Skyrim only keeps the last mod's version and throws away everyone else's changes. This plugin fixes that. It finds the missing changes and merges them back in. Install it, forget about it.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install with your mod manager, launch the game. That's it. Check <code>Data/SKSE/Plugins/DynamicNPCs.log</code> if you want to see what it did.</p>
+    </div>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
+        <li>SKSE64 (matching your game version)</li>
+        <li>Address Library for SKSE Plugins</li>
+    </ul>
+
+    <h2>What This Mod Does</h2>
+    <p>When multiple mods change the same NPC, Skyrim only keeps the last mod's version. Every other mod's changes are silently deleted. This plugin checks every mod that edited each NPC, figures out what was added, removed, or changed, and merges it all together at startup. Think of it like an automatic Bashed Patch for NPCs.</p>
+    <ul>
+        <li><strong>Restores lost changes.</strong> Mod A gives an NPC new spells. Mod B changes the same NPC's outfit but doesn't include the spells. Normally the spells are gone. This plugin adds them back.</li>
+        <li><strong>Respects removals.</strong> If a mod specifically removed a spell, perk, or faction from an NPC, it stays removed.</li>
+        <li><strong>Handles conflicts gracefully.</strong> When two mods change the same field (e.g. both change an NPC's combat style), the last mod in your load order wins, just like vanilla. No crashes, no weirdness.</li>
+        <li><strong>Every mod gets a say.</strong> Skyrim normally only listens to one mod per NPC. This plugin makes sure all of them are heard.</li>
+    </ul>
+
+    <h2>What This Mod Does NOT Do</h2>
+    <div class="warn-box">
+        <p>This comes up a lot, so let's be clear:</p>
+    </div>
+    <ul>
+        <li><strong>This is NOT SPID.</strong> It does not distribute items, spells, or perks to NPCs. It only restores changes that were already supposed to be there but got lost due to mod conflicts.</li>
+        <li><strong>It does NOT touch face data.</strong> Face meshes, face tints, and face morphs are never merged. Changing face data between mods causes the dark face bug, so this plugin leaves it alone entirely.</li>
+        <li><strong>It does NOT touch scripts.</strong> Script data (VMAD) is never merged. Merging scripts from different mods is unsafe and can cause crashes.</li>
+        <li><strong>It does NOT replace Wrye Bash or Mator Smash.</strong> Those tools build patches ahead of time. This does the same job automatically at startup for anything they missed.</li>
+        <li><strong>It does NOT "smash" records together blindly.</strong> It compares each mod's changes against the original and only carries over what each mod specifically added, removed, or changed. It's a smart merge, not a dumb copy-paste.</li>
+        <li><strong>It does NOT create dirty edits.</strong> Nothing is written to disk. All merging happens in memory while the game loads. Your plugin files are never touched.</li>
+    </ul>
+
+    <h2>The Problem</h2>
+    <p>Skyrim has a simple rule: if two mods edit the same thing, the last one in your load order wins and the other gets thrown out. So if Mod A adds new spells to an NPC and Mod B changes that same NPC's outfit, you only get the outfit change. The spells are gone. No warning, no error. Just silently deleted.</p>
+    <p>This gets worse with popular NPCs. Followers, faction leaders, and named characters are commonly edited by many mods at once. The more mods you have, the more changes vanish.</p>
+
+    <h2>The Fix</h2>
+    <p>Dynamic NPCs looks at every mod that touched each NPC, figures out what each one added, removed, or changed, and merges all those changes together. The result is the same as if you had manually built a compatibility patch for every NPC conflict in your load order, except you don't have to do anything.</p>
+
+    <h2>How It Works (Simple Version)</h2>
+    <ul>
+        <li>Runs once when the game starts, before you reach the main menu</li>
+        <li>Finds every NPC that more than two mods tried to change</li>
+        <li>Reads each mod's version of that NPC to see what they added, removed, or changed</li>
+        <li>Merges all the changes together so nothing gets lost</li>
+        <li>Done. You play the game normally.</li>
+    </ul>
+
+    <h2>What Gets Merged</h2>
+    <div class="feature-list">
+        <div class="feature-item">Inventory</div>
+        <div class="feature-item">Spells and shouts</div>
+        <div class="feature-item">Perks</div>
+        <div class="feature-item">Outfits (default + sleep)</div>
+        <div class="feature-item">AI packages</div>
+        <div class="feature-item">Faction memberships</div>
+        <div class="feature-item">Stats and skills</div>
+        <div class="feature-item">AI behavior</div>
+        <div class="feature-item">Traits (race, class, voice, etc.)</div>
+        <div class="feature-item">Keywords</div>
+        <div class="feature-item">SE + AE + VR support</div>
+        <div class="feature-item">Fully automatic</div>
+    </div>
+
+    <h2>What Does NOT Get Merged (and Why)</h2>
+    <ul>
+        <li><strong>Face data</strong> (face meshes, morphs, tints) &mdash; Merging face data between mods causes the dark face bug. Left alone entirely.</li>
+        <li><strong>Scripts</strong> (VMAD) &mdash; Merging scripts from different mods is unsafe and can cause crashes or broken quests.</li>
+    </ul>
+
+    <h2>Template Flags</h2>
+    <p>Some NPCs use templates to inherit data from another NPC (like a template for all bandits). When an NPC has a template flag set for a category (e.g. "use template for inventory"), this plugin skips merging that category since the data comes from the template, not the NPC record itself. This is automatic and requires no configuration.</p>
+
+    <h2>INI Settings</h2>
+    <p>The config file is at <code>Data/SKSE/Plugins/DynamicNPCs.ini</code>. If it doesn't exist, it gets created automatically the first time you launch the game.</p>
+    <pre>[General]
+;Write detailed per-NPC merge info to the log file. Useful for troubleshooting.
+enablelogs = false
+
+[Features]
+;Merge NPC inventory
+mergeInventories = true
+;Merge NPC spells, shouts, and leveled spells
+mergeSpells = true
+;Merge NPC perks
+mergePerks = true
+;Merge outfit item lists (what NPCs wear)
+mergeOutfits = true
+;Merge NPC AI packages (schedules, travel, patrol, etc.)
+mergePackages = true
+;Merge NPC faction memberships and ranks
+mergeFactions = true
+;Merge NPC stats: health/magicka/stamina offsets, level, speed, skills, and actor flags
+mergeStats = true
+;Merge NPC AI behavior: aggression, confidence, mood, morality, and override package lists
+mergeAIData = true
+;Merge NPC traits: race, class, outfit, combat style, voice type, height, weight, name, and more
+mergeTraits = true
+;Merge NPC keywords (used by perks, abilities, and other systems to identify NPC types)
+mergeKeywords = true</pre>
+
+    <h2>Settings Reference</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>enablelogs</h3>
+            <p><strong>Default:</strong> <code>false</code><br>Logs every single change for each NPC: items added/removed, spells merged, stats changed, conflicts detected, etc. Helpful if you want to see exactly what was merged, but makes startup slower. Leave it off unless you're curious or troubleshooting.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeInventories</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges the items an NPC carries. If a mod adds items to an NPC and another mod overwrites that NPC, the items are restored.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeSpells</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges spells, shouts, and leveled spells. Additions and removals from all mods are combined.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergePerks</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges perks and perk ranks. Lost perk additions are restored, rank changes are carried forward.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeOutfits</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges outfit item lists (what NPCs wear) and sleep outfits. Items added to outfits by overridden mods are restored.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergePackages</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges AI packages (schedules, patrols, travel routines, etc.). Lost packages are added back, removed packages stay removed.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeFactions</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges faction memberships and ranks. If a mod adds an NPC to a faction and another mod overwrites that NPC, the faction membership is restored.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeStats</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges NPC stats: health/magicka/stamina offsets, level, speed multiplier, bleedout override, skills, and actor flags (Essential, Protected, Unique, etc.).</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeAIData</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges AI behavior settings: aggression, confidence, mood, morality, assistance, and override package lists (spectator, observe corpse, guard warn, enter combat).</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeTraits</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges NPC traits: default outfit, race, combat style, class, crime faction, gift filter, voice type, height, weight, and display name.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeKeywords</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges NPC keywords. Keywords are used by perks, abilities, and game systems to identify NPC types (e.g. ActorTypeUndead, MagicResistance).</p>
+        </div>
+    </div>
+
+    <h2>Reading the Log</h2>
+    <p>The log at <code>Data/SKSE/Plugins/DynamicNPCs.log</code> always shows a summary of what happened:</p>
+    <pre>=== DynamicNPCs: Merge complete ===
+  NPCs: 2847 total, 64 with conflicts, 31 merged
+  Inventory: +18 added, -2 removed, ~3 count changed
+  Spells: +12 added, -1 removed
+  Perks: +5 added, -0 removed, ~1 rank changed
+  Packages: +8 added, -3 removed
+  Factions: +4 added, -1 removed, ~0 rank changed
+  Stats: ~6 fields changed, ~2 flags changed
+  AI Data: ~3 AIDT fields changed, ~1 override packages changed
+  Traits: ~4 fields changed
+  Keywords: +7 added, -0 removed
+  Outfits: 412 total, 11 with conflicts, 5 merged
+  Outfit items: +9 added, -1 removed</pre>
+
+    <p>If you turn on <code>enablelogs</code>, you also get a detailed breakdown for each NPC:</p>
+    <pre>
+  Lydia [NPC_:000A2C94]
+    Winner: FollowerOverhaul.esp | Sources: Skyrim.esm, SpellMod.esp, FollowerOverhaul.esp
+    -- Changes --
+      + [SPEL] Fireball [00012FD0] (added by SpellMod.esp)
+      + [SPEL] Healing [000B62EF] (added by SpellMod.esp)
+      ~ [STAT] healthOffset 0->25  (changed by SpellMod.esp)
+      + [KYWD] MagicResistance50 [000AA155] (added by SpellMod.esp)
+    Result: spells(+2 -0), stats(~1 fields, ~0 flags), keywords(+1 -0)</pre>
+
+    <div class="warn-box">
+        <p><strong>Heads up:</strong> Detailed logging makes startup noticeably slower because it has to look up the name of every form. Keep it off for normal play.</p>
+    </div>
+
+    <h2>Compatibility</h2>
+    <ul>
+        <li><strong>Wrye Bash / Mator Smash:</strong> Works fine alongside them. They patch things ahead of time, this catches whatever they missed at startup.</li>
+        <li><strong>SPID (Spell Perk Item Distributor):</strong> Fully compatible. SPID distributes through scripts, this merges NPC records. Different systems, no overlap.</li>
+        <li><strong>Dynamic Container Loot / Dynamic Leveled Lists:</strong> Companion mods. DCL handles containers, DLL handles leveled lists, this handles NPCs. They work on completely different record types and do not interfere.</li>
+        <li><strong>Load order:</strong> Doesn't matter. Safe with any load order. It just reads your mods, it doesn't change them.</li>
+        <li><strong>Other SKSE plugins:</strong> No conflicts. This plugin doesn't hook into any game functions, so it won't fight with anything.</li>
+    </ul>
+
+    <h2>Credits</h2>
+    <ul>
+        <li><strong>CommonLibSSE-NG</strong> for making SKSE plugins possible across SE, AE, and VR</li>
+        <li><strong>SKSE Team</strong> for the Script Extender that none of this works without</li>
+        <li><strong>powerof3</strong> for CLib utility library</li>
+        <li><strong>herumi</strong> for xbyak (JIT assembler)</li>
+        <li><strong>brofield</strong> for SimpleINI (config file parsing)</li>
+    </ul>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this wiki from your Nexus description or documentation:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/dynamicnpcs/wiki.html]Dynamic NPCs Wiki[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[Dynamic NPCs Wiki](https://supertron42.github.io/wiki/dynamicnpcs/wiki.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

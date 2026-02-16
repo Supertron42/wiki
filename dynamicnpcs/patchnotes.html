@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Logs - Dynamic NPCs | Version History</title>
+<meta name="description" content="Version history and release notes for Dynamic NPCs SKSE plugin. See what's new in each update.">
+<meta name="keywords" content="Dynamic NPCs changelog, version history, release notes, update log">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicnpcs/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #7E57C2;
+    color: white;
+    font-weight: bold;
+    border-left-color: #7E57C2;
+}
+#nav a.highlight:hover {
+    background: #6A3FB5;
+    border-left-color: #6A3FB5;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #7E57C2;
+    border-bottom: 2px solid #7E57C2;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+
+/* Info tip */
+.tip {
+    background: #252526;
+    border-left: 3px solid #7E57C2;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+
+/* Spoiler / BB Code / Markdown buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #569cd6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #4a8bc2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Change Logs</h3>
+    <a href="#v0.2.6a">Version 0.2.6a</a>
+    <a href="#v0.1a">Version 0.1a</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+
+    <h3>Companion Mods</h3>
+    <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
+    <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for Dynamic NPCs.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.2.6a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.2.6a">Version 0.2.6a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Stats merge.</b> NPC stats like health, magicka, stamina, level, level ranges, speed, bleedout override, and all 18 skill values are now merged from overridden mods.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Actor flag merge.</b> NPC flags like Essential, Protected, Unique, Respawn, IsGhost, and Invulnerable are now merged individually. Safe flags like gender and template settings are never touched.</li>
+        <li><span class="tag tag-new">NEW</span> <b>AI data merge.</b> NPC personality settings like aggression, confidence, energy level, morality, mood, and assistance from overridden mods are now merged. Each field is checked independently for conflicts.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Override package lists merge.</b> NPC behavioral overrides for spectating, observing corpses, guard warnings, and entering combat from overridden mods are now restored.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Sleeping outfit merge.</b> What an NPC wears to bed from overridden mods is now carried forward.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Trait merge.</b> NPC identity fields like race, class, default outfit, combat style, crime faction, gift filter, voice type, height, weight, and display name from overridden mods are now carried forward.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Keyword merge.</b> Keywords added or removed by overridden mods are now restored.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Conflict detection.</b> When two mods both change the same field on the same NPC, it is now logged and counted in the summary instead of being silently skipped.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Localized plugin handling.</b> Correctly handles official Bethesda plugins (like Skyrim.esm) that store names differently, preventing garbled NPC names.</li>
+        <li><span class="tag tag-new">NEW</span> <b>New INI toggles.</b> Added <code>mergeStats</code>, <code>mergeAIData</code>, <code>mergeTraits</code>, and <code>mergeKeywords</code> settings so you can turn each new category on or off.</li>
+    </ul>
+
+    <h3>Bug Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>AI data was being read incorrectly.</b> The plugin file format stores AI data differently than the game uses it in memory. The old parser used the wrong format, which caused NPC confidence, morality, mood, assistance, energy level, and aggro radius values to be read as garbage. Rewritten to match the actual file format.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Removed phantom AI field.</b> One AI field (noSlowApproach) doesn't actually exist in plugin files. It was always read as zero but could differ in memory, causing the merger to think a mod changed it when nothing did.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed false skill and stat conflicts.</b> The merger was comparing mod values against what the game had in memory, but the game sometimes changes values on its own after loading (e.g. recalculating skills from the NPC's class). This made the merger think the last mod changed something when it didn't, and skip valid merges. Now correctly compares plugin files against each other.</li>
+    </ul>
+
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Log format matches xEdit.</b> Records in detailed logs now show their type and ID in the same style as xEdit (e.g. <code>[PACK:1211EC63]</code>), making it easy to look things up.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>AI packages show names in logs.</b> AI package changes now display the package's editor ID name instead of a hex number.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>AI data shows readable values.</b> AI data changes now show names like <code>Unaggressive->Aggressive</code> instead of raw numbers like <code>0->1</code>.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>INI descriptions rewritten.</b> All settings in the INI file now have plain English descriptions explaining what they do.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>More template info in logs.</b> When an NPC uses templates, the log now shows which categories are inherited (traits, stats, AI data, keywords, etc.).</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb026a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md026a')">Markdown</button>
+    </div>
+    <div id="bb026a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode026a" readonly>[size=4][b][color=#dcdcaa]Version 0.2.6a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Stats merge.[/b] NPC stats like health, magicka, stamina, level, level ranges, speed, bleedout override, and all 18 skill values are now merged from overridden mods.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Actor flag merge.[/b] NPC flags like Essential, Protected, Unique, Respawn, IsGhost, and Invulnerable are now merged individually. Safe flags like gender and template settings are never touched.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]AI data merge.[/b] NPC personality settings like aggression, confidence, energy level, morality, mood, and assistance from overridden mods are now merged. Each field is checked independently for conflicts.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Override package lists merge.[/b] NPC behavioral overrides for spectating, observing corpses, guard warnings, and entering combat from overridden mods are now restored.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Sleeping outfit merge.[/b] What an NPC wears to bed from overridden mods is now carried forward.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Trait merge.[/b] NPC identity fields like race, class, default outfit, combat style, crime faction, gift filter, voice type, height, weight, and display name from overridden mods are now carried forward.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Keyword merge.[/b] Keywords added or removed by overridden mods are now restored.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Conflict detection.[/b] When two mods both change the same field on the same NPC, it is now logged and counted in the summary instead of being silently skipped.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Localized plugin handling.[/b] Correctly handles official Bethesda plugins (like Skyrim.esm) that store names differently, preventing garbled NPC names.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]New INI toggles.[/b] Added mergeStats, mergeAIData, mergeTraits, and mergeKeywords settings so you can turn each new category on or off.
+[/list]
+[size=3][b][color=#9cdcfe]Bug Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]AI data was being read incorrectly.[/b] The plugin file format stores AI data differently than the game uses it in memory. The old parser used the wrong format, which caused NPC confidence, morality, mood, assistance, energy level, and aggro radius values to be read as garbage. Rewritten to match the actual file format.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Removed phantom AI field.[/b] One AI field (noSlowApproach) doesn't actually exist in plugin files. It was always read as zero but could differ in memory, causing the merger to think a mod changed it when nothing did.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed false skill and stat conflicts.[/b] The merger was comparing mod values against what the game had in memory, but the game sometimes changes values on its own after loading (e.g. recalculating skills from the NPC's class). This made the merger think the last mod changed something when it didn't, and skip valid merges. Now correctly compares plugin files against each other.
+[/list]
+[size=3][b][color=#9cdcfe]Improvements[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Log format matches xEdit.[/b] Records in detailed logs now show their type and ID in the same style as xEdit (e.g. [PACK:1211EC63]), making it easy to look things up.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]AI packages show names in logs.[/b] AI package changes now display the package's editor ID name instead of a hex number.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]AI data shows readable values.[/b] AI data changes now show names like Unaggressive->Aggressive instead of raw numbers like 0->1.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]INI descriptions rewritten.[/b] All settings in the INI file now have plain English descriptions explaining what they do.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]More template info in logs.[/b] When an NPC uses templates, the log now shows which categories are inherited (traits, stats, AI data, keywords, etc.).
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode026a')">Copy to Clipboard</button>
+    </div>
+    <div id="md026a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown026a" readonly># Version 0.2.6a
+
+## Features
+- **NEW** **Stats merge.** NPC stats like health, magicka, stamina, level, level ranges, speed, bleedout override, and all 18 skill values are now merged from overridden mods.
+- **NEW** **Actor flag merge.** NPC flags like Essential, Protected, Unique, Respawn, IsGhost, and Invulnerable are now merged individually. Safe flags like gender and template settings are never touched.
+- **NEW** **AI data merge.** NPC personality settings like aggression, confidence, energy level, morality, mood, and assistance from overridden mods are now merged. Each field is checked independently for conflicts.
+- **NEW** **Override package lists merge.** NPC behavioral overrides for spectating, observing corpses, guard warnings, and entering combat from overridden mods are now restored.
+- **NEW** **Sleeping outfit merge.** What an NPC wears to bed from overridden mods is now carried forward.
+- **NEW** **Trait merge.** NPC identity fields like race, class, default outfit, combat style, crime faction, gift filter, voice type, height, weight, and display name from overridden mods are now carried forward.
+- **NEW** **Keyword merge.** Keywords added or removed by overridden mods are now restored.
+- **NEW** **Conflict detection.** When two mods both change the same field on the same NPC, it is now logged and counted in the summary instead of being silently skipped.
+- **NEW** **Localized plugin handling.** Correctly handles official Bethesda plugins (like Skyrim.esm) that store names differently, preventing garbled NPC names.
+- **NEW** **New INI toggles.** Added mergeStats, mergeAIData, mergeTraits, and mergeKeywords settings so you can turn each new category on or off.
+
+## Bug Fixes
+- **FIX** **AI data was being read incorrectly.** The plugin file format stores AI data differently than the game uses it in memory. The old parser used the wrong format, which caused NPC confidence, morality, mood, assistance, energy level, and aggro radius values to be read as garbage. Rewritten to match the actual file format.
+- **FIX** **Removed phantom AI field.** One AI field (noSlowApproach) doesn't actually exist in plugin files. It was always read as zero but could differ in memory, causing the merger to think a mod changed it when nothing did.
+- **FIX** **Fixed false skill and stat conflicts.** The merger was comparing mod values against what the game had in memory, but the game sometimes changes values on its own after loading (e.g. recalculating skills from the NPC's class). This made the merger think the last mod changed something when it didn't, and skip valid merges. Now correctly compares plugin files against each other.
+
+## Improvements
+- **IMPROVED** **Log format matches xEdit.** Records in detailed logs now show their type and ID in the same style as xEdit (e.g. [PACK:1211EC63]), making it easy to look things up.
+- **IMPROVED** **AI packages show names in logs.** AI package changes now display the package's editor ID name instead of a hex number.
+- **IMPROVED** **AI data shows readable values.** AI data changes now show names like Unaggressive->Aggressive instead of raw numbers like 0->1.
+- **IMPROVED** **INI descriptions rewritten.** All settings in the INI file now have plain English descriptions explaining what they do.
+- **IMPROVED** **More template info in logs.** When an NPC uses templates, the log now shows which categories are inherited (traits, stats, AI data, keywords, etc.).</textarea>
+        <button class="copy-btn" onclick="copyText('markdown026a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.1a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.1a">Version 0.1a - Initial Release</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Runtime NPC merge.</b> Automatically merges NPC records from all mods when 3+ plugins edit the same NPC_ record.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Inventory merge.</b> Items added or removed by overridden mods are restored or respected. Count changes are carried forward.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Spell merge.</b> Spells, shouts, and leveled spells added or removed by overridden mods are merged back in.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Perk merge.</b> Perks and perk rank changes from overridden mods are restored.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Outfit merge.</b> Outfit item lists are merged across all mods that edit them.</li>
+        <li><span class="tag tag-new">NEW</span> <b>AI package merge.</b> AI packages (schedules, patrols, travel routines) from overridden mods are restored.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Faction merge.</b> Faction memberships and rank changes from overridden mods are restored.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Template flag awareness.</b> Automatically skips merging inventory, spells, packages, and factions when the NPC inherits those categories from a template.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Per-feature INI toggles.</b> Every merge category can be individually enabled or disabled.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Direct ESP/ESM/ESL parsing.</b> Reads plugin files from disk to reconstruct what each mod intended. Supports compressed records and light plugins.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Detailed per-NPC logging.</b> Optional verbose logging shows every change per NPC.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb01a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md01a')">Markdown</button>
+    </div>
+    <div id="bb01a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode01a" readonly>[size=4][b][color=#dcdcaa]Version 0.1a - Initial Release[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Runtime NPC merge.[/b] Automatically merges NPC records from all mods when 3+ plugins edit the same NPC_ record.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Inventory merge.[/b] Items added or removed by overridden mods are restored or respected. Count changes are carried forward.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Spell merge.[/b] Spells, shouts, and leveled spells added or removed by overridden mods are merged back in.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Perk merge.[/b] Perks and perk rank changes from overridden mods are restored.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Outfit merge.[/b] Outfit item lists are merged across all mods that edit them.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]AI package merge.[/b] AI packages (schedules, patrols, travel routines) from overridden mods are restored.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Faction merge.[/b] Faction memberships and rank changes from overridden mods are restored.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Template flag awareness.[/b] Automatically skips merging inventory, spells, packages, and factions when the NPC inherits those categories from a template.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Per-feature INI toggles.[/b] Every merge category can be individually enabled or disabled.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Direct ESP/ESM/ESL parsing.[/b] Reads plugin files from disk to reconstruct what each mod intended. Supports compressed records and light plugins.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Detailed per-NPC logging.[/b] Optional verbose logging shows every change per NPC.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode01a')">Copy to Clipboard</button>
+    </div>
+    <div id="md01a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown01a" readonly># Version 0.1a - Initial Release
+
+## Features
+- **NEW** **Runtime NPC merge.** Automatically merges NPC records from all mods when 3+ plugins edit the same NPC_ record.
+- **NEW** **Inventory merge.** Items added or removed by overridden mods are restored or respected. Count changes are carried forward.
+- **NEW** **Spell merge.** Spells, shouts, and leveled spells added or removed by overridden mods are merged back in.
+- **NEW** **Perk merge.** Perks and perk rank changes from overridden mods are restored.
+- **NEW** **Outfit merge.** Outfit item lists are merged across all mods that edit them.
+- **NEW** **AI package merge.** AI packages (schedules, patrols, travel routines) from overridden mods are restored.
+- **NEW** **Faction merge.** Faction memberships and rank changes from overridden mods are restored.
+- **NEW** **Template flag awareness.** Automatically skips merging inventory, spells, packages, and factions when the NPC inherits those categories from a template.
+- **NEW** **Per-feature INI toggles.** Every merge category can be individually enabled or disabled.
+- **NEW** **Direct ESP/ESM/ESL parsing.** Reads plugin files from disk to reconstruct what each mod intended. Supports compressed records and light plugins.
+- **NEW** **Detailed per-NPC logging.** Optional verbose logging shows every change per NPC.
+- **NEW** **SE, AE, and VR support.** Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown01a')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

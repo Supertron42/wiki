@@ -39,6 +39,9 @@ __pycache__/
 #     research material to build the guides. Not for republication. ---
 /wow_class_guides/resources/
 
+# --- Internal dev to-do lists (kept locally, never published) ---
+todo.html
+
 # --- OS / editor cruft ---
 .DS_Store
 Thumbs.db

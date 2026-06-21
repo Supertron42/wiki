@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Music and Sounds - SKSE Plugin for Music and Sound Conflict Resolution | Skyrim SE Mod</title>
+<meta name="description" content="Dynamic Music and Sounds is an SKSE plugin for Skyrim SE that restores missing music tracks and sound variants from all mods at runtime, preventing lost changes from mod conflicts.">
+<meta name="keywords" content="Skyrim mod, SKSE plugin, music merge, sound merge, mod conflicts, MUSC records, MUST records, SNDR records, Skyrim SE, Skyrim AE, modding">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicmusicandsounds/">
+
+<!-- Open Graph for social sharing -->
+<meta property="og:title" content="Dynamic Music and Sounds - Skyrim SE SKSE Plugin">
+<meta property="og:description" content="SKSE plugin that restores missing music tracks and sound variants from all mods at runtime. No patches needed, no lost tracks.">
+<meta property="og:type" content="website">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dynamic Music and Sounds",
+    "applicationCategory": "Game Mod",
+    "operatingSystem": "Windows",
+    "description": "An SKSE plugin that restores missing music tracks and sound variants from all mods at runtime for Skyrim Special Edition, preventing tracks from being lost due to mod conflicts.",
+    "author": {
+        "@type": "Person",
+        "name": "Supertron"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #FF9800;
+    color: white;
+    font-weight: bold;
+    border-left-color: #FF9800;
+}
+#nav a.highlight:hover {
+    background: #E68900;
+    border-left-color: #E68900;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #FF9800;
+    border-bottom: 2px solid #FF9800;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "\2713";
+    color: #FF9800;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #FF9800;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #FF9800;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #FF9800;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #FF9800;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #E68900;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="./" style="background: #2a2d2e; border-left-color: #FF9800;">Wiki Home</a>
+
+    <h3>Tools</h3>
+    <a href="#xedit">xEdit Companion Script</a>
+
+    <h3>Companion Mods</h3>
+    <a href="../dynamiccontainerloot/">Dynamic Container Loot</a>
+    <a href="../dynamicleveledlists/">Dynamic Leveled Lists</a>
+    <a href="../dynamicformlists/">Dynamic Form Lists</a>
+    <a href="../dynamicnpcs/">Dynamic NPCs</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0; border-bottom-color: #FF9800; color: #FF9800;">Dynamic Music and Sounds Wiki</h1>
+    <p>When multiple mods change the same music type, music track, or sound descriptor, Skyrim only keeps the last mod's version. Every other mod's added tracks and sound files are silently thrown away. This plugin fixes that. It finds what was lost and adds it back. Install it, forget about it.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install with your mod manager, launch the game. That's it. Check <code>Data/SKSE/Plugins/DynamicMusicAndSounds.log</code> if you want to see what it did.</p>
+    </div>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
+        <li>SKSE64 (matching your game version)</li>
+        <li>Address Library for SKSE Plugins</li>
+    </ul>
+
+    <h2>What Does This Fix?</h2>
+    <p>This plugin handles three types of records that share the same conflict problem:</p>
+
+    <h3>Music Types (MUSC)</h3>
+    <p>A music type controls which tracks can play in a situation, like exploring, combat, or visiting a town. Mods add new tracks to these lists so their music plays in the right context. When two mods edit the same music type, one mod's tracks get lost.</p>
+
+    <h3>Music Tracks (MUST)</h3>
+    <p>A music track can be a "palette" that holds multiple sub-tracks organized into layers. When two mods add different sub-tracks to the same palette, only the last mod's additions survive.</p>
+
+    <h3>Sound Descriptors (SNDR)</h3>
+    <p>A sound descriptor holds the list of audio files that play when a sound event fires. For example, a footstep sound might have 5 different audio files so it doesn't sound identical every time. When a mod adds new sound variants and another mod also edits that descriptor, one set of variants is lost.</p>
+
+    <h2>The Fix</h2>
+    <p>Dynamic Music and Sounds looks at every mod that touched each record, figures out what each one added or removed, and restores the missing entries at startup. The result is the same as if you had manually built a compatibility patch for every music and sound conflict in your load order.</p>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li>Runs once when the game starts, before you reach the main menu</li>
+        <li>Finds every music type, music track, and sound descriptor that more than one mod tried to change</li>
+        <li>Reads each mod's version to see what they added or removed</li>
+        <li>Restores missing tracks and sound files so nothing gets lost</li>
+        <li>Respects intentional removals. If a mod specifically removed a track, it stays removed.</li>
+        <li>Done. You play the game normally.</li>
+    </ul>
+
+    <h2>Features</h2>
+    <div class="feature-list">
+        <div class="feature-item">Restores missing music tracks</div>
+        <div class="feature-item">Restores missing sound variants</div>
+        <div class="feature-item">Respects intentional removals</div>
+        <div class="feature-item">Per-type toggles in INI</div>
+        <div class="feature-item">Skip specific mods via INI</div>
+        <div class="feature-item">Skip specific records via INI</div>
+        <div class="feature-item">Detailed optional logging</div>
+        <div class="feature-item">SE + AE + VR support</div>
+        <div class="feature-item">xEdit companion script</div>
+    </div>
+
+    <h2>INI Settings</h2>
+    <p>The config file is at <code>Data/SKSE/Plugins/DynamicMusicAndSounds.ini</code>. If it doesn't exist, it gets created automatically the first time you launch the game.</p>
+
+    <h3 style="color: #9cdcfe; font-size: 13px; margin: 15px 0 8px;">General</h3>
+    <pre>[General]
+;Write detailed per-record info to the log file. Useful for troubleshooting.
+enablelogs = false
+
+;Toggle conflict resolution for each record type independently.
+mergemusictypes = true
+mergemusictracks = true
+mergesounddescriptors = true</pre>
+
+    <h3 style="color: #9cdcfe; font-size: 13px; margin: 15px 0 8px;">Exclusions</h3>
+    <pre>[Exclusions]
+;Comma-separated list of plugin filenames to skip entirely.
+;Example: skipMods = SomePlugin.esp, AnotherMod.esp
+skipMods =
+
+;Comma-separated list of EditorIDs to skip, per record type.
+;Example: skipMusicTypes = MUSExploreCity
+skipMusicTypes =
+skipMusicTracks =
+skipSoundDescriptors =</pre>
+
+    <h2>Settings Reference</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>enablelogs</h3>
+            <p><strong>Default:</strong> <code>false</code><br>Logs every record that was checked and every track or sound file that was added or restored. Helpful if you want to see exactly what changed, but makes startup slower. Leave it off unless you're curious or troubleshooting.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergemusictypes</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Toggle for music type (MUSC) conflict resolution. These are the records that control which tracks play during exploration, combat, towns, etc.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergemusictracks</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Toggle for music track (MUST) conflict resolution. Only palette-type tracks are processed, since they are the only type with mergeable sub-track lists.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergesounddescriptors</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Toggle for sound descriptor (SNDR) conflict resolution. Only standard sound definitions are processed, since they are the only type with mergeable sound file lists.</p>
+        </div>
+        <div class="page-card">
+            <h3>skipMods</h3>
+            <p><strong>Default:</strong> <code>(empty)</code><br>Comma-separated list of plugin filenames (e.g. <code>SomePlugin.esp</code>). Any mod in this list will be completely ignored. Its additions won't be restored and its removals won't be tracked.</p>
+        </div>
+        <div class="page-card">
+            <h3>skipMusicTypes / skipMusicTracks / skipSoundDescriptors</h3>
+            <p><strong>Default:</strong> <code>(empty)</code><br>Comma-separated EditorIDs. Records matching these IDs won't be touched, regardless of how many mods edit them.</p>
+        </div>
+    </div>
+
+    <h2 id="xedit">xEdit Companion Script</h2>
+    <p>The plugin comes with an xEdit (SSEEdit) script called <code>ST - Dynamic Music and Sounds.pas</code>. It has two modes:</p>
+    <ul>
+        <li><strong>Info Mode:</strong> Scans your load order for music and sound problems. Finds broken references, null entries, duplicate tracks, and empty lists across music types, music tracks, and sound descriptors. Run this to check your load order for issues before playing.</li>
+        <li><strong>Patch Mode:</strong> Creates a patch ESP that resolves music and sound conflicts the same way the SKSE plugin does at runtime. You can toggle which record types to process (music types, music tracks, sound descriptors) and exclude specific mods via a blacklist file.</li>
+    </ul>
+
+    <div class="info-box">
+        <p><strong>Tip:</strong> You can use the xEdit script and the SKSE plugin together. The script builds a patch file, and the plugin catches anything the patch missed. They don't conflict.</p>
+    </div>
+
+    <h2>Compatibility</h2>
+    <ul>
+        <li><strong>Wrye Bash / Mator Smash:</strong> Works fine alongside them. They patch things ahead of time, this catches whatever they missed at startup.</li>
+        <li><strong>Dynamic Leveled Lists / Dynamic Container Loot / Dynamic Form Lists / Dynamic NPCs:</strong> Companion mods. Each one handles a different record type. They do not interfere with each other.</li>
+        <li><strong>Load order:</strong> Doesn't matter. Safe with any load order. It reads your mods, it doesn't change them on disk.</li>
+        <li><strong>Other SKSE plugins:</strong> No conflicts. This plugin doesn't hook into any game functions.</li>
+    </ul>
+
+    <h2>Credits</h2>
+    <ul>
+        <li><strong>CommonLibSSE-NG</strong> for making SKSE plugins possible across SE, AE, and VR</li>
+        <li><strong>SKSE Team</strong> for the Script Extender that none of this works without</li>
+        <li><strong>powerof3</strong> for CLib utility library</li>
+        <li><strong>herumi</strong> for xbyak (JIT assembler)</li>
+        <li><strong>brofield</strong> for SimpleINI (config file parsing)</li>
+    </ul>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this wiki from your Nexus description or documentation:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/dynamicmusicandsounds/]Dynamic Music and Sounds Wiki[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[Dynamic Music and Sounds Wiki](https://supertron42.github.io/wiki/dynamicmusicandsounds/)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

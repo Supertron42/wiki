@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Container Loot - SKSE Plugin for Container Merge | Skyrim SE Mod</title>
+<meta name="description" content="Dynamic Container Loot is an SKSE plugin for Skyrim SE that consolidates container loot from all mods at runtime, preventing lost items from mod conflicts.">
+<meta name="keywords" content="Skyrim mod, SKSE plugin, container loot, mod conflicts, container merge, Skyrim SE, Skyrim AE, modding, loot consolidation">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamiccontainerloot/">
+
+<!-- Open Graph for social sharing -->
+<meta property="og:title" content="Dynamic Container Loot - Skyrim SE SKSE Plugin">
+<meta property="og:description" content="SKSE plugin that consolidates container loot from all mods at runtime. No patches needed, no lost items.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="thumbnail.webp">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dynamic Container Loot",
+    "applicationCategory": "Game Mod",
+    "operatingSystem": "Windows",
+    "description": "An SKSE plugin that consolidates container loot from all mods at runtime for Skyrim Special Edition, preventing items from being lost due to mod conflicts.",
+    "author": {
+        "@type": "Person",
+        "name": "Supertron"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #00BCD4;
+    color: white;
+    font-weight: bold;
+    border-left-color: #00BCD4;
+}
+#nav a.highlight:hover {
+    background: #00969D;
+    border-left-color: #00969D;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #4ec9b0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "\2713";
+    color: #00BCD4;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #00BCD4;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Page Links */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #00BCD4;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="./" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
+    <a href="technical.html">Details for Nerds</a>
+
+    <h3>Companion Mods</h3>
+    <a href="../dynamicleveledlists/">Dynamic Leveled Lists</a>
+    <a href="../dynamicnpcs/">Dynamic NPCs</a>
+    <a href="../dynamicformlists/">Dynamic Form Lists</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 10px;">
+        <img src="thumbnail.webp" alt="Dynamic Container Loot" style="width: 80px; height: 45px; border-radius: 4px; object-fit: cover;">
+        <h1 style="margin: 0; border: none; padding: 0;">Dynamic Container Loot Wiki</h1>
+    </div>
+    <p>When multiple mods change the same container (barrel, chest, sack, etc.), Skyrim only keeps the last mod's version and throws away everyone else's changes. This plugin fixes that. It finds the missing items and puts them back. Install it, forget about it.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install with your mod manager, launch the game. That's it. Check <code>Data/SKSE/Plugins/DynamicContainerLoot.log</code> if you want to see what it did.</p>
+    </div>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
+        <li>SKSE64 (matching your game version)</li>
+        <li>Address Library for SKSE Plugins</li>
+    </ul>
+
+    <h2>What This Mod Does</h2>
+    <p>When multiple mods change the same container, Skyrim only keeps the last mod's version. Every other mod's items are silently deleted. This plugin checks every mod that edited each container, figures out what was added or removed, and merges it all together at startup. Think of it like an automatic Bashed Patch for containers.</p>
+    <ul>
+        <li><strong>Restores lost items.</strong> Mod A puts apples in a barrel. Mod B also edits that barrel but doesn't include the apples. Normally the apples are gone. This plugin adds them back.</li>
+        <li><strong>Respects removals.</strong> If a mod specifically removed an item from a container, it stays removed. The plugin won't add it back.</li>
+        <li><strong>Keeps count changes.</strong> If a barrel originally had 3 bread and a mod changed it to 1, you get 1. The mod's choice is honored, unless another mod also changed it, in which case the last mod in your load order takes priority.</li>
+        <li><strong>Every mod gets a say.</strong> Skyrim normally only listens to one mod per container. This plugin makes sure all of them are heard. Nothing is thrown away unless a mod intended it.</li>
+    </ul>
+
+    <h2>What This Mod Does NOT Do</h2>
+    <div class="warn-box">
+        <p>This comes up a lot, so let's be clear:</p>
+    </div>
+    <ul>
+        <li><strong>This is NOT SPID.</strong> It does not distribute items to NPCs or containers. It only restores items that were already supposed to be there but got lost due to mod conflicts.</li>
+        <li><strong>It does NOT randomly add items.</strong> Every item it adds was intentionally placed by one of your mods. Skyrim just threw it away because another mod edited the same container.</li>
+        <li><strong>It does NOT replace Wrye Bash or Mator Smash.</strong> Those tools build patches ahead of time. This does the same job automatically at startup for anything they missed.</li>
+        <li><strong>It does NOT touch leveled lists, NPCs, or anything else.</strong> Containers only.</li>
+        <li><strong>It does NOT "smash" records together blindly.</strong> It compares each mod's changes against the original and only carries over what each mod specifically added or removed. It's a smart merge, not a dumb copy-paste.</li>
+        <li><strong>It does NOT create dirty edits (ITMs).</strong> Nothing is written to disk. All merging happens in memory while the game loads. Your plugin files are never touched.</li>
+        <li><strong>It does NOT create circular references.</strong> It never invents new items or new connections. Every item it restores was already placed by one of your mods. It's just putting back what Skyrim threw away.</li>
+    </ul>
+
+    <h2>The Problem</h2>
+    <p>Skyrim has a simple rule: if two mods edit the same thing, the last one in your load order wins and the other gets thrown out. So if Mod A adds apples to a barrel and Mod B adds cheese to the same barrel, you only get the cheese. The apples are gone. No warning, no error. Just silently deleted.</p>
+    <p>The more mods you have, the worse this gets. Hundreds of items across your load order can just vanish.</p>
+
+    <h2>The Fix</h2>
+    <p>Dynamic Container Loot looks at every mod that touched each container, figures out what each one added or removed, and merges all those changes together. The result is the same as if you had manually built a compatibility patch for every container conflict in your load order, except you don't have to do anything.</p>
+
+    <h2>How It Works (Simple Version)</h2>
+    <ul>
+        <li>Runs once when the game starts, before you reach the main menu</li>
+        <li>Finds every container that more than two mods tried to change</li>
+        <li>Reads each mod's version of that container to see what items they added or removed</li>
+        <li>Merges all the changes together so nothing gets lost</li>
+        <li>Done. You play the game normally.</li>
+    </ul>
+
+    <h2>Key Features</h2>
+    <div class="feature-list">
+        <div class="feature-item">Fully automatic</div>
+        <div class="feature-item">No ESP required</div>
+        <div class="feature-item">Works with all mods</div>
+        <div class="feature-item">SE + AE + VR support</div>
+        <div class="feature-item">Added items restored</div>
+        <div class="feature-item">Removed items respected</div>
+        <div class="feature-item">Item count changes kept</div>
+        <div class="feature-item">Winning mod preserved</div>
+    </div>
+
+    <h2>INI Settings</h2>
+    <p>The config file is at <code>Data/SKSE/Plugins/DynamicContainerLoot.ini</code>. If it doesn't exist, it gets created automatically the first time you launch the game.</p>
+    <pre>[General]
+;Enable detailed merge logging (true/false)
+enablelogs = false</pre>
+
+    <h2>Settings Reference</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>enablelogs</h3>
+            <p><strong>Default:</strong> <code>false</code><br>Logs every single item that was added, removed, or changed for each container. Helpful if you want to see exactly what was merged, but it makes startup slower. Leave it off unless you're curious or troubleshooting.</p>
+        </div>
+    </div>
+
+    <h2>Reading the Log</h2>
+    <p>The log at <code>Data/SKSE/Plugins/DynamicContainerLoot.log</code> always shows a summary of what happened:</p>
+    <pre>=== DynamicContainerLoot: Merge complete ===
+  Total containers: 1247
+  With overrides (base + winner only): 89
+  With conflicts (3+ sources): 34
+  Actually merged: 12
+  Total items added: 27
+  Total items removed: 3
+  Total items count changed: 2</pre>
+
+    <p>If you turn on <code>enablelogs</code>, you also get a detailed breakdown for each container:</p>
+    <pre>
+  BarrelFood01 [CONT:0001003E]
+    Sources: Skyrim.esm, FoodExpansion.esp, LootOverhaul.esp
+    -- Changes --
+      + [ALCH] Apple x2 [00064B2F] (added by FoodExpansion.esp)
+      + [ALCH] SweetRoll x1 [00064B40] (added by FoodExpansion.esp)
+    -- Carried forward --
+      . [ALCH] Bread x1 [00064B30]
+    Result: +2 added, -0 removed, ~0 count changed
+    -- Final state --
+      * [ALCH] Bread x1 [00064B30]
+      * [ALCH] Apple x2 [00064B2F]
+      * [ALCH] SweetRoll x1 [00064B40]
+    (3 items total)</pre>
+
+    <div class="warn-box">
+        <p><strong>Heads up:</strong> Detailed logging makes startup noticeably slower because it has to look up the name of every item. Keep it off for normal play.</p>
+    </div>
+
+    <h2>Compatibility</h2>
+    <ul>
+        <li><strong>Wrye Bash / Mator Smash:</strong> Works fine alongside them. They patch things ahead of time, this catches whatever they missed at startup.</li>
+        <li><strong>Load order:</strong> Doesn't matter. Safe with any load order. It just reads your mods, it doesn't change them.</li>
+        <li><strong>Other SKSE plugins:</strong> No conflicts. This plugin doesn't hook into any game functions, so it won't fight with anything.</li>
+    </ul>
+
+    <h2>Credits</h2>
+    <ul>
+        <li><strong>CommonLibSSE-NG</strong> for making SKSE plugins possible across SE, AE, and VR</li>
+        <li><strong>SKSE Team</strong> for the Script Extender that none of this works without</li>
+        <li><strong>powerof3</strong> for CLib utility library</li>
+        <li><strong>herumi</strong> for xbyak (JIT assembler)</li>
+        <li><strong>brofield</strong> for SimpleINI (config file parsing)</li>
+    </ul>
+
+    <div id="converter-section" style="margin-top: 40px; border-top: 2px solid #3c3c3c; padding-top: 20px;">
+        <h2>Export Wiki</h2>
+        <p>Copy the wiki content as BBCode (for Nexus mod pages) or Markdown.</p>
+        <div style="display: flex; gap: 10px; margin: 15px 0;">
+            <button id="btn-bb" onclick="showConverted('bb')" style="background: #00BCD4; color: #fff; border: none; border-radius: 4px; padding: 8px 20px; font-size: 13px; cursor: pointer; font-weight: bold;">BBCode</button>
+            <button id="btn-md" onclick="showConverted('md')" style="background: #569cd6; color: #fff; border: none; border-radius: 4px; padding: 8px 20px; font-size: 13px; cursor: pointer; font-weight: bold;">Markdown</button>
+        </div>
+        <div id="conv-out" style="display: none; position: relative;">
+            <textarea id="conv-text" readonly style="width: 100%; height: 400px; background: #1a1a2e; border: 1px solid #3c3c3c; border-radius: 4px; padding: 12px; color: #d4d4d4; font-family: Consolas, monospace; font-size: 12px; resize: vertical;"></textarea>
+            <button onclick="copyConverted()" id="conv-copy" style="position: absolute; top: 8px; right: 24px; background: #00BCD4; color: #fff; border: none; border-radius: 3px; padding: 6px 14px; font-size: 12px; cursor: pointer;">Copy</button>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+<script>
+// -- Palette (matches the wiki's dark theme) --
+const C = {
+    title:   '#4ec9b0',  // teal — main headings
+    heading: '#dcdcaa',  // gold — section headings
+    accent:  '#00BCD4',  // cyan — highlights, checkmarks
+    info:    '#9cdcfe',  // light blue — info text
+    warn:    '#DA8E35',  // amber — warnings
+    code:    '#ce9178',  // salmon — inline code
+    body:    '#d4d4d4',  // light grey — body text
+};
+
+function getInline(el, fmt) {
+    let r = '';
+    for (const n of el.childNodes) {
+        if (n.nodeType === 3) {
+            r += n.textContent;
+        } else if (n.nodeType === 1) {
+            const t = n.tagName.toLowerCase();
+            const inner = getInline(n, fmt);
+            if (t === 'code') {
+                r += fmt === 'bb'
+                    ? '[font=Courier New][color=' + C.code + ']' + inner + '[/color][/font]'
+                    : '`' + inner + '`';
+            } else if (t === 'strong' || t === 'b') {
+                r += fmt === 'bb' ? '[b]' + inner + '[/b]' : '**' + inner + '**';
+            } else if (t === 'em' || t === 'i') {
+                r += fmt === 'bb' ? '[i]' + inner + '[/i]' : '*' + inner + '*';
+            } else if (t === 'br') {
+                r += '\n';
+            } else {
+                r += inner;
+            }
+        }
+    }
+    return r;
+}
+
+function convertContent(fmt) {
+    const content = document.getElementById('content');
+    const children = Array.from(content.children);
+    let out = '';
+    const bb = fmt === 'bb';
+
+    for (let i = 0; i < children.length; i++) {
+        const el = children[i];
+        const tag = el.tagName.toLowerCase();
+
+        if (el.id === 'converter-section') continue;
+        if (el.querySelector && el.querySelector('a[href*="ko-fi"]')) continue;
+
+        // ── Title (first element with h1) ──
+        if (i === 0 && el.querySelector && el.querySelector('h1')) {
+            const title = el.querySelector('h1').textContent.trim();
+            if (bb) {
+                out += '[center][size=6][b][color=' + C.title + ']' + title + '[/color][/b][/size]\n';
+                out += '[color=' + C.accent + ']━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/color][/center]\n\n';
+            } else {
+                out += '# ' + title + '\n\n---\n\n';
+            }
+            continue;
+        }
+
+        // ── H1 ──
+        if (tag === 'h1') {
+            const text = getInline(el, fmt);
+            if (bb) {
+                out += '[line]\n[size=5][b][color=' + C.title + ']' + text + '[/color][/b][/size]\n\n';
+            } else {
+                out += '---\n\n# ' + text + '\n\n';
+            }
+            continue;
+        }
+
+        // ── H2 ──
+        if (tag === 'h2') {
+            const text = getInline(el, fmt);
+            if (bb) {
+                out += '\n[line]\n[size=4][b][color=' + C.heading + ']' + text + '[/color][/b][/size]\n\n';
+            } else {
+                out += '\n---\n\n## ' + text + '\n\n';
+            }
+            continue;
+        }
+
+        // ── Info box ──
+        if (el.classList.contains('info-box')) {
+            const text = getInline(el.querySelector('p'), fmt);
+            if (bb) {
+                out += '[quote][color=' + C.info + ']' + text + '[/color][/quote]\n\n';
+            } else {
+                out += '> ' + text + '\n\n';
+            }
+            continue;
+        }
+
+        // ── Warning box ──
+        if (el.classList.contains('warn-box')) {
+            const text = getInline(el.querySelector('p'), fmt);
+            if (bb) {
+                out += '[quote][color=' + C.warn + ']' + text + '[/color][/quote]\n\n';
+            } else {
+                out += '> **Warning:** ' + text + '\n\n';
+            }
+            continue;
+        }
+
+        // ── Feature grid ──
+        if (el.classList.contains('feature-list')) {
+            if (bb) {
+                out += '[list]\n';
+                el.querySelectorAll('.feature-item').forEach(item => {
+                    out += '[*][color=' + C.accent + ']\u2713[/color] ' + item.textContent.trim() + '\n';
+                });
+                out += '[/list]\n\n';
+            } else {
+                el.querySelectorAll('.feature-item').forEach(item => {
+                    out += '- \u2705 ' + item.textContent.trim() + '\n';
+                });
+                out += '\n';
+            }
+            continue;
+        }
+
+        // ── Settings cards ──
+        if (el.classList.contains('page-grid')) {
+            el.querySelectorAll('.page-card').forEach(card => {
+                const h3 = card.querySelector('h3');
+                const p = card.querySelector('p');
+                if (h3 && p) {
+                    const name = h3.textContent.trim();
+                    const desc = getInline(p, fmt);
+                    if (bb) {
+                        out += '[color=' + C.title + '][b]' + name + '[/b][/color]\n' + desc + '\n\n';
+                    } else {
+                        out += '### `' + name + '`\n' + desc + '\n\n';
+                    }
+                }
+            });
+            continue;
+        }
+
+        // ── Paragraph ──
+        if (tag === 'p') {
+            out += getInline(el, fmt) + '\n\n';
+            continue;
+        }
+
+        // ── List ──
+        if (tag === 'ul') {
+            if (bb) {
+                out += '[list]\n';
+                el.querySelectorAll(':scope > li').forEach(li => {
+                    out += '[*]' + getInline(li, fmt) + '\n';
+                });
+                out += '[/list]\n\n';
+            } else {
+                el.querySelectorAll(':scope > li').forEach(li => {
+                    out += '- ' + getInline(li, fmt) + '\n';
+                });
+                out += '\n';
+            }
+            continue;
+        }
+
+        // ── Code block ──
+        if (tag === 'pre') {
+            const code = el.textContent.trim();
+            if (bb) {
+                out += '[code]' + code + '[/code]\n\n';
+            } else {
+                out += '```\n' + code + '\n```\n\n';
+            }
+            continue;
+        }
+    }
+
+    return out.trim();
+}
+
+function showConverted(fmt) {
+    document.getElementById('conv-text').value = convertContent(fmt);
+    document.getElementById('conv-out').style.display = 'block';
+    document.getElementById('btn-bb').style.opacity = fmt === 'bb' ? '1' : '0.5';
+    document.getElementById('btn-md').style.opacity = fmt === 'md' ? '1' : '0.5';
+}
+
+function copyConverted() {
+    const ta = document.getElementById('conv-text');
+    ta.select();
+    navigator.clipboard.writeText(ta.value).then(() => {
+        const btn = document.getElementById('conv-copy');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1500);
+    });
+}
+</script>
+</body>
+</html>

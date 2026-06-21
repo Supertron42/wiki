@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Logs - Armor Normalizer | Version History</title>
+<meta name="description" content="Version history and release notes for Armor Normalizer SKSE plugin.">
+<meta name="keywords" content="Armor Normalizer changelog, version history, release notes">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/armornormalizer/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #43A047;
+    color: white;
+    font-weight: bold;
+    border-left-color: #43A047;
+}
+#nav a.highlight:hover {
+    background: #2E7D32;
+    border-left-color: #2E7D32;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #43A047;
+    border-bottom: 2px solid #43A047;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+
+/* Spoiler / BB Code / Markdown buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #43A047;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #2E7D32;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #43A047;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+
+    <h3>Related Mods</h3>
+    <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+    <a href="../dynamicnpcs/wiki.html">Dynamic NPCs</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for Armor Normalizer.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.1.0 -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.1.0">Version 0.1.0 - Initial Release</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Automatic stat normalization.</b> Sets modded armor protection, gold value, and weight to vanilla standards based on detected material tier.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Material detection from crafting recipes.</b> Identifies each armor's material by analyzing which ingots its crafting recipe uses.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Keyword fallback detection.</b> If an armor has no crafting recipe, material keywords are used instead.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Enchanted armor support.</b> Enchanted items get their base stats normalized while keeping the enchantment value bonus.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Crafting recipe normalization.</b> Adjusts ingot and leather strip counts to match vanilla amounts without removing special ingredients.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Per-mod crafting blacklist.</b> Block any mod from adding items to your crafting menus.</li>
+        <li><span class="tag tag-new">NEW</span> <b>World distribution.</b> Adds modded armors to merchant shops and loot containers at level-appropriate tiers.</li>
+        <li><span class="tag tag-new">NEW</span> <b>MCM configuration menu.</b> Five pages of settings with multiplier sliders, feature toggles, per-mod blacklist, and live statistics.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Works on all three Skyrim editions.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb010')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md010')">Markdown</button>
+    </div>
+    <div id="bb010" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode010" readonly>[size=4][b][color=#dcdcaa]Version 0.1.0 - Initial Release[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Automatic stat normalization.[/b] Sets modded armor protection, gold value, and weight to vanilla standards based on detected material tier.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Material detection from crafting recipes.[/b] Identifies each armor's material by analyzing which ingots its crafting recipe uses.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Keyword fallback detection.[/b] If an armor has no crafting recipe, material keywords are used instead.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Enchanted armor support.[/b] Enchanted items get their base stats normalized while keeping the enchantment value bonus.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Crafting recipe normalization.[/b] Adjusts ingot and leather strip counts to match vanilla amounts without removing special ingredients.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Per-mod crafting blacklist.[/b] Block any mod from adding items to your crafting menus.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]World distribution.[/b] Adds modded armors to merchant shops and loot containers at level-appropriate tiers.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]MCM configuration menu.[/b] Five pages of settings with multiplier sliders, feature toggles, per-mod blacklist, and live statistics.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Works on all three Skyrim editions.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode010')">Copy to Clipboard</button>
+    </div>
+    <div id="md010" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown010" readonly># Version 0.1.0 - Initial Release
+
+## Features
+- **NEW** **Automatic stat normalization.** Sets modded armor protection, gold value, and weight to vanilla standards based on detected material tier.
+- **NEW** **Material detection from crafting recipes.** Identifies each armor's material by analyzing which ingots its crafting recipe uses.
+- **NEW** **Keyword fallback detection.** If an armor has no crafting recipe, material keywords are used instead.
+- **NEW** **Enchanted armor support.** Enchanted items get their base stats normalized while keeping the enchantment value bonus.
+- **NEW** **Crafting recipe normalization.** Adjusts ingot and leather strip counts to match vanilla amounts without removing special ingredients.
+- **NEW** **Per-mod crafting blacklist.** Block any mod from adding items to your crafting menus.
+- **NEW** **World distribution.** Adds modded armors to merchant shops and loot containers at level-appropriate tiers.
+- **NEW** **MCM configuration menu.** Five pages of settings with multiplier sliders, feature toggles, per-mod blacklist, and live statistics.
+- **NEW** **SE, AE, and VR support.** Works on all three Skyrim editions.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown010')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

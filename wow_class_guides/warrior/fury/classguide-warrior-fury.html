@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+AI-MANIFEST  (for Claude / AI / IDE only - invisible to website users)
+This guide FOLLOWS the canonical reference template:
+    warrior/prot/classguide-warrior-prot.html
+Keep all features below in sync with that template. Grep the GREP anchors to
+find each feature's code. When you change a shared feature, update it in the
+template first, then back-port here.
+--------------------------------------------------------------------------------
+FILE: warrior/fury/classguide-warrior-fury.html
+NAMING: classguide-<class>-<spec>.html  in  <class>/<spec>/
+CANONICAL URL: https://supertron42.github.io/wiki/wow_class_guides/warrior/fury/classguide-warrior-fury.html
+ACCENT COLOR: Warrior = #C79C6E (tan). Secondary/active accent = #4ec9b0 (teal).
+
+REQUIRED FEATURES (must match the template):
+ 1. Wowhead tooltips         GREP: whTooltips            (<head> script block)
+ 2. Fixed left nav (#nav)    GREP: id="nav"              200px, position:fixed
+ 3. Collapsible nav sections GREP: nav-section           h3 click toggles .open
+ 4. Scrollspy nav highlight  GREP: Scrollspy             highlights/expands the
+       section in view, collapses others, scrolls active link into view.
+       CSS: #nav h3.active-section + a.active  |  JS: the "Scrollspy:" IIFE.
+ 5. Mobile nav hamburger     GREP: nav-toggle            + .nav-backdrop, toggleNav()
+ 6. Source filter bar        GREP: filter-bar            buttons call filterGear()
+ 7. Gear tables              GREP: gear-table            cols: Rank/Item/Source/Notes
+       Shrink-to-fit: table-layout/width auto, td:last-child max-width 360px wraps
+       long notes. Do NOT add a JS column-width sync (removed - it bloated cells).
+ 8. Horizontal table-wrap    GREP: table-wrap            JS auto-wraps every table;
+       overflow-x visible on desktop (so sticky headers pin to page), auto on phones.
+ 9. Sticky table headers     GREP: Sticky headers        thead th position:sticky
+       top:0; reverts to static on phones (the wrap owns scrolling there).
+10. Source type icons        GREP: boss-icon             see icon table below
+11. Heroic span             GREP: class="heroic"        never "(H)"
+12. Info/Tip/Warn boxes      GREP: info-box / tip-box / warn-box
+13. Copy-link buttons        GREP: spoiler-btn           BB Code + Markdown, copyText()
+14. "My Other Projects" btn  GREP: My Other Projects     absolute-positioned nav footer
+
+DATA-DRIVEN ATTRIBUTES (keep these exact, the JS depends on them):
+ - Item links:   <a href="https://www.wowhead.com/tbc/item=XXXXX" data-wh-icon-size="small">Name</a>
+ - Filterable row: <tr data-source="quest|badge|heroic|dungeon|crafted|rep|pvp|drop|worldboss">...</tr>
+ - filterGear() shows rows whose data-source matches the clicked button (or 'all').
+ - Only PRE-RAID rows carry data-source (the filter bar lives in that section).
+
+SOURCE TYPE ICONS (prefix every Source cell):
+   raid/world boss 🐉 / dungeon boss 💀 .boss-icon | quest ❗ .quest-icon (yellow "!")
+   badge 🎖️ .badge-icon | rep 📜 .rep-icon | crafted 🔨 .craft-icon
+   pvp ⚔️ .pvp-icon | world drop 🌍 .drop-icon
+
+SECTION ORDER (h1 = top-level, h2 = sub; ids drive the nav + scrollspy):
+   Overview > Pre-Raid BiS (per-slot h2: head..ranged) > Raid Phases (Phase 1
+   detailed per-slot; Phase 2-5 placeholders) > Gems > Enchants > Talents >
+   Consumables > Reputation > Useful Links > Link to This Page.
+   Every nav link href="#id" MUST match an element id in #content.
+
+SCRIPTS LIVE IN ONE <script> BLOCK NEAR </body>, in this order:
+   toggleSpoiler, copyText, filterGear, table-wrap IIFE, nav-collapse IIFE,
+   toggleNav + mobile-close IIFE, Scrollspy IIFE.
+================================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoW Classic Anniversary TBC - Warrior Gear Sets Guide</title>
+<meta name="description" content="Personal guide for building warrior gear sets in WoW Classic Anniversary Edition TBC. Pre-raid BiS, phase upgrades, gems, enchants, and more.">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/wow_class_guides/warrior/fury/classguide-warrior-fury.html">
+
+<!-- Wowhead Tooltips -->
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, iconSize: 'small'};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav .nav-grouplabel {
+    color: #4ec9b0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 10px 15px 4px 15px;
+}
+#nav h3 {
+    color: #C79C6E;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 30px 5px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav h3:hover {
+    color: #e6b78a;
+}
+#nav h3::after {
+    content: '\25B8';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.15s ease;
+    font-size: 10px;
+    color: #C79C6E;
+}
+#nav h3.open::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+/* Scrollspy: highlight the section header you're currently reading */
+#nav h3.active-section {
+    color: #4ec9b0;
+}
+#nav h3.active-section::after {
+    color: #4ec9b0;
+}
+#nav .nav-section {
+    display: none;
+    padding-bottom: 4px;
+}
+#nav .nav-section.open {
+    display: block;
+}
+/* Per-phase sub-group: the slot links under a phase only show when that phase
+   is the one in view, so phases don't blend into one long list. */
+#nav .nav-subsection {
+    display: none;
+}
+#nav .nav-subsection.open {
+    display: block;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #C79C6E;
+}
+#nav a.active {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+/* Nested sub-items (e.g. per-slot links under a raid phase): deeper indent,
+   dimmer + smaller text, and a vertical guide line so they read as children
+   of the phase above instead of blending into the phase-level links. */
+#nav a.nav-sub {
+    padding-left: 40px;
+    font-size: 11px;
+    color: #9d9d9d;
+    position: relative;
+}
+#nav a.nav-sub:hover {
+    color: #fff;
+}
+#nav a.nav-sub::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #3c3c3c;
+}
+#nav a.nav-sub.active::before {
+    border-left-color: #4ec9b0;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #C79C6E;
+    border-bottom: 2px solid #C79C6E;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+/* Breathing room when jumping to a section via nav/scrollspy anchors */
+h1[id], h2[id] {
+    scroll-margin-top: 16px;
+}
+h3 {
+    font-size: 14px;
+    color: #4ec9b0;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+a {
+    color: #569cd6;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #C79C6E;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Tip Box */
+.tip-box {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Gem & Enchant per-slot info */
+.gem-enchant-info {
+    background: #1f1f23;
+    border-left: 2px solid #C79C6E;
+    padding: 8px 12px;
+    margin: 8px 0 4px 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 12px;
+    color: #c0c0c0;
+}
+.gem-enchant-info strong { color: #C79C6E; }
+.gem-enchant-info em { color: #9d9d9d; font-style: italic; }
+.socket-red { color: #ff5050; font-weight: bold; }
+.socket-yellow { color: #ffd700; font-weight: bold; }
+.socket-blue { color: #5599ff; font-weight: bold; }
+.socket-meta { color: #d49aff; font-weight: bold; }
+
+/* Gear Table */
+.gear-table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12px;
+    table-layout: auto;
+}
+.gear-table th {
+    background: #2d2d2d;
+    color: #C79C6E;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    /* Sticky headers: stay pinned while scrolling long tables */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.gear-table td {
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    vertical-align: top;
+    overflow-wrap: break-word;
+}
+/* Shrink-to-fit: tables size to their own content. Cap the last column (Notes)
+   so a long note wraps instead of stretching the whole table wide. */
+.gear-table td:last-child {
+    max-width: 360px;
+}
+/* Keep short labels and badge/honor counts on one line */
+.gear-table td.slot-label,
+.gear-table td:first-child {
+    white-space: nowrap;
+}
+.gear-table tr:nth-child(even) {
+    background: #252526;
+}
+.gear-table tr:hover {
+    background: #2a2d2e;
+}
+
+/* Wowhead link overrides */
+.gear-table a[href*="wowhead.com"] {
+    text-decoration: none;
+    font-weight: 500;
+}
+.gear-table a[href*="wowhead.com"]:hover {
+    text-decoration: underline;
+}
+
+/* Stat highlight */
+.stat { color: #4ec9b0; font-weight: bold; }
+.slot-label { color: #dcdcaa; font-weight: bold; }
+
+/* Quest icon */
+.quest-icon {
+    color: #FFD100;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 3px;
+}
+
+/* Source type icons */
+.boss-icon, .badge-icon, .rep-icon, .craft-icon, .pvp-icon, .drop-icon {
+    margin-right: 3px;
+    font-size: 12px;
+}
+
+/* Heroic tag */
+.heroic {
+    color: #ff6600;
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(255, 102, 0, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 15px 0;
+    padding: 10px 12px;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    align-items: center;
+}
+.filter-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 2px solid transparent;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: all 0.15s;
+}
+.filter-btn:hover {
+    background: #4a4a4a;
+}
+.filter-btn.active {
+    border-color: #C79C6E;
+    background: #2a2d2e;
+    color: #fff;
+}
+.filter-label {
+    color: #9d9d9d;
+    font-size: 11px;
+    padding: 4px 0;
+    margin-right: 4px;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #C79C6E;
+    color: #1e1e1e;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #b8895e;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Scroll-wrapper around tables so wide tables don't bleed off the viewport */
+.table-wrap {
+    width: 100%;
+    max-width: 100%;
+    /* visible on desktop so sticky table headers can pin to the page scroll;
+       switched to auto on phones (media query below) for horizontal scroll */
+    overflow-x: visible;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+}
+.table-wrap .gear-table {
+    margin: 0;
+}
+
+/* Mobile nav hamburger + backdrop (hidden on desktop) */
+.nav-toggle {
+    display: none;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1001;
+    background: #2d2d2d;
+    color: #C79C6E;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+.nav-toggle:hover { background: #3c3c3c; }
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+.nav-backdrop.show { display: block; }
+
+/* Low-res monitors / small laptops: tighten padding so wide tables fit */
+@media (max-width: 1100px) {
+    #content { padding: 16px 18px; }
+    #nav { width: 180px; min-width: 180px; }
+    #content { margin-left: 180px; }
+}
+
+/* Tablet / phone */
+@media (max-width: 768px) {
+    body {
+        display: block;
+        height: auto;
+    }
+    .nav-toggle { display: block; }
+    #nav {
+        display: block;
+        width: 240px;
+        min-width: 240px;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+        z-index: 999;
+    }
+    #nav.open { transform: translateX(0); }
+    #content {
+        margin-left: 0;
+        padding: 48px 12px 20px;
+    }
+    h1 { font-size: 19px; margin: 22px 0 12px; }
+    h2 { font-size: 15px; margin: 18px 0 8px; }
+    h3 { font-size: 13px; }
+    body { font-size: 12px; }
+    .gear-table { font-size: 11px; }
+    .gear-table th,
+    .gear-table td { padding: 6px 8px; }
+    .gear-table th {
+        font-size: 10px;
+        white-space: normal;
+        /* Drop sticky on phones: the scroll wrapper below owns scrolling here */
+        position: static;
+    }
+    /* Phones: restore horizontal scroll for wide tables */
+    .table-wrap { overflow-x: auto; }
+    /* Allow first column to wrap on phones so tables narrow further */
+    .gear-table td.slot-label,
+    .gear-table td:first-child { white-space: normal; }
+    .filter-bar { padding: 8px; gap: 4px; }
+    .filter-btn { font-size: 10px; padding: 3px 7px; }
+    .filter-label { font-size: 10px; }
+    .info-box, .tip-box, .warn-box { padding: 10px 12px; }
+    .info-box p, .tip-box p, .warn-box p { font-size: 11px; }
+    .bbcode-area { font-size: 10px; height: 60px; }
+    .btn-row { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">&#9776;</button>
+<div class="nav-backdrop" onclick="toggleNav()"></div>
+
+<div id="nav">
+    <div class="nav-grouplabel">Class Guides</div>
+    <a href="../../index.html">&#8592; All Guides</a>
+    <a href="../prot/classguide-warrior-prot.html">Warrior - Protection</a>
+    <a href="classguide-warrior-fury.html" style="color:#4ec9b0;font-weight:bold;">Warrior - Fury</a>
+    <a href="../../mage/frost/classguide-mage-frost.html">Mage - Frost</a>
+
+    <h3>Fury Warrior</h3>
+    <a href="classguide-warrior-fury.html">Guide Home</a>
+    <a href="#overview">Overview</a>
+
+    <h3>Rotation &amp; DPS</h3>
+    <a href="#rotation">Overview</a>
+    <a href="#rotation-priority" class="nav-sub">Single-Target Priority</a>
+    <a href="#rotation-aoe" class="nav-sub">Multi-Target / Cleave</a>
+    <a href="#rotation-cooldowns" class="nav-sub">DPS Cooldowns</a>
+    <a href="#rotation-rage" class="nav-sub">Rage Management</a>
+    <a href="#rotation-buffs" class="nav-sub">Keep These Up</a>
+
+    <h3>Pre-Raid BiS</h3>
+    <a href="#pre-raid-bis">Overview</a>
+    <a href="#slot-head">Head</a>
+    <a href="#slot-neck">Necklace</a>
+    <a href="#slot-shoulder">Shoulder</a>
+    <a href="#slot-back">Back</a>
+    <a href="#slot-chest">Chest</a>
+    <a href="#slot-wrist">Wrist</a>
+    <a href="#slot-hands">Hands</a>
+    <a href="#slot-waist">Waist</a>
+    <a href="#slot-legs">Legs</a>
+    <a href="#slot-feet">Feet</a>
+    <a href="#slot-rings">Rings</a>
+    <a href="#slot-trinkets">Trinkets</a>
+    <a href="#slot-mainhand">Main Hand</a>
+    <a href="#slot-offhand">Off Hand</a>
+    <a href="#slot-ranged">Ranged</a>
+
+    <h3>Badge Priority</h3>
+    <a href="#badges">Spending Order</a>
+
+    <h3>Raid Phases</h3>
+    <a href="#phase1">Phase 1 (Kara/Gruul/Mag)</a>
+    <a href="#phase1-head" class="nav-sub">Head</a>
+    <a href="#phase1-neck" class="nav-sub">Neck</a>
+    <a href="#phase1-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#phase1-back" class="nav-sub">Back</a>
+    <a href="#phase1-chest" class="nav-sub">Chest</a>
+    <a href="#phase1-wrist" class="nav-sub">Wrist</a>
+    <a href="#phase1-hands" class="nav-sub">Hands</a>
+    <a href="#phase1-waist" class="nav-sub">Waist</a>
+    <a href="#phase1-legs" class="nav-sub">Legs</a>
+    <a href="#phase1-feet" class="nav-sub">Feet</a>
+    <a href="#phase1-rings" class="nav-sub">Rings</a>
+    <a href="#phase1-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#phase1-mainhand" class="nav-sub">Main Hand</a>
+    <a href="#phase1-offhand" class="nav-sub">Off Hand</a>
+    <a href="#phase1-ranged" class="nav-sub">Ranged</a>
+    <a href="#phase2">Phase 2 (SSC/TK)</a>
+    <a href="#phase2-head" class="nav-sub">Head</a>
+    <a href="#phase2-neck" class="nav-sub">Neck</a>
+    <a href="#phase2-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#phase2-back" class="nav-sub">Back</a>
+    <a href="#phase2-chest" class="nav-sub">Chest</a>
+    <a href="#phase2-wrist" class="nav-sub">Wrist</a>
+    <a href="#phase2-hands" class="nav-sub">Hands</a>
+    <a href="#phase2-waist" class="nav-sub">Waist</a>
+    <a href="#phase2-legs" class="nav-sub">Legs</a>
+    <a href="#phase2-feet" class="nav-sub">Feet</a>
+    <a href="#phase2-rings" class="nav-sub">Rings</a>
+    <a href="#phase2-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#phase2-mainhand" class="nav-sub">Main Hand</a>
+    <a href="#phase2-offhand" class="nav-sub">Off Hand</a>
+    <a href="#phase2-ranged" class="nav-sub">Ranged</a>
+    <a href="#phase3">Phase 3</a>
+    <a href="#phase4">Phase 4</a>
+    <a href="#phase5">Phase 5</a>
+
+    <h3>Gems</h3>
+    <a href="#gems">Overview</a>
+    <a href="#gems-meta" class="nav-sub">Meta</a>
+    <a href="#gems-red" class="nav-sub">Red Socket</a>
+    <a href="#gems-yellow" class="nav-sub">Yellow Socket</a>
+    <a href="#gems-blue" class="nav-sub">Blue Socket</a>
+
+    <h3>Enchants</h3>
+    <a href="#enchants">Overview</a>
+
+    <h3>Talents</h3>
+    <a href="#talents">Overview</a>
+
+    <h3>Consumables</h3>
+    <a href="#consumables">Overview</a>
+
+    <h3>Raid Buffs</h3>
+    <a href="#raid-buffs">Overview</a>
+    <a href="#class-buffs" class="nav-sub">Class Buffs</a>
+    <a href="#offensive-debuffs" class="nav-sub">Boss Debuffs</a>
+    <a href="#ideal-party" class="nav-sub">Melee Party</a>
+
+    <h3>Quest Strategy</h3>
+    <a href="#quest-strategy">Overview</a>
+    <a href="#quest-fresh70" class="nav-sub">Fresh 70 Gearing</a>
+
+    <h3>Reputation</h3>
+    <a href="#reputation">Overview</a>
+    <a href="#rep-priority" class="nav-sub">DPS Priority</a>
+    <a href="#rep-factions" class="nav-sub">Aldor vs Scryers</a>
+    <a href="#heroic-keys" class="nav-sub">Heroic Keys</a>
+
+    <h3>Resources</h3>
+    <a href="#useful-links">Useful Links</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../../../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0;">WoW Classic Anniversary TBC - Fury Warrior DPS Guide</h1>
+    <p>Your fast track to a top-of-the-meters Fury Warrior in WoW Classic Anniversary (TBC). Pre-raid BiS, per-phase raid upgrades, gems, enchants, consumables, talents, and the max-DPS rotation, with every pick ranked by consensus across the major guides and checked against live item stats. Hover any item, boss, or ability for full Wowhead tooltips.</p>
+
+    <!-- ===== OVERVIEW ===== -->
+    <h1 id="overview">Overview</h1>
+    <p>Fury is TBC's premier physical DPS: a dual-wield, rage-fuelled spec that out-scales almost everything as your gear improves, and it brings raid-wide value through <a href="https://www.wowhead.com/tbc/spell=2048">Battle Shout</a>, <a href="https://www.wowhead.com/tbc/spell=25225">Sunder Armor</a>, and <a href="https://www.wowhead.com/tbc/spell=12328">Sweeping Strikes</a> cleave. The whole build is about feeding the rotation and hitting two caps first:</p>
+
+    <div class="tip-box">
+        <p><strong>1. Hit the caps.</strong> Reach the <strong>9% special-hit cap</strong> (~142 Hit Rating, less with Precision talented) so Bloodthirst and Whirlwind stop missing, then push <strong>Expertise</strong> toward 26 to stop bosses dodging. These two unlock the rest of your damage.</p>
+    </div>
+
+    <div class="info-box">
+        <p><strong>2. Then follow the stat priority:</strong> Hit (to cap) &gt; Expertise (toward dodge cap) &gt; Attack Power / Strength &gt; Crit &gt; Haste &gt; Agility. Dual-wielding means a fast off-hand and plenty of Rage to dump.</p>
+    </div>
+
+    <h3>Set Bonuses to Track</h3>
+    <ul>
+        <li><strong>Ragesteel 2-piece</strong> (Blacksmithing crafted) for a strong pre-raid bonus.</li>
+        <li><strong>Warbringer Battlegear 4-piece</strong> (T4) from <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> / <a href="https://www.wowhead.com/tbc/npc=19044">Gruul</a> / <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a>, the Phase 1 raid goal.</li>
+        <li><strong>Destroyer Battlegear 4-piece</strong> (T5) from <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> / <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a>, the Phase 2 goal (nearly tied with high-stat off-pieces).</li>
+    </ul>
+
+    <!-- ===== PRE-RAID BIS ===== -->
+    <!-- ===== ROTATION & DPS ===== -->
+    <h1 id="rotation">Rotation &amp; DPS</h1>
+    <p>Fury damage is a short <strong>priority loop</strong> wrapped around two big instant attacks, with spare Rage dumped into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a>. Cast the highest available ability, then keep auto-attacking. Built from the Icy Veins Fury rotation guide.</p>
+
+    <div class="info-box"><p><strong>The whole rotation in one line:</strong> <a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a> on cooldown &gt; <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> on cooldown &gt; dump spare Rage into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> (use <a href="https://www.wowhead.com/tbc/spell=25236">Execute</a> instead below 20% health). Pool Rage before <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> and trinkets.</p></div>
+
+    <h2 id="rotation-priority">Single-Target Priority</h2>
+    <ol>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a></strong> on cooldown (6 sec). Your highest damage-per-Rage button, scales with Attack Power.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a></strong> on cooldown (10 sec). Hits with both weapons; never let it sit.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a></strong> as your Rage dump. Queue it for your next swing whenever you are above ~60 Rage and Bloodthirst/Whirlwind are not about to come up.</li>
+        <li><strong>Below 20% health (Execute phase):</strong> keep <a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a> and <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> on cooldown, but spend all spare Rage on <a href="https://www.wowhead.com/tbc/spell=25236">Execute</a> instead of <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a>. If you reach 30 Rage between Execute globals, fit in a Bloodthirst.</li>
+    </ol>
+    <div class="warn-box"><p><strong>Do not Rage-cap.</strong> Sitting at 100 Rage is wasted damage. If Bloodthirst and Whirlwind are both on cooldown and you are flush with Rage, get a <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> (or <a href="https://www.wowhead.com/tbc/spell=25236">Execute</a>) out.</p></div>
+
+    <h2 id="rotation-aoe">Multi-Target / Cleave</h2>
+    <ul>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a></strong> on cooldown: it strikes up to 4 nearby enemies with both weapons, your best AoE button.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=25231">Cleave</a></strong> replaces <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> as the Rage dump on packs; it hits a second target.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=12328">Sweeping Strikes</a></strong> before a Whirlwind or Cleave makes your next 5 swings strike an extra target, big burst on 2 to 3 mobs.</li>
+        <li>Keep <a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a> rolling on your primary target throughout.</li>
+    </ul>
+
+    <h2 id="rotation-cooldowns">DPS Cooldowns</h2>
+    <table class="gear-table">
+        <thead><tr><th>Cooldown</th><th>Effect</th><th>When to use</th></tr></thead>
+        <tbody>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a></td><td>+20% damage for 30 sec (also +20% damage taken)</td><td>Your biggest DPS button. Stack with trinkets, potion and Recklessness on cooldown</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=1719">Recklessness</a></td><td>+100% crit for 15 sec, but +20% damage taken and you cannot dodge/parry/block</td><td>On the pull or inside a safe window, ideally lined up with Death Wish</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a></td><td>Stacking Attack Power buff, refreshed by your crits</td><td>Keep it active the whole fight; reapply if it drops off</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a></td><td>Instant Rage plus Rage over time</td><td>Pre-pull and on cooldown to avoid Rage starvation</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box"><p>Add your race CD to the stack: Orcs use <a href="https://www.wowhead.com/tbc/spell=33697">Blood Fury</a>, Trolls use <a href="https://www.wowhead.com/tbc/spell=26297">Berserking</a>. Pop everything together for a burst window, then again on cooldown.</p></div>
+
+    <h2 id="rotation-rage">Rage Management</h2>
+    <ul>
+        <li>Learn the Rage cost of each ability and keep your Rage bar where you can see it.</li>
+        <li>Pool Rage just before big cooldowns (trinkets, <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a>, potion) so the burst window is full of <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> and <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a>.</li>
+        <li>Skipping one <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> or <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> to have Rage ready for a cooldown is usually a damage gain; capping Rage never is.</li>
+        <li>Use <a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a> between pulls so you start each fight with Rage.</li>
+    </ul>
+
+    <h2 id="rotation-buffs">Keep These Up</h2>
+    <ul>
+        <li>Whichever of <a href="https://www.wowhead.com/tbc/spell=2048">Battle Shout</a> or <a href="https://www.wowhead.com/tbc/spell=469">Commanding Shout</a> you are assigned, all fight.</li>
+        <li>Your <a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a> buff (refreshed by crits).</li>
+        <li>Five stacks of <a href="https://www.wowhead.com/tbc/spell=25225">Sunder Armor</a> on the boss (raid responsibility, often shared).</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=25203">Demoralizing Shout</a> if you are asked to help mitigate, and <a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> for kiting or runners.</li>
+    </ul>
+
+    <h1 id="pre-raid-bis">Pre-Raid Best in Slot (Fury)</h1>
+    <p>Gear to target before stepping into <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a>. Items ranked best to easiest to obtain per slot.</p>
+
+    <div class="filter-bar">
+        <span class="filter-label">Filter by source:</span>
+        <button class="filter-btn active" onclick="filterGear('all')">All</button>
+        <button class="filter-btn" onclick="filterGear('badge')">🎖️ Badge</button>
+        <button class="filter-btn" onclick="filterGear('quest')">❗ Quest</button>
+        <button class="filter-btn" onclick="filterGear('heroic')">💀 Heroic</button>
+        <button class="filter-btn" onclick="filterGear('dungeon')">💀 Dungeon</button>
+        <button class="filter-btn" onclick="filterGear('crafted')">🔨 Crafted</button>
+        <button class="filter-btn" onclick="filterGear('rep')">📜 Reputation</button>
+        <button class="filter-btn" onclick="filterGear('pvp')">⚔️ PvP</button>
+        <button class="filter-btn" onclick="filterGear('drop')">🌍 World Drop</button>
+        <button class="filter-btn" onclick="filterGear('worldboss')">🐉 World Boss</button>
+    </div>
+
+
+    <!-- HEAD -->
+    <h2 id="slot-head">Head</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="badge">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=32087" data-wh-icon-size="small">Mask of the Deceiver</a></td>
+                <td><span class="badge-icon">🎖️</span>50 Badge of Justice</td>
+                <td>Wowhead #1 pick - has meta socket</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=31105" data-wh-icon-size="small">Overlord's Helmet of Second Sight</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10645">Teron Gorefiend, I am...</a> (SMV)</td>
+                <td>Best without meta. 3x <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28414" data-wh-icon-size="small">Helm of Assassination</a></td>
+                <td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3848">Arcatraz</a> - <a href="https://www.wowhead.com/tbc/npc=20912">Harbinger Skyriss</a> (16%)</td>
+                <td>Interim pick while farming badges</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28224" data-wh-icon-size="small">Wastewalker Helm</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad</a> - <a href="https://www.wowhead.com/tbc/npc=18096">Epoch Hunter</a> (16%)</td>
+                <td>Meta socket. Pairs with Wastewalker Shoulderpads for 2pc</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23521" data-wh-icon-size="small">Ragesteel Helm</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Use if going for Ragesteel 2pc set bonus</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- NECKLACE -->
+    <h2 id="slot-neck">Necklace</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="badge">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29381" data-wh-icon-size="small">Choker of Vile Intent</a></td>
+                <td><span class="badge-icon">🎖️</span>G'eras - 25 Badge of Justice</td>
+                <td>Reliable to farm</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29349" data-wh-icon-size="small">Adamantine Chain of the Unbroken</a></td>
+                <td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a> (25%)</td>
+                <td>Good if you need hit rating</td>
+            </tr>
+            <tr data-source="rep">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29119" data-wh-icon-size="small">Haramad's Bargain</a></td>
+                <td><span class="rep-icon">📜</span>Consortium - Exalted</td>
+                <td>Warcraft Tavern ranks #2</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=31695" data-wh-icon-size="small">Natasha's Choker</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10724">The Hound-Master</a></td>
+                <td>Free from questing</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- SHOULDER -->
+    <h2 id="slot-shoulder">Shoulder</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30740" data-wh-icon-size="small">Ripfiend Shoulderplates</a></td>
+                <td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td>
+                <td>Extremely rare. 2x <a href="https://www.wowhead.com/tbc/item=24058" data-wh-icon-size="small">Inscribed Noble Topaz</a></td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27797" data-wh-icon-size="small">Wastewalker Shoulderpads</a></td>
+                <td><span class="boss-icon">💀</span>Terokkar Forest - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3790">Auchenai Crypts</a> - <a href="https://www.wowhead.com/tbc/npc=18478">Avatar of the Martyred</a></td>
+                <td>Pairs with Wastewalker Helm for 2pc</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27771" data-wh-icon-size="small">Doomplate Shoulderguards</a></td>
+                <td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3716">Underbog</a> - <a href="https://www.wowhead.com/tbc/npc=17882">The Black Stalker</a></td>
+                <td>2x <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=33173" data-wh-icon-size="small">Ragesteel Shoulders</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing BoE</td>
+                <td>Warcraft Tavern #1 pick. "Equal to T4"</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27434" data-wh-icon-size="small">Mantle of Perenolde</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad</a> - <a href="https://www.wowhead.com/tbc/npc=18096">Epoch Hunter</a></td>
+                <td>New from Warcraft Tavern</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- BACK -->
+    <h2 id="slot-back">Back</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30729" data-wh-icon-size="small">Black-Iron Battlecloak</a></td>
+                <td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td>
+                <td>Extremely rare</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=24259" data-wh-icon-size="small">Vengeance Wrap</a></td>
+                <td><span class="craft-icon">🔨</span>Tailoring (crafted)</td>
+                <td>1x <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a>. Great realistic option</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28371" data-wh-icon-size="small">Netherfury Cape</a></td>
+                <td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3847">Botanica</a> - <a href="https://www.wowhead.com/tbc/npc=17977">Warp Splinter</a> (15%)</td>
+                <td>Good hit rating option</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27892" data-wh-icon-size="small">Cloak of the Inciter</a></td>
+                <td><span class="boss-icon">💀</span>Terokkar Forest - <a href="https://www.wowhead.com/tbc/zone=3789">Shadow Labyrinth</a> - <a href="https://www.wowhead.com/tbc/npc=18667">Blackheart the Inciter</a></td>
+                <td>Easy normal dungeon farm</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- CHEST -->
+    <h2 id="slot-chest">Chest</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30730" data-wh-icon-size="small">Terrorweave Tunic</a></td>
+                <td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td>
+                <td>Extremely rare</td>
+            </tr>
+            <tr data-source="drop">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=31320" data-wh-icon-size="small">Chestguard of Exile</a></td>
+                <td><span class="drop-icon">🌍</span>BoE World Drop (check AH)</td>
+                <td>Can be expensive</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28403" data-wh-icon-size="small">Doomplate Chestguard</a></td>
+                <td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3848">Arcatraz</a> - <a href="https://www.wowhead.com/tbc/npc=20912">Harbinger Skyriss</a></td>
+                <td>3x <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23522" data-wh-icon-size="small">Ragesteel Breastplate</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>2nd best if using Ragesteel 2pc set bonus</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28484" data-wh-icon-size="small">Bulwark of Kings</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing BoP</td>
+                <td>New from Warcraft Tavern</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- WRIST -->
+    <h2 id="slot-wrist">Wrist</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="crafted">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23537" data-wh-icon-size="small">Black Felsteel Bracers</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Very strong crafted option</td>
+            </tr>
+            <tr data-source="pvp">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28605" data-wh-icon-size="small">General's Linked Bracers</a></td>
+                <td><span class="pvp-icon">⚔️</span>Honor (PvP vendor)</td>
+                <td>1x <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29246" data-wh-icon-size="small">Nightfall Wristguards</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad</a> - <a href="https://www.wowhead.com/tbc/npc=18096">Epoch Hunter</a> (25%)</td>
+                <td>New from Warcraft Tavern / Wowhead</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- HANDS -->
+    <h2 id="slot-hands">Hands</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="crafted">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=25685" data-wh-icon-size="small">Fel Leather Gloves</a></td>
+                <td><span class="craft-icon">🔨</span>Leatherworking (crafted)</td>
+                <td>Cheap and amazing</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23531" data-wh-icon-size="small">Felfury Gauntlets</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Better if you don't need hit</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23520" data-wh-icon-size="small">Ragesteel Gloves</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Use if going for Ragesteel 2pc set bonus</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30341" data-wh-icon-size="small">Flesh Handler's Gauntlets</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10286">The Flesh Lies...</a></td>
+                <td>Free from questing, solid starter</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- WAIST -->
+    <h2 id="slot-waist">Waist</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="dungeon">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27985" data-wh-icon-size="small">Deathforge Girdle</a></td>
+                <td><span class="boss-icon">💀</span>Terokkar Forest - <a href="https://www.wowhead.com/tbc/zone=3791">Sethekk Halls</a> - <a href="https://www.wowhead.com/tbc/npc=18473">Talon King Ikiss</a> (17%)</td>
+                <td>2x <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29247" data-wh-icon-size="small">Girdle of the Deathdealer</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17881">Aeonus</a> (25%)</td>
+                <td>Use if you need hit rating</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- LEGS -->
+    <h2 id="slot-legs">Legs</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30739" data-wh-icon-size="small">Scaled Greaves of the Marksman</a></td>
+                <td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td>
+                <td>Extremely rare</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30538" data-wh-icon-size="small">Midnight Legguards</a></td>
+                <td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a> (25%)</td>
+                <td>Realistic best option</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=25687" data-wh-icon-size="small">Fel Leather Leggings</a></td>
+                <td><span class="craft-icon">🔨</span>Leatherworking (crafted)</td>
+                <td>Cheap crafted, good hit rating</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=31544" data-wh-icon-size="small">Clefthoof Hide Leggings</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=9937">Showdown</a></td>
+                <td>Amazing for how early you can get them</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30533" data-wh-icon-size="small">Vanquisher's Legplates</a></td>
+                <td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3849">Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a></td>
+                <td>New from Warcraft Tavern / Wowhead</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30257" data-wh-icon-size="small">Shattrath Leggings</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10280">Special Delivery to Shattrath City</a></td>
+                <td>Another great early quest reward</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- FEET -->
+    <h2 id="slot-feet">Feet</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="crafted">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=25686" data-wh-icon-size="small">Fel Leather Boots</a></td>
+                <td><span class="craft-icon">🔨</span>Leatherworking (crafted)</td>
+                <td>Cheap and strong</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28176" data-wh-icon-size="small">Sha'tari Wrought Greaves</a></td>
+                <td>Terokkar Forest - <span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10649">Into the Heart of the Labyrinth</a></td>
+                <td>Use if you don't need hit rating</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- RINGS -->
+    <h2 id="slot-rings">Rings (pick 2)</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30738" data-wh-icon-size="small">Ring of Reciprocity</a></td>
+                <td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td>
+                <td>Extremely rare</td>
+            </tr>
+            <tr data-source="rep">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a></td>
+                <td><span class="rep-icon">📜</span>Lower City - Exalted</td>
+                <td>Great for expertise (you'll be low early on)</td>
+            </tr>
+            <tr data-source="badge">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29379" data-wh-icon-size="small">Ring of Arathi Warlords</a></td>
+                <td><span class="badge-icon">🎖️</span>25 Badge of Justice</td>
+                <td>Reliable to farm</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30365" data-wh-icon-size="small">Overseer's Signet</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10323">Shutting Down Manaforge Ara</a></td>
+                <td>Free from questing</td>
+            </tr>
+            <tr data-source="pvp">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28553" data-wh-icon-size="small">Band of the Exorcist</a></td>
+                <td><span class="pvp-icon">⚔️</span>Terokkar Forest PvP Vendor</td>
+                <td>Spirit Shard currency</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- TRINKETS -->
+    <h2 id="slot-trinkets">Trinkets (pick 2)</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="badge">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td>
+                <td><span class="badge-icon">🎖️</span>41 Badge of Justice</td>
+                <td>Priority badge purchase</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28034" data-wh-icon-size="small">Hourglass of the Unraveller</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17880">Temporus</a> (17%)</td>
+                <td>Excellent proc trinket</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=21670" data-wh-icon-size="small">Badge of the Swarmguard</a></td>
+                <td><span class="boss-icon">🐉</span><a href="https://www.wowhead.com/tbc/zone=3428">Temple of Ahn'Qiraj</a> - <a href="https://www.wowhead.com/tbc/npc=15516">Battleguard Sartura</a></td>
+                <td>Classic carryover. Wowhead: "best trinket outside TBC raids until P4"</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28121" data-wh-icon-size="small">Icon of Unyielding Courage</a></td>
+                <td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3713">Blood Furnace</a> - <a href="https://www.wowhead.com/tbc/npc=17377">Keli'dan</a></td>
+                <td>Flat AP on-use trinket</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28288" data-wh-icon-size="small">Abacus of Violent Odds</a></td>
+                <td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3849">Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a> (16%)</td>
+                <td>Haste proc</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29776" data-wh-icon-size="small">Core of Ar'kelos</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10183">Ar'kelos the Guardian</a></td>
+                <td>Hit rating trinket, free from quest</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28041" data-wh-icon-size="small">Bladefist's Breadth</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10484">Cruel's Intentions</a> / "Overlord"</td>
+                <td>Great early quest trinket</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=25937" data-wh-icon-size="small">Terokkar Tablet of Precision</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10035">Torgos!</a></td>
+                <td>Use if you need hit rating</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- MAIN HAND -->
+    <h2 id="slot-mainhand">Main Hand Weapon</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="crafted">
+                <td class="slot-label">1</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28438" data-wh-icon-size="small">Dragonmaw</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing - Master Hammersmith (375)</td>
+                
+                <td>Mace - Human racial. Upgrades to Dragonstrike in P2</td>
+            </tr>
+            <tr data-source="drop">
+                <td class="slot-label">2</td>
+                <td><a href="https://www.wowhead.com/tbc/item=31332" data-wh-icon-size="small">Blinkstrike</a></td>
+                <td><span class="drop-icon">🌍</span>BoE World Drop</td>
+                
+                <td>Sword - Human racial. Expensive on AH</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">3</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28432" data-wh-icon-size="small">Black Planar Edge</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing - Master Swordsmith (375)</td>
+                
+                <td>Axe - Orc racial. Upgrades to Wicked Edge in P2</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">4</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23542" data-wh-icon-size="small">Fel Edged Battleaxe</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing BoE (365)</td>
+                
+                <td>Axe - Orc racial</td>
+            </tr>
+            <tr data-source="rep">
+                <td class="slot-label">5</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29124" data-wh-icon-size="small">Vindicator's Brand</a></td>
+                <td><span class="rep-icon">📜</span>The Aldor - Exalted</td>
+                
+                <td>Sword - Human racial</td>
+            </tr>
+            <tr data-source="pvp">
+                <td class="slot-label">6</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28295" data-wh-icon-size="small">Gladiator's Slicer</a></td>
+                <td><span class="pvp-icon">⚔️</span>PvP - Arena Season 1</td>
+                
+                <td>Sword - Human racial</td>
+            </tr>
+            <tr data-source="worldboss">
+                <td class="slot-label">7</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30733" data-wh-icon-size="small">Hope Ender</a></td>
+                <td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td>
+                
+                <td>Sword. Extremely rare world boss drop</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">8</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29348" data-wh-icon-size="small">The Bladefist</a></td>
+                <td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3714">Shattered Halls</a> - <a href="https://www.wowhead.com/tbc/npc=16808">Warchief Kargath</a></td>
+                
+                <td>Fist weapon</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">9</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27490" data-wh-icon-size="small">Firebrand Battleaxe</a></td>
+                <td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3713">Blood Furnace</a> - <a href="https://www.wowhead.com/tbc/npc=17380">Broggok</a></td>
+                
+                <td>Axe - Orc racial</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">10</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28189" data-wh-icon-size="small">Latro's Shifting Sword</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17881">Aeonus</a></td>
+                
+                <td>Sword - Human racial</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">11</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23544" data-wh-icon-size="small">Runic Hammer</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing BoE (375)</td>
+                
+                <td>Mace - Human racial</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">12</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28210" data-wh-icon-size="small">Bloodskull Destroyer</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad</a> - <a href="https://www.wowhead.com/tbc/npc=17848">Lieutenant Drake</a></td>
+                
+                <td>Mace - Human racial</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">13</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28267" data-wh-icon-size="small">Edge of the Cosmos</a></td>
+                <td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3849">Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a></td>
+                
+                <td>Sword - Human racial</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">14</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27872" data-wh-icon-size="small">The Harvester of Souls</a></td>
+                <td><span class="boss-icon">💀</span>Terokkar Forest - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3790">Auchenai Crypts</a> - <a href="https://www.wowhead.com/tbc/npc=18373">Exarch Maladaar</a></td>
+                
+                <td>Axe - Orc racial</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">15</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27533" data-wh-icon-size="small">Demonblood Eviscerator</a></td>
+                <td><span class="boss-icon">💀</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3714">Shattered Halls</a> - <a href="https://www.wowhead.com/tbc/npc=16808">Warchief Kargath</a></td>
+                
+                <td>Fist weapon. Normal mode drop, easy to get</td>
+            </tr>
+            <tr data-source="pvp">
+                <td class="slot-label">16</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28920" data-wh-icon-size="small">High Warlord's Cleaver</a></td>
+                <td><span class="pvp-icon">⚔️</span>PvP - Honor</td>
+                
+                <td>Axe - Orc racial. Horde only</td>
+            </tr>
+            <tr data-source="pvp">
+                <td class="slot-label">17</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28956" data-wh-icon-size="small">Grand Marshal's Slicer</a></td>
+                <td><span class="pvp-icon">⚔️</span>PvP - Honor</td>
+                
+                <td>Sword - Human racial. Alliance only</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">18</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27673" data-wh-icon-size="small">Phosphorescent Blade</a></td>
+                <td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a></td>
+                
+                <td>Sword - Human racial. Fast 2.4 speed</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="info-box">
+        <p><strong>Tip:</strong> Match your weapon type to your racial bonus (Orc = axes, Human = swords/maces). If you're not a Blacksmith, PvP weapons are a solid alternative.</p>
+    </div>
+
+    <!-- OFF HAND -->
+    <h2 id="slot-offhand">Off Hand Weapon</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="drop">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=31332" data-wh-icon-size="small">Blinkstrike</a></td>
+                <td><span class="drop-icon">🌍</span>BoE World Drop</td>
+                <td>Wowhead #1 OH. Expensive on AH</td>
+            </tr>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30733" data-wh-icon-size="small">Hope Ender</a></td>
+                <td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td>
+                <td>Extremely rare</td>
+            </tr>
+            <tr data-source="rep">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29124" data-wh-icon-size="small">Vindicator's Brand</a></td>
+                <td><span class="rep-icon">📜</span>The Aldor - Exalted</td>
+                <td>Sword - Human racial</td>
+            </tr>
+            <tr data-source="dungeon">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28189" data-wh-icon-size="small">Latro's Shifting Sword</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17881">Aeonus</a></td>
+                <td>Human sword racial</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23542" data-wh-icon-size="small">Fel Edged Battleaxe</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Good for Orc axe racial</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=23544" data-wh-icon-size="small">Runic Hammer</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Mace - Human racial</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=27490" data-wh-icon-size="small">Firebrand Battleaxe</a></td>
+                <td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3713">Blood Furnace</a> - <a href="https://www.wowhead.com/tbc/npc=17380">Broggok</a></td>
+                <td>Axe - Orc racial</td>
+            </tr>
+            <tr data-source="heroic">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=28210" data-wh-icon-size="small">Bloodskull Destroyer</a></td>
+                <td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad</a> - <a href="https://www.wowhead.com/tbc/npc=17848">Lieutenant Drake</a></td>
+                <td>Mace - Human racial</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- RANGED -->
+    <h2 id="slot-ranged">Ranged</h2>
+    <table class="gear-table">
+        <thead>
+            <tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr data-source="worldboss">
+                <td class="slot-label">Best</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30724" data-wh-icon-size="small">Barrel-Blade Longrifle</a></td>
+                <td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td>
+                <td>Extremely rare</td>
+            </tr>
+            <tr data-source="quest">
+                <td class="slot-label">Good</td>
+                <td><a href="https://www.wowhead.com/tbc/item=30279" data-wh-icon-size="small">Mama's Insurance</a></td>
+                <td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10820">Declawing Doomclaw</a></td>
+                <td>Amazing for how easy it is to get</td>
+            </tr>
+            <tr data-source="crafted">
+                <td class="slot-label">Easy</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29204" data-wh-icon-size="small">Felsteel Whisper Knives</a></td>
+                <td><span class="craft-icon">🔨</span>Blacksmithing (crafted)</td>
+                <td>Thrown weapon, cheap craft</td>
+            </tr>
+            <tr data-source="rep">
+                <td class="slot-label">Option</td>
+                <td><a href="https://www.wowhead.com/tbc/item=29152" data-wh-icon-size="small">Marksman's Bow</a></td>
+                <td><span class="rep-icon">📜</span>Thrallmar / Honor Hold - Exalted</td>
+                <td>Hit rating option</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== PHASE 1 ===== -->
+    <!-- ===== BADGE SPENDING ===== -->
+    <h1 id="badges">Badge of Justice Spending Priority</h1>
+    <p>How to spend your first ~150 Badges of Justice for the most DPS. Buy biggest upgrade-per-badge first.</p>
+    <div class="warn-box"><p><strong>Don't blow 50 badges on the head early</strong> when your badge income is low. The cheaper trinket, neck, and ring give more DPS per badge.</p></div>
+    <table class="gear-table">
+        <thead><tr><th>Priority</th><th>Item</th><th>Cost</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td><td>41 Badges</td><td>72 AP plus a 278 AP on-use. Best badge trinket and a burst cooldown</td></tr>
+            <tr><td class="slot-label">2</td><td><a href="https://www.wowhead.com/tbc/item=29381" data-wh-icon-size="small">Choker of Vile Intent</a></td><td>25 Badges</td><td>agi/sta, hit + AP. Cheap neck upgrade</td></tr>
+            <tr><td class="slot-label">3</td><td><a href="https://www.wowhead.com/tbc/item=29379" data-wh-icon-size="small">Ring of Arathi Warlords</a></td><td>25 Badges</td><td>crit + AP. Cheap ring upgrade</td></tr>
+            <tr><td class="slot-label">4</td><td><a href="https://www.wowhead.com/tbc/item=32087" data-wh-icon-size="small">Mask of the Deceiver</a></td><td>50 Badges</td><td>agi/sta, hit + AP, meta socket. Strong head but a big sink, buy last</td></tr>
+        </tbody>
+    </table>
+
+    <h1 id="phase1">Phase 1 - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> / <a href="https://www.wowhead.com/tbc/npc=19044">Gruul</a> / <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></h1>
+    <p>Raid BiS upgrades from Phase 1 content. First item per slot is the #1 pick from wowtbc.gg, with alternatives listed below.</p>
+
+    <h2 id="phase1-head">Head</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29021" data-wh-icon-size="small">Warbringer Battle-Helm</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a> (33%)</td><td>T4. Gem: <a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a> + <a href="https://www.wowhead.com/tbc/item=24048" data-wh-icon-size="small">Smooth Dawnstone</a>. Enchant: <a href="https://www.wowhead.com/tbc/item=29192" data-wh-icon-size="small">Glyph of Ferocity</a></td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=32087" data-wh-icon-size="small">Mask of the Deceiver</a></td><td><span class="badge-icon">🎖️</span>50 Badge of Justice</td><td>agi/sta, hit + AP, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28796" data-wh-icon-size="small">Malefic Mask of the Shadows</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a> (17%)</td><td>sta, hit + crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28414" data-wh-icon-size="small">Helm of Assassination</a></td><td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3848">Arcatraz</a> - <a href="https://www.wowhead.com/tbc/npc=20912">Harbinger Skyriss</a> (16%)</td><td>sta, crit + AP, 2 sockets</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-neck">Neck</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28745" data-wh-icon-size="small">Mithril Chain of Heroism</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event (16%)</td><td>str/agi/sta</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29381" data-wh-icon-size="small">Choker of Vile Intent</a></td><td><span class="badge-icon">🎖️</span>25 Badge of Justice</td><td>agi/sta, hit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29119" data-wh-icon-size="small">Haramad's Bargain</a></td><td><span class="rep-icon">📜</span>Consortium - Exalted</td><td>str/agi</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28509" data-wh-icon-size="small">Worgen Claw Necklace</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15550">Attumen</a> (16%)</td><td>agi/sta, hit + AP</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-shoulder">Shoulder</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29023" data-wh-icon-size="small">Warbringer Shoulderplates</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a> (56%)</td><td>T4. Enchant: <a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a></td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30740" data-wh-icon-size="small">Ripfiend Shoulderplates</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a> (19%)</td><td>str, hit + crit, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=33173" data-wh-icon-size="small">Ragesteel Shoulders</a></td><td><span class="craft-icon">🔨</span>Blacksmithing BoP (365)</td><td>str/sta, hit + crit, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28755" data-wh-icon-size="small">Bladed Shoulderpads of the Merciless</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event (16%)</td><td>sta, hit + crit + AP, 2 sockets</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-back">Back</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24259" data-wh-icon-size="small">Vengeance Wrap</a></td><td><span class="craft-icon">🔨</span>Tailoring BoE (365)</td><td>Enchant: <a href="https://www.wowhead.com/tbc/spell=34004">Greater Agility</a></td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30729" data-wh-icon-size="small">Black-Iron Battlecloak</a></td><td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a> (19%)</td><td>crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28777" data-wh-icon-size="small">Cloak of the Pit Stalker</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a> (35%)</td><td>sta, crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28672" data-wh-icon-size="small">Drape of the Dark Reavers</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16524">Shade of Aran</a> (16%)</td><td>agi/sta, hit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29382" data-wh-icon-size="small">Blood Knight War Cloak</a></td><td><span class="badge-icon">🎖️</span>25 Badge of Justice</td><td>agi/sta, AP</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-chest">Chest</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29019" data-wh-icon-size="small">Warbringer Breastplate</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a> (56%)</td><td>T4. Enchant: <a href="https://www.wowhead.com/tbc/spell=27960">Exceptional Stats</a></td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30730" data-wh-icon-size="small">Terrorweave Tunic</a></td><td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a> (19%)</td><td>hit + crit + AP, 3 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28601" data-wh-icon-size="small">Chestguard of the Conniver</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a> (16%)</td><td>agi/sta, hit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=23522" data-wh-icon-size="small">Ragesteel Breastplate</a></td><td><span class="craft-icon">🔨</span>Blacksmithing BoP (370)</td><td>str, crit</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-wrist">Wrist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28795" data-wh-icon-size="small">Bladespire Warbands</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a> (17%)</td><td>str/sta, crit, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=23537" data-wh-icon-size="small">Black Felsteel Bracers</a></td><td><span class="craft-icon">🔨</span>Blacksmithing BoE (365)</td><td>str/sta, crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28514" data-wh-icon-size="small">Bracers of Maliciousness</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16457">Maiden of Virtue</a> (16%)</td><td>sta, crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29246" data-wh-icon-size="small">Nightfall Wristguards</a></td><td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad</a> - <a href="https://www.wowhead.com/tbc/npc=18096">Epoch Hunter</a> (25%)</td><td>agi/sta, AP</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-hands">Hands</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28824" data-wh-icon-size="small">Gauntlets of Martial Perfection</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul</a> (33%)</td><td>str/sta, crit, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28776" data-wh-icon-size="small">Liar's Tongue Gloves</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a> (35%)</td><td>sta, crit + AP, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30644" data-wh-icon-size="small">Grips of Deftness</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Trash Drop</td><td>agi/sta, exp + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29020" data-wh-icon-size="small">Warbringer Gauntlets</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a> (33%)</td><td>T4</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-waist">Waist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28779" data-wh-icon-size="small">Girdle of the Endless Pit</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a> (35%)</td><td>str/sta, crit, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28828" data-wh-icon-size="small">Gronn-Stitched Girdle</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul</a> (33%)</td><td>sta, crit + AP, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29247" data-wh-icon-size="small">Girdle of the Deathdealer</a></td><td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17881">Aeonus</a> (25%)</td><td>agi/sta, hit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28750" data-wh-icon-size="small">Girdle of Treachery</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event (16%)</td><td>agi/sta, AP, 2 sockets</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-legs">Legs</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28741" data-wh-icon-size="small">Skulker's Greaves</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a> (16%)</td><td>agi/sta, hit + AP, 3 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30739" data-wh-icon-size="small">Scaled Greaves of the Marksman</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a> (19%)</td><td>agi, hit + AP, 3 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29022" data-wh-icon-size="small">Warbringer Greaves</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul</a> (56%)</td><td>T4</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30538" data-wh-icon-size="small">Midnight Legguards</a></td><td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a> (25%)</td><td>sta, hit + crit + AP, 3 sockets</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-feet">Feet</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28608" data-wh-icon-size="small">Ironstriders of Urgency</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a> (16%)</td><td>str/agi/sta, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28669" data-wh-icon-size="small">Rapscallion Boots</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16524">Shade of Aran</a> (16%)</td><td>sta, crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28545" data-wh-icon-size="small">Edgewalker Longboots</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15687">Moroes</a> (16%)</td><td>agi/sta, hit + AP, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28746" data-wh-icon-size="small">Fiend Slayer Boots</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event (16%)</td><td>agi/sta/int, hit + AP, 2 sockets</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-rings">Rings (pick 2)</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28757" data-wh-icon-size="small">Ring of a Thousand Marks</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a> (17%)</td><td>sta, hit + crit + AP</td></tr>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28730" data-wh-icon-size="small">Mithril Band of the Unscarred</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a> (16%)</td><td>str/sta, crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30738" data-wh-icon-size="small">Ring of Reciprocity</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a> (19%)</td><td>hit + crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a></td><td><span class="rep-icon">📜</span>Lower City - Exalted</td><td>Expertise</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=31920" data-wh-icon-size="small">Shaffar's Band of Brutality</a></td><td><span class="boss-icon">💀</span>Terokkar Forest - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3792">Mana-Tombs</a> - <a href="https://www.wowhead.com/tbc/npc=22930">Yor</a> (summoned, 2%)</td><td>Very rare</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28791" data-wh-icon-size="small">Ring of the Recalcitrant</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=11002">The Fall of Magtheridon</a></td><td>agi/sta, AP</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-trinkets">Trinkets (pick 2)</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28830" data-wh-icon-size="small">Dragonspine Trophy</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul</a> (33%)</td><td>Top melee trinket in Phase 1</td></tr>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td><td><span class="badge-icon">🎖️</span>41 Badge of Justice</td><td>AP + on-use</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28034" data-wh-icon-size="small">Hourglass of the Unraveller</a></td><td><span class="boss-icon">💀</span>Caverns of Time - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17880">Temporus</a> (17%)</td><td>crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28288" data-wh-icon-size="small">Abacus of Violent Odds</a></td><td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3849">Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a> (16%)</td><td>AP + haste + on-use</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-mainhand">Main Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28438" data-wh-icon-size="small">Dragonmaw</a></td><td><span class="craft-icon">🔨</span>Blacksmithing (375)</td><td>Mace - Human racial</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28295" data-wh-icon-size="small">Gladiator's Slicer</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 1</td><td>sta, hit + crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28767" data-wh-icon-size="small">The Decapitator</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a> (17%)</td><td>crit + AP + on-use</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28657" data-wh-icon-size="small">Fool's Bane</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15688">Terestian Illhoof</a> (16%)</td><td>crit + AP, 1 socket</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28437" data-wh-icon-size="small">Drakefist Hammer</a></td><td><span class="craft-icon">🔨</span>Blacksmithing (375)</td><td>haste + proc</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28729" data-wh-icon-size="small">Spiteblade</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a> (16%)</td><td>agi/sta, AP</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-offhand">Off Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28729" data-wh-icon-size="small">Spiteblade</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a> (16%)</td><td>agi/sta, AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28295" data-wh-icon-size="small">Gladiator's Slicer</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 1</td><td>sta, hit + crit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30733" data-wh-icon-size="small">Hope Ender</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a> (19%)</td><td>AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29124" data-wh-icon-size="small">Vindicator's Brand</a></td><td><span class="rep-icon">📜</span>The Aldor - Exalted</td><td>hit + AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=23544" data-wh-icon-size="small">Runic Hammer</a></td><td><span class="craft-icon">🔨</span>Blacksmithing BoE (375)</td><td>sta, AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=23540" data-wh-icon-size="small">Felsteel Longblade</a></td><td><span class="craft-icon">🔨</span>Blacksmithing BoE (375)</td><td>agi/sta</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-ranged">Ranged</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28772" data-wh-icon-size="small">Sunfury Bow of the Phoenix</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a> (17%)</td><td>agi, AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28581" data-wh-icon-size="small">Wolfslayer Sniper Rifle</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17521">The Big Bad Wolf</a> (Opera, 25%)</td><td>agi, AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30724" data-wh-icon-size="small">Barrel-Blade Longrifle</a></td><td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a> (19%)</td><td>agi, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30279" data-wh-icon-size="small">Mama's Insurance</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10820">Declawing Doomclaw</a></td><td>agi, crit + AP</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== PHASE 2-5 PLACEHOLDERS ===== -->
+    <!-- ===== PHASE 2 ===== -->
+    <h1 id="phase2">Phase 2 - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> / <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a></h1>
+    <p>Phase 2 is the <strong>T5 Destroyer Battlegear</strong> era plus SSC and Tempest Keep off-pieces. The 4-piece set (helm + shoulders + chest + gloves + legs, pick four) is nearly tied with high-stat off-pieces, so take whichever drops first and chase the off-set upgrades after. Ranked by DPS value; P1 holdovers are flagged.</p>
+
+    <div class="tip-box"><p><strong>T5 set tokens (Vanquisher):</strong> Helm from <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a>, Shoulders from <a href="https://www.wowhead.com/tbc/npc=19516">Void Reaver</a>, Chest from <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a>, Gloves from <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a>, Legs from <a href="https://www.wowhead.com/tbc/npc=21214">Fathom-Lord Karathress</a>.</p></div>
+
+    <h2 id="phase2-head">Head</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30120" data-wh-icon-size="small">Destroyer Battle-Helm</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a> (T5 token)</td><td>T5 helm: str/sta, hit + crit, 2 sockets. Anchors the 4pc</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=32461" data-wh-icon-size="small">Furious Gizmatic Goggles</a></td><td><span class="craft-icon">🔨</span>Crafted - Engineering 350 (BoP)</td><td>Engineers only: str/sta, hit + crit, 2 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29983" data-wh-icon-size="small">Fel-Steel Warhelm</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19516">Void Reaver</a></td><td>Off-set: str/sta, big hit + crit</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29021" data-wh-icon-size="small">Warbringer Battle-Helm</a></td><td><span class="boss-icon">🐉</span>P1 - T4 token from <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>T4 helm: str/sta, hit + crit. P1 holdover</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-neck">Necklace</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30022" data-wh-icon-size="small">Pendant of the Perilous</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - Trash</td><td>str/sta + crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30059" data-wh-icon-size="small">Choker of Animalistic Fury</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21217">The Lurker Below</a></td><td>crit + 64 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30017" data-wh-icon-size="small">Telonicus's Pendant of Mayhem</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=11491">Kael'thas and the Verdant Sphere</a></td><td>agi/sta + 70 AP. Free TK attune quest</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28745" data-wh-icon-size="small">Mithril Chain of Heroism</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event</td><td>str/agi/sta. P1 Chess reward</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-shoulder">Shoulder</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30122" data-wh-icon-size="small">Destroyer Shoulderblades</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19516">Void Reaver</a> (T5 token)</td><td>T5 shoulders: str/sta, hit + crit. 4pc piece</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30053" data-wh-icon-size="small">Pauldrons of the Wardancer</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>str/sta + crit off-set</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30055" data-wh-icon-size="small">Shoulderpads of the Stranger</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>agi/sta, crit + exp + 60 AP</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30740" data-wh-icon-size="small">Ripfiend Shoulderplates</a></td><td><span class="boss-icon">🐉</span>Hellfire - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td><td>+39 str, hit + crit. World boss</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-back">Back</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24259" data-wh-icon-size="small">Vengeance Wrap</a></td><td><span class="craft-icon">🔨</span>Crafted - Tailoring (BoE)</td><td>crit + 52 AP. Crafted, cheap BiS</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29994" data-wh-icon-size="small">Thalassian Wildercloak</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>agi/sta + 68 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30098" data-wh-icon-size="small">Razor-Scale Battlecloak</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>str/agi/sta</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30729" data-wh-icon-size="small">Black-Iron Battlecloak</a></td><td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td><td>crit + 60 AP. World boss</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-chest">Chest</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30118" data-wh-icon-size="small">Destroyer Breastplate</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a> (T5 token)</td><td>T5 chest: big str/sta, hit + crit, 3 sockets. 4pc piece</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30101" data-wh-icon-size="small">Bloodsea Brigand's Vest</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21214">Fathom-Lord Karathress</a></td><td>hit + crit + 92 AP, 3 sockets. Top off-set</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30054" data-wh-icon-size="small">Ranger-General's Chestguard</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>agi + 88 AP, 3 sockets</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=23522" data-wh-icon-size="small">Ragesteel Breastplate</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing (BoP)</td><td>+50 str + crit. Crafted</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-wrist">Wrist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30057" data-wh-icon-size="small">Bracers of Eradication</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21217">The Lurker Below</a></td><td>str/sta, hit + crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30091" data-wh-icon-size="small">True-Aim Stalker Bands</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a></td><td>crit + 50 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29966" data-wh-icon-size="small">Vambraces of Ending</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=18805">High Astromancer Solarian</a></td><td>agi/sta + 52 AP</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28795" data-wh-icon-size="small">Bladespire Warbands</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a></td><td>str/sta + crit. P1 holdover</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-hands">Hands</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30119" data-wh-icon-size="small">Destroyer Gauntlets</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a> (T5 token)</td><td>T5 gloves: big str/sta + crit. 4pc piece</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29947" data-wh-icon-size="small">Gloves of the Searing Grip</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19514">Al'ar</a></td><td>agi/sta, exp + 66 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28776" data-wh-icon-size="small">Liar's Tongue Gloves</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>crit + 72 AP, 2 sockets. P1 holdover</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28824" data-wh-icon-size="small">Gauntlets of Martial Perfection</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a></td><td>str/sta + crit. P1 holdover</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-waist">Waist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30106" data-wh-icon-size="small">Belt of One-Hundred Deaths</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>agi/sta, 25 expertise + 74 AP. Top belt</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30032" data-wh-icon-size="small">Red Belt of Battle</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing (BoP)</td><td>str/sta, hit + crit, 2 sockets. Crafted</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30040" data-wh-icon-size="small">Belt of Deep Shadow</a></td><td><span class="craft-icon">🔨</span>Crafted - Leatherworking (BoP)</td><td>agi, hit + 66 AP. Crafted</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28779" data-wh-icon-size="small">Girdle of the Endless Pit</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>str/sta + crit. P1 holdover</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-legs">Legs</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29995" data-wh-icon-size="small">Leggings of Murderous Intent</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>agi/sta, crit + 92 AP. Top legs</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29950" data-wh-icon-size="small">Greaves of the Bloodwarder</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=18805">High Astromancer Solarian</a></td><td>big str/sta + crit, 3 sockets</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30121" data-wh-icon-size="small">Destroyer Greaves</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21214">Fathom-Lord Karathress</a> (T5 token)</td><td>T5 legs: big str/sta, hit + crit. 4pc piece</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30739" data-wh-icon-size="small">Scaled Greaves of the Marksman</a></td><td><span class="boss-icon">🐉</span>Hellfire - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td><td>+37 agi, hit + 76 AP, 3 sockets. World boss</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-feet">Feet</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30081" data-wh-icon-size="small">Warboots of Obliteration</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>str/sta + crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30104" data-wh-icon-size="small">Cobra-Lash Boots</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>agi/sta + 66 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29951" data-wh-icon-size="small">Star-Strider Boots</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=18805">High Astromancer Solarian</a></td><td>agi + 66 AP</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30039" data-wh-icon-size="small">Boots of Utter Darkness</a></td><td><span class="craft-icon">🔨</span>Crafted - Leatherworking (BoE)</td><td>hit + crit + 66 AP. Crafted</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-rings">Rings</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29997" data-wh-icon-size="small">Band of the Ranger-General</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>hit + crit + 56 AP. Top ring</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28757" data-wh-icon-size="small">Ring of a Thousand Marks</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>hit + crit + 44 AP. P1 holdover</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30052" data-wh-icon-size="small">Ring of Lethality</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>agi, hit + 50 AP</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30738" data-wh-icon-size="small">Ring of Reciprocity</a></td><td><span class="boss-icon">🐉</span>Hellfire - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td><td>hit + crit + 62 AP. World boss</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-trinkets">Trinkets</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28830" data-wh-icon-size="small">Dragonspine Trophy</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a></td><td>AP + haste proc. Premier fury trinket</td></tr>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30627" data-wh-icon-size="small">Tsunami Talisman</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a></td><td>hit + big crit</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td><td><span class="badge-icon">🎖️</span>Shattrath - 41 Badge of Justice</td><td>72 AP + on-use 278 AP. Badge</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28288" data-wh-icon-size="small">Abacus of Violent Odds</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a></td><td>AP + on-use haste</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-mainhand">Main Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28439" data-wh-icon-size="small">Dragonstrike</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing (BoP)</td><td>Crafted axe: haste proc. Top main hand</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=32944" data-wh-icon-size="small">Talon of the Phoenix</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19514">Al'ar</a></td><td>hit + crit + 52 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=30082" data-wh-icon-size="small">Talon of Azshara</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>agi, hit + 40 AP</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28657" data-wh-icon-size="small">Fool's Bane</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15688">Terestian Illhoof</a></td><td>crit + 30 AP. P1 holdover</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-offhand">Off Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30082" data-wh-icon-size="small">Talon of Azshara</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>agi, hit + 40 AP</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29924" data-wh-icon-size="small">Netherbane</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">TK</a> - <a href="https://www.wowhead.com/tbc/npc=19514">Al'ar</a></td><td>agi/sta + 40 AP</td></tr>
+            <tr><td class="slot-label">Alt (PvP)</td><td><a href="https://www.wowhead.com/tbc/item=32052" data-wh-icon-size="small">Merciless Gladiator's Slicer</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>hit/crit + resilience. Arena S2</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30733" data-wh-icon-size="small">Hope Ender</a></td><td><span class="boss-icon">🐉</span>Hellfire - World Boss - <a href="https://www.wowhead.com/tbc/npc=18728">Doom Lord Kazzak</a></td><td>+70 AP. World boss</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase2-ranged">Ranged</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30105" data-wh-icon-size="small">Serpent Spine Longbow</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">SSC</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>crit + AP. ilvl 141 bow</td></tr>
+            <tr><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28772" data-wh-icon-size="small">Sunfury Bow of the Phoenix</a></td><td><span class="boss-icon">🐉</span>P1 - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>agi + AP. P1 holdover</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30724" data-wh-icon-size="small">Barrel-Blade Longrifle</a></td><td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td><td>agi + crit sockets. World boss</td></tr>
+            <tr><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30279" data-wh-icon-size="small">Mama's Insurance</a></td><td><span class="quest-icon">!</span>Declawing Doomclaw (quest reward)</td><td>agi + crit + AP. Quest reward</td></tr>
+        </tbody>
+    </table>
+
+    <h1 id="phase3">Phase 3 - <a href="https://www.wowhead.com/tbc/zone=3959">Black Temple</a> / <a href="https://www.wowhead.com/tbc/zone=3606">Hyjal Summit</a></h1>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h1 id="phase4">Phase 4 - <a href="https://www.wowhead.com/tbc/zone=3805">Zul'Aman</a></h1>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h1 id="phase5">Phase 5 - <a href="https://www.wowhead.com/tbc/zone=4075">Sunwell Plateau</a></h1>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== GEMS ===== -->
+    <h1 id="gems">Gems</h1>
+    <p>Default to <a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a> in most sockets. Only match socket colors if the bonus is at least <strong>+3 Strength or +3 Crit</strong> per blue gem required.</p>
+
+    <div class="tip-box">
+        <p><strong>Crit vs Strength:</strong> Both are equally valuable early on. Prioritize crit to reach 35-40% for Flurry uptime, then shift toward Strength. During Recklessness (guaranteed crits), raw Strength gems are optimal.</p>
+    </div>
+
+    <h2 id="gems-meta">Meta</h2>
+    <table class="gear-table">
+        <thead><tr><th>Gem</th><th>Stats</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a></td><td>+12 Agi / +3% Crit Dmg</td><td>Best meta for all physical DPS. Requires 2 blue, 2 yellow, 2 red</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=25894" data-wh-icon-size="small">Swift Skyfire Diamond</a></td><td>+12 Crit / Minor Speed</td><td>Budget alternative if you can't meet Relentless requirements</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="gems-red">Red Socket</h2>
+    <table class="gear-table">
+        <thead><tr><th>Gem</th><th>Stats</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td><td>+8 Strength</td><td>Default gem. Best when maximizing Recklessness value</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24058" data-wh-icon-size="small">Inscribed Noble Topaz</a></td><td>+4 Str / +4 Crit</td><td>Great for P1-2, cheaper. Fills red or yellow</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=28362" data-wh-icon-size="small">Bold Ornate Ruby</a></td><td>+20 Attack Power</td><td>Unique. 2855 Honor Points (PvP vendor)</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=30571" data-wh-icon-size="small">Don Julio's Heart</a></td><td>+8 Strength</td><td>Unique. 14g from Halaa vendor (Nagrand PvP)</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="gems-yellow">Yellow Socket</h2>
+    <table class="gear-table">
+        <thead><tr><th>Gem</th><th>Stats</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24048" data-wh-icon-size="small">Smooth Dawnstone</a></td><td>+8 Crit Rating</td><td>Best early on to reach 35-40% crit for Flurry</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24058" data-wh-icon-size="small">Inscribed Noble Topaz</a></td><td>+4 Str / +4 Crit</td><td>Balanced option as gear improves</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24051" data-wh-icon-size="small">Rigid Dawnstone</a></td><td>+8 Hit Rating</td><td>Use if below 9% hit cap</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=28119" data-wh-icon-size="small">Smooth Ornate Dawnstone</a></td><td>+10 Crit Rating</td><td>Unique. 2855 Honor - equal to Phase 3 epic gems</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="gems-blue">Blue Socket (satisfy meta requirements)</h2>
+    <table class="gear-table">
+        <thead><tr><th>Gem</th><th>Stats</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24054" data-wh-icon-size="small">Sovereign Nightseye</a></td><td>+4 Str / +6 Stamina</td><td>Primary. Place in blue sockets with good bonuses</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/item=24067" data-wh-icon-size="small">Jagged Talasite</a></td><td>+4 Crit / +6 Stamina</td><td>Alternative if you need crit more than strength</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== ENCHANTS ===== -->
+    <h1 id="enchants">Enchants</h1>
+    <p>Full enchant list for Fury Warrior DPS, from Wowhead's guide by Beanna.</p>
+
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Enchant</th><th>Stats</th><th>Source</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Head</td><td><a href="https://www.wowhead.com/tbc/item=29192" data-wh-icon-size="small">Glyph of Ferocity</a></td><td>+34 AP, +16 Hit Rating</td><td><span class="rep-icon">📜</span>Cenarion Expedition - Revered</td></tr>
+            <tr><td class="slot-label">Shoulder (Aldor)</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a></td><td>+30 AP, +10 Crit</td><td><span class="rep-icon">📜</span>The Aldor - Exalted</td></tr>
+            <tr><td class="slot-label">Shoulder (Scryer)</td><td><a href="https://www.wowhead.com/tbc/item=28910" data-wh-icon-size="small">Greater Inscription of the Blade</a></td><td>+20 AP, +15 Crit</td><td><span class="rep-icon">📜</span>The Scryers - Exalted</td></tr>
+            <tr><td class="slot-label">Shoulder (Classic)</td><td><a href="https://www.wowhead.com/tbc/item=23548" data-wh-icon-size="small">Might of the Scourge</a></td><td>+26 AP, +14 Crit</td><td><span class="boss-icon">🐉</span><a href="https://www.wowhead.com/tbc/npc=15989">Sapphiron</a> - <a href="https://www.wowhead.com/tbc/zone=3456">Naxxramas</a> (negligibly better)</td></tr>
+            <tr><td class="slot-label">Back</td><td><a href="https://www.wowhead.com/tbc/spell=34004">Greater Agility</a></td><td>+12 Agility</td><td>Enchanting</td></tr>
+            <tr><td class="slot-label">Back (alt)</td><td><a href="https://www.wowhead.com/tbc/spell=25084">Subtlety</a></td><td>Reduces threat</td><td>Enchanting. Use if threat is a problem</td></tr>
+            <tr><td class="slot-label">Chest</td><td><a href="https://www.wowhead.com/tbc/spell=27960">Exceptional Stats</a></td><td>+6 All Stats</td><td>Enchanting</td></tr>
+            <tr><td class="slot-label">Bracers</td><td><a href="https://www.wowhead.com/tbc/spell=27899">Brawn</a></td><td>+12 Strength</td><td>Enchanting. Slightly better than Assault for Warriors</td></tr>
+            <tr><td class="slot-label">Gloves</td><td><a href="https://www.wowhead.com/tbc/spell=33995">Major Strength</a></td><td>+15 Strength</td><td>Enchanting</td></tr>
+            <tr><td class="slot-label">Legs (BiS)</td><td><a href="https://www.wowhead.com/tbc/item=29535" data-wh-icon-size="small">Nethercobra Leg Armor</a></td><td>+50 AP, +12 Crit</td><td><span class="craft-icon">🔨</span>Leatherworking crafted</td></tr>
+            <tr><td class="slot-label">Legs (budget)</td><td><a href="https://www.wowhead.com/tbc/item=29533" data-wh-icon-size="small">Cobrahide Leg Armor</a></td><td>+40 AP, +10 Crit</td><td><span class="craft-icon">🔨</span>Leatherworking crafted (cheaper)</td></tr>
+            <tr><td class="slot-label">Boots</td><td><a href="https://www.wowhead.com/tbc/spell=34007">Cat's Swiftness</a></td><td>+6 Agi, +8% Move Speed</td><td>Enchanting. Mobility is essential for melee uptime</td></tr>
+            <tr><td class="slot-label">Main Hand (P1-3)</td><td><a href="https://www.wowhead.com/tbc/spell=27984">Mongoose</a></td><td>Proc: +120 Agi, +2% Attack Speed (15s)</td><td>Enchanting. ~50% uptime MH. Stacks from MH+OH</td></tr>
+            <tr><td class="slot-label">Main Hand (P4+)</td><td><a href="https://www.wowhead.com/tbc/spell=42974">Executioner</a></td><td>Proc: +840 Armor Pen (15s)</td><td>Phase 4+. Does NOT stack - MH only</td></tr>
+            <tr><td class="slot-label">Off Hand</td><td><a href="https://www.wowhead.com/tbc/spell=27984">Mongoose</a></td><td>Proc: +120 Agi, +2% Attack Speed (15s)</td><td>Always Mongoose on OH (Executioner doesn't stack)</td></tr>
+            <tr><td class="slot-label">Ranged</td><td><a href="https://www.wowhead.com/tbc/item=23765" data-wh-icon-size="small">Khorium Scope</a></td><td>+12 Ranged Damage</td><td><span class="craft-icon">🔨</span>Engineering crafted. Minor benefit</td></tr>
+            <tr><td class="slot-label">Rings</td><td><a href="https://www.wowhead.com/tbc/spell=27927">Enchant Ring - Stats</a></td><td>+4 All Stats</td><td>Enchanting profession only (self-enchant)</td></tr>
+        </tbody>
+    </table>
+
+    <div class="info-box">
+        <p><strong>Mongoose Stacking:</strong> The Lightning Speed buff from MH and OH Mongoose procs can stack (double the effect). This is why Mongoose stays on off-hand even after Executioner becomes available in Phase 4.</p>
+    </div>
+
+    <!-- ===== TALENTS ===== -->
+    <h1 id="talents">Talents</h1>
+    <p>The raid-standard Fury build is <strong>17/44/0</strong>: 44 points into the Fury tree down to the <a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a> capstone, plus a 17-point dip into Arms for rage and threat talents. Use the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> to build and export it.</p>
+
+    <div class="info-box">
+        <p><strong>The talents that define the spec:</strong></p>
+        <ul>
+            <li><a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a>, the Fury capstone and your highest-damage button.</li>
+            <li><strong>Dual Wield Specialization</strong> (off-hand damage) and <strong>Flurry</strong> (haste after a crit), the core of Fury's scaling.</li>
+            <li><strong>Precision</strong> (+3% hit), which helps you reach the hit cap with less gear.</li>
+            <li><strong>Cruelty</strong> (+5% crit) and <strong>Improved Whirlwind</strong> for single-target and AoE damage.</li>
+            <li><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> and <a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a>, your big cooldown and Attack Power buff.</li>
+            <li>The Arms dip grabs rage and threat utility (Improved Heroic Strike, Tactical Mastery, Anger Management, Deep Wounds).</li>
+        </ul>
+    </div>
+
+    <div class="tip-box">
+        <p>Some players run <strong>18/43/0</strong> or move a few flexible points (for example into Improved Demoralizing Shout for raid mitigation). The Fury core down to Bloodthirst is fixed; only the Arms dip varies.</p>
+    </div>
+
+    <!-- ===== CONSUMABLES ===== -->
+    <h1 id="consumables">Consumables</h1>
+    <p>Raid consumable loadout for a Fury Warrior. Priority is ordered top-to-bottom: flask + stone + food are non-negotiable on progression, the rest stack with them for burn windows and execute.</p>
+    <table class="gear-table">
+        <thead><tr><th>#</th><th>Type</th><th>Item</th><th>Effect</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td>Flask</td><td><a href="https://www.wowhead.com/tbc/item=22854" data-wh-icon-size="small">Flask of Relentless Assault</a></td><td>+120 AP for 2 hours</td><td>Persists through death. The default DPS flask, run one every raid night.</td></tr>
+            <tr><td class="slot-label">2</td><td>Battle Elixir</td><td><a href="https://www.wowhead.com/tbc/item=9224" data-wh-icon-size="small">Elixir of Demonslaying</a> <em>or</em> <a href="https://www.wowhead.com/tbc/item=13452" data-wh-icon-size="small">Elixir of the Mongoose</a></td><td>+265 AP vs Demons / +25 Agi +2% crit</td><td>Demonslaying on demon bosses (Magtheridon, most Black Temple/SWP fights). Mongoose on everything else. Doesn't stack with Flask.</td></tr>
+            <tr><td class="slot-label">3</td><td>Weapon Stone</td><td><a href="https://www.wowhead.com/tbc/item=23529" data-wh-icon-size="small">Adamantite Sharpening Stone</a></td><td>+12 weapon damage, +14 crit rating (1 hour)</td><td>MH only. For Prot swap to Adamantite Weightstone; Fury uses sharpening stones on both weapons if DW swords/axes/daggers.</td></tr>
+            <tr><td class="slot-label">4</td><td>Food</td><td><a href="https://www.wowhead.com/tbc/item=27658" data-wh-icon-size="small">Roasted Clefthoof</a></td><td>+20 Strength, +20 Spirit (Well Fed)</td><td>Best STR food in TBC. Cooking-crafted from Clefthoof Meat (Nagrand).</td></tr>
+            <tr><td class="slot-label">5</td><td>Combat Potion</td><td><a href="https://www.wowhead.com/tbc/item=22838" data-wh-icon-size="small">Haste Potion</a></td><td>+400 haste rating for 15 sec</td><td>Pop on pull with Death Wish + trinkets, or during execute. Shares CD with healthstone/mana potion.</td></tr>
+            <tr><td class="slot-label">6</td><td>Scrolls</td><td><a href="https://www.wowhead.com/tbc/item=27498" data-wh-icon-size="small">Scroll of Agility V</a> + <a href="https://www.wowhead.com/tbc/item=27503" data-wh-icon-size="small">Scroll of Strength V</a> + <a href="https://www.wowhead.com/tbc/item=27502" data-wh-icon-size="small">Scroll of Protection V</a></td><td>+20 Agi / +20 Str / +30 Armor (30 min)</td><td>Use if your raid is missing the corresponding Blessing/Shout. Cheap buffs from profession vendors or AH.</td></tr>
+            <tr><td class="slot-label">7</td><td>Engineering</td><td><a href="https://www.wowhead.com/tbc/item=23827" data-wh-icon-size="small">Super Sapper Charge</a> + <a href="https://www.wowhead.com/tbc/item=23737" data-wh-icon-size="small">Adamantite Grenade</a> + <a href="https://www.wowhead.com/tbc/item=23841" data-wh-icon-size="small">Gnomish Flame Turret</a></td><td>Burst AoE / single-target damage</td><td>Engineering required. Sapper + Grenade are on separate cooldowns, weave both into burn phases. Flame Turret is a placed pet for patchwerk fights.</td></tr>
+            <tr><td class="slot-label">8</td><td>Use Item</td><td><a href="https://www.wowhead.com/tbc/item=22788" data-wh-icon-size="small">Flame Cap</a></td><td>+80 fire damage to attacks/spells (1 min, 3 min CD)</td><td>Fire damage procs off every melee swing, significant extra DPS on single-target burn windows. Stacks with everything.</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== REPUTATION ===== -->
+    <!-- ===== RAID BUFFS ===== -->
+    <h1 id="raid-buffs">Raid Buffs &amp; Debuffs</h1>
+    <p>The buffs you want from your raid and the debuffs you want on the boss. As a melee DPS, your damage lives and dies by your party composition, build the right group and coordinate the armor debuffs.</p>
+
+    <h2 id="class-buffs">Class Buffs That Benefit a Fury Warrior</h2>
+    <table class="gear-table">
+        <thead><tr><th>Class</th><th>Buff</th><th>Effect</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Paladin</td><td><a href="https://www.wowhead.com/tbc/spell=27141">Greater Blessing of Might</a></td><td>+220 Attack Power, your top blessing</td></tr>
+            <tr><td class="slot-label">Paladin</td><td><a href="https://www.wowhead.com/tbc/spell=25898">Greater Blessing of Kings</a></td><td>+10% all stats</td></tr>
+            <tr><td class="slot-label">Druid</td><td><a href="https://www.wowhead.com/tbc/spell=26990">Mark of the Wild</a></td><td>+14 all stats, +340 armor</td></tr>
+            <tr><td class="slot-label">Priest</td><td><a href="https://www.wowhead.com/tbc/spell=25392">Prayer of Fortitude</a></td><td>+79 Stamina</td></tr>
+            <tr><td class="slot-label">Shaman</td><td><a href="https://www.wowhead.com/tbc/spell=25587">Windfury Totem</a></td><td>Extra off-hand-style burst swings, huge for Fury</td></tr>
+            <tr><td class="slot-label">Shaman</td><td><a href="https://www.wowhead.com/tbc/spell=2825">Bloodlust</a></td><td>+30% melee/ranged haste for 40 sec</td></tr>
+        </tbody>
+    </table>
+    <div class="info-box"><p><strong>Blessing priority:</strong> <a href="https://www.wowhead.com/tbc/spell=27141">Greater Blessing of Might</a> for raw AP, with <a href="https://www.wowhead.com/tbc/spell=25898">Greater Blessing of Kings</a> as the second blessing since it scales every stat.</p></div>
+
+    <h2 id="offensive-debuffs">Debuffs to Keep on the Boss</h2>
+    <p>These raise the physical damage you (and the raid) deal. Make sure they are covered.</p>
+    <ul>
+        <li><a href="https://www.wowhead.com/tbc/spell=25225">Sunder Armor</a> or <a href="https://www.wowhead.com/tbc/spell=14169">Improved Expose Armor</a>, -2600 armor at 5 stacks, the big one</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=33602">Improved Faerie Fire</a>, -610 armor and +3% melee hit on the target</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=27226">Curse of Recklessness</a>, -800 armor</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> (Arms Warrior), +4% physical damage taken</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=34501">Expose Weakness</a> / <a href="https://www.wowhead.com/tbc/spell=19425">Improved Hunter's Mark</a>, AP-scaling vulnerability from a Hunter</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=33876">Mangle</a> (Feral), +30% bleed damage taken</li>
+    </ul>
+
+    <h2 id="ideal-party">Ideal Melee Party Setup</h2>
+    <p>This 5-man subgroup inside a 25-raid gives a Fury Warrior every melee buff. At minimum you <strong>must</strong> have an Enhancement Shaman.</p>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Spec</th><th>Brings</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td><span style="color:#C79C6E;">Fury Warrior</span> (you)</td><td><a href="https://www.wowhead.com/tbc/spell=2048">Battle Shout</a></td></tr>
+            <tr><td class="slot-label">2</td><td><span style="color:#0070DE;">Enhancement Shaman</span></td><td><a href="https://www.wowhead.com/tbc/spell=25587">Windfury</a>, <a href="https://www.wowhead.com/tbc/spell=25528">Strength of Earth</a>, <a href="https://www.wowhead.com/tbc/spell=25359">Grace of Air</a>, <a href="https://www.wowhead.com/tbc/spell=30811">Unleashed Rage</a>, <a href="https://www.wowhead.com/tbc/spell=2825">Bloodlust</a></td></tr>
+            <tr><td class="slot-label">3</td><td><span style="color:#FF7D0A;">Feral Druid</span></td><td><a href="https://www.wowhead.com/tbc/spell=17007">Leader of the Pack</a> (+5% crit party-wide)</td></tr>
+            <tr><td class="slot-label">4</td><td><span style="color:#F58CBA;">Retribution Paladin</span></td><td><a href="https://www.wowhead.com/tbc/spell=31870">Improved Sanctity Aura</a> (+2% damage taken by target)</td></tr>
+            <tr><td class="slot-label">5</td><td><span style="color:#C79C6E;">Arms Warrior</span></td><td><a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> + a second <a href="https://www.wowhead.com/tbc/spell=2048">Battle Shout</a></td></tr>
+        </tbody>
+    </table>
+    <div class="info-box"><p><strong>Alliance bonus:</strong> a <span style="color:#0070DE;">Draenei</span> in the party gives <a href="https://www.wowhead.com/tbc/spell=6562">Heroic Presence</a> (+1% hit), best on the Ret Paladin. <strong>Drums of Battle:</strong> one <a href="https://www.wowhead.com/tbc/spell=35476">Drums of Battle</a> user per party (+80 haste), usually the Enh Shaman.</p></div>
+
+    <!-- ===== QUEST STRATEGY ===== -->
+    <h1 id="quest-strategy">Questing Strategy</h1>
+    <p>Before heroics and Karazhan, a handful of solo and normal-dungeon quests hand out strong DPS gear. Knock these out on a fresh 70 to skip the worst of the grind.</p>
+    <h2 id="quest-fresh70">Fresh 70 Gearing Quests</h2>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Quest</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Head</td><td><a href="https://www.wowhead.com/tbc/item=31105" data-wh-icon-size="small">Overlord's Helmet of Second Sight</a></td><td><a href="https://www.wowhead.com/tbc/quest=10645">Teron Gorefiend, I am...</a> (Shadowmoon)</td></tr>
+            <tr><td class="slot-label">Neck</td><td><a href="https://www.wowhead.com/tbc/item=31695" data-wh-icon-size="small">Natasha's Choker</a></td><td><a href="https://www.wowhead.com/tbc/quest=10724">The Hound-Master</a> (Blade's Edge)</td></tr>
+            <tr><td class="slot-label">Hands</td><td><a href="https://www.wowhead.com/tbc/item=30341" data-wh-icon-size="small">Flesh Handler's Gauntlets</a></td><td><a href="https://www.wowhead.com/tbc/quest=10286">The Flesh Lies...</a> (Shadowmoon)</td></tr>
+            <tr><td class="slot-label">Legs</td><td><a href="https://www.wowhead.com/tbc/item=30257" data-wh-icon-size="small">Shattrath Leggings</a></td><td><a href="https://www.wowhead.com/tbc/quest=10280">Special Delivery to Shattrath City</a></td></tr>
+            <tr><td class="slot-label">Feet</td><td><a href="https://www.wowhead.com/tbc/item=28176" data-wh-icon-size="small">Sha'tari Wrought Greaves</a></td><td><a href="https://www.wowhead.com/tbc/quest=10649">Into the Heart of the Labyrinth</a> (Shadow Labyrinth)</td></tr>
+            <tr><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/item=30365" data-wh-icon-size="small">Overseer's Signet</a></td><td><a href="https://www.wowhead.com/tbc/quest=10323">Shutting Down Manaforge Ara</a> (Netherstorm)</td></tr>
+            <tr><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=28041" data-wh-icon-size="small">Bladefist's Breadth</a></td><td><a href="https://www.wowhead.com/tbc/quest=10484">Cruel's Intentions</a> (Shattered Halls)</td></tr>
+            <tr><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=25937" data-wh-icon-size="small">Terokkar Tablet of Precision</a></td><td><a href="https://www.wowhead.com/tbc/quest=10035">Torgos!</a> (Terokkar)</td></tr>
+            <tr><td class="slot-label">Ranged</td><td><a href="https://www.wowhead.com/tbc/item=30279" data-wh-icon-size="small">Mama's Insurance</a></td><td><a href="https://www.wowhead.com/tbc/quest=10820">Declawing Doomclaw</a> (Blade's Edge)</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box"><p>These are quick wins, not BiS. Replace them with heroic, badge, and Karazhan drops from the gear tables above as you go.</p></div>
+
+    <h1 id="reputation">Reputation</h1>
+    <p>Reputation unlocks heroic dungeons, shoulder enchants, key recipes, and powerful gear. Here's what matters for a Fury Warrior.</p>
+
+    <h2 id="heroic-keys">Heroic Dungeon Keys</h2>
+    <p>All heroic keys require <strong>Revered</strong> with the corresponding faction. Buy the key from the faction's Quartermaster.</p>
+    <table class="gear-table">
+        <thead><tr><th>Region</th><th>Dungeons</th><th>Key</th><th>Faction</th><th>Quartermaster / Location</th></tr></thead>
+        <tbody>
+            <tr><td>Hellfire Peninsula</td><td>Ramparts, Blood Furnace, Shattered Halls</td><td><a href="https://www.wowhead.com/tbc/item=30622" data-wh-icon-size="small">Flamewrought Key</a></td><td>Honor Hold (A) / Thrallmar (H)</td><td><a href="https://www.wowhead.com/tbc/npc=17657">Logistics Officer Ulrike</a> - Honor Hold<br><a href="https://www.wowhead.com/tbc/npc=17585">Quartermaster Urgronn</a> - Thrallmar</td></tr>
+            <tr><td>Zangarmarsh</td><td>Slave Pens, Underbog, Steamvault</td><td><a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a></td><td>Cenarion Expedition</td><td><a href="https://www.wowhead.com/tbc/npc=17904">Fedryen Swiftspear</a> - Cenarion Refuge, Zangarmarsh</td></tr>
+            <tr><td>Terokkar Forest</td><td>Mana-Tombs, Auchenai Crypts, Sethekk Halls, Shadow Lab</td><td><a href="https://www.wowhead.com/tbc/item=30633" data-wh-icon-size="small">Auchenai Key</a></td><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td></tr>
+            <tr><td>Netherstorm</td><td>Mechanar, Botanica, Arcatraz</td><td><a href="https://www.wowhead.com/tbc/item=30634" data-wh-icon-size="small">Warpforged Key</a></td><td>The Sha'tar</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td></tr>
+            <tr><td>Caverns of Time</td><td>Old Hillsbrad, Black Morass</td><td><a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a></td><td>Keepers of Time</td><td><a href="https://www.wowhead.com/tbc/npc=21643">Alurmi</a> - Caverns of Time, Tanaris</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="rep-factions">Aldor vs Scryers</h2>
+    <div class="warn-box">
+        <p><strong>Choose wisely:</strong> Gaining rep with one loses rep with the other. Most Fury Warriors go <strong>Aldor</strong> for the stronger AP-focused shoulder enchant.</p>
+    </div>
+    <table class="gear-table">
+        <thead><tr><th>Faction</th><th>Exalted Shoulder Enchant</th><th>Stats</th><th>Other Notable Rewards</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">The Aldor</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a></td><td>+30 AP, +10 Crit</td><td><a href="https://www.wowhead.com/tbc/item=29124" data-wh-icon-size="small">Vindicator's Brand</a> (Exalted sword)</td></tr>
+            <tr><td class="slot-label">The Scryers</td><td><a href="https://www.wowhead.com/tbc/item=28910" data-wh-icon-size="small">Greater Inscription of the Blade</a></td><td>+15 Crit, +20 AP</td><td>Enchanted Clefthoof LW patterns</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="rep-priority">Warrior DPS Priority Reputations</h2>
+    <table class="gear-table">
+        <thead><tr><th>Priority</th><th>Faction</th><th>Goal</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td>All 5 key factions</td><td><span class="rep-icon">📜</span>Revered</td><td>Unlock heroic dungeons for badges and gear</td></tr>
+            <tr><td class="slot-label">2</td><td>Cenarion Expedition</td><td><span class="rep-icon">📜</span>Revered</td><td><a href="https://www.wowhead.com/tbc/item=29192" data-wh-icon-size="small">Glyph of Ferocity</a> head enchant (+34 AP, +16 Hit)</td></tr>
+            <tr><td class="slot-label">3</td><td>The Aldor</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a> shoulder enchant</td></tr>
+            <tr><td class="slot-label">4</td><td>Lower City</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a> (expertise ring)</td></tr>
+            <tr><td class="slot-label">5</td><td>The Violet Eye</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29283" data-wh-icon-size="small">Violet Signet of the Master Assassin</a> (upgradeable Karazhan ring)</td></tr>
+            <tr><td class="slot-label">6</td><td>The Consortium</td><td><span class="rep-icon">📜</span>Exalted</td><td>Design: <a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a> meta gem</td></tr>
+            <tr><td class="slot-label">7</td><td>Keepers of Time</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/spell=25080">Enchant Gloves - Superior Agility</a> recipe</td></tr>
+            <tr><td class="slot-label">8</td><td>Shattered Sun Offensive</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=34679" data-wh-icon-size="small">Shattered Sun Pendant of Might</a> (Phase 5 neck)</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== USEFUL LINKS ===== -->
+    <h1 id="useful-links">Useful Links</h1>
+    <p>The sources behind these rankings, plus handy tools:</p>
+    <ul>
+        <li><a href="https://wowtbc.gg/bis-list/fury-warrior/">wowtbc.gg, Fury Warrior BiS list</a> (per-phase, the basis for these gear tables)</li>
+        <li><a href="https://www.wowhead.com/tbc/guide/classes/warrior/dps-bis-gear-pve">Wowhead, Warrior DPS Best in Slot</a></li>
+        <li><a href="https://www.icy-veins.com/tbc-classic/fury-warrior-dps-pve-guide">Icy Veins, Fury Warrior guide</a> (rotation, talents, stat priority)</li>
+        <li><a href="https://www.warcrafttavern.com/tbc/guides/pve-fury-warrior-dps/">Warcraft Tavern, Fury Warrior guide</a></li>
+        <li><a href="https://www.wowhead.com/tbc/">Wowhead TBC database</a> and <a href="https://www.wowhead.com/tbc/talent-calc/warrior">talent calculator</a></li>
+        <li><a href="../prot/classguide-warrior-prot.html">Protection Warrior Tank Guide</a> (sister guide)</li>
+    </ul>
+
+    <!-- ===== COPY LINK ===== -->
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this guide:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/wow_class_guides/warrior/fury/classguide-warrior-fury.html]WoW Classic TBC Warrior Gear Guide[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[WoW Classic TBC Warrior Gear Guide](https://supertron42.github.io/wiki/wow_class_guides/warrior/fury/classguide-warrior-fury.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+
+// Filter gear by source type
+function filterGear(source) {
+    var rows = document.querySelectorAll('tr[data-source]');
+    for (var i = 0; i < rows.length; i++) {
+        if (source === 'all' || rows[i].getAttribute('data-source') === source) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+    // Update active button
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+    }
+    event.target.classList.add('active');
+}
+
+// Wrap every gear-table in a horizontally-scrollable container so wide tables
+// can scroll instead of pushing the page off-screen on small viewports.
+(function() {
+    var tables = document.querySelectorAll('.gear-table');
+    for (var i = 0; i < tables.length; i++) {
+        var t = tables[i];
+        if (t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('table-wrap')) continue;
+        var wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        t.parentNode.insertBefore(wrap, t);
+        wrap.appendChild(t);
+    }
+})();
+
+// Wrap each nav section's links in a collapsible container. All sections start
+// collapsed; the user expands what they need.
+(function() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var headers = Array.prototype.slice.call(nav.querySelectorAll('h3'));
+    headers.forEach(function(header) {
+        var section = document.createElement('div');
+        section.className = 'nav-section';
+        header.parentNode.insertBefore(section, header.nextSibling);
+        var next;
+        while ((next = section.nextElementSibling)) {
+            if (next.tagName === 'H3') break;
+            // Stop at the absolute-positioned "My Other Projects" footer
+            if (next.tagName === 'DIV' && next.style && next.style.position === 'absolute') break;
+            section.appendChild(next);
+        }
+        header.addEventListener('click', function() {
+            header.classList.toggle('open');
+            section.classList.toggle('open');
+        });
+    });
+
+    // Second pass: inside each section, group each run of .nav-sub links under the
+    // parent link above them into a collapsible .nav-subsection, so only the phase
+    // currently in view shows its slot list (the rest stay tucked away).
+    Array.prototype.slice.call(nav.querySelectorAll('.nav-section')).forEach(function(section) {
+        var kids = Array.prototype.slice.call(section.children);
+        for (var i = 0; i < kids.length; i++) {
+            var el = kids[i];
+            if (el.tagName === 'A' && !el.classList.contains('nav-sub')) {
+                var subs = [], j = i + 1;
+                while (j < kids.length && kids[j].tagName === 'A' && kids[j].classList.contains('nav-sub')) {
+                    subs.push(kids[j]); j++;
+                }
+                if (subs.length) {
+                    var sub = document.createElement('div');
+                    sub.className = 'nav-subsection';
+                    section.insertBefore(sub, subs[0]);
+                    subs.forEach(function(x) { sub.appendChild(x); });
+                    (function(parentLink, subEl) {
+                        parentLink.addEventListener('click', function() {
+                            var all = section.querySelectorAll('.nav-subsection');
+                            for (var k = 0; k < all.length; k++) all[k].classList.toggle('open', all[k] === subEl);
+                        });
+                    })(el, sub);
+                }
+            }
+        }
+    });
+})();
+
+// Mobile nav toggle
+function toggleNav() {
+    var nav = document.getElementById('nav');
+    var backdrop = document.querySelector('.nav-backdrop');
+    nav.classList.toggle('open');
+    backdrop.classList.toggle('show');
+}
+// Close drawer when a nav link is tapped on mobile
+(function() {
+    var links = document.querySelectorAll('#nav a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('nav').classList.remove('open');
+                document.querySelector('.nav-backdrop').classList.remove('show');
+            }
+        });
+    }
+})();
+
+// Scrollspy: highlight the nav entry for the section currently in view, expand
+// that section (collapsing the others), and keep the active link visible.
+(function() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+
+    // Pair each in-page link with its target element, in document order.
+    var entries = [];
+    links.forEach(function(link) {
+        var target = document.getElementById(link.getAttribute('href').slice(1));
+        if (target) entries.push({ link: link, target: target });
+    });
+    if (!entries.length) return;
+
+    var sections = Array.prototype.slice.call(nav.querySelectorAll('.nav-section'));
+    var subsections = Array.prototype.slice.call(nav.querySelectorAll('.nav-subsection'));
+    var headers = Array.prototype.slice.call(nav.querySelectorAll('h3'));
+    var currentLink = null;
+    var ticking = false;
+
+    var scroller = document.getElementById('content');
+    function update() {
+        ticking = false;
+        // Activate a section when its heading crosses a "reading line" about a third
+        // of the way down the viewport, not only when it is jammed against the top.
+        var line = Math.max(120, window.innerHeight * 0.33);
+        // Bottom guard: when the page/content can't scroll any further, the lower
+        // sections can never reach the line, so force the last entry active.
+        var atBottom = false;
+        if (scroller && scroller.scrollHeight > scroller.clientHeight + 4) {
+            atBottom = (scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight) <= 2;
+        } else {
+            atBottom = (window.innerHeight + window.pageYOffset) >= (document.documentElement.scrollHeight - 2);
+        }
+        var active = entries[0];
+        if (atBottom) {
+            active = entries[entries.length - 1];
+        } else {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].target.getBoundingClientRect().top <= line) {
+                    active = entries[i];
+                } else {
+                    break;
+                }
+            }
+        }
+        if (active.link === currentLink) return;
+        currentLink = active.link;
+
+        // The .nav-section wrapping the active link, and its preceding h3.
+        var section = active.link.parentNode;
+        while (section && !(section.classList && section.classList.contains('nav-section'))) {
+            section = section.parentNode;
+        }
+        var header = section ? section.previousElementSibling : null;
+        if (header && header.tagName !== 'H3') header = null;
+
+        entries.forEach(function(e) { e.link.classList.remove('active'); });
+        active.link.classList.add('active');
+
+        // Expand the active section, collapse the rest.
+        for (var s = 0; s < sections.length; s++) {
+            sections[s].classList.toggle('open', sections[s] === section);
+        }
+        for (var h = 0; h < headers.length; h++) {
+            var isActive = headers[h] === header;
+            headers[h].classList.toggle('active-section', isActive);
+            headers[h].classList.toggle('open', isActive);
+        }
+
+        // Open only the sub-group containing the active link (or whose parent link
+        // IS active); collapse every other phase's slot list.
+        for (var ss = 0; ss < subsections.length; ss++) {
+            var open = subsections[ss].contains(active.link) ||
+                       subsections[ss].previousElementSibling === active.link;
+            subsections[ss].classList.toggle('open', open);
+        }
+
+        // Scroll the active link into view inside the nav if it's off-screen.
+        var lr = active.link.getBoundingClientRect();
+        var nr = nav.getBoundingClientRect();
+        if (lr.top < nr.top || lr.bottom > nr.bottom) {
+            active.link.scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    function onScroll() {
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }
+    }
+
+    // Capture phase so this also catches scrolling inside #content (which is the
+    // scroll container on desktop; the window scrolls on mobile).
+    window.addEventListener('scroll', onScroll, true);
+    window.addEventListener('resize', onScroll);
+    update();
+})();
+</script>
+</body>
+</html>

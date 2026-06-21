@@ -229,6 +229,7 @@ tr:nth-child(even) {
     <h3>Companion Mods</h3>
     <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
     <a href="../dynamicnpcs/wiki.html">Dynamic NPCs</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
 
     <!-- Other Projects -->
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
@@ -250,9 +251,9 @@ tr:nth-child(even) {
     <div class="flow-arrow">&#x25BC;</div>
     <div class="flow-step" data-step="2"><span class="label">Engine fires kDataLoaded.</span> All ESPs/ESMs/ESLs have been loaded into memory. Every leveled list form is now accessible through <code>RE::TESDataHandler</code>.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code>. Auto-generates the INI with defaults if missing.</div>
+    <div class="flow-step" data-step="3"><span class="label">Settings loaded from INI.</span> Reads <code>enablelogs</code>, <code>mergeleveledItems</code>, <code>mergeleveledNPCs</code>, and <code>mergeleveledSpells</code>. Auto-generates the INI with defaults if missing.</div>
     <div class="flow-arrow">&#x25BC;</div>
-    <div class="flow-step" data-step="4"><span class="label">MergeAllLeveledLists()</span> iterates every LVLI form in the game. For each one with 3+ source plugins, it runs the three-phase merge. Afterwards, it runs cycle detection across the entire leveled list graph.</div>
+    <div class="flow-step" data-step="4"><span class="label">MergeAllLeveledLists()</span> iterates every leveled list form in the game (LVLI, LVLN, LVSP). For each one with 3+ source plugins, it runs the three-phase merge. Afterwards, it runs cycle detection across the entire leveled list graph for each type.</div>
 
     <div class="info-box">
         <p>Everything happens once, during the loading screen before the main menu. The merge results live in engine memory for the rest of the session. Nothing is written to disk. Nothing touches your save file. Uninstalling the plugin simply means the merges don't happen next launch. There are no in-game notifications — all output goes to the log file.</p>
@@ -262,7 +263,7 @@ tr:nth-child(even) {
     <h1>How It Decides What to Merge</h1>
     <!-- ============================================================ -->
 
-    <p>The engine exposes a <strong>source file array</strong> for every form. This array lists every plugin that defines or overrides that record, in load order. The plugin uses this to classify every LVLI:</p>
+    <p>The engine exposes a <strong>source file array</strong> for every form. This array lists every plugin that defines or overrides that record, in load order. The plugin uses this to classify every leveled list:</p>
 
     <table>
         <tr>
@@ -287,7 +288,7 @@ tr:nth-child(even) {
         </tr>
     </table>
 
-    <p>No bash tags, no user intervention, no opt-in. If 3+ plugins touch the same <code>LVLI</code>, it gets merged automatically.</p>
+    <p>No bash tags, no user intervention, no opt-in. If 3+ plugins touch the same leveled list, it gets merged automatically.</p>
 
     <h2>Identifying Base, Winners, and Losers</h2>
     <p>From the source file array (in load order):</p>
@@ -381,13 +382,15 @@ GRUP "LVLI" (all leveled item records)
     LVLO subrecord  -&gt; Entry: level(2) + pad(2) + formID(4) + count(2)  [10 bytes]
     LVLO subrecord  -&gt; (repeats for each entry)
   LVLI record
-    ...</pre>
+    ...
+GRUP "LVLN" (all leveled NPC records, same subrecord layout)
+GRUP "LVSP" (all leveled spell records, same subrecord layout)</pre>
 
     <h2>Parsing Flow</h2>
     <ol>
         <li>Resolve the file path (handles MO2's virtual filesystem, relative paths, fallback directories)</li>
         <li>Open as binary stream, skip the TES4 header</li>
-        <li>Scan top-level GRUPs for the LVLI group (label <code>0x494C564C</code>)</li>
+        <li>Scan top-level GRUPs for LVLI, LVLN, and LVSP groups</li>
         <li>Within the LVLI group, read each record header (24 bytes: type, size, flags, formID)</li>
         <li>If the record is compressed (flag <code>0x00040000</code>), decompress with zlib</li>
         <li>Parse subrecords: EDID, LVLO, LVLF, LVLD</li>
@@ -447,7 +450,7 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
     <p>Leveled lists can reference other leveled lists (nested lists). Automatic merging can create circular references that didn't exist before. For example, List A gets an entry pointing to List B from one mod, and List B gets an entry pointing to List A from another. If the engine tries to resolve this, it recurses infinitely and crashes.</p>
 
     <h2>Detection: Iterative DFS</h2>
-    <p>After all merges complete, the plugin builds a directed graph of every LVLI-to-LVLI reference in the game and runs iterative depth-first search with three-color marking:</p>
+    <p>After all merges complete, the plugin builds a directed graph of every leveled-list-to-leveled-list reference (per type: LVLI, LVLN, LVSP) and runs iterative depth-first search with three-color marking:</p>
     <ul>
         <li><strong>White (0):</strong> Unvisited</li>
         <li><strong>Gray (1):</strong> In the current DFS path (on the stack)</li>
@@ -548,8 +551,8 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
         </tr>
         <tr>
             <td><strong>Scope</strong></td>
-            <td>LVLI records only</td>
-            <td>LVLI, LVLN (NPCs), LVSP (spells), plus many non-leveled-list record types (containers, stats, names, etc.)</td>
+            <td>LVLI (items), LVLN (NPCs), LVSP (spells)</td>
+            <td>LVLI, LVLN, LVSP, plus many non-leveled-list record types (containers, stats, names, etc.)</td>
         </tr>
         <tr>
             <td><strong>Performance cost</strong></td>
@@ -571,7 +574,7 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
 
     <h3>Wrye Bash is better when:</h3>
     <ul>
-        <li>You need to merge record types beyond leveled lists (containers, NPC stats, names, etc.)</li>
+        <li>You need to merge record types beyond leveled lists (containers, individual NPC stats, names, etc.)</li>
         <li>You want fine-grained control over exactly what gets merged</li>
         <li>You prefer zero runtime overhead</li>
         <li>You're building a carefully curated load order with explicit tag control</li>
@@ -606,11 +609,15 @@ Each item: 50% x 0.5% = 0.25% = 1/400. Equal probability preserved.</pre>
   Total entries added: 76
   Total entries removed: 7
   Overflow sublists created: 3
-  No circular references detected</pre>
+  No circular references detected
+  ---
+  Leveled Items (LVLI):  4200 total, 20 merged
+  Leveled NPCs (LVLN):   1600 total, 6 merged
+  Leveled Spells (LVSP): 851 total, 3 merged</pre>
 
     <table>
         <tr><th>Stat</th><th>Meaning</th></tr>
-        <tr><td><strong>Total leveled lists</strong></td><td>Every LVLI form loaded in the game</td></tr>
+        <tr><td><strong>Total leveled lists</strong></td><td>Every LVLI, LVLN, and LVSP form loaded in the game</td></tr>
         <tr><td><strong>With overrides</strong></td><td>Lists touched by exactly 2 plugins (base + winner). No merge needed</td></tr>
         <tr><td><strong>With conflicts</strong></td><td>Lists touched by 3+ plugins. These are candidates for merging</td></tr>
         <tr><td><strong>Actually merged</strong></td><td>How many lists had real changes to apply (some conflicts result in identical entries)</td></tr>

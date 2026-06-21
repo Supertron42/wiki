@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!--
+WoW Classic Anniversary TBC - Class Guides hub / landing page.
+Lists every class/spec guide. Add a card here whenever a new guide ships.
+Active cards link to classguide-<class>-<spec>.html; planned classes are greyed.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoW Classic Anniversary TBC - Class Guides</title>
+<meta name="description" content="Hand-built WoW Classic Anniversary (TBC) class guides: pre-raid BiS, per-phase gear, gems, enchants, consumables, talents and rotations. Every pick consensus-ranked and stat-verified.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/wow_class_guides/index.html">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    line-height: 1.6;
+    padding: 40px 20px 80px;
+}
+.wrap { max-width: 1000px; margin: 0 auto; }
+h1 {
+    font-size: 30px;
+    color: #4ec9b0;
+    border-bottom: 2px solid #3c3c3c;
+    padding-bottom: 14px;
+    margin-bottom: 8px;
+}
+.sub { color: #9d9d9d; font-size: 14px; margin-bottom: 8px; }
+.lead { color: #d4d4d4; font-size: 14px; margin: 14px 0 30px; max-width: 760px; }
+.lead strong { color: #dcdcaa; }
+h2.class-head {
+    font-size: 18px;
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 4px solid #555;
+}
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+.card {
+    display: block;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-left: 4px solid #555;
+    border-radius: 6px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #d4d4d4;
+    transition: all 0.15s;
+}
+.card:hover { background: #2a2d2e; transform: translateY(-2px); border-color: #4ec9b0; }
+.card .spec { font-size: 16px; font-weight: bold; }
+.card .role { font-size: 12px; color: #9d9d9d; }
+.card .go { font-size: 12px; color: #4ec9b0; margin-top: 8px; }
+.card.soon { opacity: 0.45; cursor: default; pointer-events: none; }
+.card.soon .go { color: #9d9d9d; }
+.foot { margin-top: 40px; color: #9d9d9d; font-size: 12px; }
+.foot a { color: #569cd6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <h1>WoW Classic Anniversary TBC, Class Guides</h1>
+    <p class="sub">The Burning Crusade, Anniversary realms</p>
+    <p class="lead">Hand-built gear and play guides: pre-raid BiS, per-phase raid upgrades, gems, enchants, consumables, talents and rotations. Every pick is <strong>ranked by consensus</strong> across the major class guides and <strong>checked against live item stats</strong>. Hover any item in a guide for full Wowhead tooltips.</p>
+
+    <h2 class="class-head" style="border-left-color:#C79C6E; color:#C79C6E;">Warrior</h2>
+    <div class="cards">
+        <a class="card" style="border-left-color:#C79C6E;" href="warrior/prot/classguide-warrior-prot.html">
+            <div class="spec">Protection</div><div class="role">Tank</div><div class="go">View guide &rarr;</div></a>
+        <a class="card" style="border-left-color:#C79C6E;" href="warrior/fury/classguide-warrior-fury.html">
+            <div class="spec">Fury</div><div class="role">Melee DPS</div><div class="go">View guide &rarr;</div></a>
+        <div class="card soon" style="border-left-color:#C79C6E;">
+            <div class="spec">Arms</div><div class="role">Melee DPS</div><div class="go">Planned</div></div>
+    </div>
+
+    <h2 class="class-head" style="border-left-color:#69CCF0; color:#69CCF0;">Mage</h2>
+    <div class="cards">
+        <a class="card" style="border-left-color:#69CCF0;" href="mage/frost/classguide-mage-frost.html">
+            <div class="spec">Frost</div><div class="role">Ranged DPS</div><div class="go">View guide &rarr;</div></a>
+        <div class="card soon" style="border-left-color:#69CCF0;">
+            <div class="spec">Fire</div><div class="role">Ranged DPS</div><div class="go">Planned</div></div>
+        <div class="card soon" style="border-left-color:#69CCF0;">
+            <div class="spec">Arcane</div><div class="role">Ranged DPS</div><div class="go">Planned</div></div>
+    </div>
+
+    <h2 class="class-head">More classes</h2>
+    <div class="cards">
+        <div class="card soon"><div class="spec">Paladin</div><div class="role">Tank / Healer / DPS</div><div class="go">Planned</div></div>
+        <div class="card soon"><div class="spec">Priest</div><div class="role">Healer / DPS</div><div class="go">Planned</div></div>
+        <div class="card soon"><div class="spec">Druid</div><div class="role">Tank / Healer / DPS</div><div class="go">Planned</div></div>
+        <div class="card soon"><div class="spec">Shaman</div><div class="role">DPS / Healer</div><div class="go">Planned</div></div>
+        <div class="card soon"><div class="spec">Rogue</div><div class="role">Melee DPS</div><div class="go">Planned</div></div>
+        <div class="card soon"><div class="spec">Hunter</div><div class="role">Ranged DPS</div><div class="go">Planned</div></div>
+        <div class="card soon"><div class="spec">Warlock</div><div class="role">Ranged DPS</div><div class="go">Planned</div></div>
+    </div>
+
+    <p class="foot">Built by Supertron. &nbsp;|&nbsp; <a href="../index.html">My other projects</a></p>
+</div>
+</body>
+</html>

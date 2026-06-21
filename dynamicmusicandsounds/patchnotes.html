@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Logs - Dynamic Music and Sounds | Version History</title>
+<meta name="description" content="Version history and release notes for Dynamic Music and Sounds SKSE plugin. See what's new in each update.">
+<meta name="keywords" content="Dynamic Music and Sounds changelog, version history, release notes, update log">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicmusicandsounds/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #FF9800;
+    color: white;
+    font-weight: bold;
+    border-left-color: #FF9800;
+}
+#nav a.highlight:hover {
+    background: #E68900;
+    border-left-color: #E68900;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #FF9800;
+    border-bottom: 2px solid #FF9800;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+
+/* Info tip */
+.tip {
+    background: #252526;
+    border-left: 3px solid #FF9800;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+
+/* Spoiler / BB Code / Markdown buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #569cd6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #4a8bc2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Change Logs</h3>
+    <a href="#v0.2a">Version 0.2a</a>
+    <a href="#v0.1a">Version 0.1a</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+
+    <h3>Companion Mods</h3>
+    <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
+    <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
+    <a href="../dynamicnpcs/wiki.html">Dynamic NPCs</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for Dynamic Music and Sounds.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.2a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.2a">Version 0.2a - Stability</h2>
+
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>One bad record no longer stops the whole process.</b> If a single music type, track, or sound descriptor has problems, the plugin skips it and keeps going instead of stopping.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>Better validation when restoring entries.</b> The plugin now checks that each record is the correct type before using it, and logs a clear warning if something unexpected is found.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>Safer plugin file reading.</b> Corrupted or unusually large plugin files are detected and handled cleanly instead of causing memory problems.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>Error count in the log summary.</b> After processing, the log now shows how many records had problems so you can tell at a glance if something went wrong.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>Errors now name the responsible plugin.</b> When something goes wrong with a record, the log tells you which plugin file (ESP, ESM, or ESL) is involved so you can check it in xEdit or report the problem to the mod author.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>Record names always available.</b> The plugin now always looks up record names from plugin files, so all messages show human-readable names instead of just hex codes.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>Safer plugin master lookups.</b> An extra safety check prevents crashes when a plugin file has corrupted or missing master references.</li>
+        <li><span class="tag tag-improve">IMPROVE</span> <b>xEdit script: better error messages.</b> The companion xEdit script now shows the record name and plugin file when errors occur, and tells you what to do to fix them.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb02a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md02a')">Markdown</button>
+    </div>
+    <div id="bb02a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode02a" readonly>[size=4][b][color=#dcdcaa]Version 0.2a - Stability[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Improvements[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]One bad record no longer stops the whole process.[/b] If a single music type, track, or sound descriptor has problems, the plugin skips it and keeps going instead of stopping.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]Better validation when restoring entries.[/b] The plugin now checks that each record is the correct type before using it, and logs a clear warning if something unexpected is found.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]Safer plugin file reading.[/b] Corrupted or unusually large plugin files are detected and handled cleanly instead of causing memory problems.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]Error count in the log summary.[/b] After processing, the log now shows how many records had problems so you can tell at a glance if something went wrong.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]Errors now name the responsible plugin.[/b] When something goes wrong with a record, the log tells you which plugin file (ESP, ESM, or ESL) is involved so you can check it in xEdit or report the problem to the mod author.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]Record names always available.[/b] The plugin now always looks up record names from plugin files, so all messages show human-readable names instead of just hex codes.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]Safer plugin master lookups.[/b] An extra safety check prevents crashes when a plugin file has corrupted or missing master references.
+[*][color=#DA8E35][b]IMPROVE[/b][/color] [b]xEdit script: better error messages.[/b] The companion xEdit script now shows the record name and plugin file when errors occur, and tells you what to do to fix them.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode02a')">Copy to Clipboard</button>
+    </div>
+    <div id="md02a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown02a" readonly># Version 0.2a - Stability
+
+## Improvements
+- **IMPROVE** **One bad record no longer stops the whole process.** If a single music type, track, or sound descriptor has problems, the plugin skips it and keeps going instead of stopping.
+- **IMPROVE** **Better validation when restoring entries.** The plugin now checks that each record is the correct type before using it, and logs a clear warning if something unexpected is found.
+- **IMPROVE** **Safer plugin file reading.** Corrupted or unusually large plugin files are detected and handled cleanly instead of causing memory problems.
+- **IMPROVE** **Error count in the log summary.** After processing, the log now shows how many records had problems so you can tell at a glance if something went wrong.
+- **IMPROVE** **Errors now name the responsible plugin.** When something goes wrong with a record, the log tells you which plugin file (ESP, ESM, or ESL) is involved so you can check it in xEdit or report the problem to the mod author.
+- **IMPROVE** **Record names always available.** The plugin now always looks up record names from plugin files, so all messages show human-readable names instead of just hex codes.
+- **IMPROVE** **Safer plugin master lookups.** An extra safety check prevents crashes when a plugin file has corrupted or missing master references.
+- **IMPROVE** **xEdit script: better error messages.** The companion xEdit script now shows the record name and plugin file when errors occur, and tells you what to do to fix them.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown02a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.1a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.1a">Version 0.1a - Initial Release</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Restores missing music type tracks.</b> When multiple mods edit the same music type (like explore or combat music), tracks added by overridden mods are automatically restored at startup.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Restores missing palette track layers.</b> When multiple mods edit the same palette music track, sub-tracks added to each layer by overridden mods are restored.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Restores missing sound file variants.</b> When multiple mods edit the same sound descriptor, sound file paths added by overridden mods are restored so you get the full variety of sound effects.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Respects intentional removals.</b> If a mod specifically removed a track or sound file, it stays removed.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Per-type toggles in INI.</b> Turn conflict resolution on or off independently for music types, music tracks, and sound descriptors.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Skip specific mods via INI.</b> Add plugin filenames to the <code>skipMods</code> setting to exclude them from processing.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Skip specific records via INI.</b> Add EditorIDs to the skip lists to leave certain music types, tracks, or sound descriptors untouched.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Detailed optional logging.</b> Turn on <code>enablelogs</code> to see exactly which tracks and sound files were restored for each record.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb01a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md01a')">Markdown</button>
+    </div>
+    <div id="bb01a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode01a" readonly>[size=4][b][color=#dcdcaa]Version 0.1a - Initial Release[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Restores missing music type tracks.[/b] When multiple mods edit the same music type (like explore or combat music), tracks added by overridden mods are automatically restored at startup.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Restores missing palette track layers.[/b] When multiple mods edit the same palette music track, sub-tracks added to each layer by overridden mods are restored.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Restores missing sound file variants.[/b] When multiple mods edit the same sound descriptor, sound file paths added by overridden mods are restored so you get the full variety of sound effects.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Respects intentional removals.[/b] If a mod specifically removed a track or sound file, it stays removed.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Per-type toggles in INI.[/b] Turn conflict resolution on or off independently for music types, music tracks, and sound descriptors.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Skip specific mods via INI.[/b] Add plugin filenames to the skipMods setting to exclude them from processing.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Skip specific records via INI.[/b] Add EditorIDs to the skip lists to leave certain music types, tracks, or sound descriptors untouched.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Detailed optional logging.[/b] Turn on enablelogs to see exactly which tracks and sound files were restored for each record.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode01a')">Copy to Clipboard</button>
+    </div>
+    <div id="md01a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown01a" readonly># Version 0.1a - Initial Release
+
+## Features
+- **NEW** **Restores missing music type tracks.** When multiple mods edit the same music type (like explore or combat music), tracks added by overridden mods are automatically restored at startup.
+- **NEW** **Restores missing palette track layers.** When multiple mods edit the same palette music track, sub-tracks added to each layer by overridden mods are restored.
+- **NEW** **Restores missing sound file variants.** When multiple mods edit the same sound descriptor, sound file paths added by overridden mods are restored so you get the full variety of sound effects.
+- **NEW** **Respects intentional removals.** If a mod specifically removed a track or sound file, it stays removed.
+- **NEW** **Per-type toggles in INI.** Turn conflict resolution on or off independently for music types, music tracks, and sound descriptors.
+- **NEW** **Skip specific mods via INI.** Add plugin filenames to the skipMods setting to exclude them from processing.
+- **NEW** **Skip specific records via INI.** Add EditorIDs to the skip lists to leave certain music types, tracks, or sound descriptors untouched.
+- **NEW** **Detailed optional logging.** Turn on enablelogs to see exactly which tracks and sound files were restored for each record.
+- **NEW** **SE, AE, and VR support.** Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown01a')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

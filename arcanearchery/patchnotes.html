@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Logs - Arcane Archery | Version History</title>
+<meta name="description" content="Version history and release notes for Arcane Archery SKSE plugin. See what's new in each update.">
+<meta name="keywords" content="Arcane Archery changelog, version history, release notes, update log">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/arcanearchery/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #9C27B0;
+    color: white;
+    font-weight: bold;
+    border-left-color: #9C27B0;
+}
+#nav a.highlight:hover {
+    background: #7B1FA2;
+    border-left-color: #7B1FA2;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #9C27B0;
+    border-bottom: 2px solid #9C27B0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+
+/* Spoiler / BB Code / Markdown buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #9C27B0;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #7B1FA2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #9C27B0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for Arcane Archery.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 1.1.0 -->
+    <!-- ============================================================ -->
+
+    <h2 id="v1.1.0">Version 1.1.0 - Visual and Combat Fixes</h2>
+
+    <h3>Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>3D spell aura on drawn arrows.</b> The glow around drawn spell-arrows is now a full 3D particle effect instead of a flat overlay.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Aura persists through camera switch.</b> Switching between first and third person no longer removes the spell glow from your arrows.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Spell damage now hits NPCs.</b> Spell-arrows now deal their full spell damage to NPCs and creatures.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Consistent magicka cost.</b> Magicka is now deducted reliably on every spell-arrow impact.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb110')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md110')">Markdown</button>
+    </div>
+    <div id="bb110" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode110" readonly>[size=4][b][color=#dcdcaa]Version 1.1.0 - Visual and Combat Fixes[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]3D spell aura on drawn arrows.[/b] The glow around drawn spell-arrows is now a full 3D particle effect instead of a flat overlay.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Aura persists through camera switch.[/b] Switching between first and third person no longer removes the spell glow from your arrows.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Spell damage now hits NPCs.[/b] Spell-arrows now deal their full spell damage to NPCs and creatures.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Consistent magicka cost.[/b] Magicka is now deducted reliably on every spell-arrow impact.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode110')">Copy to Clipboard</button>
+    </div>
+    <div id="md110" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown110" readonly># Version 1.1.0 - Visual and Combat Fixes
+
+## Fixes
+- **FIX** **3D spell aura on drawn arrows.** The glow around drawn spell-arrows is now a full 3D particle effect instead of a flat overlay.
+- **FIX** **Aura persists through camera switch.** Switching between first and third person no longer removes the spell glow from your arrows.
+- **FIX** **Spell damage now hits NPCs.** Spell-arrows now deal their full spell damage to NPCs and creatures.
+- **FIX** **Consistent magicka cost.** Magicka is now deducted reliably on every spell-arrow impact.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown110')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 1.0.0 -->
+    <!-- ============================================================ -->
+
+    <h2 id="v1.0.0">Version 1.0.0 - Initial Release</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Bind spells to arrows.</b> Equip a spell and arrows, press a hotkey, and every arrow you fire carries that spell.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Spells trigger on impact.</b> When a spell-bound arrow hits something, the spell goes off at the point of impact.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable magicka cost.</b> Set how much magicka spell-arrows cost compared to normal casting (default: half cost).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Living targets only mode.</b> Optionally limit spell triggers to NPCs and creatures.</li>
+        <li><span class="tag tag-new">NEW</span> <b>NPC spell-arrows.</b> Configure any NPC to fire spell-arrows through the INI file.</li>
+        <li><span class="tag tag-new">NEW</span> <b>MCM menu.</b> All settings are adjustable in-game through SkyUI's Mod Configuration Menu.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Persistent bindings.</b> Spell-arrow bindings are saved with your game and survive load-order changes.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Works on all three Skyrim editions.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb100')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md100')">Markdown</button>
+    </div>
+    <div id="bb100" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode100" readonly>[size=4][b][color=#dcdcaa]Version 1.0.0 - Initial Release[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Bind spells to arrows.[/b] Equip a spell and arrows, press a hotkey, and every arrow you fire carries that spell.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Spells trigger on impact.[/b] When a spell-bound arrow hits something, the spell goes off at the point of impact.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable magicka cost.[/b] Set how much magicka spell-arrows cost compared to normal casting (default: half cost).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Living targets only mode.[/b] Optionally limit spell triggers to NPCs and creatures.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]NPC spell-arrows.[/b] Configure any NPC to fire spell-arrows through the INI file.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]MCM menu.[/b] All settings are adjustable in-game through SkyUI's Mod Configuration Menu.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Persistent bindings.[/b] Spell-arrow bindings are saved with your game and survive load-order changes.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Works on all three Skyrim editions.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode100')">Copy to Clipboard</button>
+    </div>
+    <div id="md100" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown100" readonly># Version 1.0.0 - Initial Release
+
+## Features
+- **NEW** **Bind spells to arrows.** Equip a spell and arrows, press a hotkey, and every arrow you fire carries that spell.
+- **NEW** **Spells trigger on impact.** When a spell-bound arrow hits something, the spell goes off at the point of impact.
+- **NEW** **Configurable magicka cost.** Set how much magicka spell-arrows cost compared to normal casting (default: half cost).
+- **NEW** **Living targets only mode.** Optionally limit spell triggers to NPCs and creatures.
+- **NEW** **NPC spell-arrows.** Configure any NPC to fire spell-arrows through the INI file.
+- **NEW** **MCM menu.** All settings are adjustable in-game through SkyUI's Mod Configuration Menu.
+- **NEW** **Persistent bindings.** Spell-arrow bindings are saved with your game and survive load-order changes.
+- **NEW** **SE, AE, and VR support.** Works on all three Skyrim editions.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown100')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Link to This Page -->
+    <!-- ============================================================ -->
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this page from your Nexus description or documentation:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly style="height: 50px;">[url=https://supertron42.github.io/wiki/arcanearchery/patchnotes.html]Arcane Archery Change Logs[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly style="height: 50px;">[Arcane Archery Change Logs](https://supertron42.github.io/wiki/arcanearchery/patchnotes.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

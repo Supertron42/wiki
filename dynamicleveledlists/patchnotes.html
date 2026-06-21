@@ -225,6 +225,7 @@ code {
     <h3>Companion Mods</h3>
     <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
     <a href="../dynamicnpcs/wiki.html">Dynamic NPCs</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
 
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
         <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
@@ -240,6 +241,214 @@ code {
     </div>
 
     <!-- ============================================================ -->
+    <!-- Version 0.4.5a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.4.5a">Version 0.4.5a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Mod blacklist for SKSE plugin.</b> Add mods to the <code>[Blacklist]</code> section in the INI to skip them during conflict resolution.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Auto-detection of compatibility patches.</b> The plugin scans your load order for files that look like compatibility patches and pre-populates blacklist entries (as OFF) for you to review.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Respect removals toggle for SKSE plugin.</b> Six new INI settings let you turn off intentional removal handling per type for a "never lose items" mode.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Empty sublist cleanup for SKSE plugin.</b> After conflict resolution, references to empty leveled lists are automatically removed from parent lists, with cascading cleanup.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb045a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md045a')">Markdown</button>
+    </div>
+    <div id="bb045a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode045a" readonly>[size=4][b][color=#dcdcaa]Version 0.4.5a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Mod blacklist for SKSE plugin.[/b] Add mods to the [Blacklist] section in the INI to skip them during conflict resolution.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Auto-detection of compatibility patches.[/b] The plugin scans your load order for files that look like compatibility patches and pre-populates blacklist entries (as OFF) for you to review.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Respect removals toggle for SKSE plugin.[/b] Six new INI settings let you turn off intentional removal handling per type for a "never lose items" mode.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Empty sublist cleanup for SKSE plugin.[/b] After conflict resolution, references to empty leveled lists are automatically removed from parent lists, with cascading cleanup.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode045a')">Copy to Clipboard</button>
+    </div>
+    <div id="md045a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown045a" readonly># Version 0.4.5a
+
+## Features
+- **NEW** **Mod blacklist for SKSE plugin.** Add mods to the [Blacklist] section in the INI to skip them during conflict resolution.
+- **NEW** **Auto-detection of compatibility patches.** The plugin scans your load order for files that look like compatibility patches and pre-populates blacklist entries (as OFF) for you to review.
+- **NEW** **Respect removals toggle for SKSE plugin.** Six new INI settings let you turn off intentional removal handling per type for a "never lose items" mode.
+- **NEW** **Empty sublist cleanup for SKSE plugin.** After conflict resolution, references to empty leveled lists are automatically removed from parent lists, with cascading cleanup.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown045a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.4.4a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.4.4a">Version 0.4.4a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Mod blacklist for xEdit script.</b> Add mods to <code>DLL_Blacklist.txt</code> in your xEdit Scripts folder to skip them during patch creation.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Respect removals toggle for xEdit script.</b> Per-type checkboxes let you turn off intentional removal handling for a "never lose items" mode.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Empty sublist cleanup for xEdit script.</b> After patch creation, references to empty leveled lists are automatically removed from parent lists, with cascading cleanup.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Merge settings dialog for xEdit script.</b> Patch Mode now shows a settings panel where you configure all three features before building.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb044a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md044a')">Markdown</button>
+    </div>
+    <div id="bb044a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode044a" readonly>[size=4][b][color=#dcdcaa]Version 0.4.4a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Mod blacklist for xEdit script.[/b] Add mods to DLL_Blacklist.txt in your xEdit Scripts folder to skip them during patch creation.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Respect removals toggle for xEdit script.[/b] Per-type checkboxes let you turn off intentional removal handling for a "never lose items" mode.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Empty sublist cleanup for xEdit script.[/b] After patch creation, references to empty leveled lists are automatically removed from parent lists, with cascading cleanup.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Merge settings dialog for xEdit script.[/b] Patch Mode now shows a settings panel where you configure all three features before building.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode044a')">Copy to Clipboard</button>
+    </div>
+    <div id="md044a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown044a" readonly># Version 0.4.4a
+
+## Features
+- **NEW** **Mod blacklist for xEdit script.** Add mods to DLL_Blacklist.txt in your xEdit Scripts folder to skip them during patch creation.
+- **NEW** **Respect removals toggle for xEdit script.** Per-type checkboxes let you turn off intentional removal handling for a "never lose items" mode.
+- **NEW** **Empty sublist cleanup for xEdit script.** After patch creation, references to empty leveled lists are automatically removed from parent lists, with cascading cleanup.
+- **NEW** **Merge settings dialog for xEdit script.** Patch Mode now shows a settings panel where you configure all three features before building.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown044a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.4.3a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.4.3a">Version 0.4.3a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>NPC and spell list support.</b> The plugin now resolves conflicts for NPC spawn lists and spell distribution lists, not just item lists.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Per-type INI toggles.</b> Three new INI settings let you turn conflict resolution on or off for items, NPCs, and spells separately.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Per-type log summary.</b> The log now shows how many lists were resolved for each type (items, NPCs, spells).</li>
+        <li><span class="tag tag-new">NEW</span> <b>SSEEdit companion script.</b> New SSEEdit script with two modes: Info Mode scans your lists for broken references, empty lists, and circular references; Patch Mode creates a permanent patch using the same logic as the SKSE plugin.</li>
+    </ul>
+
+    <h3>Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Null entries stripped from leveled lists.</b> Empty references left behind by broken mods are now removed during conflict resolution instead of being passed to the engine.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Negative item counts clamped.</b> Invalid negative counts from corrupt mod data are now set to 1 instead of wrapping to a huge number.</li>
+    </ul>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Shared resolution code.</b> All three list types now use the same conflict resolution logic for consistent behavior.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Reads all leveled list types from disk.</b> The plugin now reads NPC and spell list data from your mod files, not just item lists.</li>
+    </ul>
+
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Data quality warnings in log.</b> The log summary now reports how many null entries and negative counts were found, so you can tell if a mod has bad data.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb043a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md043a')">Markdown</button>
+    </div>
+    <div id="bb043a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode043a" readonly>[size=4][b][color=#dcdcaa]Version 0.4.3a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]NPC and spell list support.[/b] The plugin now resolves conflicts for NPC spawn lists and spell distribution lists, not just item lists.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Per-type INI toggles.[/b] Three new INI settings let you turn conflict resolution on or off for items, NPCs, and spells separately.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Per-type log summary.[/b] The log now shows how many lists were resolved for each type (items, NPCs, spells).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SSEEdit companion script.[/b] New SSEEdit script with two modes: Info Mode scans your lists for broken references, empty lists, and circular references; Patch Mode creates a permanent patch using the same logic as the SKSE plugin.
+[/list]
+[size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Null entries stripped from leveled lists.[/b] Empty references left behind by broken mods are now removed during conflict resolution instead of being passed to the engine.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Negative item counts clamped.[/b] Invalid negative counts from corrupt mod data are now set to 1 instead of wrapping to a huge number.
+[/list]
+[size=3][b][color=#9cdcfe]Changes[/color][/b][/size]
+[list]
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Shared resolution code.[/b] All three list types now use the same conflict resolution logic for consistent behavior.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Reads all leveled list types from disk.[/b] The plugin now reads NPC and spell list data from your mod files, not just item lists.
+[/list]
+[size=3][b][color=#9cdcfe]Improvements[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Data quality warnings in log.[/b] The log summary now reports how many null entries and negative counts were found, so you can tell if a mod has bad data.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode043a')">Copy to Clipboard</button>
+    </div>
+    <div id="md043a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown043a" readonly># Version 0.4.3a
+
+## Features
+- **NEW** **NPC and spell list support.** The plugin now resolves conflicts for NPC spawn lists and spell distribution lists, not just item lists.
+- **NEW** **Per-type INI toggles.** Three new INI settings let you turn conflict resolution on or off for items, NPCs, and spells separately.
+- **NEW** **Per-type log summary.** The log now shows how many lists were resolved for each type (items, NPCs, spells).
+- **NEW** **SSEEdit companion script.** New SSEEdit script with two modes: Info Mode scans your lists for broken references, empty lists, and circular references; Patch Mode creates a permanent patch using the same logic as the SKSE plugin.
+
+## Fixes
+- **FIX** **Null entries stripped from leveled lists.** Empty references left behind by broken mods are now removed during conflict resolution instead of being passed to the engine.
+- **FIX** **Negative item counts clamped.** Invalid negative counts from corrupt mod data are now set to 1 instead of wrapping to a huge number.
+
+## Changes
+- **CHANGE** **Shared resolution code.** All three list types now use the same conflict resolution logic for consistent behavior.
+- **CHANGE** **Reads all leveled list types from disk.** The plugin now reads NPC and spell list data from your mod files, not just item lists.
+
+## Improvements
+- **IMPROVED** **Data quality warnings in log.** The log summary now reports how many null entries and negative counts were found, so you can tell if a mod has bad data.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown043a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.3.6a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3.6a">Version 0.3.6a</h2>
+
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Editor ID rename preservation.</b> When a mod renames a list's internal ID (used in modding tools like SSEEdit), the latest name is now kept in logs and patches.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Per-bit flag preservation.</b> When multiple mods change different settings on the same list (like "Use All" or "Calculate For Each"), all changes are now kept instead of only the last mod's.</li>
+    </ul>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Logs show renamed IDs.</b> Logs now display the latest Editor ID from your load order instead of always using the original.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb036a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md036a')">Markdown</button>
+    </div>
+    <div id="bb036a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode036a" readonly>[size=4][b][color=#dcdcaa]Version 0.3.6a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Improvements[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Editor ID rename preservation.[/b] When a mod renames a list's internal ID (used in modding tools like SSEEdit), the latest name is now kept in logs and patches.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Per-bit flag preservation.[/b] When multiple mods change different settings on the same list (like "Use All" or "Calculate For Each"), all changes are now kept instead of only the last mod's.
+[/list]
+[size=3][b][color=#9cdcfe]Changes[/color][/b][/size]
+[list]
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Logs show renamed IDs.[/b] Logs now display the latest Editor ID from your load order instead of always using the original.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode036a')">Copy to Clipboard</button>
+    </div>
+    <div id="md036a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown036a" readonly># Version 0.3.6a
+
+## Improvements
+- **IMPROVED** **Editor ID rename preservation.** When a mod renames a list's internal ID (used in modding tools like SSEEdit), the latest name is now kept in logs and patches.
+- **IMPROVED** **Per-bit flag preservation.** When multiple mods change different settings on the same list (like "Use All" or "Calculate For Each"), all changes are now kept instead of only the last mod's.
+
+## Changes
+- **CHANGE** **Logs show renamed IDs.** Logs now display the latest Editor ID from your load order instead of always using the original.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown036a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
     <!-- Version 0.3.4a -->
     <!-- ============================================================ -->
 
@@ -247,9 +456,9 @@ code {
 
     <h3>Fixes</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Duplicate entries being merged incorrectly.</b> Items that appeared multiple times in a leveled list with different counts were treated as the same entry, causing some to disappear after merging.</li>
-        <li><span class="tag tag-fix">FIX</span> <b>"Carried forward" log showing entries that no longer exist.</b> When a mod like Open World Loot removes vanilla entries and replaces them with its own, the old entries were still listed as carried forward in the log. They are now correctly excluded.</li>
-        <li><span class="tag tag-fix">FIX</span> <b>ESP parser failing to read leveled list entries.</b> The plugin parser expected a different data format than what Skyrim SE actually uses, causing it to skip every entry. This resulted in incorrect merge results, wrong mod attribution in logs, and items being added that shouldn't have been.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Duplicate entries resolved incorrectly.</b> Items that appeared multiple times with different counts were treated as the same entry, causing some to disappear.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>"Carried forward" log showing removed entries.</b> The log incorrectly listed entries as "carried forward" even when a mod had removed them.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Plugin file reader using wrong format.</b> The plugin read mod files using the wrong data layout, causing it to skip every entry and produce incorrect results.</li>
     </ul>
 
     <div class="btn-row">
@@ -260,9 +469,9 @@ code {
         <textarea class="bbcode-area" id="bbcode031a" readonly>[size=4][b][color=#dcdcaa]Version 0.3.4a[/color][/b][/size]
 [size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
 [list]
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Duplicate entries being merged incorrectly.[/b] Items that appeared multiple times in a leveled list with different counts were treated as the same entry, causing some to disappear after merging.
-[*][color=#c42b1c][b]FIX[/b][/color] [b]"Carried forward" log showing entries that no longer exist.[/b] When a mod like Open World Loot removes vanilla entries and replaces them with its own, the old entries were still listed as carried forward in the log. They are now correctly excluded.
-[*][color=#c42b1c][b]FIX[/b][/color] [b]ESP parser failing to read leveled list entries.[/b] The plugin parser expected a different data format than what Skyrim SE actually uses, causing it to skip every entry. This resulted in incorrect merge results, wrong mod attribution in logs, and items being added that shouldn't have been.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Duplicate entries resolved incorrectly.[/b] Items that appeared multiple times with different counts were treated as the same entry, causing some to disappear.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]"Carried forward" log showing removed entries.[/b] The log incorrectly listed entries as "carried forward" even when a mod had removed them.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Plugin file reader using wrong format.[/b] The plugin read mod files using the wrong data layout, causing it to skip every entry and produce incorrect results.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyText('bbcode031a')">Copy to Clipboard</button>
     </div>
@@ -270,9 +479,9 @@ code {
         <textarea class="bbcode-area" id="markdown031a" readonly># Version 0.3.4a
 
 ## Fixes
-- **FIX** **Duplicate entries being merged incorrectly.** Items that appeared multiple times in a leveled list with different counts were treated as the same entry, causing some to disappear after merging.
-- **FIX** **"Carried forward" log showing entries that no longer exist.** When a mod like Open World Loot removes vanilla entries and replaces them with its own, the old entries were still listed as carried forward in the log. They are now correctly excluded.
-- **FIX** **ESP parser failing to read leveled list entries.** The plugin parser expected a different data format than what Skyrim SE actually uses, causing it to skip every entry. This resulted in incorrect merge results, wrong mod attribution in logs, and items being added that shouldn't have been.</textarea>
+- **FIX** **Duplicate entries resolved incorrectly.** Items that appeared multiple times with different counts were treated as the same entry, causing some to disappear.
+- **FIX** **"Carried forward" log showing removed entries.** The log incorrectly listed entries as "carried forward" even when a mod had removed them.
+- **FIX** **Plugin file reader using wrong format.** The plugin read mod files using the wrong data layout, causing it to skip every entry and produce incorrect results.</textarea>
         <button class="copy-btn" onclick="copyText('markdown031a')">Copy to Clipboard</button>
     </div>
 
@@ -284,16 +493,16 @@ code {
 
     <h3>Changes</h3>
     <ul>
-        <li><span class="tag tag-change">CHANGE</span> <b>Removed in-game notification system.</b> Fixes the <code>AddUITask</code> retry loop bug that could cause issues with ESP removal.</li>
-        <li><span class="tag tag-change">CHANGE</span> <b>Removed INI settings.</b> <code>enablenotification</code> and <code>enablecyclenotification</code> removed. Only <code>enablelogs</code> remains.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Form type tags in logs.</b> Added <code>[LVLI]</code>, <code>[ARMO]</code>, <code>[WEAP]</code>, etc. to all log entry lines for easier identification.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Final state section.</b> Added <code>-- Final state --</code> section to detailed logs showing all entries after merge with entry count.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Most frequently added items summary.</b> Added aggregate summary to the end of detailed logs (top 15 items by how many leveled lists they were added to).</li>
-        <li><span class="tag tag-improve">IMPROVED</span> <b>Log format consistency.</b> Log format now matches Dynamic Container Loot style for consistency between the two plugins.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Removed in-game notifications.</b> Removed the popup notification system that could cause issues when removing the plugin.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Removed notification INI settings.</b> The <code>enablenotification</code> and <code>enablecyclenotification</code> settings are gone; only <code>enablelogs</code> remains.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Form type tags in logs.</b> Log entries now show the record type (like [WEAP] or [ARMO]) next to each item for easier reading.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Final state section in logs.</b> Detailed logs now include a snapshot of every entry in a list after conflict resolution.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Most frequently restored items summary.</b> Detailed logs now end with a summary of which items were restored to the most lists.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Log format consistency.</b> Log output now follows the same format as Dynamic Container Loot.</li>
     </ul>
     <h3>Fixes</h3>
     <ul>
-        <li><span class="tag tag-fix">FIX</span> <b>Potential crash in overflow sublists.</b> Added defensive zeroing of <code>entries._data</code> in <code>CreateOverflowSublist()</code> before calling <code>RebuildEntries()</code> to prevent potential crash from uninitialized memory.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Potential crash in overflow sublists.</b> Fixed a possible crash when creating overflow sublists caused by uninitialized memory.</li>
     </ul>
 
     <div class="btn-row">
@@ -304,16 +513,16 @@ code {
         <textarea class="bbcode-area" id="bbcode03a" readonly>[size=4][b][color=#dcdcaa]Version 0.3a[/color][/b][/size]
 [size=3][b][color=#9cdcfe]Changes[/color][/b][/size]
 [list]
-[*][color=#1565c0][b]CHANGE[/b][/color] [b]Removed in-game notification system.[/b] Fixes the AddUITask retry loop bug that could cause issues with ESP removal.
-[*][color=#1565c0][b]CHANGE[/b][/color] [b]Removed INI settings.[/b] enablenotification and enablecyclenotification removed. Only enablelogs remains.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Form type tags in logs.[/b] Added [LVLI], [ARMO], [WEAP], etc. to all log entry lines for easier identification.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Final state section.[/b] Added -- Final state -- section to detailed logs showing all entries after merge with entry count.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Most frequently added items summary.[/b] Added aggregate summary to the end of detailed logs (top 15 items by how many leveled lists they were added to).
-[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Log format consistency.[/b] Log format now matches Dynamic Container Loot style for consistency between the two plugins.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Removed in-game notifications.[/b] Removed the popup notification system that could cause issues when removing the plugin.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Removed notification INI settings.[/b] The enablenotification and enablecyclenotification settings are gone; only enablelogs remains.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Form type tags in logs.[/b] Log entries now show the record type (like [WEAP] or [ARMO]) next to each item for easier reading.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Final state section in logs.[/b] Detailed logs now include a snapshot of every entry in a list after conflict resolution.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Most frequently restored items summary.[/b] Detailed logs now end with a summary of which items were restored to the most lists.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Log format consistency.[/b] Log output now follows the same format as Dynamic Container Loot.
 [/list]
 [size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
 [list]
-[*][color=#c42b1c][b]FIX[/b][/color] [b]Potential crash in overflow sublists.[/b] Added defensive zeroing of entries._data in CreateOverflowSublist() before calling RebuildEntries() to prevent potential crash from uninitialized memory.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Potential crash in overflow sublists.[/b] Fixed a possible crash when creating overflow sublists caused by uninitialized memory.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyText('bbcode03a')">Copy to Clipboard</button>
     </div>
@@ -321,15 +530,15 @@ code {
         <textarea class="bbcode-area" id="markdown03a" readonly># Version 0.3a
 
 ## Changes
-- **CHANGE** **Removed in-game notification system.** Fixes the AddUITask retry loop bug that could cause issues with ESP removal.
-- **CHANGE** **Removed INI settings.** enablenotification and enablecyclenotification removed. Only enablelogs remains.
-- **NEW** **Form type tags in logs.** Added [LVLI], [ARMO], [WEAP], etc. to all log entry lines for easier identification.
-- **NEW** **Final state section.** Added -- Final state -- section to detailed logs showing all entries after merge with entry count.
-- **NEW** **Most frequently added items summary.** Added aggregate summary to the end of detailed logs (top 15 items by how many leveled lists they were added to).
-- **IMPROVED** **Log format consistency.** Log format now matches Dynamic Container Loot style for consistency between the two plugins.
+- **CHANGE** **Removed in-game notifications.** Removed the popup notification system that could cause issues when removing the plugin.
+- **CHANGE** **Removed notification INI settings.** The enablenotification and enablecyclenotification settings are gone; only enablelogs remains.
+- **NEW** **Form type tags in logs.** Log entries now show the record type (like [WEAP] or [ARMO]) next to each item for easier reading.
+- **NEW** **Final state section in logs.** Detailed logs now include a snapshot of every entry in a list after conflict resolution.
+- **NEW** **Most frequently restored items summary.** Detailed logs now end with a summary of which items were restored to the most lists.
+- **IMPROVED** **Log format consistency.** Log output now follows the same format as Dynamic Container Loot.
 
 ## Fixes
-- **FIX** **Potential crash in overflow sublists.** Added defensive zeroing of entries._data in CreateOverflowSublist() before calling RebuildEntries() to prevent potential crash from uninitialized memory.</textarea>
+- **FIX** **Potential crash in overflow sublists.** Fixed a possible crash when creating overflow sublists caused by uninitialized memory.</textarea>
         <button class="copy-btn" onclick="copyText('markdown03a')">Copy to Clipboard</button>
     </div>
 
@@ -341,14 +550,14 @@ code {
 
     <h3>Features</h3>
     <ul>
-        <li><span class="tag tag-new">NEW</span> <b>Circular reference detection.</b> Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Overflow sublists.</b> Lists exceeding 255 entries are split into nested sublists at runtime (engine limit workaround).</li>
-        <li><span class="tag tag-new">NEW</span> <b>Multiplicity-based diffing.</b> Preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight).</li>
-        <li><span class="tag tag-new">NEW</span> <b>EditorID cache.</b> Readable display names in detailed logs and cycle warnings.</li>
-        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b></li>
-        <li><span class="tag tag-new">NEW</span> <b>Cycle notification INI setting.</b> New <code>enablecyclenotification</code> setting (default: true) for in-game cycle status notification.</li>
-        <li><span class="tag tag-improve">IMPROVED</span> <b>Notification timing.</b> Notifications now display on save load or new game instead of during data load (when the HUD is active).</li>
-        <li><span class="tag tag-change">CHANGE</span> <b>Notification default changed.</b> <code>enablenotification</code> default changed from <code>false</code> to <code>true</code>.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Circular reference detection.</b> The plugin now detects and breaks circular leveled list references that would crash the game.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Overflow sublists.</b> Lists with more than 255 entries are now split into nested sublists so nothing gets dropped.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Duplicate weighting preserved.</b> Duplicate entries used for drop weighting (like 3x Iron Bow for 3x drop chance) are now tracked correctly.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Readable names in logs.</b> Logs and cycle warnings now show item names instead of just hex IDs.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Works on all three Skyrim editions.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Cycle notification setting.</b> New <code>enablecyclenotification</code> INI setting to show a message when circular references are found.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Better notification timing.</b> In-game notifications now appear when loading a save instead of during the loading screen.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Notification on by default.</b> The <code>enablenotification</code> setting now defaults to true.</li>
     </ul>
 
     <div class="btn-row">
@@ -359,14 +568,14 @@ code {
         <textarea class="bbcode-area" id="bbcode02a" readonly>[size=4][b][color=#dcdcaa]Version 0.2a[/color][/b][/size]
 [size=3][b][color=#9cdcfe]Features[/color][/b][/size]
 [list]
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Circular reference detection.[/b] Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Overflow sublists.[/b] Lists exceeding 255 entries are split into nested sublists at runtime (engine limit workaround).
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Multiplicity-based diffing.[/b] Preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight).
-[*][color=#2E7D32][b]NEW[/b][/color] [b]EditorID cache.[/b] Readable display names in detailed logs and cycle warnings.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b]
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Cycle notification INI setting.[/b] New enablecyclenotification setting (default: true) for in-game cycle status notification.
-[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Notification timing.[/b] Notifications now display on save load or new game instead of during data load (when the HUD is active).
-[*][color=#1565c0][b]CHANGE[/b][/color] [b]Notification default changed.[/b] enablenotification default changed from false to true.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Circular reference detection.[/b] The plugin now detects and breaks circular leveled list references that would crash the game.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Overflow sublists.[/b] Lists with more than 255 entries are now split into nested sublists so nothing gets dropped.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Duplicate weighting preserved.[/b] Duplicate entries used for drop weighting (like 3x Iron Bow for 3x drop chance) are now tracked correctly.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Readable names in logs.[/b] Logs and cycle warnings now show item names instead of just hex IDs.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Works on all three Skyrim editions.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Cycle notification setting.[/b] New enablecyclenotification INI setting to show a message when circular references are found.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Better notification timing.[/b] In-game notifications now appear when loading a save instead of during the loading screen.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Notification on by default.[/b] The enablenotification setting now defaults to true.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyText('bbcode02a')">Copy to Clipboard</button>
     </div>
@@ -374,14 +583,14 @@ code {
         <textarea class="bbcode-area" id="markdown02a" readonly># Version 0.2a
 
 ## Features
-- **NEW** **Circular reference detection.** Post-merge circular reference detection and breaking with full cycle path logging and xEdit fix instructions.
-- **NEW** **Overflow sublists.** Lists exceeding 255 entries are split into nested sublists at runtime (engine limit workaround).
-- **NEW** **Multiplicity-based diffing.** Preserves duplicate entry weighting (e.g. 3x Iron Bow for 3x drop weight).
-- **NEW** **EditorID cache.** Readable display names in detailed logs and cycle warnings.
-- **NEW** **SE, AE, and VR support.**
-- **NEW** **Cycle notification INI setting.** New enablecyclenotification setting (default: true) for in-game cycle status notification.
-- **IMPROVED** **Notification timing.** Notifications now display on save load or new game instead of during data load (when the HUD is active).
-- **CHANGE** **Notification default changed.** enablenotification default changed from false to true.</textarea>
+- **NEW** **Circular reference detection.** The plugin now detects and breaks circular leveled list references that would crash the game.
+- **NEW** **Overflow sublists.** Lists with more than 255 entries are now split into nested sublists so nothing gets dropped.
+- **NEW** **Duplicate weighting preserved.** Duplicate entries used for drop weighting (like 3x Iron Bow for 3x drop chance) are now tracked correctly.
+- **NEW** **Readable names in logs.** Logs and cycle warnings now show item names instead of just hex IDs.
+- **NEW** **SE, AE, and VR support.** Works on all three Skyrim editions.
+- **NEW** **Cycle notification setting.** New enablecyclenotification INI setting to show a message when circular references are found.
+- **IMPROVED** **Better notification timing.** In-game notifications now appear when loading a save instead of during the loading screen.
+- **CHANGE** **Notification on by default.** The enablenotification setting now defaults to true.</textarea>
         <button class="copy-btn" onclick="copyText('markdown02a')">Copy to Clipboard</button>
     </div>
 
@@ -393,15 +602,15 @@ code {
 
     <h3>Features</h3>
     <ul>
-        <li><span class="tag tag-new">NEW</span> <b>Runtime leveled list merge.</b> Automatic merge for multi-source conflicts (3+ plugins editing the same LVLI record).</li>
-        <li><span class="tag tag-new">NEW</span> <b>Intentional removals respected.</b> Mods like Open World Loot that remove items win over mods that add them back.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Largest delta wins.</b> No data lost from load order position.</li>
-        <li><span class="tag tag-new">NEW</span> <b>UseAll and random-pick lists.</b> Handled with correct splitting strategies.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Flag and chanceNone conflict detection.</b> Warning logs for property conflicts.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Direct ESP/ESM/ESL parsing.</b> Accurate base-record reconstruction from disk.</li>
-        <li><span class="tag tag-new">NEW</span> <b>INI configuration.</b> Auto-generation on first launch.</li>
-        <li><span class="tag tag-new">NEW</span> <b>Optional detailed per-list logging.</b></li>
-        <li><span class="tag tag-new">NEW</span> <b>Optional in-game notification.</b> Notification on merge completion.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Automatic leveled list conflict resolution.</b> Resolves leveled list conflicts when 3 or more mods edit the same list.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Intentional removals respected.</b> If a mod deliberately removes an item from a list, it stays removed even if another mod adds it.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Largest change wins.</b> When multiple mods add the same item, the largest addition is kept so nothing is lost.</li>
+        <li><span class="tag tag-new">NEW</span> <b>UseAll and random-pick lists.</b> Both "use all items" and "pick one random item" lists are handled correctly.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Flag and chanceNone conflict warnings.</b> Warns in logs when mods disagree on list settings.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Direct mod file parsing.</b> Reads mod files directly from disk to accurately reconstruct what each mod changed.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI configuration.</b> Settings file is created automatically on first launch.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Optional detailed logging.</b> Enable detailed logs to see exactly what was changed in every list.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Optional in-game notification.</b> Shows a popup message when conflict resolution finishes.</li>
     </ul>
 
     <div class="btn-row">
@@ -412,15 +621,15 @@ code {
         <textarea class="bbcode-area" id="bbcode010" readonly>[size=4][b][color=#dcdcaa]Version 0.1.0 - Initial Release[/color][/b][/size]
 [size=3][b][color=#9cdcfe]Features[/color][/b][/size]
 [list]
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Runtime leveled list merge.[/b] Automatic merge for multi-source conflicts (3+ plugins editing the same LVLI record).
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Intentional removals respected.[/b] Mods like Open World Loot that remove items win over mods that add them back.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Largest delta wins.[/b] No data lost from load order position.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]UseAll and random-pick lists.[/b] Handled with correct splitting strategies.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Flag and chanceNone conflict detection.[/b] Warning logs for property conflicts.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Direct ESP/ESM/ESL parsing.[/b] Accurate base-record reconstruction from disk.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]INI configuration.[/b] Auto-generation on first launch.
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional detailed per-list logging.[/b]
-[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional in-game notification.[/b] Notification on merge completion.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Automatic leveled list conflict resolution.[/b] Resolves leveled list conflicts when 3 or more mods edit the same list.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Intentional removals respected.[/b] If a mod deliberately removes an item from a list, it stays removed even if another mod adds it.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Largest change wins.[/b] When multiple mods add the same item, the largest addition is kept so nothing is lost.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]UseAll and random-pick lists.[/b] Both "use all items" and "pick one random item" lists are handled correctly.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Flag and chanceNone conflict warnings.[/b] Warns in logs when mods disagree on list settings.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Direct mod file parsing.[/b] Reads mod files directly from disk to accurately reconstruct what each mod changed.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]INI configuration.[/b] Settings file is created automatically on first launch.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional detailed logging.[/b] Enable detailed logs to see exactly what was changed in every list.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional in-game notification.[/b] Shows a popup message when conflict resolution finishes.
 [/list]</textarea>
         <button class="copy-btn" onclick="copyText('bbcode010')">Copy to Clipboard</button>
     </div>
@@ -428,15 +637,15 @@ code {
         <textarea class="bbcode-area" id="markdown010" readonly># Version 0.1.0 - Initial Release
 
 ## Features
-- **NEW** **Runtime leveled list merge.** Automatic merge for multi-source conflicts (3+ plugins editing the same LVLI record).
-- **NEW** **Intentional removals respected.** Mods like Open World Loot that remove items win over mods that add them back.
-- **NEW** **Largest delta wins.** No data lost from load order position.
-- **NEW** **UseAll and random-pick lists.** Handled with correct splitting strategies.
-- **NEW** **Flag and chanceNone conflict detection.** Warning logs for property conflicts.
-- **NEW** **Direct ESP/ESM/ESL parsing.** Accurate base-record reconstruction from disk.
-- **NEW** **INI configuration.** Auto-generation on first launch.
-- **NEW** **Optional detailed per-list logging.**
-- **NEW** **Optional in-game notification.** Notification on merge completion.</textarea>
+- **NEW** **Automatic leveled list conflict resolution.** Resolves leveled list conflicts when 3 or more mods edit the same list.
+- **NEW** **Intentional removals respected.** If a mod deliberately removes an item from a list, it stays removed even if another mod adds it.
+- **NEW** **Largest change wins.** When multiple mods add the same item, the largest addition is kept so nothing is lost.
+- **NEW** **UseAll and random-pick lists.** Both "use all items" and "pick one random item" lists are handled correctly.
+- **NEW** **Flag and chanceNone conflict warnings.** Warns in logs when mods disagree on list settings.
+- **NEW** **Direct mod file parsing.** Reads mod files directly from disk to accurately reconstruct what each mod changed.
+- **NEW** **INI configuration.** Settings file is created automatically on first launch.
+- **NEW** **Optional detailed logging.** Enable detailed logs to see exactly what was changed in every list.
+- **NEW** **Optional in-game notification.** Shows a popup message when conflict resolution finishes.</textarea>
         <button class="copy-btn" onclick="copyText('markdown010')">Copy to Clipboard</button>
     </div>
 

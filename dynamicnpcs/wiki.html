@@ -296,6 +296,7 @@ pre {
     <h3>Companion Mods</h3>
     <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
     <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
 
     <!-- Other Projects -->
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
@@ -308,7 +309,7 @@ pre {
     <p>When multiple mods change the same NPC (adding spells, changing stats, giving new items, etc.), Skyrim only keeps the last mod's version and throws away everyone else's changes. This plugin fixes that. It finds the missing changes and merges them back in. Install it, forget about it.</p>
 
     <div class="info-box">
-        <p><strong>Quick Start:</strong> Install with your mod manager, launch the game. That's it. Check <code>Data/SKSE/Plugins/DynamicNPCs.log</code> if you want to see what it did.</p>
+        <p><strong>Quick Start:</strong> Install with your mod manager, launch the game. That's it. Open the MCM to tweak settings or set FaceGen priority. Check <code>Data/SKSE/Plugins/DynamicNPCs.log</code> if you want to see what it did.</p>
     </div>
 
     <h2>Requirements</h2>
@@ -316,7 +317,12 @@ pre {
         <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
         <li>SKSE64 (matching your game version)</li>
         <li>Address Library for SKSE Plugins</li>
+        <li>SkyUI (for the MCM menu)</li>
+        <li>MCM Helper (for the MCM menu)</li>
     </ul>
+    <div class="info-box">
+        <p>The MCM menu is optional. Without SkyUI and MCM Helper, the plugin still works using the INI file.</p>
+    </div>
 
     <h2>What This Mod Does</h2>
     <p>When multiple mods change the same NPC, Skyrim only keeps the last mod's version. Every other mod's changes are silently deleted. This plugin checks every mod that edited each NPC, figures out what was added, removed, or changed, and merges it all together at startup. Think of it like an automatic Bashed Patch for NPCs.</p>
@@ -333,8 +339,7 @@ pre {
     </div>
     <ul>
         <li><strong>This is NOT SPID.</strong> It does not distribute items, spells, or perks to NPCs. It only restores changes that were already supposed to be there but got lost due to mod conflicts.</li>
-        <li><strong>It does NOT touch face data.</strong> Face meshes, face tints, and face morphs are never merged. Changing face data between mods causes the dark face bug, so this plugin leaves it alone entirely.</li>
-        <li><strong>It does NOT touch scripts.</strong> Script data (VMAD) is never merged. Merging scripts from different mods is unsafe and can cause crashes.</li>
+        <li><strong>It does NOT blindly merge face data.</strong> Face meshes, morphs, and tints are only changed if you specifically tell it which mod should win, using the Plugin Priority page in the MCM (or the <code>[FaceGen]</code> INI section). Without that, face data is left alone entirely to avoid the dark face bug.</li>
         <li><strong>It does NOT replace Wrye Bash or Mator Smash.</strong> Those tools build patches ahead of time. This does the same job automatically at startup for anything they missed.</li>
         <li><strong>It does NOT "smash" records together blindly.</strong> It compares each mod's changes against the original and only carries over what each mod specifically added, removed, or changed. It's a smart merge, not a dumb copy-paste.</li>
         <li><strong>It does NOT create dirty edits.</strong> Nothing is written to disk. All merging happens in memory while the game loads. Your plugin files are never touched.</li>
@@ -368,46 +373,65 @@ pre {
         <div class="feature-item">AI behavior</div>
         <div class="feature-item">Traits (race, class, voice, etc.)</div>
         <div class="feature-item">Keywords</div>
+        <div class="feature-item">Papyrus scripts</div>
+        <div class="feature-item">FaceGen override</div>
         <div class="feature-item">SE + AE + VR support</div>
         <div class="feature-item">Fully automatic</div>
     </div>
 
     <h2>What Does NOT Get Merged (and Why)</h2>
     <ul>
-        <li><strong>Face data</strong> (face meshes, morphs, tints) &mdash; Merging face data between mods causes the dark face bug. Left alone entirely.</li>
-        <li><strong>Scripts</strong> (VMAD) &mdash; Merging scripts from different mods is unsafe and can cause crashes or broken quests.</li>
+        <li><strong>Face data</strong> (face meshes, morphs, tints) -- not merged automatically because mixing face data between mods causes the dark face bug. However, you can pick which mod's appearance wins per NPC using the Plugin Priority page in the MCM (or the <code>[FaceGen]</code> INI section). That copies the full look (head parts, morphs, tints, skin, hair color, face texture) from your preferred mod.</li>
     </ul>
 
     <h2>Template Flags</h2>
     <p>Some NPCs use templates to inherit data from another NPC (like a template for all bandits). When an NPC has a template flag set for a category (e.g. "use template for inventory"), this plugin skips merging that category since the data comes from the template, not the NPC record itself. This is automatic and requires no configuration.</p>
 
-    <h2>INI Settings</h2>
-    <p>The config file is at <code>Data/SKSE/Plugins/DynamicNPCs.ini</code>. If it doesn't exist, it gets created automatically the first time you launch the game.</p>
+    <h2>MCM Menu (Recommended)</h2>
+    <p>If you have SkyUI and MCM Helper installed, open the Mod Configuration Menu and look for <strong>Dynamic NPCs</strong>. Everything is configurable there.</p>
+
+    <h3>Features Page</h3>
+    <p>Toggle each merge category on or off. All are enabled by default. Changes take effect on the next game startup.</p>
+
+    <h3>Plugin Priority Page</h3>
+    <p>This page controls which mod's face wins when multiple mods change the same NPC. The plugin auto-detects every mod in your load order that edits NPCs and lists them here with a slider.</p>
+    <ul>
+        <li><strong>Higher number wins.</strong> A mod set to 5 beats a mod set to 1, just like your mod manager load order.</li>
+        <li>If two mods are set to the same number, the displaced mod is automatically bumped so every mod gets a unique rank.</li>
+        <li>Changes need a game restart to take effect.</li>
+    </ul>
+
+    <h3>Logs Page</h3>
+    <p>Shows a summary of what the plugin did on the last startup: how many NPCs were processed, how many had conflicts, and what was added or removed per category. The bottom section lists the NPCs with the most conflicts, including their FormIDs so you can look them up in xEdit.</p>
+
+    <div class="info-box">
+        <p>The MCM needs a small <code>DynamicNPCs.esp</code> file to work. This ESP only contains a quest that runs the MCM script. It does not change any NPCs or game data. You can create it automatically using the xEdit companion script (select "ESP Creator" mode).</p>
+    </div>
+
+    <h2>INI Settings (Without MCM)</h2>
+    <p>If you don't have SkyUI or MCM Helper, the plugin falls back to reading <code>Data/SKSE/Plugins/DynamicNPCs.ini</code>. This file is created automatically on first launch.</p>
     <pre>[General]
-;Write detailed per-NPC merge info to the log file. Useful for troubleshooting.
 enablelogs = false
 
 [Features]
-;Merge NPC inventory
 mergeInventories = true
-;Merge NPC spells, shouts, and leveled spells
 mergeSpells = true
-;Merge NPC perks
 mergePerks = true
-;Merge outfit item lists (what NPCs wear)
 mergeOutfits = true
-;Merge NPC AI packages (schedules, travel, patrol, etc.)
 mergePackages = true
-;Merge NPC faction memberships and ranks
 mergeFactions = true
-;Merge NPC stats: health/magicka/stamina offsets, level, speed, skills, and actor flags
 mergeStats = true
-;Merge NPC AI behavior: aggression, confidence, mood, morality, and override package lists
 mergeAIData = true
-;Merge NPC traits: race, class, outfit, combat style, voice type, height, weight, name, and more
 mergeTraits = true
-;Merge NPC keywords (used by perks, abilities, and other systems to identify NPC types)
-mergeKeywords = true</pre>
+mergeKeywords = true
+mergeScripts = true
+mergeFaceGen = true
+
+[FaceGen]
+; Paste mod filenames below, one per line.
+; Mods lower in the list take priority.
+; BijinWarmaidens.esp
+; PandorablesNPCs.esp</pre>
 
     <h2>Settings Reference</h2>
     <div class="page-grid">
@@ -455,6 +479,14 @@ mergeKeywords = true</pre>
             <h3>mergeKeywords</h3>
             <p><strong>Default:</strong> <code>true</code><br>Merges NPC keywords. Keywords are used by perks, abilities, and game systems to identify NPC types (e.g. ActorTypeUndead, MagicResistance).</p>
         </div>
+        <div class="page-card">
+            <h3>mergeScripts</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Merges Papyrus scripts attached to NPCs. If a mod adds a script to an NPC and another mod overwrites that NPC, the script is restored. Works at the whole-script level (adds/removes entire scripts). NPCs that inherit scripts from a template are skipped.</p>
+        </div>
+        <div class="page-card">
+            <h3>mergeFaceGen</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Enables the FaceGen override system. When enabled, set your preferred appearance mods on the Plugin Priority page in the MCM (or in the <code>[FaceGen]</code> INI section). The plugin will copy the full look (head parts, face morphs, tint layers, skin, hair color, face texture) from your preferred mod. Higher number wins, just like load order. Only affects NPCs that the listed mod actually changes.</p>
+        </div>
     </div>
 
     <h2>Reading the Log</h2>
@@ -467,9 +499,12 @@ mergeKeywords = true</pre>
   Packages: +8 added, -3 removed
   Factions: +4 added, -1 removed, ~0 rank changed
   Stats: ~6 fields changed, ~2 flags changed
-  AI Data: ~3 AIDT fields changed, ~1 override packages changed
+  AI Data: ~3 fields changed
+  Override Packages: ~1 changed
   Traits: ~4 fields changed
   Keywords: +7 added, -0 removed
+  Scripts: +3 added, -1 removed
+  FaceGen: 12 NPCs overridden
   Outfits: 412 total, 11 with conflicts, 5 merged
   Outfit items: +9 added, -1 removed</pre>
 
@@ -480,9 +515,10 @@ mergeKeywords = true</pre>
     -- Changes --
       + [SPEL] Fireball [00012FD0] (added by SpellMod.esp)
       + [SPEL] Healing [000B62EF] (added by SpellMod.esp)
-      ~ [STAT] healthOffset 0->25  (changed by SpellMod.esp)
-      + [KYWD] MagicResistance50 [000AA155] (added by SpellMod.esp)
-    Result: spells(+2 -0), stats(~1 fields, ~0 flags), keywords(+1 -0)</pre>
+      ~ [SKILLS] healthOffset 0->25  (changed by SpellMod.esp)
+      + [KEYWORD] MagicResistance50 [000AA155] (added by SpellMod.esp)
+      + [SCRIPT] MyCustomScript (added by SpellMod.esp)
+    Result: spells(+2 -0), stats(~1 fields, ~0 flags), keywords(+1 -0), scripts(+1 -0)</pre>
 
     <div class="warn-box">
         <p><strong>Heads up:</strong> Detailed logging makes startup noticeably slower because it has to look up the name of every form. Keep it off for normal play.</p>

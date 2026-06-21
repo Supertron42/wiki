@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPC Spawner - SKSE Plugin | Spawn Random NPCs on a Timer</title>
+<meta name="description" content="NPC Spawner is an SKSE plugin for Skyrim SE that spawns random NPCs near the player on a configurable timer.">
+<meta name="keywords" content="Skyrim mod, SKSE plugin, NPC spawner, spawn NPCs, Skyrim SE, modding">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/npcspawner/wiki.html">
+
+<!-- Structured Data for Google -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "NPC Spawner",
+    "applicationCategory": "Game Mod",
+    "operatingSystem": "Windows",
+    "description": "An SKSE plugin that spawns random NPCs near the player on a configurable timer for Skyrim Special Edition.",
+    "author": {
+        "@type": "Person",
+        "name": "Supertron"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #FF6B35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #FF6B35;
+}
+#nav a.highlight:hover {
+    background: #E55A25;
+    border-left-color: #E55A25;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #FF6B35;
+    border-bottom: 2px solid #FF6B35;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    line-height: 1.5;
+}
+
+/* Feature List */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 15px 0;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #252526;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.feature-item::before {
+    content: "\2713";
+    color: #FF6B35;
+    font-weight: bold;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #FF6B35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Settings Grid */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+.page-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    padding: 16px;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: block;
+}
+.page-card:hover {
+    border-color: #FF6B35;
+    background: #2a2d2e;
+}
+.page-card h3 {
+    color: #4ec9b0;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.page-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #FF6B35;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #E55A25;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
+
+    <!-- Other Projects -->
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0;">NPC Spawner Wiki</h1>
+    <p>An SKSE plugin that spawns random NPCs near the player on a timer. NPCs appear within a configurable radius, idle in place, and persist until the max limit is reached. When the limit is hit, the oldest NPC is removed before a new one spawns.</p>
+
+    <div class="info-box">
+        <p><strong>Quick Start:</strong> Install via your mod manager and load a save. NPCs start spawning automatically. Adjust timing and limits in <code>Data/SKSE/Plugins/NPCSpawner.ini</code>.</p>
+    </div>
+
+    <h2>How It Works</h2>
+    <ul>
+        <li>Runs automatically after the game finishes loading data</li>
+        <li>Collects all valid NPCs from the game (skips unique characters, children, and the player)</li>
+        <li>Every few seconds (configurable), picks a random NPC from the pool and spawns them near you</li>
+        <li>Spawned NPCs appear at a random spot within the configured radius</li>
+        <li>When the maximum number of spawned NPCs is reached, the oldest one is removed before a new one appears</li>
+    </ul>
+
+    <h2>Key Features</h2>
+    <div class="feature-list">
+        <div class="feature-item">Fully automatic</div>
+        <div class="feature-item">Configurable spawn interval</div>
+        <div class="feature-item">Configurable NPC limit</div>
+        <div class="feature-item">Configurable spawn radius</div>
+        <div class="feature-item">SE + AE + VR support</div>
+        <div class="feature-item">Auto-generates INI</div>
+    </div>
+
+    <h2>INI Settings</h2>
+    <p>Configuration is at <code>Data/SKSE/Plugins/NPCSpawner.ini</code>. If the file does not exist, it will be created with defaults on first launch.</p>
+    <pre>[General]
+;How many seconds between each NPC spawn. Lower values spawn faster.
+spawnInterval = 2.0
+
+;Maximum number of spawned NPCs alive at once.
+;When this limit is reached, the oldest NPC is removed before a new one spawns.
+maxNPCs = 20
+
+;How far away from you (in game units) NPCs can appear.
+;512 is roughly one house-length.
+spawnRadius = 512.0
+
+;Write detailed spawn info to the log file. Only turn on for troubleshooting.
+enableLogs = false</pre>
+
+    <h2>Settings Reference</h2>
+    <div class="page-grid">
+        <div class="page-card">
+            <h3>spawnInterval</h3>
+            <p><strong>Default:</strong> <code>2.0</code><br>Seconds between each spawn. Set to <code>0.5</code> for rapid spawning or <code>10.0</code> for a slow trickle.</p>
+        </div>
+        <div class="page-card">
+            <h3>maxNPCs</h3>
+            <p><strong>Default:</strong> <code>20</code><br>Maximum spawned NPCs alive at once. The oldest is removed when this limit is reached. Higher values use more memory and may affect performance.</p>
+        </div>
+        <div class="page-card">
+            <h3>spawnRadius</h3>
+            <p><strong>Default:</strong> <code>512.0</code><br>How far from you NPCs can appear (in game units). 512 is roughly one house-length. NPCs always spawn at least 100 units away.</p>
+        </div>
+        <div class="page-card">
+            <h3>enableLogs</h3>
+            <p><strong>Default:</strong> <code>false</code><br>Logs every spawn and removal with NPC name, position, and current count. Useful for troubleshooting.</p>
+        </div>
+    </div>
+
+    <h2>NPC Filtering</h2>
+    <p>Not every NPC in the game is eligible for spawning. The plugin skips:</p>
+    <ul>
+        <li><strong>Unique NPCs</strong> -- named characters like Lydia, Ulfric, or Nazeem. Spawning duplicates of these would break quests and look wrong.</li>
+        <li><strong>Children</strong> -- child NPCs are skipped entirely.</li>
+        <li><strong>The player template</strong> -- the base record used to create your character.</li>
+        <li><strong>Deleted records</strong> -- NPCs that mods have flagged for deletion.</li>
+    </ul>
+    <p>Everything else is fair game: bandits, guards, animals, monsters, and generic NPCs from all your loaded mods.</p>
+
+    <h2>Reading the Log</h2>
+    <p>The log at <code>Data/SKSE/Plugins/NPCSpawner.log</code> shows a summary on startup:</p>
+    <pre>NPCSpawner v1.0.0
+NPCSpawner has finished loading.
+Settings loaded - interval: 2.0s, maxNPCs: 20, radius: 512, logs: false
+Collected 1847 NPCs for spawn pool
+Spawner started</pre>
+    <p>With <code>enableLogs=true</code>, each spawn and removal is logged:</p>
+    <pre>Spawned [NPC_:000A1234] Bandit at (12045, -3211, 890) - total: 5
+Spawned [NPC_:000B5678] Wolf at (12180, -3100, 885) - total: 6
+Removed oldest spawned NPC [00FF1234]</pre>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>Skyrim SE (1.5.97+), AE (1.6.x), or VR</li>
+        <li>SKSE64 (matching your game version)</li>
+        <li>Address Library for SKSE Plugins</li>
+    </ul>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this wiki from your Nexus description or documentation:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/npcspawner/wiki.html]NPC Spawner Wiki[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[NPC Spawner Wiki](https://supertron42.github.io/wiki/npcspawner/wiki.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi" style="height: 36px;"></a>
+    </div>
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

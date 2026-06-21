@@ -1,0 +1,45 @@
+# ============================================================
+#  Publish filter for  https://supertron42.github.io/wiki/
+#
+#  GOAL: only Skyrim mod wikis and WoW class guides get pushed
+#  to the public site. Everything listed here is dev-only,
+#  private, or a paid product and must stay OUT of the repo.
+#
+#  GitHub Desktop respects this file: ignored items simply do
+#  not appear in the "Changes" list, so you can't publish them
+#  by accident. Commit + push normally and only the wikis go.
+#
+#  To keep something private in future, add its folder below.
+# ============================================================
+
+# --- WoW RXP guide development (lua, notes, scratch; not web content) ---
+/wowguides/
+/_wow/
+
+# --- Paid Ko-fi products (RXP guide zips + listings) - never publish ---
+/restedxpguides/
+
+# --- Draft / not-ready site ---
+/onepage website/
+
+# --- Claude Code / AI dev files (anywhere in the tree) ---
+.claude/
+CLAUDE.md
+
+# --- Dev scripts, tooling, binaries (anywhere in the tree) ---
+*.py
+__pycache__/
+*.exe
+*.code-workspace
+
+# --- Dev tooling that lives inside the class-guides folder ---
+/wow_class_guides/tools/
+
+# --- Saved third-party source pages (Icy Veins, Wowhead, etc.) used as
+#     research material to build the guides. Not for republication. ---
+/wow_class_guides/resources/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+desktop.ini

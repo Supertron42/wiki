@@ -294,9 +294,13 @@ pre {
     <a href="wiki.html" style="background: #2a2d2e; border-left-color: #4ec9b0;">Wiki Home</a>
     <a href="details.html">Details for Nerds</a>
 
+    <h3>Tools</h3>
+    <a href="wiki.html#xedit-checker">xEdit Error Checker</a>
+
     <h3>Companion Mods</h3>
     <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
     <a href="../dynamicnpcs/wiki.html">Dynamic NPCs</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
 
     <!-- Other Projects -->
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
@@ -306,14 +310,14 @@ pre {
 
 <div id="content">
     <h1 style="margin-top: 0; border-bottom-color: #E53935; color: #E53935;">Dynamic Leveled Lists Wiki</h1>
-    <p>An SKSE plugin that merges leveled list records (LVLI) from all mods at runtime. When multiple mods edit the same leveled list, Skyrim's last-loaded-wins rule discards changes from all but the final override. Dynamic Leveled Lists merges the lost items back in automatically, and respects intentional removals.</p>
+    <p>An SKSE plugin that merges leveled list records from all mods at runtime. It covers leveled items (LVLI), leveled NPCs (LVLN), and leveled spells (LVSP). When multiple mods edit the same leveled list, Skyrim's last-loaded-wins rule discards changes from all but the final override. Dynamic Leveled Lists merges the lost entries back in automatically, and respects intentional removals.</p>
 
     <div class="info-box">
         <p><strong>Quick Start:</strong> Install via your mod manager and launch the game. The plugin runs automatically on data load. Check <code>Data/SKSE/Plugins/DynamicLeveledLists.log</code> to see what was merged.</p>
     </div>
 
     <h2>The Problem</h2>
-    <p>Skyrim uses a "last writer wins" rule for records. If three mods edit the same leveled list (e.g. <code>LItemWeaponGreatSword</code>), only the last mod in your load order keeps its changes. Items added by the other mods are silently lost. This affects loot tables, vendor inventories, encounter zones, and anything else driven by leveled lists.</p>
+    <p>Skyrim uses a "last writer wins" rule for records. If three mods edit the same leveled list (e.g. <code>LItemWeaponGreatSword</code>), only the last mod in your load order keeps its changes. Entries added by the other mods are silently lost. This affects loot tables, vendor inventories, NPC spawn lists, spell distribution, and anything else driven by leveled lists.</p>
     <p>This is why compatibility patches exist for nearly every weapon/armor mod. Without them, half of the items you installed never actually drop.</p>
 
     <h2>The Solution</h2>
@@ -322,8 +326,8 @@ pre {
     <h2>How It Works</h2>
     <ul>
         <li>Fires on <code>kDataLoaded</code>, runs once before the main menu</li>
-        <li>Scans every <code>LVLI</code> (leveled item) form for multi-source conflicts (3+ plugins touching the same record)</li>
-        <li>Parses each plugin's LVLI subrecords directly from disk to reconstruct what each mod intended</li>
+        <li>Scans every leveled list form (LVLI, LVLN, LVSP) for multi-source conflicts (3+ plugins touching the same record)</li>
+        <li>Parses each plugin's leveled list subrecords directly from disk to reconstruct what each mod intended</li>
         <li>Computes per-mod deltas against the base record using multiplicity-based diffing</li>
         <li>Largest addition/removal wins across losers (no data lost from load order)</li>
         <li>Intentional removals override additions (a mod that deliberately removes an item wins)</li>
@@ -341,6 +345,9 @@ pre {
         <div class="feature-item">Duplicate weighting preserved</div>
         <div class="feature-item">Overflow sublists for 255+ entries</div>
         <div class="feature-item">Circular reference breaking</div>
+        <div class="feature-item">Items, NPCs, and spells</div>
+        <div class="feature-item">Mod blacklist with auto-detection</div>
+        <div class="feature-item">Empty sublist cleanup</div>
     </div>
 
     <h2>Overflow Sublists (255 Entry Limit)</h2>
@@ -376,15 +383,74 @@ Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVL
     <h2>INI Settings</h2>
     <p>Configuration is at <code>Data/SKSE/Plugins/DynamicLeveledLists.ini</code>. If the file doesn't exist, it will be auto-generated with defaults on first launch.</p>
     <pre>[General]
-;Enable detailed merge logging (true/false)
-enablelogs = false</pre>
+;Enable detailed merge logging
+enablelogs = false
+
+;Merge leveled item lists
+mergeleveledItems = true
+
+;Merge leveled NPC lists
+mergeleveledNPCs = true
+
+;Merge leveled spell lists
+mergeleveledSpells = true
+
+;Respect intentional item removals during conflict resolution
+respectRemovalsItems = true
+
+;Respect intentional NPC removals during conflict resolution
+respectRemovalsNPCs = true
+
+;Respect intentional spell removals during conflict resolution
+respectRemovalsSpells = true
+
+;Remove references to empty item sublists after conflict resolution
+removeEmptySublistsItems = true
+
+;Remove references to empty NPC sublists after conflict resolution
+removeEmptySublistsNPCs = true
+
+;Remove references to empty spell sublists after conflict resolution
+removeEmptySublistsSpells = true
+
+[Blacklist]
+; Mods listed here are skipped during conflict resolution.
+; Change OFF to ALL to skip a mod for all list types.
+; Or use LVLI, LVLN, or LVSP to skip for a specific type only.
+; Entries below were auto-detected from compatibility patches.
+; Detected patch: ModA_ModB_Patch.esp
+ModA.esp = OFF
+ModB.esp = OFF</pre>
 
     <h2>Settings Reference</h2>
     <div class="page-grid">
         <div class="page-card">
             <h3>enablelogs</h3>
-            <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual item added, removed, or skipped per leveled list with form type tags, a final state snapshot, and an aggregate summary of most frequently added items. Useful for debugging but adds startup time due to EditorID lookup.</p>
+            <p><strong>Default:</strong> <code>false</code><br>When enabled, logs every individual entry added, removed, or skipped per leveled list with form type tags, a final state snapshot, and an aggregate summary of most frequently added items. Useful for debugging but adds startup time due to EditorID lookup.</p>
         </div>
+        <div class="page-card">
+            <h3>mergeleveledItems / NPCs / Spells</h3>
+            <p><strong>Default:</strong> <code>true</code><br>Controls whether conflict resolution runs for each list type. Items are loot tables and vendor inventories. NPCs are spawn lists. Spells are spell distribution lists. Disable a type if you want to skip it entirely.</p>
+        </div>
+        <div class="page-card">
+            <h3>respectRemovalsItems / NPCs / Spells</h3>
+            <p><strong>Default:</strong> <code>true</code><br>When a mod deliberately removes an entry from a leveled list, that removal normally cancels any additions of the same entry from other mods. Set to false for a "never lose items" mode where every addition is kept regardless of removals.</p>
+        </div>
+        <div class="page-card">
+            <h3>removeEmptySublistsItems / NPCs / Spells</h3>
+            <p><strong>Default:</strong> <code>true</code><br>After conflict resolution, the plugin scans for leveled lists with zero entries and removes references to them from parent lists. If removing an empty sublist makes its parent empty, that parent gets cleaned too (cascading). This prevents the game from rolling on empty lists that produce no loot or spawns.</p>
+        </div>
+        <div class="page-card">
+            <h3>[Blacklist] Section</h3>
+            <p>Add mod filenames to skip them during conflict resolution. Set the value to <code>ALL</code> to skip for all list types, or <code>LVLI</code>, <code>LVLN</code>, or <code>LVSP</code> to skip for one type only. Set to <code>OFF</code> to disable. The plugin auto-detects compatibility patches and pre-populates entries as OFF for you to review.</p>
+        </div>
+    </div>
+
+    <h2>Mod Blacklist</h2>
+    <p>The <code>[Blacklist]</code> section in the INI lets you skip specific mods during conflict resolution. This is useful when a compatibility patch already handles the merging for two mods and you want the plugin to leave those entries alone.</p>
+    <p>On first launch, the plugin scans your load order for files that look like compatibility patches (filename contains "patch" or "compat" and has 2+ non-vanilla masters). For each detected patch, it adds the patch's non-vanilla masters to the <code>[Blacklist]</code> section with value <code>OFF</code>. These entries have no effect until you change them. Review the entries and change <code>OFF</code> to <code>ALL</code> (or a specific type) for any mod you want to skip.</p>
+    <div class="info-box">
+        <p><strong>Safe by default:</strong> Auto-detected entries are always set to OFF. They do nothing until you enable them. The plugin never skips a mod unless you explicitly tell it to.</p>
     </div>
 
     <h2>Reading the Log</h2>
@@ -397,7 +463,16 @@ enablelogs = false</pre>
   Total entries added: 156
   Total entries removed: 12
   Overflow sublists created: 3
-  Circular references broken: 1</pre>
+  Circular references broken: 1
+  ---
+  Leveled Items (LVLI):  3200 total, 30 merged
+  Leveled NPCs (LVLN):   1100 total, 8 merged
+  Leveled Spells (LVSP): 521 total, 3 merged
+  ---
+  Data quality warnings:
+    Null entries stripped: 2 (empty references in leveled lists, likely from broken mods)
+    Negative counts clamped to 1: 1 (invalid item counts in leveled lists, likely from broken mods)</pre>
+    <p>The data quality section only appears when problems are found. If your mods are clean, you won't see it.</p>
     <p>The cycle line always appears: "No circular references detected" when clean, or "Circular references broken: N" when cycles were found. Each cycle is logged individually with the full path, and the entry that was removed to break it:</p>
     <pre>Circular leveled list reference detected: 00035319 -> 000A1234 -> 00035319
 Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVLI:00035319]
@@ -426,15 +501,76 @@ Broke circular reference: removed SomeSublist [LVLI:000A1234] from MainList [LVL
   [ARMO] NordicShield [0B034568] - added to 8 leveled lists (from HeavyArmory.esp)</pre>
 
     <div class="warn-box">
-        <p><strong>Performance note:</strong> Detailed logging requires scanning every loaded mod's LVLI records from disk to build an EditorID cache. This adds noticeable startup time. Keep <code>enablelogs=false</code> for normal play.</p>
+        <p><strong>Performance note:</strong> Detailed logging requires scanning every loaded mod's leveled list records from disk to build an EditorID cache. This adds noticeable startup time. Keep <code>enablelogs=false</code> for normal play.</p>
+    </div>
+
+    <h2 id="xedit-checker">xEdit Error Checker Script</h2>
+    <p>DynamicLeveledLists includes a companion xEdit script (<code>ST - Dynamic Leveled Lists.pas</code>) for leveled list diagnostics and patching. On launch, choose between two modes: <strong>Info Mode</strong> (report-only, scans for problems) and <strong>Patch Mode</strong> (creates an ESP that merges missing entries from losing overrides back into the winning record).</p>
+
+    <h3 style="color: #9cdcfe;">Setup</h3>
+    <p>Copy the <code>.pas</code> file to your xEdit <code>Edit Scripts</code> folder (usually next to SSEEdit.exe). Then in xEdit: select plugins, right-click, Apply Script, and choose <code>ST - Dynamic Leveled Lists</code>.</p>
+
+    <h3 style="color: #9cdcfe;">Info Mode (Report-Only)</h3>
+    <p>Scans your load order for common leveled list problems without modifying anything:</p>
+    <ul>
+        <li><strong>Broken references</strong> -- an entry points to a form that doesn't exist (deleted mod, bad merge)</li>
+        <li><strong>Null FormIDs</strong> -- an entry references FormID <code>00000000</code></li>
+        <li><strong>xEdit errors</strong> -- built-in xEdit validation catches additional structural problems</li>
+        <li><strong>Empty leveled lists</strong> -- a list with zero entries (nothing will ever drop)</li>
+        <li><strong>Duplicate entries</strong> -- same item appears multiple times at the same level (warning, sometimes intentional for weighting)</li>
+        <li><strong>Circular references</strong> -- a list that references itself (DLL catches these at runtime too, but xEdit lets you fix them permanently)</li>
+        <li><strong>EDID renames</strong> -- reports when an override changes a leveled list's Editor ID, showing which plugin renamed it</li>
+    </ul>
+
+    <h3 style="color: #9cdcfe;">Patch Mode (Create Merged ESP)</h3>
+    <p>Builds an ESP using the same delta-based merge logic as the SKSE plugin. For users who want a permanent xEdit patch instead of relying on DLL's runtime merge. Handles all three leveled list types (LVLI, LVLN, LVSP). When you select Patch Mode, a settings panel lets you configure the merge before building.</p>
+    <ul>
+        <li>Finds every LVLI with 2+ overrides (base + loser + winner = 3 sources minimum)</li>
+        <li>Computes per-loser deltas against the <strong>base</strong> (master) record, not the winner</li>
+        <li>Entry key = (FormID, Level, Count) with multiplicity tracking, same as the SKSE plugin</li>
+        <li>Detects both <strong>additions</strong> (loser added entries) and <strong>removals</strong> (loser deleted entries)</li>
+        <li>Removals cancel additions for the same key (intentional removal intent wins)</li>
+        <li>Accounts for winner excess (if the winner already added entries independently, they are not duplicated)</li>
+        <li>Copies the winning override to the patch, applies removals, then appends additions from loser source entries</li>
+        <li>Merges list-level property changes (<code>LVLF</code> flags, <code>LVLD</code> Chance None) from losers if the winner kept the base value</li>
+        <li>Carries forward the latest EDID rename (e.g. a mod prefixing <code>MAG_</code>) to the patch record</li>
+    </ul>
+    <div class="warn-box">
+        <p><strong>Review required:</strong> Open the generated ESP in xEdit afterward and verify the merged entries look correct.</p>
+    </div>
+
+    <h3 style="color: #9cdcfe;">Patch Mode Settings</h3>
+    <p>The settings panel appears when you choose either Patch Mode option. All settings are per-type (items, NPCs, spells).</p>
+
+    <p><strong>Respect intentional removals</strong> (default: ON)</p>
+    <p>When a mod deliberately removes an entry from a leveled list, that removal normally cancels any additions of the same entry from other mods. Turn this off for a "never lose items" mode where every addition is kept regardless of removals.</p>
+
+    <p><strong>Remove empty sublists after merge</strong> (default: ON)</p>
+    <p>After the patch is built, the script scans for leveled lists with zero entries and removes references to them from parent lists. If removing an empty sublist makes its parent empty, that parent gets cleaned too (cascading). This prevents the game from rolling on empty lists that would produce no loot or spawns.</p>
+
+    <p><strong>Mod blacklist</strong></p>
+    <p>Create a file called <code>DLL_Blacklist.txt</code> in your xEdit <code>Edit Scripts</code> folder to skip specific mods during patch creation. Blacklisted mods are ignored completely: they are not selected as the winner and their changes are not merged. Format:</p>
+    <pre>; Lines starting with ; are comments
+; TYPE can be LVLI, LVLN, LVSP, or ALL
+ALL|SomeMod.esp
+LVLI|AnotherMod.esp
+LVLN|NPCOverhaul.esp</pre>
+    <p>Filenames are case-insensitive. If the file does not exist, no mods are blacklisted.</p>
+
+    <h3 style="color: #9cdcfe;">Supported Record Types</h3>
+    <p>Both Info Mode and Patch Mode handle all three leveled list types: <code>LVLI</code> (Leveled Items), <code>LVLN</code> (Leveled NPCs), and <code>LVSP</code> (Leveled Spells).</p>
+
+    <div class="info-box">
+        <p><strong>Tip:</strong> Run Info Mode before and after installing DynamicLeveledLists. Before, to find pre-existing problems in your load order. After, to verify the runtime merge didn't surface any hidden issues.</p>
     </div>
 
     <h2>Compatibility</h2>
     <ul>
         <li><strong>Open World Loot / Morrowloot Ultimate:</strong> Fully supported. Their intentional removals are respected even if another mod adds the same item back</li>
         <li><strong>Wrye Bash / Mator Smash:</strong> Works alongside them. They handle it at build time, this handles it at runtime for anything they miss. Keeping existing patches won't cause issues</li>
-        <li><strong>Dynamic Container Loot:</strong> Companion mod. DCL handles container records (CONT), this handles leveled list records (LVLI). They work on completely different record types and do not interfere</li>
-        <li><strong>SPID / KID / CLLF:</strong> Fully compatible. These distribute items through scripts, not LVLI record edits</li>
+        <li><strong>Dynamic Container Loot:</strong> Companion mod. DCL handles container records (CONT), this handles leveled list records (LVLI, LVLN, LVSP). They work on completely different record types and do not interfere</li>
+        <li><strong>Dynamic Non-Player Characters:</strong> Companion mod. DNPC handles individual NPC records (NPC_), things like a specific NPC's inventory, perks, and spells. This plugin handles leveled NPC lists (LVLN), which control which NPCs can spawn at a location. Different record types, no overlap</li>
+        <li><strong>SPID / KID / CLLF:</strong> Fully compatible. These distribute items through scripts, not leveled list record edits</li>
         <li><strong>Any load order:</strong> Reads plugin data non-destructively. No conflicts with other SKSE plugins</li>
     </ul>
 

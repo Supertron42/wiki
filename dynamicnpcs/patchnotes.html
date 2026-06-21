@@ -216,6 +216,11 @@ code {
     <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
 
     <h3>Change Logs</h3>
+    <a href="#v0.4a">Version 0.4a</a>
+    <a href="#v0.3.7a">Version 0.3.7a</a>
+    <a href="#v0.3.2a">Version 0.3.2a</a>
+    <a href="#v0.3.1a">Version 0.3.1a</a>
+    <a href="#v0.3a">Version 0.3a</a>
     <a href="#v0.2.6a">Version 0.2.6a</a>
     <a href="#v0.1a">Version 0.1a</a>
 
@@ -225,6 +230,7 @@ code {
     <h3>Companion Mods</h3>
     <a href="../dynamiccontainerloot/wiki.html">Dynamic Container Loot</a>
     <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
 
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
         <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
@@ -237,6 +243,339 @@ code {
 
     <div class="tip">
         <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.4.1a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.4.1a">Version 0.4.1a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Logs page in MCM.</b> See how many NPCs were changed, what was added or removed per category, and which NPCs had the most conflicts with FormIDs for xEdit.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Priority collision resolution.</b> If two mods are set to the same face priority, the displaced mod is automatically bumped so every mod gets a unique rank.</li>
+    </ul>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Higher number now wins face priority.</b> The priority system now matches your mod manager: the mod with the highest number wins, just like load order in MO2.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>FaceGen has its own section.</b> The face toggle is now under an "Appearance" header on the Features page, separate from the conflict resolution toggles.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb041a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md041a')">Markdown</button>
+    </div>
+    <div id="bb041a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode041a" readonly>[size=4][b][color=#dcdcaa]Version 0.4.1a[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Logs page in MCM.[/b] See how many NPCs were changed, what was added or removed per category, and which NPCs had the most conflicts with FormIDs for xEdit.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Priority collision resolution.[/b] If two mods are set to the same face priority, the displaced mod is automatically bumped so every mod gets a unique rank.
+[/list]
+[size=3][b][color=#9cdcfe]Changes[/color][/b][/size]
+[list]
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Higher number now wins face priority.[/b] The priority system now matches your mod manager: the mod with the highest number wins, just like load order in MO2.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]FaceGen has its own section.[/b] The face toggle is now under an "Appearance" header on the Features page, separate from the conflict resolution toggles.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode041a')">Copy to Clipboard</button>
+    </div>
+    <div id="md041a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown041a" readonly># Version 0.4.1a
+
+## Features
+- **NEW** **Logs page in MCM.** See how many NPCs were changed, what was added or removed per category, and which NPCs had the most conflicts with FormIDs for xEdit.
+- **NEW** **Priority collision resolution.** If two mods are set to the same face priority, the displaced mod is automatically bumped so every mod gets a unique rank.
+
+## Changes
+- **CHANGE** **Higher number now wins face priority.** The priority system now matches your mod manager: the mod with the highest number wins, just like load order in MO2.
+- **CHANGE** **FaceGen has its own section.** The face toggle is now under an "Appearance" header on the Features page, separate from the conflict resolution toggles.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown041a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.4a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.4a">Version 0.4a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>MCM menu.</b> All settings are now configurable in-game through a Mod Configuration Menu (requires SkyUI and MCM Helper).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Plugin Priority page.</b> The MCM auto-detects every mod that changes NPCs and lets you set FaceGen priority with sliders instead of editing the INI by hand.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Bracket-safe filenames.</b> Mods with brackets, dots, or spaces in their filenames (like <code>[SomeTag] Mod.esp</code>) now work correctly in the priority list.</li>
+        <li><span class="tag tag-new">NEW</span> <b>xEdit: ESP Creator mode.</b> The companion script can now create the DynamicNPCs.esp file needed for the MCM menu.</li>
+    </ul>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>Settings now use MCM Helper format.</b> Old INI settings at <code>Data/SKSE/Plugins/DynamicNPCs.ini</code> are still read as a fallback if MCM Helper is not installed.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>FaceGen priority uses numbers instead of list order.</b> Lower number means higher priority. Two mods with the same number fall back to load order.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb04a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md04a')">Markdown</button>
+    </div>
+    <div id="bb04a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode04a" readonly>[size=4][b][color=#dcdcaa]Version 0.4a[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]MCM menu.[/b] All settings are now configurable in-game through a Mod Configuration Menu (requires SkyUI and MCM Helper).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Plugin Priority page.[/b] The MCM auto-detects every mod that changes NPCs and lets you set FaceGen priority with sliders instead of editing the INI by hand.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Bracket-safe filenames.[/b] Mods with brackets, dots, or spaces in their filenames (like [font=Courier New][SomeTag] Mod.esp[/font]) now work correctly in the priority list.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]xEdit: ESP Creator mode.[/b] The companion script can now create the DynamicNPCs.esp file needed for the MCM menu.
+[/list]
+
+[size=3][b][color=#9cdcfe]Changes[/color][/b][/size]
+[list]
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]Settings now use MCM Helper format.[/b] Old INI settings at [font=Courier New]Data/SKSE/Plugins/DynamicNPCs.ini[/font] are still read as a fallback if MCM Helper is not installed.
+[*][color=#1565c0][b]CHANGE[/b][/color] [b]FaceGen priority uses numbers instead of list order.[/b] Lower number means higher priority. Two mods with the same number fall back to load order.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode04a')">Copy to Clipboard</button>
+    </div>
+    <div id="md04a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown04a" readonly># Version 0.4a
+
+## Features
+- **NEW** **MCM menu.** All settings are now configurable in-game through a Mod Configuration Menu (requires SkyUI and MCM Helper).
+- **NEW** **Plugin Priority page.** The MCM auto-detects every mod that changes NPCs and lets you set FaceGen priority with sliders instead of editing the INI by hand.
+- **NEW** **Bracket-safe filenames.** Mods with brackets, dots, or spaces in their filenames (like `[SomeTag] Mod.esp`) now work correctly in the priority list.
+- **NEW** **xEdit: ESP Creator mode.** The companion script can now create the DynamicNPCs.esp file needed for the MCM menu.
+
+## Changes
+- **CHANGE** **Settings now use MCM Helper format.** Old INI settings at `Data/SKSE/Plugins/DynamicNPCs.ini` are still read as a fallback if MCM Helper is not installed.
+- **CHANGE** **FaceGen priority uses numbers instead of list order.** Lower number means higher priority. Two mods with the same number fall back to load order.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown04a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.3.7a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3.7a">Version 0.3.7a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>xEdit: Added a "Copy for INI" button to the FaceGen override setup.</b> Set up your appearance overrides in xEdit and copy paste them to your INI file.</li>
+    </ul>
+
+    <h3>Bug Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed FaceGen priority list sorting alphabetically instead of using the order you wrote.</b> The list now respects your INI file order.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed player character spells and perks disappearing.</b> The player is now skipped entirely so mods can't accidentally remove abilities.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed FaceGen override clearing fields the preferred mod didn't set, which made NPCs invisible.</b> Only fields the mod actually includes are applied now.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed FaceGen override making NPC faces invisible when applying head parts.</b> Head parts are now replaced through the game engine instead of being swapped manually.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed FaceGen override causing green or yellow body skin.</b> Body tint and tint layers are now only applied when the preferred mod also provides a matching body skin.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb037a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md037a')">Markdown</button>
+    </div>
+    <div id="bb037a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode037a" readonly>[size=4][b][color=#dcdcaa]Version 0.3.7a[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]xEdit: Added a "Copy for INI" button to the FaceGen override setup.[/b] Set up your appearance overrides in xEdit and copy paste them to your INI file.
+[/list]
+
+[size=3][b][color=#9cdcfe]Bug Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed FaceGen priority list sorting alphabetically instead of using the order you wrote.[/b] The list now respects your INI file order.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed player character spells and perks disappearing.[/b] The player is now skipped entirely so mods can't accidentally remove abilities.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed FaceGen override clearing fields the preferred mod didn't set, which made NPCs invisible.[/b] Only fields the mod actually includes are applied now.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed FaceGen override making NPC faces invisible when applying head parts.[/b] Head parts are now replaced through the game engine instead of being swapped manually.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed FaceGen override causing green or yellow body skin.[/b] Body tint and tint layers are now only applied when the preferred mod also provides a matching body skin.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode037a')">Copy to Clipboard</button>
+    </div>
+    <div id="md037a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown037a" readonly># Version 0.3.7a
+
+## Features
+- **NEW** **xEdit: Added a "Copy for INI" button to the FaceGen override setup.** Set up your appearance overrides in xEdit and copy paste them to your INI file.
+
+## Bug Fixes
+- **FIX** **Fixed FaceGen priority list sorting alphabetically instead of using the order you wrote.** The list now respects your INI file order.
+- **FIX** **Fixed player character spells and perks disappearing.** The player is now skipped entirely so mods can't accidentally remove abilities.
+- **FIX** **Fixed FaceGen override clearing fields the preferred mod didn't set, which made NPCs invisible.** Only fields the mod actually includes are applied now.
+- **FIX** **Fixed FaceGen override making NPC faces invisible when applying head parts.** Head parts are now replaced through the game engine instead of being swapped manually.
+- **FIX** **Fixed FaceGen override causing green or yellow body skin.** Body tint and tint layers are now only applied when the preferred mod also provides a matching body skin.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown037a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.3.2a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3.2a">Version 0.3.2a</h2>
+
+    <h3>Bug Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed appearance fields causing invisible bodies.</b> Skin, hair color, and face texture are no longer changed by the normal conflict resolver.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed a crash during script conflict resolution.</b> Added a missing safety check in the Papyrus VM hookup.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed FaceGen override not reading mod filenames from the INI.</b> The parser now accepts plain filenames without <code>=</code> signs.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb032a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md032a')">Markdown</button>
+    </div>
+    <div id="bb032a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode032a" readonly>[size=4][b][color=#dcdcaa]Version 0.3.2a[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Bug Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed appearance fields causing invisible bodies.[/b] Skin, hair color, and face texture are no longer changed by the normal conflict resolver.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed a crash during script conflict resolution.[/b] Added a missing safety check in the Papyrus VM hookup.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed FaceGen override not reading mod filenames from the INI.[/b] The parser now accepts plain filenames without = signs.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode032a')">Copy to Clipboard</button>
+    </div>
+    <div id="md032a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown032a" readonly># Version 0.3.2a
+
+## Bug Fixes
+- **FIX** **Fixed appearance fields causing invisible bodies.** Skin, hair color, and face texture are no longer changed by the normal conflict resolver.
+- **FIX** **Fixed a crash during script conflict resolution.** Added a missing safety check in the Papyrus VM hookup.
+- **FIX** **Fixed FaceGen override not reading mod filenames from the INI.** The parser now accepts plain filenames without `=` signs.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown032a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.3.1a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3.1a">Version 0.3.1a</h2>
+
+    <h3>Bug Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed INI file being overwritten every time the game is launched.</b> Settings no longer revert to defaults on reload.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb031a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md031a')">Markdown</button>
+    </div>
+    <div id="bb031a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode031a" readonly>[size=4][b][color=#dcdcaa]Version 0.3.1a[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Bug Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed INI file being overwritten every time the game is launched.[/b] Settings no longer revert to defaults on reload.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode031a')">Copy to Clipboard</button>
+    </div>
+    <div id="md031a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown031a" readonly># Version 0.3.1a
+
+## Bug Fixes
+- **FIX** **Fixed INI file being overwritten every time the game is launched.** Settings no longer revert to defaults on reload.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown031a')">Copy to Clipboard</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 0.3a -->
+    <!-- ============================================================ -->
+
+    <h2 id="v0.3a">Version 0.3a</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>FaceGen override.</b> You can now pick which mod's appearance wins for each NPC. Hair, eyes, scars, face shape, skin, tint layers, head parts, and face texture are all covered. Configure it in the new <code>[FaceGen]</code> section of the INI. List your preferred appearance mods there and the last one in the list takes priority.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Papyrus script merge.</b> When a mod attaches a Papyrus script to an NPC and another mod overwrites that NPC, the script is now restored automatically. Works at the whole-script level: adds and removes scripts using the same delta logic as other merge categories. NPCs with the "Use Script" template flag (<code>0x0200</code>) are skipped, matching how the game handles inherited scripts.</li>
+        <li><span class="tag tag-new">NEW</span> <b>xEdit companion script.</b> Added <code>ST - Dynamic NPCs.pas</code> for SSEEdit. Two modes: Info Mode scans NPC_ and OTFT records for broken references, null FormIDs, duplicates, and empty script names. Patch Mode creates a merged ESP using the same algorithm as the SKSE plugin. Merges everything: items, spells, perks, packages, factions, keywords, stats, flags, skills, AI data, traits, outfits, override packages, and scripts.</li>
+        <li><span class="tag tag-new">NEW</span> <b>OTFT merge in xEdit.</b> Outfit records edited by multiple mods now have their item lists merged in the companion script, same as the SKSE plugin already did at runtime.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Three new trait fields.</b> The trait merge now covers skin (WNAM), hair color (HCLF), and face texture (FTST) in addition to the original seven. When FaceGen override is active for an NPC, these three fields are handled by the override instead of normal first-loser-wins.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Override packages always merge.</b> The four override package lists (spectator, observe dead body, guard warn, combat override) are no longer tied to the AI Data toggle. They always merge when a mod changes them, since no template flag governs these fields.</li>
+        <li><span class="tag tag-new">NEW</span> <b>New INI toggles.</b> Added <code>mergeScripts</code> and <code>mergeFaceGen</code> settings. Each can be turned on or off independently.</li>
+    </ul>
+
+    <h3>Bug Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed invisible NPCs and crash on save load.</b> When a mod's trait reference (race, outfit, etc.) failed to resolve during ESP parsing, the merger treated the zero result as "this mod removed the field" and nulled the NPC's race or outfit. A null race means no body mesh, so the NPC turns invisible. A null race or class also crashes the engine when loading a save. The trait merge now skips any value that resolved to zero, and required fields (race, class) can never be set to null.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed sleep outfit getting wiped.</b> Same kind of issue. A failed FormID resolution during sleep outfit merge could set it to null. Now skips zero values and validates the lookup before applying.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Fixed inventory item memory allocation.</b> New container items were allocated with the C++ heap instead of the game engine's own allocator. This could corrupt the heap when the engine later freed that memory. Now uses the engine allocator.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>ESP parser safety guard.</b> The parser could crash if a plugin's master file pointer array was null despite reporting a non-zero master count. Added a null check.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>xEdit: Fixed script merge skipping when winner had no scripts.</b> When a mod added a script to an NPC whose winning record had no VMAD at all, the patch would silently skip the addition. The code was trying to find a Scripts container that didn't exist yet instead of creating it. Now properly creates both the VMAD element and its Scripts container before adding the script.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>xEdit: Fixed single-field merge skipping when winner lacked the field.</b> Sleep outfit and override package merges in the xEdit script would silently fail if the winning record didn't already have the field. <code>SetEditValue</code> on a nil element does nothing. Now creates the element first.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>xEdit: Fixed trait and single-field merges applying broken references.</b> Both <code>MergeTraitFields</code> and <code>MergeSingleFormIDField</code> now validate that each value is non-empty and points to a real form before applying. Prevents the patch from writing null FormIDs.</li>
+    </ul>
+
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Clearer log tags.</b> Log entries now use readable names: <code>[SKILLS]</code> instead of <code>[DNAM]</code>, <code>[AI]</code> instead of <code>[AIDT]</code>, <code>[SLEEP]</code> instead of <code>[SOFT]</code>, <code>[KEYWORD]</code> instead of <code>[KYWD]</code>. Easier to scan when reading the log.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Safer trait assignment.</b> Every form lookup in the trait setter is now validated before being written to the NPC. If a FormID points to something that doesn't exist or loaded as the wrong type, it's skipped instead of applied.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Log summary now includes scripts and FaceGen.</b> The end-of-run summary shows script additions/removals and FaceGen override counts alongside all the other categories.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb03a')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md03a')">Markdown</button>
+    </div>
+    <div id="bb03a" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode03a" readonly>[size=4][b][color=#dcdcaa]Version 0.3a[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]FaceGen override.[/b] You can now pick which mod's appearance wins for each NPC. Hair, eyes, scars, face shape, skin, tint layers, head parts, and face texture are all covered. Configure it in the new [FaceGen] section of the INI. List your preferred appearance mods there and the last one in the list takes priority.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Papyrus script merge.[/b] When a mod attaches a Papyrus script to an NPC and another mod overwrites that NPC, the script is now restored automatically. Works at the whole-script level: adds and removes scripts using the same delta logic as other merge categories. NPCs with the "Use Script" template flag (0x0200) are skipped, matching how the game handles inherited scripts.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]xEdit companion script.[/b] Added ST - Dynamic NPCs.pas for SSEEdit. Two modes: Info Mode scans NPC_ and OTFT records for broken references, null FormIDs, duplicates, and empty script names. Patch Mode creates a merged ESP using the same algorithm as the SKSE plugin. Merges everything: items, spells, perks, packages, factions, keywords, stats, flags, skills, AI data, traits, outfits, override packages, and scripts.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]OTFT merge in xEdit.[/b] Outfit records edited by multiple mods now have their item lists merged in the companion script, same as the SKSE plugin already did at runtime.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Three new trait fields.[/b] The trait merge now covers skin (WNAM), hair color (HCLF), and face texture (FTST) in addition to the original seven. When FaceGen override is active for an NPC, these three fields are handled by the override instead of normal first-loser-wins.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Override packages always merge.[/b] The four override package lists (spectator, observe dead body, guard warn, combat override) are no longer tied to the AI Data toggle. They always merge when a mod changes them, since no template flag governs these fields.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]New INI toggles.[/b] Added mergeScripts and mergeFaceGen settings. Each can be turned on or off independently.
+[/list]
+
+[size=3][b][color=#9cdcfe]Bug Fixes[/color][/b][/size]
+[list]
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed invisible NPCs and crash on save load.[/b] When a mod's trait reference (race, outfit, etc.) failed to resolve during ESP parsing, the merger treated the zero result as "this mod removed the field" and nulled the NPC's race or outfit. A null race means no body mesh, so the NPC turns invisible. A null race or class also crashes the engine when loading a save. The trait merge now skips any value that resolved to zero, and required fields (race, class) can never be set to null.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed sleep outfit getting wiped.[/b] Same kind of issue. A failed FormID resolution during sleep outfit merge could set it to null. Now skips zero values and validates the lookup before applying.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Fixed inventory item memory allocation.[/b] New container items were allocated with the C++ heap instead of the game engine's own allocator. This could corrupt the heap when the engine later freed that memory. Now uses the engine allocator.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]ESP parser safety guard.[/b] The parser could crash if a plugin's master file pointer array was null despite reporting a non-zero master count. Added a null check.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]xEdit: Fixed script merge skipping when winner had no scripts.[/b] When a mod added a script to an NPC whose winning record had no VMAD at all, the patch would silently skip the addition. The code was trying to find a Scripts container that didn't exist yet instead of creating it. Now properly creates both the VMAD element and its Scripts container before adding the script.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]xEdit: Fixed single-field merge skipping when winner lacked the field.[/b] Sleep outfit and override package merges in the xEdit script would silently fail if the winning record didn't already have the field. SetEditValue on a nil element does nothing. Now creates the element first.
+[*][color=#c42b1c][b]FIX[/b][/color] [b]xEdit: Fixed trait and single-field merges applying broken references.[/b] Both MergeTraitFields and MergeSingleFormIDField now validate that each value is non-empty and points to a real form before applying. Prevents the patch from writing null FormIDs.
+[/list]
+
+[size=3][b][color=#9cdcfe]Improvements[/color][/b][/size]
+[list]
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Clearer log tags.[/b] Log entries now use readable names: [SKILLS] instead of [DNAM], [AI] instead of [AIDT], [SLEEP] instead of [SOFT], [KEYWORD] instead of [KYWD]. Easier to scan when reading the log.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Safer trait assignment.[/b] Every form lookup in the trait setter is now validated before being written to the NPC. If a FormID points to something that doesn't exist or loaded as the wrong type, it's skipped instead of applied.
+[*][color=#DA8E35][b]IMPROVED[/b][/color] [b]Log summary now includes scripts and FaceGen.[/b] The end-of-run summary shows script additions/removals and FaceGen override counts alongside all the other categories.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode03a')">Copy to Clipboard</button>
+    </div>
+    <div id="md03a" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown03a" readonly># Version 0.3a
+
+## Features
+- **NEW** **FaceGen override.** You can now pick which mod's appearance wins for each NPC. Hair, eyes, scars, face shape, skin, tint layers, head parts, and face texture are all covered. Configure it in the new `[FaceGen]` section of the INI. List your preferred appearance mods there and the last one in the list takes priority.
+- **NEW** **Papyrus script merge.** When a mod attaches a Papyrus script to an NPC and another mod overwrites that NPC, the script is now restored automatically. Works at the whole-script level: adds and removes scripts using the same delta logic as other merge categories. NPCs with the "Use Script" template flag (`0x0200`) are skipped, matching how the game handles inherited scripts.
+- **NEW** **xEdit companion script.** Added `ST - Dynamic NPCs.pas` for SSEEdit. Two modes: Info Mode scans NPC_ and OTFT records for broken references, null FormIDs, duplicates, and empty script names. Patch Mode creates a merged ESP using the same algorithm as the SKSE plugin. Merges everything: items, spells, perks, packages, factions, keywords, stats, flags, skills, AI data, traits, outfits, override packages, and scripts.
+- **NEW** **OTFT merge in xEdit.** Outfit records edited by multiple mods now have their item lists merged in the companion script, same as the SKSE plugin already did at runtime.
+- **NEW** **Three new trait fields.** The trait merge now covers skin (WNAM), hair color (HCLF), and face texture (FTST) in addition to the original seven. When FaceGen override is active for an NPC, these three fields are handled by the override instead of normal first-loser-wins.
+- **NEW** **Override packages always merge.** The four override package lists (spectator, observe dead body, guard warn, combat override) are no longer tied to the AI Data toggle. They always merge when a mod changes them, since no template flag governs these fields.
+- **NEW** **New INI toggles.** Added `mergeScripts` and `mergeFaceGen` settings. Each can be turned on or off independently.
+
+## Bug Fixes
+- **FIX** **Fixed invisible NPCs and crash on save load.** When a mod's trait reference (race, outfit, etc.) failed to resolve during ESP parsing, the merger treated the zero result as "this mod removed the field" and nulled the NPC's race or outfit. A null race means no body mesh, so the NPC turns invisible. A null race or class also crashes the engine when loading a save. The trait merge now skips any value that resolved to zero, and required fields (race, class) can never be set to null.
+- **FIX** **Fixed sleep outfit getting wiped.** Same kind of issue. A failed FormID resolution during sleep outfit merge could set it to null. Now skips zero values and validates the lookup before applying.
+- **FIX** **Fixed inventory item memory allocation.** New container items were allocated with the C++ heap instead of the game engine's own allocator. This could corrupt the heap when the engine later freed that memory. Now uses the engine allocator.
+- **FIX** **ESP parser safety guard.** The parser could crash if a plugin's master file pointer array was null despite reporting a non-zero master count. Added a null check.
+- **FIX** **xEdit: Fixed script merge skipping when winner had no scripts.** When a mod added a script to an NPC whose winning record had no VMAD at all, the patch would silently skip the addition. The code was trying to find a Scripts container that didn't exist yet instead of creating it. Now properly creates both the VMAD element and its Scripts container before adding the script.
+- **FIX** **xEdit: Fixed single-field merge skipping when winner lacked the field.** Sleep outfit and override package merges in the xEdit script would silently fail if the winning record didn't already have the field. `SetEditValue` on a nil element does nothing. Now creates the element first.
+- **FIX** **xEdit: Fixed trait and single-field merges applying broken references.** Both `MergeTraitFields` and `MergeSingleFormIDField` now validate that each value is non-empty and points to a real form before applying. Prevents the patch from writing null FormIDs.
+
+## Improvements
+- **IMPROVED** **Clearer log tags.** Log entries now use readable names: `[SKILLS]` instead of `[DNAM]`, `[AI]` instead of `[AIDT]`, `[SLEEP]` instead of `[SOFT]`, `[KEYWORD]` instead of `[KYWD]`. Easier to scan when reading the log.
+- **IMPROVED** **Safer trait assignment.** Every form lookup in the trait setter is now validated before being written to the NPC. If a FormID points to something that doesn't exist or loaded as the wrong type, it's skipped instead of applied.
+- **IMPROVED** **Log summary now includes scripts and FaceGen.** The end-of-run summary shows script additions/removals and FaceGen override counts alongside all the other categories.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown03a')">Copy to Clipboard</button>
     </div>
 
     <!-- ============================================================ -->

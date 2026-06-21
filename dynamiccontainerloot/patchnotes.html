@@ -154,6 +154,7 @@ li {
 <div id="nav">
     <a href="wiki.html" style="display:block; padding:10px 15px; background:#00BCD4; color:white; font-weight:bold; text-align:center; margin-bottom:10px;">Wiki Home</a>
     <h3>Change Logs</h3>
+    <a href="#v0.4.5a">Version 0.4.5a</a>
     <a href="#v0.4a">Version 0.4a</a>
     <a href="#v0.1.0">Version 0.1.0</a>
 
@@ -163,6 +164,7 @@ li {
     <h3>Companion Mods</h3>
     <a href="../dynamicleveledlists/wiki.html">Dynamic Leveled Lists</a>
     <a href="../dynamicnpcs/wiki.html">Dynamic NPCs</a>
+    <a href="../dynamicformlists/wiki.html">Dynamic Form Lists</a>
 
     <!-- Other Projects -->
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
@@ -178,7 +180,43 @@ li {
     <p>Release history and change logs for Dynamic Container Loot.</p>
 
     <!-- ============================================================ -->
-    <h2 id="v0.4a">Version 0.4a <span class="tag tag-released">RELEASED</span></h2>
+    <h2 id="v0.4.5a">Version 0.4.5a <span class="tag tag-released">RELEASED</span></h2>
+    <!-- ============================================================ -->
+    <p class="version-summary">DCL now saves fixes to a patch file, preserves scripts that would otherwise be lost, generates a visual report, and skips unnecessary work on repeat launches for faster startup.</p>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Patch file generation.</b> DCL saves all container fixes to a <code>DynamicContainerLoot.esp</code> file so tools like xEdit can see what was changed. Enabled by default.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Smart startup.</b> If the patch file is already loaded and your load order hasn't changed, DCL skips runtime patching entirely for faster game startup.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Script preservation.</b> If a losing mod added scripts to a container but the winning mod didn't have them, DCL finds and keeps those scripts instead of letting them disappear.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Manual edit protection.</b> If you edit the patch file in xEdit, DCL detects the change and won't overwrite your work. Set <code>rebuildesp=true</code> in the INI to force a fresh rebuild.</li>
+        <li><span class="tag tag-new">NEW</span> <b>HTML merge report.</b> A visual report of every container DCL touched, laid out like xEdit with one column per plugin and a final "DCL Merged" column, color-coded to show what changed. Enabled by default.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Script status in logs.</b> The log now reports whether scripts were kept, carried forward from a losing mod, or lost during the merge.</li>
+    </ul>
+
+    <h3>Fixes</h3>
+    <ul>
+        <li><span class="tag tag-fix">FIX</span> <b>Empty containers in patch file.</b> Fixed a bug where the patch file could write empty containers, wiping out their contents in-game. If DCL can't save a container's items to the patch file, it now skips that container instead of writing a blank one.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Item count mismatch.</b> The item count in the patch file now matches the actual number of items written, preventing mismatches that could cause issues.</li>
+        <li><span class="tag tag-fix">FIX</span> <b>Patch file format.</b> The patch file now uses the correct Skyrim SE format (Form 44) instead of the older Skyrim LE format.</li>
+    </ul>
+
+    <h3>Improvements</h3>
+    <ul>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Better item names in logs.</b> DCL now looks up display names, editor IDs, and cached IDs from plugin files so items show readable names instead of hex codes.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Full subrecord handling in patch files.</b> The patch file correctly remaps all internal references including keywords, alternate textures, quest links, and script data so nothing breaks.</li>
+        <li><span class="tag tag-improve">IMPROVED</span> <b>Always patches at runtime when needed.</b> If the patch file doesn't exist or isn't active in your mod manager, DCL always fixes containers at runtime so nothing is missed.</li>
+    </ul>
+
+    <h3>Changes</h3>
+    <ul>
+        <li><span class="tag tag-change">CHANGE</span> <b>New defaults.</b> Patch file generation and HTML reports are now enabled by default. Detailed logging is off by default.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>Report saves next to log file.</b> The HTML report is saved in your SKSE logs folder alongside <code>DynamicContainerLoot.log</code>.</li>
+        <li><span class="tag tag-change">CHANGE</span> <b>New INI settings.</b> Added <code>generateesp</code>, <code>generatereport</code>, and <code>rebuildesp</code> to control patch file generation, HTML reports, and forced rebuilds.</li>
+    </ul>
+
+    <!-- ============================================================ -->
+    <h2 id="v0.4a">Version 0.4a</h2>
     <!-- ============================================================ -->
     <p class="version-summary">Stability release. Fixed the ESP record removal bug, improved merge logging, and removed the in-game notification system until a safe implementation is ready.</p>
 

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcane Archery Wiki - Bind Spells to Your Arrows</title>
+<meta name="description" content="Documentation for Arcane Archery, an SKSE plugin that lets you bind spells to arrows and trigger them on impact.">
+<meta name="keywords" content="Arcane Archery, Skyrim mod, SKSE plugin, spell arrows, magic archery, spell binding">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/arcanearchery/wiki.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #9C27B0;
+    color: white;
+    font-weight: bold;
+    border-left-color: #9C27B0;
+}
+#nav a.highlight:hover {
+    background: #7B1FA2;
+    border-left-color: #7B1FA2;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #9C27B0;
+    border-bottom: 2px solid #9C27B0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+pre {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #d4d4d4;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #9C27B0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #9C27B0;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #7B1FA2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="wiki.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Arcane Archery</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html" class="current">Wiki Home</a>
+    <a href="patchnotes.html">Change Logs</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Arcane Archery</h1>
+    <p>Bind spells to your arrows and trigger them on impact. Works for the player and NPCs.</p>
+
+    <div class="tip">
+        <p>This mod requires SKSE, Address Library, SkyUI, and MCM Helper. Install all of them first.</p>
+    </div>
+
+    <h2>What Does This Mod Do?</h2>
+    <p>Arcane Archery lets you attach a spell to your arrows. When the arrow hits something, the spell goes off at the point of impact. You keep your archery gameplay and add magic on top of it.</p>
+    <ul>
+        <li>Equip a spell and arrows at the same time, then press a hotkey to link them.</li>
+        <li>Every arrow you fire with that ammo type will carry the spell.</li>
+        <li>The spell costs magicka when you fire (not when you bind it), at a configurable rate.</li>
+        <li>Bindings are saved with your game. They survive save/load and even load-order changes.</li>
+    </ul>
+
+    <h2>How to Use</h2>
+    <h3>Binding a Spell</h3>
+    <ol style="margin: 10px 0 10px 20px;">
+        <li style="margin: 4px 0; font-size: 12px;">Equip a bow and arrows (or crossbow and bolts).</li>
+        <li style="margin: 4px 0; font-size: 12px;">Equip a spell in either hand. It must be a fire-and-forget spell (not a concentration spell like Flames).</li>
+        <li style="margin: 4px 0; font-size: 12px;">Press <code>Numpad 1</code> (default hotkey). You will see a notification confirming the binding.</li>
+        <li style="margin: 4px 0; font-size: 12px;">Fire your bow. The spell triggers wherever the arrow lands.</li>
+    </ol>
+
+    <h3>Clearing a Binding</h3>
+    <p>Set a clear hotkey in the MCM (disabled by default). Press it with arrows equipped to remove the spell from that ammo type.</p>
+
+    <h3>Which Spells Work?</h3>
+    <p>Any fire-and-forget spell, lesser power, or scroll can be bound. This includes most destruction spells, healing spells, and utility spells.</p>
+    <p>These do <b>not</b> work:</p>
+    <ul>
+        <li>Concentration spells (like Flames or Sparks)</li>
+        <li>Shouts</li>
+        <li>Greater Powers</li>
+        <li>Abilities</li>
+        <li>Enchantments</li>
+    </ul>
+
+    <h3>Spell Targeting</h3>
+    <p>How the spell triggers depends on its delivery type:</p>
+    <ul>
+        <li><b>Aimed / Touch / Target Actor spells</b> fire at whatever the arrow hits.</li>
+        <li><b>Self spells</b> (like healing) cast on you, the archer, when the arrow lands.</li>
+    </ul>
+
+    <h2>Settings</h2>
+    <p>All settings are in the MCM under "Arcane Archery", or edit the INI file at <code>Data/SKSE/Plugins/ArcaneArchery.ini</code>.</p>
+
+    <h3>Spell Cost</h3>
+    <ul>
+        <li><b>Cost Multiplier</b> (default 0.50): How much magicka spell-arrows cost compared to normal casting. 0.0 = free, 1.0 = full cost.</li>
+        <li><b>Require Magicka</b> (default on): If your magicka is too low, the arrow fires normally without the spell.</li>
+    </ul>
+
+    <h3>Trigger Mode</h3>
+    <ul>
+        <li><b>Living Targets Only</b> (default off): When enabled, spells only trigger on NPCs and creatures. Arrows that hit walls or the ground fire normally.</li>
+    </ul>
+
+    <h3>NPC Settings</h3>
+    <ul>
+        <li><b>NPCs Require Magicka</b> (default off): When enabled, NPCs also need magicka to cast their arrow spells.</li>
+    </ul>
+
+    <h3>Notifications</h3>
+    <ul>
+        <li><b>Show Bind Notification</b> (default on): Shows a message when you bind or clear a spell.</li>
+        <li><b>Show Cast Notification</b> (default off): Shows a message every time a spell triggers on impact.</li>
+        <li><b>Show Low Magicka Warning</b> (default on): Shows a warning when you lack the magicka for a spell-arrow.</li>
+    </ul>
+
+    <h2>NPC Spell-Arrows</h2>
+    <p>Mod authors can configure NPCs to fire spell-arrows by editing the INI file. Add entries to the <code>[NPCBindings]</code> section:</p>
+    <pre>; Format: PluginName|NPCHexID|PluginName|AmmoHexID = PluginName|SpellHexID
+; Example: Faendal fires Fireball with iron arrows
+Skyrim.esm|01348E|Skyrim.esm|038341 = Skyrim.esm|04DEDC</pre>
+    <p>Each entry needs four pieces of information:</p>
+    <ul>
+        <li>The plugin and form ID of the NPC (their base record, not their reference in the world).</li>
+        <li>The plugin and form ID of the ammo type.</li>
+        <li>The plugin and form ID of the spell to cast.</li>
+    </ul>
+    <p>You can find these IDs using SSEEdit or the console (<code>help "npc name"</code>).</p>
+
+    <h2>Troubleshooting</h2>
+    <h3>Nothing happens when I press the hotkey</h3>
+    <ul>
+        <li>Make sure you have both a spell and arrows equipped at the same time.</li>
+        <li>Check that the spell is fire-and-forget, not concentration.</li>
+        <li>Make sure you are not in a menu.</li>
+    </ul>
+
+    <h3>The spell does not trigger on impact</h3>
+    <ul>
+        <li>Check if "Living Targets Only" is enabled in the MCM. If so, spells will not trigger on walls.</li>
+        <li>Check if "Require Magicka" is on and your magicka is too low.</li>
+        <li>Enable debug logging in the MCM and check the log at <code>Documents/My Games/Skyrim Special Edition/SKSE/ArcaneArchery.log</code>.</li>
+    </ul>
+
+    <h3>The spell triggers but has no visual effect</h3>
+    <p>Some spell effects are subtle or instant. Try a spell with obvious visuals like Fireball to confirm the mod is working, then test other spells.</p>
+
+    <h2>Compatibility</h2>
+    <ul>
+        <li>Works with Skyrim SE (1.5.97+), AE (1.6.x), and VR.</li>
+        <li>Compatible with most other archery mods.</li>
+        <li>Compatible with spell mods that add new fire-and-forget spells.</li>
+        <li>Uses a trampoline hook on the engine's projectile launch function. Mods that also hook this function may conflict. If you experience issues, check for conflicts in your SKSE log.</li>
+    </ul>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this wiki from your Nexus description or documentation:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/arcanearchery/wiki.html]Arcane Archery Wiki[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[Arcane Archery Wiki](https://supertron42.github.io/wiki/arcanearchery/wiki.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

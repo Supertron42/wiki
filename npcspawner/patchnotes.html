@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Logs - NPC Spawner | Version History</title>
+<meta name="description" content="Version history and release notes for NPC Spawner SKSE plugin. See what's new in each update.">
+<meta name="keywords" content="NPC Spawner changelog, version history, release notes, update log">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wiki/npcspawner/patchnotes.html">
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav h3 {
+    color: #569cd6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 15px 5px;
+    margin-top: 10px;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #569cd6;
+}
+#nav a.highlight {
+    background: #FF6B35;
+    color: white;
+    font-weight: bold;
+    border-left-color: #FF6B35;
+}
+#nav a.highlight:hover {
+    background: #E55A25;
+    border-left-color: #E55A25;
+}
+#nav a.current {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #FF6B35;
+    border-bottom: 2px solid #FF6B35;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h3 {
+    color: #9cdcfe;
+    font-size: 13px;
+    margin: 12px 0 6px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+    font-size: 12px;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+.tag-new {
+    background: #2E7D32;
+    color: white;
+}
+.tag-fix {
+    background: #c42b1c;
+    color: white;
+}
+.tag-change {
+    background: #1565c0;
+    color: white;
+}
+.tag-improve {
+    background: #DA8E35;
+    color: white;
+}
+
+/* Spoiler / BB Code / Markdown buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 1px solid #569cd6;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    height: 300px;
+    background: #1a1a1a;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+.copy-btn {
+    background: #569cd6;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #4a8bc2;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+.btn-row .spoiler-btn {
+    margin: 0;
+}
+
+.tip {
+    background: #252526;
+    border-left: 3px solid #FF6B35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip p {
+    margin: 0;
+    font-size: 12px;
+    color: #9cdcfe;
+}
+</style>
+</head>
+<body>
+
+<div id="nav">
+    <a href="patchnotes.html" class="highlight" style="margin: 10px 15px; display: block; text-align: center; padding: 8px 12px;">Change Logs</a>
+
+    <h3>Documentation</h3>
+    <a href="wiki.html">Wiki Home</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1>Change Logs</h1>
+    <p>Version history and release notes for NPC Spawner.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 1.0.0 -->
+    <!-- ============================================================ -->
+
+    <h2 id="v1.0.0">Version 1.0.0 - Initial Release</h2>
+
+    <h3>Features</h3>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Random NPC spawning.</b> Spawns a random NPC near the player on a configurable timer.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable spawn interval.</b> Set how many seconds between each spawn (default: 2 seconds).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable NPC limit.</b> Set the maximum number of spawned NPCs alive at once (default: 20). The oldest is removed when the limit is reached.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable spawn radius.</b> Set how far from the player NPCs can appear (default: 512 game units).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Smart NPC filtering.</b> Skips unique characters, children, the player template, and deleted records. Only spawns generic NPCs.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI auto-generation.</b> Creates a default INI file on first launch.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Optional detailed logging.</b> Log every spawn and removal with NPC name, position, and count.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b></li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb100')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md100')">Markdown</button>
+    </div>
+    <div id="bb100" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode100" readonly>[size=4][b][color=#dcdcaa]Version 1.0.0 - Initial Release[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Random NPC spawning.[/b] Spawns a random NPC near the player on a configurable timer.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable spawn interval.[/b] Set how many seconds between each spawn (default: 2 seconds).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable NPC limit.[/b] Set the maximum number of spawned NPCs alive at once (default: 20). The oldest is removed when the limit is reached.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable spawn radius.[/b] Set how far from the player NPCs can appear (default: 512 game units).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Smart NPC filtering.[/b] Skips unique characters, children, the player template, and deleted records. Only spawns generic NPCs.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]INI auto-generation.[/b] Creates a default INI file on first launch.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional detailed logging.[/b] Log every spawn and removal with NPC name, position, and count.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b]
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode100')">Copy to Clipboard</button>
+    </div>
+    <div id="md100" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown100" readonly># Version 1.0.0 - Initial Release
+
+## Features
+- **NEW** **Random NPC spawning.** Spawns a random NPC near the player on a configurable timer.
+- **NEW** **Configurable spawn interval.** Set how many seconds between each spawn (default: 2 seconds).
+- **NEW** **Configurable NPC limit.** Set the maximum number of spawned NPCs alive at once (default: 20). The oldest is removed when the limit is reached.
+- **NEW** **Configurable spawn radius.** Set how far from the player NPCs can appear (default: 512 game units).
+- **NEW** **Smart NPC filtering.** Skips unique characters, children, the player template, and deleted records. Only spawns generic NPCs.
+- **NEW** **INI auto-generation.** Creates a default INI file on first launch.
+- **NEW** **Optional detailed logging.** Log every spawn and removal with NPC name, position, and count.
+- **NEW** **SE, AE, and VR support.**</textarea>
+        <button class="copy-btn" onclick="copyText('markdown100')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+</script>
+</body>
+</html>

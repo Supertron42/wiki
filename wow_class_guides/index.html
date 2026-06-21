@@ -57,9 +57,30 @@ h2.class-head {
 .card.soon .go { color: #9d9d9d; }
 .foot { margin-top: 40px; color: #9d9d9d; font-size: 12px; }
 .foot a { color: #569cd6; }
+.back-link {
+    position: fixed;
+    top: 18px;
+    left: 20px;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9cdcfe;
+    text-decoration: none;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.back-link:hover { color: #dff6ff; border-color: #569cd6; background: #2a2d2e; }
 </style>
 </head>
 <body>
+<a href="../index.html" class="back-link">&#8592; All Games</a>
 <div class="wrap">
     <h1>WoW Classic Anniversary TBC, Class Guides</h1>
     <p class="sub">The Burning Crusade, Anniversary realms</p>
@@ -96,7 +117,7 @@ h2.class-head {
         <div class="card soon"><div class="spec">Warlock</div><div class="role">Ranged DPS</div><div class="go">Planned</div></div>
     </div>
 
-    <p class="foot">Built by Supertron. &nbsp;|&nbsp; <a href="../index.html">My other projects</a></p>
+    <p class="foot">Built by Supertron. &nbsp;|&nbsp; <a href="../index.html">All games</a> &nbsp;|&nbsp; <a href="../skyrim.html">Skyrim mods</a></p>
 </div>
 </body>
 </html>

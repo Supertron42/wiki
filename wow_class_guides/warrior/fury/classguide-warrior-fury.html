@@ -487,6 +487,86 @@ code {
     margin: 15px 0;
 }
 
+/* Export to AtlasLoot picker (GREP: export-atlasloot) */
+.al-opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-count {
+    margin-left: 10px;
+    color: #888;
+    font-size: 12px;
+}
+#al-phase-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 2px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-opt input,
+#al-phase-list input { accent-color: #4ec9b0; }
+
+/* Per-table "Export to AtlasLoot" button + its slot/section modal */
+.al-table-btn {
+    display: inline-block;
+    margin: 0 0 8px;
+    background: #2d2d2d;
+    color: #4ec9b0;
+    border: 1px solid #4ec9b0;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.al-table-btn:hover { background: #4ec9b0; color: #1a1a1a; }
+.al-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.al-modal {
+    background: #1e1e1e;
+    border: 1px solid #4ec9b0;
+    border-radius: 8px;
+    padding: 20px 22px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.al-modal-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: none; border: none;
+    color: #888; font-size: 22px;
+    line-height: 1; cursor: pointer;
+}
+.al-modal-close:hover { color: #fff; }
+.al-modal-title { margin: 0 0 4px; color: #dcdcaa; font-size: 16px; }
+.al-modal-sub { margin: 0 0 14px; color: #4ec9b0; font-size: 13px; }
+.al-modal-choices { display: flex; flex-direction: column; gap: 8px; }
+.al-choice {
+    background: #2d2d2d; color: #d4d4d4;
+    border: 1px solid #3c3c3c; border-radius: 4px;
+    padding: 10px 12px; font-size: 13px; cursor: pointer;
+    text-align: left;
+}
+.al-choice:hover { border-color: #4ec9b0; color: #fff; }
+.al-modal-note { margin: 12px 0 0; font-size: 11px; color: #999; }
+.al-modal-note a { color: #4ec9b0; }
+.al-modal-out { margin-top: 12px; }
+
 /* Scroll-wrapper around tables so wide tables don't bleed off the viewport */
 .table-wrap {
     width: 100%;
@@ -698,6 +778,7 @@ code {
 
     <h3>Resources</h3>
     <a href="#useful-links">Useful Links</a>
+    <a href="#export-atlasloot">Export to AtlasLoot</a>
 
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
         <a href="../../../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
@@ -2082,6 +2163,26 @@ code {
     </ul>
 
     <!-- ===== COPY LINK ===== -->
+    <h1 id="export-atlasloot">Export to AtlasLoot</h1>
+    <p>Send every gear pick in this guide straight into <strong>AtlasLoot</strong> so the recommended items show up as favourites (gold stars) on the in-game loot tables. Requires the <em>AtlasLoot Wishlist</em> addon (v1.3+).</p>
+    <p class="tip-box">Just want one slot or one phase? Every gear table has its own <strong>Export to AtlasLoot</strong> button that lets you grab that single slot or that whole phase. Use the export below for the entire guide at once.</p>
+    <ol>
+        <li>Pick which phases to include (all on by default), then click <strong>Copy Export String</strong>.</li>
+        <li>In game, type <code>/alimport</code> (or click <strong>Import</strong> on the AtlasLoot Wishlist tab).</li>
+        <li>Name the list (e.g. "Fury Warrior"), paste with <kbd>Ctrl+V</kbd>, and click <strong>Import</strong>.</li>
+        <li>Browse any raid or dungeon in AtlasLoot: this guide's items are now favourited, and each slot's BiS pick is flagged as the main item.</li>
+    </ol>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('al-picker')">Choose Phases</button>
+        <label class="al-opt"><input type="checkbox" id="al-bis-only" onchange="buildAtlasLootExport()"> BiS rows only</label>
+    </div>
+    <div id="al-picker" class="spoiler-content">
+        <div id="al-phase-list"><!-- phase checkboxes injected by JS --></div>
+    </div>
+    <textarea class="bbcode-area" id="atlasloot-export" readonly style="height: 90px;"></textarea><br>
+    <button class="copy-btn" onclick="copyText('atlasloot-export')">Copy Export String</button>
+    <span id="al-count" class="al-count"></span>
+
     <h2>Link to This Page</h2>
     <p>Copy a link to share this guide:</p>
     <div class="btn-row">
@@ -2325,6 +2426,198 @@ function toggleNav() {
     window.addEventListener('scroll', onScroll, true);
     window.addEventListener('resize', onScroll);
     update();
+})();
+
+// ---- Export to AtlasLoot (GREP: export-atlasloot) ----
+// Builds AtlasLoot's native favourite-import string ("i:<id>:<note>,i:<id>,...")
+// from the gear tables. Notes carry the rank; a "BiS" note makes AtlasLoot flag
+// that item as the slot's main item. Only Pre-Raid + Phase gear sections are
+// scanned (gems/enchants/consumables/quests live under other <h1>s and are skipped).
+// Two entry points: the Resources section (whole guide / phase picker) and a
+// per-table "Export to AtlasLoot" button that offers this-slot vs entire-section.
+
+// Shared: turn a rows array ([{id,rank}]) into the import string + a unique count.
+// Dedupes by item id; if a later duplicate is ranked BiS, its note wins so the
+// slot still flags a main item.
+function alStringFromRows(rows, bisOnly) {
+    var seen = {}, entries = [];
+    rows.forEach(function(r) {
+        var isBis = /bis|best/i.test(r.rank);
+        if (bisOnly && !isBis) return;
+        if (seen[r.id] !== undefined) {
+            if (isBis && !/bis|best/i.test(entries[seen[r.id]].note)) {
+                entries[seen[r.id]].note = r.rank;
+            }
+            return;
+        }
+        seen[r.id] = entries.length;
+        entries.push({ id: r.id, note: r.rank });
+    });
+    var str = entries.map(function(e) {
+        var note = (e.note || '').replace(/[,:]/g, ' ').replace(/\s+/g, ' ').trim();
+        return note ? ('i:' + e.id + ':' + note) : ('i:' + e.id);
+    }).join(',');
+    return { str: str, count: entries.length };
+}
+
+function alFlashCopy(textarea, btn) {
+    textarea.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    if (btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+}
+
+// Resources-section export (whole guide, filtered by the phase checkboxes + BiS toggle).
+function buildAtlasLootExport() {
+    var out = document.getElementById('atlasloot-export');
+    if (!out) return;
+    var listEl = document.getElementById('al-phase-list');
+    var bisEl = document.getElementById('al-bis-only');
+    var bisOnly = bisEl && bisEl.checked;
+    var groups = window._alGroups || [];
+    var rows = [];
+    groups.forEach(function(g) {
+        var cb = listEl && listEl.querySelector('input[data-phase="' + g.key + '"]');
+        if (cb && !cb.checked) return;
+        rows = rows.concat(g.rows);
+    });
+    var res = alStringFromRows(rows, bisOnly);
+    out.value = res.str;
+    var c = document.getElementById('al-count');
+    if (c) c.textContent = res.count ? (res.count + ' items') : 'No items selected';
+}
+
+// Lazily build the per-table modal once, then reuse it.
+function alEnsureModal() {
+    if (document.getElementById('al-modal')) return;
+    var bd = document.createElement('div');
+    bd.id = 'al-modal';
+    bd.className = 'al-modal-backdrop';
+    bd.innerHTML =
+        '<div class="al-modal">' +
+            '<button type="button" class="al-modal-close" aria-label="Close">&times;</button>' +
+            '<h3 class="al-modal-title">Export to AtlasLoot Wishlist</h3>' +
+            '<p class="al-modal-sub" id="al-modal-sub"></p>' +
+            '<div class="al-modal-choices">' +
+                '<button type="button" class="al-choice" id="al-choice-slot"></button>' +
+                '<button type="button" class="al-choice" id="al-choice-section"></button>' +
+            '</div>' +
+            '<p class="al-modal-note">Want the <strong>entire guide</strong>? Go to the ' +
+                '<a href="#export-atlasloot" class="al-modal-reslink">Resources &rarr; Export to AtlasLoot</a> ' +
+                'section and follow the instructions there.</p>' +
+            '<textarea class="bbcode-area al-modal-out" id="al-modal-out" readonly style="height: 80px; display: none;"></textarea>' +
+            '<button type="button" class="copy-btn" id="al-modal-copy" style="display: none;">Copy to Clipboard</button>' +
+        '</div>';
+    document.body.appendChild(bd);
+    function hide() { bd.style.display = 'none'; }
+    bd.addEventListener('click', function(e) { if (e.target === bd) hide(); });
+    bd.querySelector('.al-modal-close').addEventListener('click', hide);
+    bd.querySelector('.al-modal-reslink').addEventListener('click', hide); // let the anchor jump
+    document.getElementById('al-modal-copy').addEventListener('click', function() {
+        alFlashCopy(document.getElementById('al-modal-out'), this);
+    });
+}
+
+// Open the modal for a single gear table: choose this slot vs the whole phase.
+function alOpenTableModal(group, slotName, tableRows) {
+    alEnsureModal();
+    var bd = document.getElementById('al-modal');
+    document.getElementById('al-modal-sub').textContent = group.label + ' - ' + slotName;
+    var slotRes = alStringFromRows(tableRows, false);
+    var secRes = alStringFromRows(group.rows, false);
+    var out = document.getElementById('al-modal-out');
+    var copy = document.getElementById('al-modal-copy');
+    out.value = ''; out.style.display = 'none'; copy.style.display = 'none';
+    function show(res) {
+        out.value = res.str;
+        out.style.display = '';
+        copy.style.display = '';
+        alFlashCopy(out, copy);
+    }
+    var slotBtn = document.getElementById('al-choice-slot');
+    var secBtn = document.getElementById('al-choice-section');
+    slotBtn.textContent = 'This slot only: ' + slotName + ' (' + slotRes.count + ' item' + (slotRes.count === 1 ? '' : 's') + ')';
+    secBtn.textContent = 'Entire ' + group.label + ' (' + secRes.count + ' items)';
+    slotBtn.onclick = function() { show(slotRes); };
+    secBtn.onclick = function() { show(secRes); };
+    bd.style.display = 'flex';
+}
+
+(function() {
+    var content = document.getElementById('content');
+    if (!content) return;
+    // Walk <h1> headings and gear tables in document order; bucket gear rows by phase,
+    // and inject a per-table export button (between each slot's <h2> and its table).
+    var nodes = content.querySelectorAll('h1, table.gear-table');
+    var groups = [], current = null;
+    Array.prototype.forEach.call(nodes, function(node) {
+        if (node.tagName === 'H1') {
+            var id = node.id || '';
+            if (id === 'pre-raid-bis') {
+                current = { key: 'prebis', label: 'Pre-Raid BiS', rows: [] };
+                groups.push(current);
+            } else {
+                var m = id.match(/^phase(\d+)$/);
+                if (m) {
+                    current = { key: id, label: 'Phase ' + m[1], rows: [] };
+                    groups.push(current);
+                } else {
+                    current = null; // non-gear section, skip its tables
+                }
+            }
+            return;
+        }
+        if (!current) return;
+        var grp = current;          // capture this table's phase group for the closure
+        var tableRows = [];
+        var rows = node.querySelectorAll('tr[data-source]');
+        Array.prototype.forEach.call(rows, function(tr) {
+            var a = tr.querySelector('a[href*="/item="]');
+            if (!a) return;
+            var mm = a.getAttribute('href').match(/\/item=(\d+)/);
+            if (!mm) return;
+            var rankCell = tr.querySelector('.slot-label');
+            var row = { id: mm[1], rank: rankCell ? rankCell.textContent.trim() : '', name: a.textContent.trim() };
+            grp.rows.push(row);
+            tableRows.push(row);
+        });
+        if (!tableRows.length) return;
+        // The slot heading is the nearest <h2> before this table (skip the
+        // gem-enchant-info <p> that sits between them).
+        var wrap = (node.closest && node.closest('.table-wrap')) || node;
+        var h2 = wrap.previousElementSibling;
+        while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
+        var slotName = h2 ? h2.textContent.trim() : 'Slot';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'al-table-btn';
+        btn.textContent = 'Export to AtlasLoot';
+        btn.addEventListener('click', function() { alOpenTableModal(grp, slotName, tableRows); });
+        wrap.parentNode.insertBefore(btn, wrap);
+    });
+    groups = groups.filter(function(g) { return g.rows.length > 0; }); // drop "Awaiting data" phases
+    window._alGroups = groups;
+
+    var listEl = document.getElementById('al-phase-list');
+    if (listEl) {
+        groups.forEach(function(g) {
+            var lbl = document.createElement('label');
+            var cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = true;
+            cb.setAttribute('data-phase', g.key);
+            cb.addEventListener('change', buildAtlasLootExport);
+            var span = document.createElement('span');
+            span.textContent = g.label + ' (' + g.rows.length + ')';
+            lbl.appendChild(cb);
+            lbl.appendChild(span);
+            listEl.appendChild(lbl);
+        });
+    }
+    buildAtlasLootExport();
 })();
 </script>
 </body>

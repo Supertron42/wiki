@@ -49,6 +49,22 @@ REQUIRED FEATURES (every guide MUST have all of these):
        of #nav (before the first <h3>, so collapse/scrollspy never hides it): links the
        hub (../../index.html) + every class/spec guide; current guide styled active.
        Add new guides to the switcher in EVERY guide and as a card in index.html (hub).
+18. Export to AtlasLoot      GREP: export-atlasloot      <h1 id="export-atlasloot"> section
+       near the bottom (before "Link to This Page") + a nav link under Resources, AND a
+       per-table "Export to AtlasLoot" button (class al-table-btn) injected above EVERY
+       gear table. The scan IIFE walks the pre-raid-bis + phaseN <h1>s (gems/enchants/quests
+       under other <h1>s are skipped), groups rows by phase, and injects each button between
+       a slot's <h2> and its table. alStringFromRows() is the shared builder: it emits
+       AtlasLoot's native favourite-import string "i:<id>:<note>,..." where note = the rank
+       cell (a "BiS" note makes AtlasLoot auto-flag the slot's main item). The per-table
+       button opens a modal (alOpenTableModal / al-modal-*) asking "this slot only" vs
+       "entire <phase>", auto-copies the string, and points users to Resources for the whole
+       guide. The Resources section itself runs buildAtlasLootExport(): a "Choose Phases"
+       spoiler with a per-phase checkbox list (empty/awaiting phases auto-dropped), a "BiS
+       rows only" toggle, a readonly textarea, and Copy button. In-game side is the
+       AtlasLootWishlist addon (v1.3+): /alimport or its Wishlist-tab Import button opens a
+       paste box that creates a named list via fav:ImportItemList. All al-* CSS uses the
+       shared teal #4ec9b0 so the blocks are class-agnostic (identical across guides).
 16. Per-slot phase layout    GREP: id="phase1-          EVERY raid phase, once its data
        exists, is broken out per gear slot exactly like Phase 1/Phase 2: an intro <p>
        (+ tip-box for set bonuses), then for each slot an <h2 id="phaseN-<slot>"> with a
@@ -511,6 +527,86 @@ code {
     margin: 15px 0;
 }
 
+/* Export to AtlasLoot picker (GREP: export-atlasloot) */
+.al-opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-count {
+    margin-left: 10px;
+    color: #888;
+    font-size: 12px;
+}
+#al-phase-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 2px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-opt input,
+#al-phase-list input { accent-color: #4ec9b0; }
+
+/* Per-table "Export to AtlasLoot" button + its slot/section modal */
+.al-table-btn {
+    display: inline-block;
+    margin: 0 0 8px;
+    background: #2d2d2d;
+    color: #4ec9b0;
+    border: 1px solid #4ec9b0;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.al-table-btn:hover { background: #4ec9b0; color: #1a1a1a; }
+.al-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.al-modal {
+    background: #1e1e1e;
+    border: 1px solid #4ec9b0;
+    border-radius: 8px;
+    padding: 20px 22px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.al-modal-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: none; border: none;
+    color: #888; font-size: 22px;
+    line-height: 1; cursor: pointer;
+}
+.al-modal-close:hover { color: #fff; }
+.al-modal-title { margin: 0 0 4px; color: #dcdcaa; font-size: 16px; }
+.al-modal-sub { margin: 0 0 14px; color: #4ec9b0; font-size: 13px; }
+.al-modal-choices { display: flex; flex-direction: column; gap: 8px; }
+.al-choice {
+    background: #2d2d2d; color: #d4d4d4;
+    border: 1px solid #3c3c3c; border-radius: 4px;
+    padding: 10px 12px; font-size: 13px; cursor: pointer;
+    text-align: left;
+}
+.al-choice:hover { border-color: #4ec9b0; color: #fff; }
+.al-modal-note { margin: 12px 0 0; font-size: 11px; color: #999; }
+.al-modal-note a { color: #4ec9b0; }
+.al-modal-out { margin-top: 12px; }
+
 /* Scroll-wrapper around tables so wide tables don't bleed off the viewport */
 .table-wrap {
     width: 100%;
@@ -734,6 +830,7 @@ code {
 
     <h3>Resources</h3>
     <a href="#useful-links">Useful Links</a>
+    <a href="#export-atlasloot">Export to AtlasLoot</a>
 
     <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
         <a href="../../../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
@@ -914,7 +1011,7 @@ code {
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
             <tr data-source="heroic"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=27804" data-wh-icon-size="small">Devilshark Cape</a></td><td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3715">The Steamvault</a> - <a href="https://www.wowhead.com/tbc/npc=17798">Warlord Kalithresh</a></td><td>On par with raid drops. Worth farming</td></tr>
-            <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=27988" data-wh-icon-size="small">Burnoose of Shifting Ages</a></td><td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17881">Aeonus</a></td><td>Mitigation</td></tr>
+            <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=27988" data-wh-icon-size="small">Burnoose of Shifting Ages</a></td><td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2366">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17879">Chrono Lord Deja</a></td><td>Mitigation</td></tr>
             <tr data-source="crafted"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=24253" data-wh-icon-size="small">Cloak of Eternity</a></td><td><span class="craft-icon">🔨</span>Tailoring BoE</td><td>Affordable alternative</td></tr>
             <tr data-source="heroic"><td class="slot-label">Threat</td><td><a href="https://www.wowhead.com/tbc/item=27878" data-wh-icon-size="small">Auchenai Death Shroud</a></td><td><span class="boss-icon">💀</span>Terokkar Forest - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3790">Auchenai Crypts</a> - <a href="https://www.wowhead.com/tbc/npc=18478">Avatar of the Martyred</a></td><td>Threat cloak: agi/sta + hit + AP</td></tr>
             <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28256" data-wh-icon-size="small">Thoriumweave Cloak</a></td><td><span class="boss-icon">💀</span>Netherstorm - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3849">Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19219">Mechano-Lord Capacitus</a></td><td>Mitigation</td></tr>
@@ -945,7 +1042,7 @@ code {
         <tbody>
             <tr data-source="pvp"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=28996" data-wh-icon-size="small">Marshal's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>PvP - 5,897 Honor + 20 WSG Marks</td><td>Amazing for fresh 70. Threat + mitigation + resilience</td></tr>
             <tr data-source="heroic"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=29463" data-wh-icon-size="small">Amber Bands of the Aggressor</a></td><td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3715">The Steamvault</a> - <a href="https://www.wowhead.com/tbc/npc=17798">Warlord Kalithresh</a></td><td>Just as good but harder to get</td></tr>
-            <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=27459" data-wh-icon-size="small">Vambraces of Daring</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3562">Hellfire Ramparts</a> - Chest</td><td>Bracer: str/sta, def + block value</td></tr>
+            <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=27459" data-wh-icon-size="small">Vambraces of Daring</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3562">Hellfire Ramparts</a> - <a href="https://www.wowhead.com/tbc/npc=17537">Vazruden the Herald</a></td><td>Bracer: str/sta, def + block value</td></tr>
             <tr data-source="quest"><td class="slot-label">Easy</td><td><a href="https://www.wowhead.com/tbc/item=28167" data-wh-icon-size="small">Sha'tari Wrought Armguards</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10091">The Soul Devices</a></td><td>Quest bracer: str/sta + def</td></tr>
             <tr data-source="quest"><td class="slot-label">Easy</td><td><a href="https://www.wowhead.com/tbc/item=30225" data-wh-icon-size="small">Junior Technician 3rd Grade Bracers</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10186">You're Hired!</a></td><td>Quest bracer: agi/sta, def + hit</td></tr>
         </tbody>
@@ -971,7 +1068,7 @@ code {
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
             <tr data-source="pvp"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=28995" data-wh-icon-size="small">Marshal's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>PvP - 8,925 Honor + 40 AB Marks</td><td>Resilience belt: str/sta + crit (PvP), no avoidance</td></tr>
-            <tr data-source="heroic"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=29238" data-wh-icon-size="small">Lion's Heart Girdle</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3562">Hellfire Ramparts</a> - Chest</td><td>Mitigation focused</td></tr>
+            <tr data-source="heroic"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=29238" data-wh-icon-size="small">Lion's Heart Girdle</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3562">Hellfire Ramparts</a> - <a href="https://www.wowhead.com/tbc/npc=17537">Vazruden the Herald</a></td><td>Mitigation focused</td></tr>
             <tr data-source="heroic"><td class="slot-label">Best</td><td><a href="https://www.wowhead.com/tbc/item=27672" data-wh-icon-size="small">Girdle of the Immovable</a></td><td><span class="boss-icon">💀</span>Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a></td><td>Mitigation focused</td></tr>
             <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=27985" data-wh-icon-size="small">Deathforge Girdle</a></td><td><span class="boss-icon">💀</span>Terokkar Forest - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3791">Sethekk Halls</a> - <a href="https://www.wowhead.com/tbc/npc=18473">Talon King Ikiss</a></td><td>Threat belt: str/sta + crit</td></tr>
             <tr data-source="quest"><td class="slot-label">Easy</td><td><a href="https://www.wowhead.com/tbc/item=31460" data-wh-icon-size="small">Sha'tari Vindicator's Waistguard</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10704">How to Break Into the Arcatraz</a></td><td>From Arcatraz key chain</td></tr>
@@ -1214,7 +1311,7 @@ code {
             <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28566" data-wh-icon-size="small">Crimson Girdle of the Indomitable</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15687">Moroes</a></td><td>36 sta, def + block. Top survival belt</td></tr>
             <tr data-source="raid"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28779" data-wh-icon-size="small">Girdle of the Endless Pit</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>Threat belt: str/sta + crit</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt (PvP)</td><td><a href="https://www.wowhead.com/tbc/item=28995" data-wh-icon-size="small">Marshal's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>PvP - 8,925 Honor + 40 AB Marks</td><td>Resilience belt: str/sta + crit (General's = Horde)</td></tr>
-            <tr data-source="heroic"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29238" data-wh-icon-size="small">Lion's Heart Girdle</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3562">Hellfire Ramparts</a> - Chest</td><td>Avoidance belt: str/agi/sta + def</td></tr>
+            <tr data-source="heroic"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29238" data-wh-icon-size="small">Lion's Heart Girdle</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3562">Hellfire Ramparts</a> - <a href="https://www.wowhead.com/tbc/npc=17537">Vazruden the Herald</a></td><td>Avoidance belt: str/agi/sta + def</td></tr>
         </tbody>
     </table>
 
@@ -1252,7 +1349,7 @@ code {
             <tr data-source="raid"><td class="slot-label">Alt (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28757" data-wh-icon-size="small">Ring of a Thousand Marks</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>Threat ring: hit + crit + 44 AP</td></tr>
             <tr data-source="raid"><td class="slot-label">Alt (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28649" data-wh-icon-size="small">Garona's Signet Ring</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a></td><td>Threat ring: hit + 40 AP</td></tr>
             <tr data-source="badge"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29384" data-wh-icon-size="small">Ring of Unyielding Force</a></td><td><span class="badge-icon">🎖️</span>Shattrath - 25 Badge of Justice</td><td>Def ring (badge). On par with Kara drops</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28675" data-wh-icon-size="small">Shermanar Great-Ring</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a></td><td>Balanced def ring</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=28675" data-wh-icon-size="small">Shermanar Great-Ring</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16524">Shade of Aran</a></td><td>Balanced def ring</td></tr>
         </tbody>
     </table>
 
@@ -1279,7 +1376,7 @@ code {
             <tr data-source="raid"><td class="slot-label">BiS (Survival)</td><td><a href="https://www.wowhead.com/tbc/item=28749" data-wh-icon-size="small">King's Defender</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event</td><td>Sword: 28 sta, def + hit. Best survival 1H</td></tr>
             <tr data-source="heroic"><td class="slot-label">Alt (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=27980" data-wh-icon-size="small">Terokk's Nightmace</a></td><td><span class="boss-icon">💀</span>Terokkar Forest - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3791">Sethekk Halls</a> - <a href="https://www.wowhead.com/tbc/npc=18473">Talon King Ikiss</a></td><td>Threat mace: 25 sta + 19 expertise</td></tr>
             <tr data-source="heroic"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=29362" data-wh-icon-size="small">The Sun Eater</a></td><td><span class="boss-icon">💀</span>Netherstorm - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3849">Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a></td><td>Sword: 22 sta, def + dodge. Avoidance proc</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=31332" data-wh-icon-size="small">Blinkstrike</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16152">Attumen the Huntsman</a></td><td>Fast sword, extra-attack proc. Threat</td></tr>
+            <tr data-source="drop"><td class="slot-label">Alt (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=31332" data-wh-icon-size="small">Blinkstrike</a></td><td><span class="drop-icon">🌍</span>World Drop (BoE)</td><td>Fast sword, extra-attack proc. Threat</td></tr>
         </tbody>
     </table>
 
@@ -1310,7 +1407,7 @@ code {
 
     <!-- ===== PHASE 2 ===== -->
     <h1 id="phase2">Phase 2 - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> / <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a></h1>
-    <p>Sourced from the <strong>Wowhead Protection Warrior Phase 2 BiS Guide</strong>. Phase 2 adds T5 (Destroyer Battlegear) plus SSC/TK off-set drops. Tier tokens drop from SSC/TK bosses and turn in at Shattrath for the spec helm/shoulders/chest/gloves/legs. The <a href="https://www.wowhead.com/tbc/item=30620" data-wh-icon-size="small">Spyglass of the Hidden Fleet</a> from the Magtheridon attunement quest line is the standout new trinket, pick it up the moment your raid is keyed.</p>
+    <p>Sourced from the <strong>Wowhead Protection Warrior Phase 2 BiS Guide</strong>. Phase 2 adds T5 (Destroyer Battlegear) plus SSC/TK off-set drops. Tier tokens drop from SSC/TK bosses and turn in at Shattrath for the spec helm/shoulders/chest/gloves/legs. The <a href="https://www.wowhead.com/tbc/item=30620" data-wh-icon-size="small">Spyglass of the Hidden Fleet</a>, which drops off Serpentshrine Cavern trash, is the standout new trinket, grab it early in your SSC clears.</p>
 
     <div class="tip-box">
         <p><strong>T5 Set Bonuses (Destroyer Battlegear):</strong> 2pc = <strong>Devastate hits add +35 threat</strong>. 4pc = <strong>Shield Block adds +100% block value</strong>. Both bonuses are tank-only, Prot warriors should keep 4-piece active until T6 chest+gloves are available.</p>
@@ -1321,10 +1418,10 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30115" data-wh-icon-size="small">Destroyer Greathelm</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30243" data-wh-icon-size="small">Helm of the Vanquished Defender</a>)</td><td>T5 helm. Anchors the 2pc/4pc set bonus</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30115" data-wh-icon-size="small">Destroyer Greathelm</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30243" data-wh-icon-size="small">Helm of the Vanquished Defender</a>)</td><td>T5 helm. Anchors the 2pc/4pc set bonus</td></tr>
             <tr data-source="crafted"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=32473" data-wh-icon-size="small">Tankatronic Goggles</a></td><td><span class="craft-icon">🔨</span>Crafted - Engineering 350 (BoP)</td><td>Engineers only. Strong threat stats and gem slots; loses T5 2pc bonus</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30488" data-wh-icon-size="small">Merciless Gladiator's Plate Helm</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>Resilience hybrid, loses T5 2pc</td></tr>
-            <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=30120" data-wh-icon-size="small">Destroyer Battle-Helm</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a> (T5 token redeem)</td><td>Fury T5 helm, threat-focused. Same token as Greathelm</td></tr>
+            <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=30120" data-wh-icon-size="small">Destroyer Battle-Helm</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a> (T5 token redeem)</td><td>Fury T5 helm, threat-focused. Same token as Greathelm</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29011" data-wh-icon-size="small">Warbringer Greathelm</a></td><td><span class="boss-icon">🐉</span>Phase 1 - T4 token from <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>T4 Prot helm, P1 holdover</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=29983" data-wh-icon-size="small">Fel-Steel Warhelm</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing 365 (BoP)</td><td>Hit + crit + def, threat helmet for non-engineers</td></tr>
         </tbody>
@@ -1335,7 +1432,7 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30099" data-wh-icon-size="small">Frayed Tether of the Drowned</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21217">The Lurker Below</a></td><td>Stam + def + dodge</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30099" data-wh-icon-size="small">Frayed Tether of the Drowned</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21214">Fathom-Lord Karathress</a></td><td>Stam + def + dodge</td></tr>
             <tr data-source="quest"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30007" data-wh-icon-size="small">The Darkener's Grasp</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=11007">Kael'thas and the Verdant Sphere</a> (TK attunement)</td><td>Free quest reward, easy pickup for anyone keyed to TK</td></tr>
             <tr data-source="badge"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29386" data-wh-icon-size="small">Necklace of the Juggernaut</a></td><td><span class="badge-icon">🎖️</span>Shattrath - 25 Badge of Justice</td><td>Top badge-vendor neck, buy early</td></tr>
             <tr data-source="pvp"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=33066" data-wh-icon-size="small">Veteran's Pendant of Triumph</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 1 Honor vendor</td><td>Resilience hybrid</td></tr>
@@ -1349,7 +1446,7 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30117" data-wh-icon-size="small">Destroyer Shoulderguards</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30249" data-wh-icon-size="small">Pauldrons of the Vanquished Defender</a>)</td><td>T5 Prot shoulders. Required for 4pc</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30117" data-wh-icon-size="small">Destroyer Shoulderguards</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19516">Void Reaver</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30249" data-wh-icon-size="small">Pauldrons of the Vanquished Defender</a>)</td><td>T5 Prot shoulders. Required for 4pc</td></tr>
             <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30053" data-wh-icon-size="small">Pauldrons of the Wardancer</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>Threat off-set: str/sta + crit</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30490" data-wh-icon-size="small">Merciless Gladiator's Plate Shoulders</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>Resilience hybrid, loses 4pc</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28743" data-wh-icon-size="small">Mantle of Abrahmis</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a></td><td>Kara off-set, P1 holdover</td></tr>
@@ -1363,10 +1460,10 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29994" data-wh-icon-size="small">Thalassian Wildercloak</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19514">Al'ar</a></td><td>Threat cloak: agi/sta + 68 AP</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28672" data-wh-icon-size="small">Drape of the Dark Reavers</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a></td><td>P1 holdover but still very competitive</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30098" data-wh-icon-size="small">Razor-Scale Battlecloak</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>Pure mitigation cloak</td></tr>
-            <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=29925" data-wh-icon-size="small">Phoenix-Wing Cloak</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>Avoidance cloak: 37 sta, def + dodge</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29994" data-wh-icon-size="small">Thalassian Wildercloak</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>Threat cloak: agi/sta + 68 AP</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28672" data-wh-icon-size="small">Drape of the Dark Reavers</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16524">Shade of Aran</a></td><td>P1 holdover but still very competitive</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30098" data-wh-icon-size="small">Razor-Scale Battlecloak</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>Pure mitigation cloak</td></tr>
+            <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=29925" data-wh-icon-size="small">Phoenix-Wing Cloak</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19514">Al'ar</a></td><td>Avoidance cloak: 37 sta, def + dodge</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28777" data-wh-icon-size="small">Cloak of the Pit Stalker</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>Threat cloak: crit + 56 AP. P1 holdover</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28529" data-wh-icon-size="small">Royal Cloak of Arathi Kings</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15687">Moroes</a></td><td>Threat cloak: str/sta + hit. P1 holdover</td></tr>
         </tbody>
@@ -1378,7 +1475,7 @@ code {
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
             <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30113" data-wh-icon-size="small">Destroyer Chestguard</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30237" data-wh-icon-size="small">Chestguard of the Vanquished Defender</a>)</td><td>T5 Prot chest. Required for 4pc</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30102" data-wh-icon-size="small">Krakken-Heart Breastplate</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>Threat off-set: big str/agi/sta + hit</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30102" data-wh-icon-size="small">Krakken-Heart Breastplate</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>Threat off-set: big str/agi/sta + hit</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30486" data-wh-icon-size="small">Merciless Gladiator's Plate Chestpiece</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>Resilience hybrid, loses T5 4pc</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29012" data-wh-icon-size="small">Warbringer Chestguard</a></td><td><span class="boss-icon">🐉</span>Phase 1 - T4 token from <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>T4 Prot chest, P1 holdover</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28597" data-wh-icon-size="small">Panzar'Thar Breastplate</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a></td><td>Kara off-set, P1 holdover</td></tr>
@@ -1391,11 +1488,11 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32515" data-wh-icon-size="small">Wristguards of Determination</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>Top stam + def bracer for Phase 2</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32515" data-wh-icon-size="small">Wristguards of Determination</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19516">Void Reaver</a></td><td>Top stam + def bracer for Phase 2</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=32818" data-wh-icon-size="small">Veteran's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>PvP - S1 Honor + WSG Marks (Horde)</td><td>Resilience honor bracer</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28996" data-wh-icon-size="small">Marshal's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>PvP - Honor + WSG Marks (Alliance)</td><td>Alliance counterpart to Veteran's Plate</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=23538" data-wh-icon-size="small">Bracers of the Green Fortress</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing 365 (BoP)</td><td>Pure stam/def crafted bracers</td></tr>
-            <tr data-source="dungeon"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28502" data-wh-icon-size="small">Vambraces of Courage</a></td><td><span class="boss-icon">💀</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3717">The Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a></td><td>Survival bracer: 33 sta, def + block value. P1 holdover</td></tr>
+            <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28502" data-wh-icon-size="small">Vambraces of Courage</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16152">Attumen the Huntsman</a></td><td>Survival bracer: 33 sta, def + block value. P1 holdover</td></tr>
             <tr data-source="heroic"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28795" data-wh-icon-size="small">Bladespire Warbands</a></td><td><span class="boss-icon">💀</span>Terokkar - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3791">Sethekk Halls</a> - <a href="https://www.wowhead.com/tbc/npc=18473">Talon King Ikiss</a></td><td>Pre-raid backup</td></tr>
         </tbody>
     </table>
@@ -1405,9 +1502,9 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30114" data-wh-icon-size="small">Destroyer Handguards</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21214">Fathom-Lord Karathress</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30240" data-wh-icon-size="small">Gloves of the Vanquished Defender</a>)</td><td>T5 Prot gloves. Required for 4pc</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30114" data-wh-icon-size="small">Destroyer Handguards</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30240" data-wh-icon-size="small">Gloves of the Vanquished Defender</a>)</td><td>T5 Prot gloves. Required for 4pc</td></tr>
             <tr data-source="raid"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=29998" data-wh-icon-size="small">Royal Gauntlets of Silvermoon</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>Survival off-set: 57 sta, def + dodge</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29947" data-wh-icon-size="small">Gloves of the Searing Grip</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>Threat off-set: agi/sta + exp + 66 AP. P1 holdover</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29947" data-wh-icon-size="small">Gloves of the Searing Grip</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19514">Al'ar</a></td><td>Threat off-set: agi/sta + exp + 66 AP. P1 holdover</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=30644" data-wh-icon-size="small">Grips of Deftness</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing (BoP)</td><td>Hit + def, useful for capping hit</td></tr>
             <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28824" data-wh-icon-size="small">Gauntlets of Martial Perfection</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a></td><td>Hit + crit, Gruul off-set</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29017" data-wh-icon-size="small">Warbringer Handguards</a></td><td><span class="boss-icon">🐉</span>Phase 1 - T4 token from <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a></td><td>T4 Prot gloves, P1 holdover</td></tr>
@@ -1419,8 +1516,8 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30106" data-wh-icon-size="small">Belt of One-Hundred Deaths</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>Heavy contested, fury, arms, prot, and rogues all roll</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30096" data-wh-icon-size="small">Girdle of the Invulnerable</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>Pure mitigation alternative</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30106" data-wh-icon-size="small">Belt of One-Hundred Deaths</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>Heavy contested, fury, arms, prot, and rogues all roll</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30096" data-wh-icon-size="small">Girdle of the Invulnerable</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a></td><td>Pure mitigation alternative</td></tr>
             <tr data-source="crafted"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=30032" data-wh-icon-size="small">Red Belt of Battle</a></td><td><span class="craft-icon">🔨</span>Crafted - Tailoring (BoE)</td><td>Agility + crit + 8s damage proc on dodge/block</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28779" data-wh-icon-size="small">Girdle of the Endless Pit</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>Threat belt: str/sta + crit. P1 holdover</td></tr>
             <tr data-source="pvp"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=32805" data-wh-icon-size="small">Veteran's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>PvP - S1 Honor vendor</td><td>Resilience fallback</td></tr>
@@ -1433,11 +1530,11 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30116" data-wh-icon-size="small">Destroyer Legguards</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30246" data-wh-icon-size="small">Leggings of the Vanquished Defender</a>)</td><td>T5 Prot legs</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29950" data-wh-icon-size="small">Greaves of the Bloodwarder</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>Off-set TK legs, non-token alternative</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30116" data-wh-icon-size="small">Destroyer Legguards</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21214">Fathom-Lord Karathress</a> (T5 token: <a href="https://www.wowhead.com/tbc/item=30246" data-wh-icon-size="small">Leggings of the Vanquished Defender</a>)</td><td>T5 Prot legs</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29950" data-wh-icon-size="small">Greaves of the Bloodwarder</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=18805">High Astromancer Solarian</a></td><td>Off-set TK legs, non-token alternative</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30489" data-wh-icon-size="small">Merciless Gladiator's Plate Legguards</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>PvP legs: str/sta + crit + resilience</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29015" data-wh-icon-size="small">Warbringer Legguards</a></td><td><span class="boss-icon">🐉</span>Phase 1 - T4 token from <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a></td><td>High stam + def, P1 holdover</td></tr>
-            <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28621" data-wh-icon-size="small">Wrynn Dynasty Greaves</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15550">Attumen the Huntsman</a></td><td>Kara off-set, P1 holdover</td></tr>
+            <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28621" data-wh-icon-size="small">Wrynn Dynasty Greaves</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a></td><td>Kara off-set, P1 holdover</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29767" data-wh-icon-size="small">Leggings of the Fallen Defender</a></td><td><span class="boss-icon">🐉</span>Phase 1 - T4 token (Karazhan/Gruul)</td><td>Old T4 leg token, replace ASAP</td></tr>
         </tbody>
     </table>
@@ -1447,11 +1544,11 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32267" data-wh-icon-size="small">Boots of the Resilient</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>Stam + def + dodge</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32267" data-wh-icon-size="small">Boots of the Resilient</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=18805">High Astromancer Solarian</a></td><td>Stam + def + dodge</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=32793" data-wh-icon-size="small">Veteran's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>PvP - S1 Honor + EotS Marks (Horde)</td><td>Resilience honor boots</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28383" data-wh-icon-size="small">General's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>PvP - Honor + EotS Marks (Alliance)</td><td>Alliance counterpart to Veteran's Plate Greaves</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=30031" data-wh-icon-size="small">Red Havoc Boots</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing 365 (BoP)</td><td>Crit + hit + 8s dmg proc on dodge/parry</td></tr>
-            <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28608" data-wh-icon-size="small">Ironstriders of Urgency</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16457">Maiden of Virtue</a></td><td>P1 holdover</td></tr>
+            <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28608" data-wh-icon-size="small">Ironstriders of Urgency</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a></td><td>P1 holdover</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28747" data-wh-icon-size="small">Battlescar Boots</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event reward</td><td>Chess Event reward, P1 holdover</td></tr>
         </tbody>
     </table>
@@ -1461,12 +1558,12 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30083" data-wh-icon-size="small">Ring of Sundered Souls</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>BiS Phase 2 tank ring</td></tr>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30061" data-wh-icon-size="small">Ancestral Ring of Conquest</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21216">Hydross the Unstable</a></td><td>Pair with Sundered Souls for two BiS rings</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21215">Leotheras the Blind</a></td><td>Mit + threat hybrid</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30083" data-wh-icon-size="small">Ring of Sundered Souls</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21213">Morogrim Tidewalker</a></td><td>BiS Phase 2 tank ring</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30061" data-wh-icon-size="small">Ancestral Ring of Conquest</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21217">The Lurker Below</a></td><td>Pair with Sundered Souls for two BiS rings</td></tr>
+            <tr data-source="rep"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a></td><td><span class="rep-icon">📜</span>Lower City - Exalted</td><td>Mit + threat hybrid</td></tr>
             <tr data-source="rep"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29279" data-wh-icon-size="small">Violet Signet of the Great Protector</a></td><td><span class="rep-icon">📜</span>The Violet Eye - Revered (scales to Exalted)</td><td>Kara rep ring, scales with rep tier</td></tr>
             <tr data-source="rep"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=29294" data-wh-icon-size="small">Band of Eternity</a></td><td><span class="rep-icon">📜</span>The Sha'tar - Exalted (free quest)</td><td>Stam + def, easy pick once Sha'tar Exalted</td></tr>
-            <tr data-source="rep"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28792" data-wh-icon-size="small">A'dal's Signet of Defense</a></td><td><span class="rep-icon">📜</span>The Sha'tar - Exalted</td><td>Sha'tar rep ring, P1 holdover</td></tr>
+            <tr data-source="quest"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28792" data-wh-icon-size="small">A'dal's Signet of Defense</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=11002">The Fall of Magtheridon</a></td><td>Sha'tar rep ring, P1 holdover</td></tr>
             <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28649" data-wh-icon-size="small">Garona's Signet Ring</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a></td><td>Hit + crit threat ring</td></tr>
         </tbody>
     </table>
@@ -1476,14 +1573,14 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="quest"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30620" data-wh-icon-size="small">Spyglass of the Hidden Fleet</a></td><td><span class="quest-icon">!</span><a href="https://www.wowhead.com/tbc/quest=10888">Trial of the Naaru: Magtheridon</a> (TK attunement quest)</td><td><strong>Tier-defining trinket.</strong> Free for anyone attuned to TK</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30620" data-wh-icon-size="small">Spyglass of the Hidden Fleet</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - Trash drop</td><td><strong>Tier-defining trinket.</strong> Drops off SSC trash, grab it early in your clears</td></tr>
             <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30446" data-wh-icon-size="small">Solarian's Sapphire</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=18805">High Astromancer Solarian</a></td><td>Defensive use-trinket</td></tr>
             <tr data-source="badge"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=29387" data-wh-icon-size="small">Gnomeregan Auto-Blocker 600</a></td><td><span class="badge-icon">🎖️</span>Shattrath - 25 Badge of Justice</td><td>Block value on-use, strong threat trinket</td></tr>
             <tr data-source="heroic"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28121" data-wh-icon-size="small">Icon of Unyielding Courage</a></td><td><span class="boss-icon">💀</span>Hellfire Peninsula - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3713">Blood Furnace</a> - <a href="https://www.wowhead.com/tbc/npc=17377">Keli'dan</a></td><td>Threat trinket: 30 hit, on-use armor pen. P1 holdover</td></tr>
             <tr data-source="raid"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28579" data-wh-icon-size="small">Romulo's Poison Vial</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17533">Opera (Romulo &amp; Julianne)</a></td><td>Hit + proc damage threat trinket</td></tr>
-            <tr data-source="rep"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=31113" data-wh-icon-size="small">Violet Badge</a></td><td><span class="rep-icon">📜</span>The Violet Eye - Exalted</td><td>Kara rep trinket, block value on-use</td></tr>
+            <tr data-source="rep"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=31113" data-wh-icon-size="small">Violet Badge</a></td><td><span class="rep-icon">📜</span>The Violet Eye - Honored</td><td>Kara rep trinket, block value on-use</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=27770" data-wh-icon-size="small">Argussian Compass</a></td><td><span class="craft-icon">🔨</span>Crafted - Jewelcrafting (BoP)</td><td>JC-only flat stam</td></tr>
-            <tr data-source="dungeon"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29181" data-wh-icon-size="small">Timelapse Shard</a></td><td><span class="boss-icon">💀</span>Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3847">Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17881">Aeonus</a></td><td>Pre-raid backup</td></tr>
+            <tr data-source="rep"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29181" data-wh-icon-size="small">Timelapse Shard</a></td><td><span class="rep-icon">📜</span>Keepers of Time - Exalted</td><td>Pre-raid backup</td></tr>
         </tbody>
     </table>
 
@@ -1493,8 +1590,8 @@ code {
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
             <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30058" data-wh-icon-size="small">Mallet of the Tides</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21217">The Lurker Below</a></td><td>Mace, Human racial. Top Phase 2 tank weapon</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28439" data-wh-icon-size="small">Dragonstrike</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a></td><td>Mace, Human racial. High threat, P1 holdover</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28438" data-wh-icon-size="small">Dragonmaw</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a></td><td>Axe, Orc racial. High threat, P1 holdover</td></tr>
+            <tr data-source="crafted"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28439" data-wh-icon-size="small">Dragonstrike</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing (Master Swordsmith)</td><td>Mace, Human racial. High threat, P1 holdover</td></tr>
+            <tr data-source="crafted"><td class="slot-label">Alt BiS (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28438" data-wh-icon-size="small">Dragonmaw</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing (Master Hammersmith)</td><td>Axe, Orc racial. High threat, P1 holdover</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28426" data-wh-icon-size="small">Blazeguard</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing 350 (BoP)</td><td>Sword, Human racial. Fire proc</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=28749" data-wh-icon-size="small">King's Defender</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event reward</td><td>Sword, Human racial. Stam + def</td></tr>
             <tr data-source="crafted"><td class="slot-label">Good (Threat)</td><td><a href="https://www.wowhead.com/tbc/item=28425" data-wh-icon-size="small">Fireguard</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing 350 (BoP)</td><td>Axe, Orc racial. Pre-raid crafted backup</td></tr>
@@ -1506,7 +1603,7 @@ code {
     <table class="gear-table">
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
-            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28825" data-wh-icon-size="small">Aldori Legacy Defender</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>Still BiS through Phase 2, don't replace</td></tr>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28825" data-wh-icon-size="small">Aldori Legacy Defender</a></td><td><span class="boss-icon">🐉</span>Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a></td><td>Still BiS through Phase 2, don't replace</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=32045" data-wh-icon-size="small">Merciless Gladiator's Shield Wall</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>Resilience option, strong stam</td></tr>
             <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28606" data-wh-icon-size="small">Shield of Impenetrable Darkness</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a></td><td>P1 holdover, stam + def block</td></tr>
             <tr data-source="badge"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=29266" data-wh-icon-size="small">Azure-Shield of Coldarra</a></td><td><span class="badge-icon">🎖️</span>Shattrath - 41 Badge of Justice</td><td>Priority P1 badge pickup if you missed it</td></tr>
@@ -1521,7 +1618,7 @@ code {
         <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
         <tbody>
             <tr data-source="crafted"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32756" data-wh-icon-size="small">Gyro-Balanced Khorium Destroyer</a></td><td><span class="craft-icon">🔨</span>Crafted - Engineering 350 (BoE)</td><td>Released with Phase 2, massive jump over P1 ranged</td></tr>
-            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30025" data-wh-icon-size="small">Serpentshrine Shuriken</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - <a href="https://www.wowhead.com/tbc/npc=21212">Lady Vashj</a></td><td>SSC drop alternative for non-engineers</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30025" data-wh-icon-size="small">Serpentshrine Shuriken</a></td><td><span class="boss-icon">🐉</span>Zangarmarsh - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> - Trash drop</td><td>SSC drop alternative for non-engineers</td></tr>
             <tr data-source="pvp"><td class="slot-label">Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=32054" data-wh-icon-size="small">Merciless Gladiator's War Edge</a></td><td><span class="pvp-icon">⚔️</span>PvP - Arena Season 2</td><td>Resilience thrown weapon</td></tr>
             <tr data-source="rep"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=32645" data-wh-icon-size="small">Crystalline Crossbow</a></td><td><span class="rep-icon">📜</span>Ogri'la - Exalted</td><td>Crossbow for non-engineers</td></tr>
             <tr data-source="raid"><td class="slot-label">Good</td><td><a href="https://www.wowhead.com/tbc/item=30724" data-wh-icon-size="small">Barrel-Blade Longrifle</a></td><td><span class="boss-icon">🐉</span>Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td><td>World boss gun, rare drop</td></tr>
@@ -2089,6 +2186,26 @@ code {
     <p style="color:#9d9d9d;">Awaiting data - send me any reference sites, tools, or guides you want linked here.</p>
 
     <!-- ===== COPY LINK ===== -->
+    <h1 id="export-atlasloot">Export to AtlasLoot</h1>
+    <p>Send every gear pick in this guide straight into <strong>AtlasLoot</strong> so the recommended items show up as favourites (gold stars) on the in-game loot tables. Requires the <em>AtlasLoot Wishlist</em> addon (v1.3+).</p>
+    <p class="tip-box">Just want one slot or one phase? Every gear table has its own <strong>Export to AtlasLoot</strong> button that lets you grab that single slot or that whole phase. Use the export below for the entire guide at once.</p>
+    <ol>
+        <li>Pick which phases to include (all on by default), then click <strong>Copy Export String</strong>.</li>
+        <li>In game, type <code>/alimport</code> (or click <strong>Import</strong> on the AtlasLoot Wishlist tab).</li>
+        <li>Name the list (e.g. "Protection Warrior"), paste with <kbd>Ctrl+V</kbd>, and click <strong>Import</strong>.</li>
+        <li>Browse any raid or dungeon in AtlasLoot: this guide's items are now favourited, and each slot's BiS pick is flagged as the main item.</li>
+    </ol>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('al-picker')">Choose Phases</button>
+        <label class="al-opt"><input type="checkbox" id="al-bis-only" onchange="buildAtlasLootExport()"> BiS rows only</label>
+    </div>
+    <div id="al-picker" class="spoiler-content">
+        <div id="al-phase-list"><!-- phase checkboxes injected by JS --></div>
+    </div>
+    <textarea class="bbcode-area" id="atlasloot-export" readonly style="height: 90px;"></textarea><br>
+    <button class="copy-btn" onclick="copyText('atlasloot-export')">Copy Export String</button>
+    <span id="al-count" class="al-count"></span>
+
     <h2>Link to This Page</h2>
     <p>Copy a link to share this guide:</p>
     <div class="btn-row">
@@ -2332,6 +2449,198 @@ function toggleNav() {
     window.addEventListener('scroll', onScroll, true);
     window.addEventListener('resize', onScroll);
     update();
+})();
+
+// ---- Export to AtlasLoot (GREP: export-atlasloot) ----
+// Builds AtlasLoot's native favourite-import string ("i:<id>:<note>,i:<id>,...")
+// from the gear tables. Notes carry the rank; a "BiS" note makes AtlasLoot flag
+// that item as the slot's main item. Only Pre-Raid + Phase gear sections are
+// scanned (gems/enchants/consumables/quests live under other <h1>s and are skipped).
+// Two entry points: the Resources section (whole guide / phase picker) and a
+// per-table "Export to AtlasLoot" button that offers this-slot vs entire-section.
+
+// Shared: turn a rows array ([{id,rank}]) into the import string + a unique count.
+// Dedupes by item id; if a later duplicate is ranked BiS, its note wins so the
+// slot still flags a main item.
+function alStringFromRows(rows, bisOnly) {
+    var seen = {}, entries = [];
+    rows.forEach(function(r) {
+        var isBis = /bis|best/i.test(r.rank);
+        if (bisOnly && !isBis) return;
+        if (seen[r.id] !== undefined) {
+            if (isBis && !/bis|best/i.test(entries[seen[r.id]].note)) {
+                entries[seen[r.id]].note = r.rank;
+            }
+            return;
+        }
+        seen[r.id] = entries.length;
+        entries.push({ id: r.id, note: r.rank });
+    });
+    var str = entries.map(function(e) {
+        var note = (e.note || '').replace(/[,:]/g, ' ').replace(/\s+/g, ' ').trim();
+        return note ? ('i:' + e.id + ':' + note) : ('i:' + e.id);
+    }).join(',');
+    return { str: str, count: entries.length };
+}
+
+function alFlashCopy(textarea, btn) {
+    textarea.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    if (btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+}
+
+// Resources-section export (whole guide, filtered by the phase checkboxes + BiS toggle).
+function buildAtlasLootExport() {
+    var out = document.getElementById('atlasloot-export');
+    if (!out) return;
+    var listEl = document.getElementById('al-phase-list');
+    var bisEl = document.getElementById('al-bis-only');
+    var bisOnly = bisEl && bisEl.checked;
+    var groups = window._alGroups || [];
+    var rows = [];
+    groups.forEach(function(g) {
+        var cb = listEl && listEl.querySelector('input[data-phase="' + g.key + '"]');
+        if (cb && !cb.checked) return;
+        rows = rows.concat(g.rows);
+    });
+    var res = alStringFromRows(rows, bisOnly);
+    out.value = res.str;
+    var c = document.getElementById('al-count');
+    if (c) c.textContent = res.count ? (res.count + ' items') : 'No items selected';
+}
+
+// Lazily build the per-table modal once, then reuse it.
+function alEnsureModal() {
+    if (document.getElementById('al-modal')) return;
+    var bd = document.createElement('div');
+    bd.id = 'al-modal';
+    bd.className = 'al-modal-backdrop';
+    bd.innerHTML =
+        '<div class="al-modal">' +
+            '<button type="button" class="al-modal-close" aria-label="Close">&times;</button>' +
+            '<h3 class="al-modal-title">Export to AtlasLoot Wishlist</h3>' +
+            '<p class="al-modal-sub" id="al-modal-sub"></p>' +
+            '<div class="al-modal-choices">' +
+                '<button type="button" class="al-choice" id="al-choice-slot"></button>' +
+                '<button type="button" class="al-choice" id="al-choice-section"></button>' +
+            '</div>' +
+            '<p class="al-modal-note">Want the <strong>entire guide</strong>? Go to the ' +
+                '<a href="#export-atlasloot" class="al-modal-reslink">Resources &rarr; Export to AtlasLoot</a> ' +
+                'section and follow the instructions there.</p>' +
+            '<textarea class="bbcode-area al-modal-out" id="al-modal-out" readonly style="height: 80px; display: none;"></textarea>' +
+            '<button type="button" class="copy-btn" id="al-modal-copy" style="display: none;">Copy to Clipboard</button>' +
+        '</div>';
+    document.body.appendChild(bd);
+    function hide() { bd.style.display = 'none'; }
+    bd.addEventListener('click', function(e) { if (e.target === bd) hide(); });
+    bd.querySelector('.al-modal-close').addEventListener('click', hide);
+    bd.querySelector('.al-modal-reslink').addEventListener('click', hide); // let the anchor jump
+    document.getElementById('al-modal-copy').addEventListener('click', function() {
+        alFlashCopy(document.getElementById('al-modal-out'), this);
+    });
+}
+
+// Open the modal for a single gear table: choose this slot vs the whole phase.
+function alOpenTableModal(group, slotName, tableRows) {
+    alEnsureModal();
+    var bd = document.getElementById('al-modal');
+    document.getElementById('al-modal-sub').textContent = group.label + ' - ' + slotName;
+    var slotRes = alStringFromRows(tableRows, false);
+    var secRes = alStringFromRows(group.rows, false);
+    var out = document.getElementById('al-modal-out');
+    var copy = document.getElementById('al-modal-copy');
+    out.value = ''; out.style.display = 'none'; copy.style.display = 'none';
+    function show(res) {
+        out.value = res.str;
+        out.style.display = '';
+        copy.style.display = '';
+        alFlashCopy(out, copy);
+    }
+    var slotBtn = document.getElementById('al-choice-slot');
+    var secBtn = document.getElementById('al-choice-section');
+    slotBtn.textContent = 'This slot only: ' + slotName + ' (' + slotRes.count + ' item' + (slotRes.count === 1 ? '' : 's') + ')';
+    secBtn.textContent = 'Entire ' + group.label + ' (' + secRes.count + ' items)';
+    slotBtn.onclick = function() { show(slotRes); };
+    secBtn.onclick = function() { show(secRes); };
+    bd.style.display = 'flex';
+}
+
+(function() {
+    var content = document.getElementById('content');
+    if (!content) return;
+    // Walk <h1> headings and gear tables in document order; bucket gear rows by phase,
+    // and inject a per-table export button (between each slot's <h2> and its table).
+    var nodes = content.querySelectorAll('h1, table.gear-table');
+    var groups = [], current = null;
+    Array.prototype.forEach.call(nodes, function(node) {
+        if (node.tagName === 'H1') {
+            var id = node.id || '';
+            if (id === 'pre-raid-bis') {
+                current = { key: 'prebis', label: 'Pre-Raid BiS', rows: [] };
+                groups.push(current);
+            } else {
+                var m = id.match(/^phase(\d+)$/);
+                if (m) {
+                    current = { key: id, label: 'Phase ' + m[1], rows: [] };
+                    groups.push(current);
+                } else {
+                    current = null; // non-gear section, skip its tables
+                }
+            }
+            return;
+        }
+        if (!current) return;
+        var grp = current;          // capture this table's phase group for the closure
+        var tableRows = [];
+        var rows = node.querySelectorAll('tr[data-source]');
+        Array.prototype.forEach.call(rows, function(tr) {
+            var a = tr.querySelector('a[href*="/item="]');
+            if (!a) return;
+            var mm = a.getAttribute('href').match(/\/item=(\d+)/);
+            if (!mm) return;
+            var rankCell = tr.querySelector('.slot-label');
+            var row = { id: mm[1], rank: rankCell ? rankCell.textContent.trim() : '', name: a.textContent.trim() };
+            grp.rows.push(row);
+            tableRows.push(row);
+        });
+        if (!tableRows.length) return;
+        // The slot heading is the nearest <h2> before this table (skip the
+        // gem-enchant-info <p> that sits between them).
+        var wrap = (node.closest && node.closest('.table-wrap')) || node;
+        var h2 = wrap.previousElementSibling;
+        while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
+        var slotName = h2 ? h2.textContent.trim() : 'Slot';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'al-table-btn';
+        btn.textContent = 'Export to AtlasLoot';
+        btn.addEventListener('click', function() { alOpenTableModal(grp, slotName, tableRows); });
+        wrap.parentNode.insertBefore(btn, wrap);
+    });
+    groups = groups.filter(function(g) { return g.rows.length > 0; }); // drop "Awaiting data" phases
+    window._alGroups = groups;
+
+    var listEl = document.getElementById('al-phase-list');
+    if (listEl) {
+        groups.forEach(function(g) {
+            var lbl = document.createElement('label');
+            var cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = true;
+            cb.setAttribute('data-phase', g.key);
+            cb.addEventListener('change', buildAtlasLootExport);
+            var span = document.createElement('span');
+            span.textContent = g.label + ' (' + g.rows.length + ')';
+            lbl.appendChild(cb);
+            lbl.appendChild(span);
+            listEl.appendChild(lbl);
+        });
+    }
+    buildAtlasLootExport();
 })();
 </script>
 </body>

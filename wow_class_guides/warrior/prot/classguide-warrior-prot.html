@@ -65,6 +65,13 @@ REQUIRED FEATURES (every guide MUST have all of these):
        AtlasLootWishlist addon (v1.3+): /alimport or its Wishlist-tab Import button opens a
        paste box that creates a named list via fav:ImportItemList. All al-* CSS uses the
        shared teal #4ec9b0 so the blocks are class-agnostic (identical across guides).
+19. Talents grid + leveling  GREP: talent-trees          Talents section: <h2 id="talent-build">
+       has a Wowhead-style CSS talent-tree grid (.talent-trees > .talent-tree > .talent-grid
+       of .talent-cell placed by inline grid-row/grid-column; spent = .on, maxed = .max,
+       rank badge .talent-rank), then <h2 id="talent-leveling"> Leveling Order (1-70) table.
+       Data = wowtbc.gg class-guide page-data bisTalentOne (fix mislabeled warrior trees:
+       Death Wish->Fury, Sweeping Strikes->Arms). Teal #4ec9b0, class-agnostic. Required
+       for ALL specs incl. tanks.
 16. Per-slot phase layout    GREP: id="phase1-          EVERY raid phase, once its data
        exists, is broken out per gear slot exactly like Phase 1/Phase 2: an intro <p>
        (+ tip-box for set bonuses), then for each slot an <h2 id="phaseN-<slot>"> with a
@@ -700,6 +707,16 @@ code {
     .bbcode-area { font-size: 10px; height: 60px; }
     .btn-row { flex-wrap: wrap; }
 }
+/* Talent tree grid (GREP: talent-trees) */
+.talent-trees{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.talent-tree{flex:1 1 260px;min-width:230px;background:#1e1e1e;border:1px solid #3c3c3c;border-radius:6px;padding:10px}
+.talent-tree h4{margin:0 0 8px;color:#4ec9b0;font-size:14px;border:none;padding:0}
+.talent-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(48px,auto);gap:5px}
+.talent-cell{border:1px solid #3c3c3c;border-radius:4px;padding:3px 4px 11px;font-size:10px;line-height:1.15;text-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:#252526;color:#9d9d9d;min-height:48px;box-sizing:border-box}
+.talent-cell.on{border-color:#4ec9b0;background:rgba(78,201,176,0.14);color:#d4d4d4}
+.talent-cell.max{border-color:#e0b341;box-shadow:0 0 5px rgba(224,179,65,0.35)}
+.talent-rank{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:bold;color:#6a6a6a}
+.talent-cell.on .talent-rank,.talent-cell.max .talent-rank{color:#e0b341}
 </style>
 </head>
 <body>
@@ -727,6 +744,11 @@ code {
     <a href="#rotation-cooldowns" class="nav-sub">Cooldowns &amp; Utility</a>
     <a href="#rotation-rage" class="nav-sub">Rage Management</a>
     <a href="#rotation-buffs" class="nav-sub">Keep These Up</a>
+
+    <h3>Talents</h3>
+    <a href="#talents">Overview</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
 
     <h3>Pre-Raid Gear</h3>
     <a href="#pre-raid-bis">Overview</a>
@@ -923,6 +945,125 @@ code {
         <li><a href="https://www.wowhead.com/tbc/spell=25264">Thunder Clap</a> for the attack-speed slow, on cooldown.</li>
         <li>Five stacks of <a href="https://www.wowhead.com/tbc/spell=25225">Sunder Armor</a> (via <a href="https://www.wowhead.com/tbc/spell=30022">Devastate</a>) on the boss for the raid.</li>
     </ul>
+
+    <h1 id="talents">Talents</h1>
+    <p>The threat-focused tank build is <strong>17/3/41</strong>: deep Protection for <a href="https://www.wowhead.com/tbc/spell=30356">Shield Slam</a>, <a href="https://www.wowhead.com/tbc/spell=29144">Devastate</a>, <a href="https://www.wowhead.com/tbc/spell=12975">Last Stand</a>, and <a href="https://www.wowhead.com/tbc/spell=12809">Concussion Blow</a>, plus a 17-point Arms dip for <a href="https://www.wowhead.com/tbc/spell=12834">Deep Wounds</a>, <a href="https://www.wowhead.com/tbc/spell=16493">Impale</a>, and Anger Management threat. Open the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> to view and export the full tree.</p>
+
+    <h2 id="talent-build">Talent Build: 17/3/41</h2>
+    <p>The level-70 raid build, <strong>17/3/41</strong> (Arms 17, Fury 3, Protection 41). Spent talents are shown on the tree below; open the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> for the full interactive tree.</p>
+    <div class="talent-trees">
+      <div class="talent-tree">
+        <h4>Arms &middot; 17</h4>
+        <div class="talent-grid">
+          <div class="talent-cell max" style="grid-row:1;grid-column:1;" title="Improved Heroic Strike 3/3">Improved Heroic Strike<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell max" style="grid-row:1;grid-column:2;" title="Deflection 5/5">Deflection<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell" style="grid-row:1;grid-column:3;" title="Improved Rend 0/3">Improved Rend<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:1;" title="Improved Charge 0/2">Improved Charge<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:2;" title="Iron Will 0/5">Iron Will<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell max" style="grid-row:2;grid-column:3;" title="Improved Thunder Clap 3/3">Improved Thunder Clap<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:1;" title="Improved Overpower 0/2">Improved Overpower<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:2;" title="Anger Management 1/1">Anger Management<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:3;" title="Deep Wounds 3/3">Deep Wounds<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:2;" title="Two-Handed Weapon Specialization 0/5">Two-Handed Weapon Specialization<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell max" style="grid-row:4;grid-column:3;" title="Impale 2/2">Impale<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:1;" title="Poleaxe Specialization 0/5">Poleaxe Specialization<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:2;" title="Death Wish 0/1">Death Wish<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:3;" title="Mace Specialization 0/5">Mace Specialization<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:4;" title="Sword Specialization 0/5">Sword Specialization<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:1;" title="Improved Intercept 0/2">Improved Intercept<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:3;" title="Improved Hamstring 0/3">Improved Hamstring<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:4;" title="Improved Disciplines 0/3">Improved Disciplines<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:1;" title="Blood Frenzy 0/2">Blood Frenzy<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:2;" title="Mortal Strike 0/1">Mortal Strike<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:3;" title="Second Wind 0/2">Second Wind<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:8;grid-column:2;" title="Improved Mortal Strike 0/5">Improved Mortal Strike<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:9;grid-column:2;" title="Endless Rage 0/1">Endless Rage<span class="talent-rank">0/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Fury &middot; 3</h4>
+        <div class="talent-grid">
+          <div class="talent-cell" style="grid-row:1;grid-column:2;" title="Booming Voice 0/5">Booming Voice<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell on" style="grid-row:1;grid-column:3;" title="Cruelty 3/5">Cruelty<span class="talent-rank">3/5</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:2;" title="Improved Demoralizing Shout 0/5">Improved Demoralizing Shout<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:3;" title="Unbridled Wrath 0/5">Unbridled Wrath<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:1;" title="Improved Cleave 0/3">Improved Cleave<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:2;" title="Piercing Howl 0/1">Piercing Howl<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:3;" title="Blood Craze 0/3">Blood Craze<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:4;" title="Commanding Presence 0/5">Commanding Presence<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:1;" title="Dual Wield Specialization 0/5">Dual Wield Specialization<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:2;" title="Improved Execute 0/2">Improved Execute<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:3;" title="Enrage 0/5">Enrage<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:1;" title="Improved Slam 0/2">Improved Slam<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:2;" title="Sweeping Strikes 0/1">Sweeping Strikes<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:4;" title="Weapon Mastery 0/2">Weapon Mastery<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:1;" title="Improved Berserker Rage 0/2">Improved Berserker Rage<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:3;" title="Flurry 0/5">Flurry<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:1;" title="Precision 0/3">Precision<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:2;" title="Bloodthirst 0/1">Bloodthirst<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:3;" title="Improved Whirlwind 0/2">Improved Whirlwind<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:8;grid-column:3;" title="Improved Berserker Stance 0/5">Improved Berserker Stance<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:9;grid-column:2;" title="Rampage 0/1">Rampage<span class="talent-rank">0/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Protection &middot; 41</h4>
+        <div class="talent-grid">
+          <div class="talent-cell" style="grid-row:1;grid-column:1;" title="Improved Bloodrage 0/2">Improved Bloodrage<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:1;grid-column:2;" title="Tactical Mastery 0/3">Tactical Mastery<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell max" style="grid-row:1;grid-column:3;" title="Anticipation 5/5">Anticipation<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell max" style="grid-row:2;grid-column:2;" title="Shield Specialization 5/5">Shield Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell max" style="grid-row:2;grid-column:3;" title="Toughness 5/5">Toughness<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:1;" title="Last Stand 1/1">Last Stand<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:2;" title="Improved Shield Block 1/1">Improved Shield Block<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:3;" title="Improved Revenge 0/3">Improved Revenge<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:4;" title="Defiance 3/3">Defiance<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell max" style="grid-row:4;grid-column:1;" title="Improved Sunder Armor 3/3">Improved Sunder Armor<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:2;" title="Improved Disarm 0/3">Improved Disarm<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell on" style="grid-row:4;grid-column:3;" title="Improved Taunt 1/2">Improved Taunt<span class="talent-rank">1/2</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:1;" title="Improved Shield Wall 0/2">Improved Shield Wall<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:5;grid-column:2;" title="Concussion Blow 1/1">Concussion Blow<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:3;" title="Improved Shield Bash 0/2">Improved Shield Bash<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell on" style="grid-row:6;grid-column:1;" title="Shield Mastery 1/3">Shield Mastery<span class="talent-rank">1/3</span></div>
+          <div class="talent-cell max" style="grid-row:6;grid-column:3;" title="One-Handed Weapon Specialization 5/5">One-Handed Weapon Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:1;" title="Improved Defensive Stance 0/3">Improved Defensive Stance<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell max" style="grid-row:7;grid-column:2;" title="Shield Slam 1/1">Shield Slam<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell max" style="grid-row:7;grid-column:3;" title="Focused Rage 3/3">Focused Rage<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell max" style="grid-row:8;grid-column:2;" title="Vitality 5/5">Vitality<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell max" style="grid-row:9;grid-column:2;" title="Devastate 1/1">Devastate<span class="talent-rank">1/1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
+    <p>A clean order to spend your 61 talent points as you level. Pour into the <strong>Protection</strong> tree first to bring your core ability online fast, then fill the rest. Early points are flexible, prioritise what helps you kill and survive while questing; the end result is the 17/3/41 build above.</p>
+    <table class="gear-table">
+      <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
+      <tbody>
+        <tr><td class="slot-label">1</td><td>Anticipation</td><td>5/5</td><td>Protection</td></tr>
+        <tr><td class="slot-label">2</td><td>Shield Specialization</td><td>5/5</td><td>Protection</td></tr>
+        <tr><td class="slot-label">3</td><td>Toughness</td><td>5/5</td><td>Protection</td></tr>
+        <tr><td class="slot-label">4</td><td>Last Stand</td><td>1/1</td><td>Protection</td></tr>
+        <tr><td class="slot-label">5</td><td>Improved Shield Block</td><td>1/1</td><td>Protection</td></tr>
+        <tr><td class="slot-label">6</td><td>Defiance</td><td>3/3</td><td>Protection</td></tr>
+        <tr><td class="slot-label">7</td><td>Improved Sunder Armor</td><td>3/3</td><td>Protection</td></tr>
+        <tr><td class="slot-label">8</td><td>Improved Taunt</td><td>1/2</td><td>Protection</td></tr>
+        <tr><td class="slot-label">9</td><td>Concussion Blow</td><td>1/1</td><td>Protection</td></tr>
+        <tr><td class="slot-label">10</td><td>Shield Mastery</td><td>1/3</td><td>Protection</td></tr>
+        <tr><td class="slot-label">11</td><td>One-Handed Weapon Specialization</td><td>5/5</td><td>Protection</td></tr>
+        <tr><td class="slot-label">12</td><td>Shield Slam</td><td>1/1</td><td>Protection</td></tr>
+        <tr><td class="slot-label">13</td><td>Focused Rage</td><td>3/3</td><td>Protection</td></tr>
+        <tr><td class="slot-label">14</td><td>Vitality</td><td>5/5</td><td>Protection</td></tr>
+        <tr><td class="slot-label">15</td><td>Devastate</td><td>1/1</td><td>Protection</td></tr>
+        <tr><td class="slot-label">16</td><td>Improved Heroic Strike</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">17</td><td>Deflection</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">18</td><td>Cruelty</td><td>3/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">19</td><td>Improved Thunder Clap</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">20</td><td>Anger Management</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">21</td><td>Deep Wounds</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">22</td><td>Impale</td><td>2/2</td><td>Arms</td></tr>
+      </tbody>
+    </table>
 
     <h1 id="pre-raid-bis">Pre-Raid Best in Slot</h1>
     <p>Gear obtainable before entering Karazhan, Gruul's Lair, or Magtheridon's Lair. Sources include heroic dungeons, crafted items, reputation vendors, badge gear, PvP, and quests.</p>

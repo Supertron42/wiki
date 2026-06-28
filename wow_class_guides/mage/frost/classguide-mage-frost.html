@@ -680,6 +680,16 @@ code {
     .bbcode-area { font-size: 10px; height: 60px; }
     .btn-row { flex-wrap: wrap; }
 }
+/* Talent tree grid (GREP: talent-trees) */
+.talent-trees{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.talent-tree{flex:1 1 260px;min-width:230px;background:#1e1e1e;border:1px solid #3c3c3c;border-radius:6px;padding:10px}
+.talent-tree h4{margin:0 0 8px;color:#4ec9b0;font-size:14px;border:none;padding:0}
+.talent-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(48px,auto);gap:5px}
+.talent-cell{border:1px solid #3c3c3c;border-radius:4px;padding:3px 4px 11px;font-size:10px;line-height:1.15;text-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:#252526;color:#9d9d9d;min-height:48px;box-sizing:border-box}
+.talent-cell.on{border-color:#4ec9b0;background:rgba(78,201,176,0.14);color:#d4d4d4}
+.talent-cell.max{border-color:#e0b341;box-shadow:0 0 5px rgba(224,179,65,0.35)}
+.talent-rank{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:bold;color:#6a6a6a}
+.talent-cell.on .talent-rank,.talent-cell.max .talent-rank{color:#e0b341}
 </style>
 </head>
 <body>
@@ -773,6 +783,8 @@ code {
 
     <h3>Talents</h3>
     <a href="#talents">Overview</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
 
     <h3>Consumables</h3>
     <a href="#consumables">Overview</a>
@@ -1453,7 +1465,7 @@ code {
 
     <!-- ===== TALENTS ===== -->
     <h1 id="talents">Talents</h1>
-    <p>The raid build is <strong>deep Frost (about 10/0/51)</strong>, dipping into Arcane for <strong>Elemental Precision</strong> (spell hit) and <strong>Arcane Concentration</strong> (free casts/mana). Open the <a href="https://www.wowhead.com/tbc/talent-calc/mage">Wowhead TBC talent calculator</a> to build and export it.</p>
+    <p>The raid build is <strong>deep Frost (18/0/43)</strong>, dipping into Arcane for <strong>Elemental Precision</strong> (spell hit) and <strong>Arcane Concentration</strong> (free casts/mana). Open the <a href="https://www.wowhead.com/tbc/talent-calc/mage">Wowhead TBC talent calculator</a> to build and export it.</p>
     <div class="info-box"><p><strong>The talents that define the spec:</strong></p>
     <ul>
         <li><a href="https://www.wowhead.com/tbc/spell=31687">Summon Water Elemental</a> and <a href="https://www.wowhead.com/tbc/spell=11958">Cold Snap</a>, your big Frost cooldowns.</li>
@@ -1462,6 +1474,68 @@ code {
         <li><a href="https://www.wowhead.com/tbc/spell=12985">Shatter</a> (guaranteed crits on frozen targets) and <a href="https://www.wowhead.com/tbc/spell=12472">Icy Veins</a>.</li>
         <li>The Arcane dip grabs <strong>Elemental Precision</strong> (+3% hit) and <strong>Arcane Concentration</strong> (Clearcasting procs).</li>
     </ul></div>
+
+    <h2 id="talent-build">Talent Build: 18/0/43</h2>
+    <p>The level-70 raid build, <strong>18/0/43</strong> (Arcane 18, Frost 43). Spent talents are shown on the tree below; open the <a href="https://www.wowhead.com/tbc/talent-calc/mage">Wowhead TBC talent calculator</a> for the full interactive tree.</p>
+    <div class="talent-trees">
+      <div class="talent-tree">
+        <h4>Arcane &middot; 18</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:1;" title="Arcane Subtlety 2/2">Arcane Subtlety<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on" style="grid-row:1;grid-column:2;" title="Arcane Focus 3/5">Arcane Focus<span class="talent-rank">3/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:3;" title="Arcane Concentration 5/5">Arcane Concentration<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:1;" title="Magic Attunement 2/2">Magic Attunement<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:2;" title="Arcane Impact 3/3">Arcane Impact<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:4;" title="Arcane Meditation 3/3">Arcane Meditation<span class="talent-rank">3/3</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Frost &middot; 43</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:2;" title="Improved Frostbolt 5/5">Improved Frostbolt<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:1;grid-column:3;" title="Elemental Precision 3/3">Elemental Precision<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:1;" title="Ice Shards 5/5">Ice Shards<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:1;" title="Piercing Ice 3/3">Piercing Ice<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:2;" title="Icy Veins 1/1">Icy Veins<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:1;" title="Arctic Reach 2/2">Arctic Reach<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:2;" title="Frost Channeling 3/3">Frost Channeling<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Cold Snap 1/1">Cold Snap<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on" style="grid-row:5;grid-column:3;" title="Improved Cone of Cold 2/3">Improved Cone of Cold<span class="talent-rank">2/3</span></div>
+          <div class="talent-cell on max" style="grid-row:6;grid-column:1;" title="Ice Floes 2/2">Ice Floes<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:6;grid-column:3;" title="Winter's Chill 5/5">Winter's Chill<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:7;grid-column:3;" title="Arctic Winds 5/5">Arctic Winds<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:8;grid-column:2;" title="Empowered Frostbolt 5/5">Empowered Frostbolt<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:9;grid-column:2;" title="Summon Water Elemental 1/1">Summon Water Elemental<span class="talent-rank">1/1</span></div>
+        </div>
+      </div>
+    </div>
+    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
+    <p>A clean order to spend your 61 talent points as you level. Pour into the <strong>Frost</strong> tree first to bring your core ability online fast, then fill the rest. Early points are flexible, prioritise what helps you kill and survive while questing; the end result is the 18/0/43 build above.</p>
+    <table class="gear-table">
+      <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
+      <tbody>
+        <tr><td class="slot-label">1</td><td>Improved Frostbolt</td><td>5/5</td><td>Frost</td></tr>
+        <tr><td class="slot-label">2</td><td>Elemental Precision</td><td>3/3</td><td>Frost</td></tr>
+        <tr><td class="slot-label">3</td><td>Ice Shards</td><td>5/5</td><td>Frost</td></tr>
+        <tr><td class="slot-label">4</td><td>Piercing Ice</td><td>3/3</td><td>Frost</td></tr>
+        <tr><td class="slot-label">5</td><td>Icy Veins</td><td>1/1</td><td>Frost</td></tr>
+        <tr><td class="slot-label">6</td><td>Arctic Reach</td><td>2/2</td><td>Frost</td></tr>
+        <tr><td class="slot-label">7</td><td>Frost Channeling</td><td>3/3</td><td>Frost</td></tr>
+        <tr><td class="slot-label">8</td><td>Cold Snap</td><td>1/1</td><td>Frost</td></tr>
+        <tr><td class="slot-label">9</td><td>Improved Cone of Cold</td><td>2/3</td><td>Frost</td></tr>
+        <tr><td class="slot-label">10</td><td>Ice Floes</td><td>2/2</td><td>Frost</td></tr>
+        <tr><td class="slot-label">11</td><td>Winter's Chill</td><td>5/5</td><td>Frost</td></tr>
+        <tr><td class="slot-label">12</td><td>Arctic Winds</td><td>5/5</td><td>Frost</td></tr>
+        <tr><td class="slot-label">13</td><td>Empowered Frostbolt</td><td>5/5</td><td>Frost</td></tr>
+        <tr><td class="slot-label">14</td><td>Summon Water Elemental</td><td>1/1</td><td>Frost</td></tr>
+        <tr><td class="slot-label">15</td><td>Arcane Subtlety</td><td>2/2</td><td>Arcane</td></tr>
+        <tr><td class="slot-label">16</td><td>Arcane Focus</td><td>3/5</td><td>Arcane</td></tr>
+        <tr><td class="slot-label">17</td><td>Arcane Concentration</td><td>5/5</td><td>Arcane</td></tr>
+        <tr><td class="slot-label">18</td><td>Magic Attunement</td><td>2/2</td><td>Arcane</td></tr>
+        <tr><td class="slot-label">19</td><td>Arcane Impact</td><td>3/3</td><td>Arcane</td></tr>
+        <tr><td class="slot-label">20</td><td>Arcane Meditation</td><td>3/3</td><td>Arcane</td></tr>
+      </tbody>
+    </table>
 
     <h1 id="consumables">Consumables</h1>
     <p>Flask or the elixir pair, food, and mana sustain. Run these every raid night.</p>

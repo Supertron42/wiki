@@ -700,6 +700,16 @@ code {
     .bbcode-area { font-size: 10px; height: 60px; }
     .btn-row { flex-wrap: wrap; }
 }
+/* Talent tree grid (GREP: talent-trees) */
+.talent-trees{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.talent-tree{flex:1 1 260px;min-width:230px;background:#1e1e1e;border:1px solid #3c3c3c;border-radius:6px;padding:10px}
+.talent-tree h4{margin:0 0 8px;color:#4ec9b0;font-size:14px;border:none;padding:0}
+.talent-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(48px,auto);gap:5px}
+.talent-cell{border:1px solid #3c3c3c;border-radius:4px;padding:3px 4px 11px;font-size:10px;line-height:1.15;text-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:#252526;color:#9d9d9d;min-height:48px;box-sizing:border-box}
+.talent-cell.on{border-color:#4ec9b0;background:rgba(78,201,176,0.14);color:#d4d4d4}
+.talent-cell.max{border-color:#e0b341;box-shadow:0 0 5px rgba(224,179,65,0.35)}
+.talent-rank{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:bold;color:#6a6a6a}
+.talent-cell.on .talent-rank,.talent-cell.max .talent-rank{color:#e0b341}
 </style>
 </head>
 <body>
@@ -729,6 +739,8 @@ code {
 
     <h3>Talents</h3>
     <a href="#talents">Build &amp; Key Talents</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
 
     <h3>Pre-Raid Gear</h3>
     <a href="#pre-raid-bis">Overview</a>
@@ -965,6 +977,72 @@ code {
     </ul></div>
     <p>Talent reference: <a href="https://www.icy-veins.com/tbc-classic/arms-warrior-dps-pve-spec-builds-talents" target="_blank" rel="noopener">Icy Veins, Arms Warrior Talents &amp; Builds</a>.</p>
 
+
+    <h2 id="talent-build">Talent Build: 33/28/0</h2>
+    <p>The level-70 raid build, <strong>33/28/0</strong> (Arms 33, Fury 28). Spent talents are shown on the tree below; open the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> for the full interactive tree.</p>
+    <div class="talent-trees">
+      <div class="talent-tree">
+        <h4>Arms &middot; 33</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:1;" title="Improved Heroic Strike 3/3">Improved Heroic Strike<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on" style="grid-row:1;grid-column:2;" title="Deflection 2/5">Deflection<span class="talent-rank">2/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:1;" title="Improved Charge 2/2">Improved Charge<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on" style="grid-row:2;grid-column:2;" title="Iron Will 1/5">Iron Will<span class="talent-rank">1/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:3;" title="Improved Thunder Clap 3/3">Improved Thunder Clap<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:2;" title="Anger Management 1/1">Anger Management<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:3;" title="Deep Wounds 3/3">Deep Wounds<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:2;" title="Two-Handed Weapon Specialization 5/5">Two-Handed Weapon Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Impale 2/2">Impale<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Sweeping Strikes 1/1">Sweeping Strikes<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:4;" title="Sword Specialization 5/5">Sword Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on" style="grid-row:6;grid-column:4;" title="Improved Disciplines 2/3">Improved Disciplines<span class="talent-rank">2/3</span></div>
+          <div class="talent-cell on max" style="grid-row:7;grid-column:1;" title="Blood Frenzy 2/2">Blood Frenzy<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:7;grid-column:2;" title="Mortal Strike 1/1">Mortal Strike<span class="talent-rank">1/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Fury &middot; 28</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:3;" title="Cruelty 5/5">Cruelty<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:2;" title="Improved Demoralizing Shout 5/5">Improved Demoralizing Shout<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:4;" title="Commanding Presence 5/5">Commanding Presence<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Enrage 5/5">Enrage<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:1;" title="Improved Slam 2/2">Improved Slam<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Death Wish 1/1">Death Wish<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:4;" title="Weapon Mastery 2/2">Weapon Mastery<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on" style="grid-row:6;grid-column:3;" title="Flurry 3/5">Flurry<span class="talent-rank">3/5</span></div>
+        </div>
+      </div>
+    </div>
+    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
+    <p>A clean order to spend your 61 talent points as you level. Pour into the <strong>Arms</strong> tree first to bring your core ability online fast, then fill the rest. Early points are flexible, prioritise what helps you kill and survive while questing; the end result is the 33/28/0 build above.</p>
+    <table class="gear-table">
+      <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
+      <tbody>
+        <tr><td class="slot-label">1</td><td>Improved Heroic Strike</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">2</td><td>Deflection</td><td>2/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">3</td><td>Improved Charge</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">4</td><td>Iron Will</td><td>1/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">5</td><td>Improved Thunder Clap</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">6</td><td>Anger Management</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">7</td><td>Deep Wounds</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">8</td><td>Two-Handed Weapon Specialization</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">9</td><td>Impale</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">10</td><td>Sweeping Strikes</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">11</td><td>Sword Specialization</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">12</td><td>Improved Disciplines</td><td>2/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">13</td><td>Blood Frenzy</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">14</td><td>Mortal Strike</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">15</td><td>Cruelty</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">16</td><td>Improved Demoralizing Shout</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">17</td><td>Commanding Presence</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">18</td><td>Enrage</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">19</td><td>Improved Slam</td><td>2/2</td><td>Fury</td></tr>
+        <tr><td class="slot-label">20</td><td>Death Wish</td><td>1/1</td><td>Fury</td></tr>
+        <tr><td class="slot-label">21</td><td>Weapon Mastery</td><td>2/2</td><td>Fury</td></tr>
+        <tr><td class="slot-label">22</td><td>Flurry</td><td>3/5</td><td>Fury</td></tr>
+      </tbody>
+    </table>
 
     <h1 id="pre-raid-bis">Pre-Raid Best in Slot</h1>
     <p>Pre-raid Arms Warrior gear, ranked per slot (BiS first). Gather these from heroic dungeons, crafting, Badge of Justice, and early reputation before stepping into Karazhan. Priority: reach the melee <strong>hit cap</strong> and <strong>9% expertise</strong>, then stack Strength, crit, and AP.</p>

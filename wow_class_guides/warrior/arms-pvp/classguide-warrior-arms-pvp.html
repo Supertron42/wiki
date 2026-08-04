@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+Arms Warrior PvP (Arena) guide. Built from the canonical reference template
+warrior/prot/classguide-warrior-prot.html (see its AI-MANIFEST). Same CSS/JS
+features (nav collapse, scrollspy, class switcher, Wowhead tooltips, filter,
+sticky/wrapped tables, copy-link, AtlasLoot export). PvP-adapted content:
+gear grouped by Arena Season (Starter + S1-S4) instead of raid phases; PvP
+sections for macros, arena comps, races, burst/CC. Accent = Warrior tan #C79C6E.
+AtlasLoot scanner recognizes id="starter-gear" + id="season1..4" (see the
+"Export to AtlasLoot" IIFE). Talent grid = legal 33/28/0 deep-Arms Mortal
+Strike build; PvP point tuning covered in the talent-build note.
+================================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoW Classic Anniversary TBC - Arms Warrior PvP / Arena Guide</title>
+<meta name="description" content="Personal Arms Warrior PvP guide for WoW Classic Anniversary (TBC): arena stat priority, resilience gear by season (S1-S4), talents, macros, burst and CC, and best 2v2 / 3v3 comps. Every item ranked and stat-checked with hover tooltips.">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wow_class_guides/warrior/arms-pvp/classguide-warrior-arms-pvp.html">
+
+<!-- Wowhead Tooltips -->
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, iconSize: 'small'};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav .nav-grouplabel {
+    color: #4ec9b0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 10px 15px 4px 15px;
+}
+#nav h3 {
+    color: #C79C6E;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 30px 5px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav h3:hover {
+    color: #e6b78a;
+}
+#nav h3::after {
+    content: '\25B8';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.15s ease;
+    font-size: 10px;
+    color: #C79C6E;
+}
+#nav h3.open::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+/* Scrollspy: highlight the section header you're currently reading */
+#nav h3.active-section {
+    color: #4ec9b0;
+}
+#nav h3.active-section::after {
+    color: #4ec9b0;
+}
+#nav .nav-section {
+    display: none;
+    padding-bottom: 4px;
+}
+#nav .nav-section.open {
+    display: block;
+}
+/* Per-group sub-list: slot links under a season only show when that season is
+   in view, so seasons don't blend into one long list. */
+#nav .nav-subsection {
+    display: none;
+}
+#nav .nav-subsection.open {
+    display: block;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #C79C6E;
+}
+#nav a.active {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+#nav a.nav-sub {
+    padding-left: 40px;
+    font-size: 11px;
+    color: #9d9d9d;
+    position: relative;
+}
+#nav a.nav-sub:hover {
+    color: #fff;
+}
+#nav a.nav-sub::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #3c3c3c;
+}
+#nav a.nav-sub.active::before {
+    border-left-color: #4ec9b0;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #C79C6E;
+    border-bottom: 2px solid #C79C6E;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+h1[id], h2[id] {
+    scroll-margin-top: 16px;
+}
+h3 {
+    font-size: 14px;
+    color: #4ec9b0;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+a {
+    color: #569cd6;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #C79C6E;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Tip Box */
+.tip-box {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Gem & Enchant per-slot info */
+.gem-enchant-info {
+    background: #1f1f23;
+    border-left: 2px solid #C79C6E;
+    padding: 8px 12px;
+    margin: 8px 0 4px 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 12px;
+    color: #c0c0c0;
+}
+.gem-enchant-info strong { color: #C79C6E; }
+.gem-enchant-info em { color: #9d9d9d; font-style: italic; }
+.socket-red { color: #ff5050; font-weight: bold; }
+.socket-yellow { color: #ffd700; font-weight: bold; }
+.socket-blue { color: #5599ff; font-weight: bold; }
+.socket-meta { color: #d49aff; font-weight: bold; }
+
+/* Macro block */
+.macro-box {
+    background: #1a1a2e;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin: 8px 0 16px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+/* Gear Table */
+.gear-table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12px;
+    table-layout: auto;
+}
+.gear-table th {
+    background: #2d2d2d;
+    color: #C79C6E;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.gear-table td {
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    vertical-align: top;
+    overflow-wrap: break-word;
+}
+.gear-table td:last-child {
+    max-width: 360px;
+}
+.gear-table td.slot-label,
+.gear-table td:first-child {
+    white-space: nowrap;
+}
+.gear-table tr:nth-child(even) {
+    background: #252526;
+}
+.gear-table tr:hover {
+    background: #2a2d2e;
+}
+
+/* Wowhead link overrides */
+.gear-table a[href*="wowhead.com"] {
+    text-decoration: none;
+    font-weight: 500;
+}
+.gear-table a[href*="wowhead.com"]:hover {
+    text-decoration: underline;
+}
+
+/* Stat highlight */
+.stat { color: #4ec9b0; font-weight: bold; }
+.slot-label { color: #dcdcaa; font-weight: bold; }
+
+/* Quest icon */
+.quest-icon {
+    color: #FFD100;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 3px;
+}
+
+/* Source type icons */
+.boss-icon, .badge-icon, .rep-icon, .craft-icon, .pvp-icon, .drop-icon {
+    margin-right: 3px;
+    font-size: 12px;
+}
+
+/* Heroic tag */
+.heroic {
+    color: #ff6600;
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(255, 102, 0, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 15px 0;
+    padding: 10px 12px;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    align-items: center;
+}
+.filter-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 2px solid transparent;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: all 0.15s;
+}
+.filter-btn:hover {
+    background: #4a4a4a;
+}
+.filter-btn.active {
+    border-color: #C79C6E;
+    background: #2a2d2e;
+    color: #fff;
+}
+.filter-label {
+    color: #9d9d9d;
+    font-size: 11px;
+    padding: 4px 0;
+    margin-right: 4px;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #C79C6E;
+    color: #1e1e1e;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #b8895e;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Export to AtlasLoot picker (GREP: export-atlasloot) */
+.al-opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-count {
+    margin-left: 10px;
+    color: #888;
+    font-size: 12px;
+}
+#al-phase-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 2px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-opt input,
+#al-phase-list input { accent-color: #4ec9b0; }
+
+.al-table-btn {
+    display: inline-block;
+    margin: 0 0 8px;
+    background: #2d2d2d;
+    color: #4ec9b0;
+    border: 1px solid #4ec9b0;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.al-table-btn:hover { background: #4ec9b0; color: #1a1a1a; }
+.al-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.al-modal {
+    background: #1e1e1e;
+    border: 1px solid #4ec9b0;
+    border-radius: 8px;
+    padding: 20px 22px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.al-modal-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: none; border: none;
+    color: #888; font-size: 22px;
+    line-height: 1; cursor: pointer;
+}
+.al-modal-close:hover { color: #fff; }
+.al-modal-title { margin: 0 0 4px; color: #dcdcaa; font-size: 16px; }
+.al-modal-sub { margin: 0 0 14px; color: #4ec9b0; font-size: 13px; }
+.al-modal-choices { display: flex; flex-direction: column; gap: 8px; }
+.al-choice {
+    background: #2d2d2d; color: #d4d4d4;
+    border: 1px solid #3c3c3c; border-radius: 4px;
+    padding: 10px 12px; font-size: 13px; cursor: pointer;
+    text-align: left;
+}
+.al-choice:hover { border-color: #4ec9b0; color: #fff; }
+.al-modal-note { margin: 12px 0 0; font-size: 11px; color: #999; }
+.al-modal-note a { color: #4ec9b0; }
+.al-modal-out { margin-top: 12px; }
+
+/* Scroll-wrapper around tables */
+.table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: visible;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+}
+.table-wrap .gear-table {
+    margin: 0;
+}
+
+/* Mobile nav hamburger + backdrop */
+.nav-toggle {
+    display: none;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1001;
+    background: #2d2d2d;
+    color: #C79C6E;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+.nav-toggle:hover { background: #3c3c3c; }
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+.nav-backdrop.show { display: block; }
+
+@media (max-width: 1100px) {
+    #content { padding: 16px 18px; }
+    #nav { width: 180px; min-width: 180px; }
+    #content { margin-left: 180px; }
+}
+
+@media (max-width: 768px) {
+    body {
+        display: block;
+        height: auto;
+    }
+    .nav-toggle { display: block; }
+    #nav {
+        display: block;
+        width: 240px;
+        min-width: 240px;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+        z-index: 999;
+    }
+    #nav.open { transform: translateX(0); }
+    #content {
+        margin-left: 0;
+        padding: 48px 12px 20px;
+    }
+    h1 { font-size: 19px; margin: 22px 0 12px; }
+    h2 { font-size: 15px; margin: 18px 0 8px; }
+    h3 { font-size: 13px; }
+    body { font-size: 12px; }
+    .gear-table { font-size: 11px; }
+    .gear-table th,
+    .gear-table td { padding: 6px 8px; }
+    .gear-table th {
+        font-size: 10px;
+        white-space: normal;
+        position: static;
+    }
+    .table-wrap { overflow-x: auto; }
+    .gear-table td.slot-label,
+    .gear-table td:first-child { white-space: normal; }
+    .filter-bar { padding: 8px; gap: 4px; }
+    .filter-btn { font-size: 10px; padding: 3px 7px; }
+    .filter-label { font-size: 10px; }
+    .info-box, .tip-box, .warn-box { padding: 10px 12px; }
+    .info-box p, .tip-box p, .warn-box p { font-size: 11px; }
+    .bbcode-area { font-size: 10px; height: 60px; }
+    .btn-row { flex-wrap: wrap; }
+}
+/* Talent tree grid (GREP: talent-trees) */
+.talent-trees{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.talent-tree{flex:1 1 260px;min-width:230px;background:#1e1e1e;border:1px solid #3c3c3c;border-radius:6px;padding:10px}
+.talent-tree h4{margin:0 0 8px;color:#4ec9b0;font-size:14px;border:none;padding:0}
+.talent-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(48px,auto);gap:5px}
+.talent-cell{border:1px solid #3c3c3c;border-radius:4px;padding:3px 4px 11px;font-size:10px;line-height:1.15;text-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:#252526;color:#9d9d9d;min-height:48px;box-sizing:border-box}
+.talent-cell.on{border-color:#4ec9b0;background:rgba(78,201,176,0.14);color:#d4d4d4}
+.talent-cell.max{border-color:#e0b341;box-shadow:0 0 5px rgba(224,179,65,0.35)}
+.talent-rank{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:bold;color:#6a6a6a}
+.talent-cell.on .talent-rank,.talent-cell.max .talent-rank{color:#e0b341}
+</style>
+</head>
+<body>
+
+<button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">&#9776;</button>
+<div class="nav-backdrop" onclick="toggleNav()"></div>
+
+<div id="nav">
+    <a href="../../index.html">&#8592; All Guides</a>
+
+    <h3>Arms PvP</h3>
+    <a href="#overview">Overview</a>
+
+    <h3>Talents</h3>
+    <a href="#talents">Overview</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
+
+    <h3>Rotation &amp; Burst</h3>
+    <a href="#rotation">Overview</a>
+    <a href="#rotation-priority" class="nav-sub">Damage Priority</a>
+    <a href="#rotation-burst" class="nav-sub">Burst / Kill Window</a>
+    <a href="#rotation-cc" class="nav-sub">CC, Interrupts &amp; Kiting</a>
+    <a href="#rotation-stance" class="nav-sub">Stance Dancing</a>
+    <a href="#rotation-cooldowns" class="nav-sub">Cooldowns &amp; Defensives</a>
+    <a href="#rotation-rage" class="nav-sub">Rage Management</a>
+
+    <h3>Macros</h3>
+    <a href="#macros">Overview</a>
+    <a href="#macros-movement" class="nav-sub">Charge / Intercept</a>
+    <a href="#macros-defensive" class="nav-sub">Spell Reflect &amp; Swaps</a>
+    <a href="#macros-focus" class="nav-sub">Focus &amp; Interrupt</a>
+    <a href="#macros-burst" class="nav-sub">Burst</a>
+
+    <h3>Starter Gear</h3>
+    <a href="#starter-gear">Fresh 70 Set</a>
+
+    <h3>Season 1 (Gladiator)</h3>
+    <a href="#season1">Overview</a>
+    <a href="#season1-head" class="nav-sub">Head</a>
+    <a href="#season1-neck" class="nav-sub">Neck</a>
+    <a href="#season1-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#season1-back" class="nav-sub">Back</a>
+    <a href="#season1-chest" class="nav-sub">Chest</a>
+    <a href="#season1-wrist" class="nav-sub">Wrist</a>
+    <a href="#season1-hands" class="nav-sub">Hands</a>
+    <a href="#season1-waist" class="nav-sub">Waist</a>
+    <a href="#season1-legs" class="nav-sub">Legs</a>
+    <a href="#season1-feet" class="nav-sub">Feet</a>
+    <a href="#season1-rings" class="nav-sub">Rings</a>
+    <a href="#season1-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#season1-weapon" class="nav-sub">Weapon</a>
+    <a href="#season1-ranged" class="nav-sub">Ranged</a>
+
+    <h3>Season 2 (Merciless)</h3>
+    <a href="#season2">Overview</a>
+    <a href="#season2-head" class="nav-sub">Head</a>
+    <a href="#season2-neck" class="nav-sub">Neck</a>
+    <a href="#season2-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#season2-back" class="nav-sub">Back</a>
+    <a href="#season2-chest" class="nav-sub">Chest</a>
+    <a href="#season2-wrist" class="nav-sub">Wrist</a>
+    <a href="#season2-hands" class="nav-sub">Hands</a>
+    <a href="#season2-waist" class="nav-sub">Waist</a>
+    <a href="#season2-legs" class="nav-sub">Legs</a>
+    <a href="#season2-feet" class="nav-sub">Feet</a>
+    <a href="#season2-rings" class="nav-sub">Rings</a>
+    <a href="#season2-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#season2-weapon" class="nav-sub">Weapon</a>
+    <a href="#season2-ranged" class="nav-sub">Ranged</a>
+
+    <h3>Season 3 (Vengeful)</h3>
+    <a href="#season3">Overview</a>
+    <a href="#season3-head" class="nav-sub">Head</a>
+    <a href="#season3-neck" class="nav-sub">Neck</a>
+    <a href="#season3-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#season3-back" class="nav-sub">Back</a>
+    <a href="#season3-chest" class="nav-sub">Chest</a>
+    <a href="#season3-wrist" class="nav-sub">Wrist</a>
+    <a href="#season3-hands" class="nav-sub">Hands</a>
+    <a href="#season3-waist" class="nav-sub">Waist</a>
+    <a href="#season3-legs" class="nav-sub">Legs</a>
+    <a href="#season3-feet" class="nav-sub">Feet</a>
+    <a href="#season3-rings" class="nav-sub">Rings</a>
+    <a href="#season3-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#season3-weapon" class="nav-sub">Weapon</a>
+    <a href="#season3-ranged" class="nav-sub">Ranged</a>
+
+    <h3>Season 4 (Brutal)</h3>
+    <a href="#season4">Overview</a>
+    <a href="#season4-head" class="nav-sub">Head</a>
+    <a href="#season4-neck" class="nav-sub">Neck</a>
+    <a href="#season4-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#season4-back" class="nav-sub">Back</a>
+    <a href="#season4-chest" class="nav-sub">Chest</a>
+    <a href="#season4-wrist" class="nav-sub">Wrist</a>
+    <a href="#season4-hands" class="nav-sub">Hands</a>
+    <a href="#season4-waist" class="nav-sub">Waist</a>
+    <a href="#season4-legs" class="nav-sub">Legs</a>
+    <a href="#season4-feet" class="nav-sub">Feet</a>
+    <a href="#season4-rings" class="nav-sub">Rings</a>
+    <a href="#season4-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#season4-weapon" class="nav-sub">Weapon</a>
+    <a href="#season4-ranged" class="nav-sub">Ranged</a>
+
+    <h3>Gems</h3>
+    <a href="#gems">Overview</a>
+    <a href="#gems-summary">Gem Summary</a>
+
+    <h3>Enchants</h3>
+    <a href="#enchants">Overview</a>
+    <a href="#enchants-summary">Enchant Summary</a>
+
+    <h3>Arena Comps</h3>
+    <a href="#comps">Overview</a>
+    <a href="#comps-2v2" class="nav-sub">2v2 Comps</a>
+    <a href="#comps-3v3" class="nav-sub">3v3 Comps</a>
+    <a href="#comps-priority" class="nav-sub">Kill Priority</a>
+
+    <h3>Races</h3>
+    <a href="#races">Best Races</a>
+
+    <h3>Consumables</h3>
+    <a href="#consumables">Overview</a>
+
+    <h3>Resources</h3>
+    <a href="#useful-links">Useful Links</a>
+    <a href="#export-atlasloot">Export to AtlasLoot</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../../../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0;">WoW Classic Anniversary TBC - Arms Warrior PvP / Arena Guide</h1>
+    <p>Your fast track to a competitive Arms Warrior in WoW Classic Anniversary (TBC) arena. Stat priority, resilience gear ranked by Arena Season (S1-S4), the deep-Arms Mortal Strike talent build, the macros that make stance-dancing playable, and the burst-plus-CC that turns pressure into kills, with the best 2v2 and 3v3 comps. Every gear pick is ranked from the major PvP guides and checked against live item stats. Hover any item, ability, or set for full Wowhead tooltips.</p>
+
+    <!-- ===== OVERVIEW ===== -->
+    <h1 id="overview">Overview</h1>
+    <p>Arms is the premier melee in TBC arena. Its identity is <strong>relentless pressure plus healing denial</strong>: <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> is a hard-hitting instant that also applies a <strong>50% healing reduction</strong> for 10 seconds, so every global you land on a target makes them cheaper to kill. Pair that with <a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> to lock a target in place, <a href="https://www.wowhead.com/tbc/spell=23920">Spell Reflection</a> to punish casters, and <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> burst windows, and you have a class that dictates the pace of nearly every match.</p>
+
+    <div class="tip-box">
+        <p><strong>Caps first:</strong> before you optimize damage, get two things right. (1) Reach roughly <strong>5% Hit</strong> so you never miss a <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> or <a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> at the wrong moment, a single miss can lose a game. (2) Stack <strong>Resilience</strong> from your PvP gear, it flatly reduces the chance you are crit and the damage those crits deal, which is why you wear the arena Battlegear over raid gear even when raid pieces show bigger numbers.</p>
+    </div>
+
+    <div class="info-box">
+        <p><strong>Stat priority (PvP):</strong> <span class="stat">~5% Hit</span> &rarr; <span class="stat">Resilience</span> &rarr; <span class="stat">Stamina</span> &rarr; <span class="stat">Strength / Attack Power</span> &rarr; <span class="stat">Critical Strike</span> &rarr; a little more Hit / Expertise. Resilience and survivability come first because dead warriors deal no damage; once you are tanky and can reliably land abilities, Strength (1 Str = 2 AP) and Crit turn pressure into kills. Sources genuinely disagree on the exact order of Stamina vs Crit, so treat this as a blend: never sacrifice Resilience or the 5% Hit floor for a shinier damage stat.</p>
+    </div>
+
+    <div class="warn-box">
+        <p><strong>Wear PvP gear in arena.</strong> A full raid set often shows more Strength and Crit, but with no Resilience you get globalled by any real burst. The arena Battlegear sets below carry Resilience on every piece plus a 2-piece and 4-piece bonus built for warriors. Raid pieces only sneak in where they beat the PvP option and the lost Resilience is acceptable (a couple of high-value rings, cloaks, and the crafted stun weapons).</p>
+    </div>
+
+    <!-- ===== TALENTS ===== -->
+    <h1 id="talents">Talents</h1>
+    <p>The PvP build is a <strong>deep-Arms Mortal Strike build</strong>: enough Arms for <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a>, <a href="https://www.wowhead.com/tbc/spell=16493">Impale</a>, <a href="https://www.wowhead.com/tbc/spell=12714">Two-Handed Weapon Specialization</a> and your weapon specialization, then a Fury dip for <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a>, Cruelty and rage/enrage talents. The grid below shows a legal, standard <strong>33/28/0</strong> Arms core; the box under it lists the swaps most PvP warriors make.</p>
+
+    <div class="info-box"><p><strong>Key PvP talents and why:</strong></p>
+    <ul>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a></strong> (Arms): the whole reason to play the spec, a hard instant plus 50% healing reduction.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=16493">Impale</a></strong> (Arms): +20% crit damage on Mortal Strike, Overpower, and Execute, your burst multiplier.</li>
+        <li><strong>Weapon Specialization</strong> (Arms): 5 points in <a href="https://www.wowhead.com/tbc/spell=12284">Mace</a> (stun proc, the arena meta), <a href="https://www.wowhead.com/tbc/spell=12281">Sword</a>, or <a href="https://www.wowhead.com/tbc/spell=12700">Poleaxe</a> to match your weapon.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=29838">Second Wind</a></strong> (Arms): regenerate rage and health whenever you are stunned or immobilized, huge into Rogues and Mages.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=23694">Improved Hamstring</a></strong> (Arms): a chance to root the target on Hamstring, a game-winning kiting tool.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=20504">Improved Intercept</a></strong> (Arms): shorter Intercept cooldown = more stuns and more mobility.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a></strong> (Fury): +20% damage burst cooldown that also makes you immune to Fear.</li>
+    </ul></div>
+
+    <h2 id="talent-build">Talent Build: 33/28/0 (Mortal Strike)</h2>
+    <p>The deep-Arms Mortal Strike core, <strong>33/28/0</strong> (Arms 33, Fury 28). This is a legal, widely-run build; spent talents are shown below. Open the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> to build and export your exact tree.</p>
+    <div class="talent-trees">
+      <div class="talent-tree">
+        <h4>Arms &middot; 33</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:1;" title="Improved Heroic Strike 3/3">Improved Heroic Strike<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on" style="grid-row:1;grid-column:2;" title="Deflection 2/5">Deflection<span class="talent-rank">2/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:1;" title="Improved Charge 2/2">Improved Charge<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on" style="grid-row:2;grid-column:2;" title="Iron Will 1/5">Iron Will<span class="talent-rank">1/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:3;" title="Improved Thunder Clap 3/3">Improved Thunder Clap<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:2;" title="Anger Management 1/1">Anger Management<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:3;" title="Deep Wounds 3/3">Deep Wounds<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:2;" title="Two-Handed Weapon Specialization 5/5">Two-Handed Weapon Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Impale 2/2">Impale<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Sweeping Strikes 1/1">Sweeping Strikes<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:4;" title="Mace Specialization 5/5">Mace Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on" style="grid-row:6;grid-column:4;" title="Improved Disciplines 2/3">Improved Disciplines<span class="talent-rank">2/3</span></div>
+          <div class="talent-cell on max" style="grid-row:7;grid-column:1;" title="Blood Frenzy 2/2">Blood Frenzy<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:7;grid-column:2;" title="Mortal Strike 1/1">Mortal Strike<span class="talent-rank">1/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Fury &middot; 28</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:3;" title="Cruelty 5/5">Cruelty<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:2;" title="Improved Demoralizing Shout 5/5">Improved Demoralizing Shout<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:4;" title="Commanding Presence 5/5">Commanding Presence<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Enrage 5/5">Enrage<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:1;" title="Improved Slam 2/2">Improved Slam<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Death Wish 1/1">Death Wish<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:4;" title="Weapon Mastery 2/2">Weapon Mastery<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on" style="grid-row:6;grid-column:3;" title="Flurry 3/5">Flurry<span class="talent-rank">3/5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+        <p><strong>PvP tuning:</strong> the grid above is the deep-Arms core. For arena, most warriors reallocate a few of the Fury/filler points toward the survival and control talents that matter against players: <strong><a href="https://www.wowhead.com/tbc/spell=29838">Second Wind</a></strong> (rage + heal when stunned/rooted), <strong><a href="https://www.wowhead.com/tbc/spell=23694">Improved Hamstring</a></strong> (root proc), and <strong><a href="https://www.wowhead.com/tbc/spell=20504">Improved Intercept</a></strong> (more stuns), usually by trimming <a href="https://www.wowhead.com/tbc/spell=12862">Improved Slam</a> and some Deflection/Iron Will filler. Match your <strong>weapon specialization</strong> to your weapon (Mace for the arena stun build). For the exact arena point-by-point spread, see the PvP talent references in <a href="#useful-links">Useful Links</a>.</p>
+    </div>
+
+    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
+    <p>A clean order to spend your points as you level toward the 33/28/0 build. Pour into <strong>Arms</strong> first to bring Mortal Strike and your damage online, then fill Fury. Early points are flexible, prioritise what helps you kill and survive while questing.</p>
+    <table class="gear-table">
+      <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
+      <tbody>
+        <tr><td class="slot-label">1</td><td>Improved Heroic Strike</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">2</td><td>Deflection</td><td>2/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">3</td><td>Improved Charge</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">4</td><td>Iron Will</td><td>1/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">5</td><td>Improved Thunder Clap</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">6</td><td>Anger Management</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">7</td><td>Deep Wounds</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">8</td><td>Two-Handed Weapon Specialization</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">9</td><td>Impale</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">10</td><td>Sweeping Strikes</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">11</td><td>Mace Specialization</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">12</td><td>Improved Disciplines</td><td>2/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">13</td><td>Blood Frenzy</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">14</td><td>Mortal Strike</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">15</td><td>Cruelty</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">16</td><td>Improved Demoralizing Shout</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">17</td><td>Commanding Presence</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">18</td><td>Enrage</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">19</td><td>Improved Slam</td><td>2/2</td><td>Fury</td></tr>
+        <tr><td class="slot-label">20</td><td>Death Wish</td><td>1/1</td><td>Fury</td></tr>
+        <tr><td class="slot-label">21</td><td>Weapon Mastery</td><td>2/2</td><td>Fury</td></tr>
+        <tr><td class="slot-label">22</td><td>Flurry</td><td>3/5</td><td>Fury</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ===== ROTATION & BURST ===== -->
+    <h1 id="rotation">Rotation &amp; Burst</h1>
+    <p>There is no fixed rotation in arena, only a priority list bent around what the enemy team is doing. The through-line: keep <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> and <a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> on the kill target at all times, feed rage into damage, and save your gap-closers and burst for when the enemy healer is controlled.</p>
+
+    <h2 id="rotation-priority">Damage Priority</h2>
+    <p>When you are on target and have rage, the general order of operations is:</p>
+    <ul>
+        <li><a href="https://www.wowhead.com/tbc/spell=100">Charge</a> / <a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a> to reach the target (open with Charge, save Intercept's stun).</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> immediately, and keep it up. A kited warrior does nothing; "Hamstring is life."</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> on cooldown for damage and the 50% healing debuff.</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> as a second instant (also hits multiple enemies if they clump).</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=5308">Execute</a> spam once the target drops below 20% HP, this is where warriors close games.</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=7384">Overpower</a> when the target dodges (can't be dodged or parried, ignores block), your main tool into Rogues.</li>
+        <li>Dump excess rage into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a>, and keep <a href="https://www.wowhead.com/tbc/spell=772">Rend</a> up on Rogues/Druids to stop them re-stealthing.</li>
+    </ul>
+
+    <h2 id="rotation-burst">Burst / Kill Window</h2>
+    <p>Warriors kill in windows, not with a steady trickle. A window opens when the enemy healer is out of the picture, in CC, out of line-of-sight, feared, or too low on mana. When it does:</p>
+    <ul>
+        <li><a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a> the kill target for the 3-second stun (or use it to reach/stun the healer).</li>
+        <li>Pop <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> (+20% damage, and Fear immunity for its duration) together with your trinkets, and <a href="https://www.wowhead.com/tbc/spell=1719">Recklessness</a> (100% crit for the next swings) if the situation is safe.</li>
+        <li>Chain <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> &rarr; <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> &rarr; <a href="https://www.wowhead.com/tbc/spell=5308">Execute</a> under the stacked cooldowns.</li>
+        <li>If your partner supplies burst amplifiers (Shaman <a href="https://www.wowhead.com/tbc/spell=2825">Bloodlust</a> / Windfury, Druid Faerie Fire), align your window with theirs.</li>
+    </ul>
+    <div class="tip-box">
+        <p><strong>Recklessness is a commitment.</strong> It makes you crit for 100% but also take extra damage and it is Berserker-locked. Use it when you are the one applying pressure and reasonably safe, not while being trained by a double-melee team. When in doubt, Death Wish + trinket is the safer burst.</p>
+    </div>
+
+    <h2 id="rotation-cc">CC, Interrupts &amp; Kiting</h2>
+    <ul>
+        <li><strong>Snares:</strong> keep <a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> on your target; use <a href="https://www.wowhead.com/tbc/spell=12323">Piercing Howl</a> when a target is just out of melee range or several enemies are grouped (AoE snare, no target needed).</li>
+        <li><strong>Interrupts:</strong> <a href="https://www.wowhead.com/tbc/spell=6552">Pummel</a> (Berserker Stance, 4s lockout) via a focus macro to shut down a key heal or CC. Only kick the casts that matter. <a href="https://www.wowhead.com/tbc/spell=72">Shield Bash</a> (Defensive Stance) is the backup interrupt when you are shielded up.</li>
+        <li><strong>Disarm:</strong> <a href="https://www.wowhead.com/tbc/spell=676">Disarm</a> (Defensive Stance) neutralizes enemy warriors, rogues, and hunters; use it from behind so it cannot be dodged/parried.</li>
+        <li><strong>Fear immunity:</strong> <a href="https://www.wowhead.com/tbc/spell=18499">Berserker Rage</a> breaks an active Fear and grants immunity for its duration; pop it <em>before</em> a Warlock/Priest Fear lands. <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> also grants Fear immunity.</li>
+        <li><strong>Peels:</strong> <a href="https://www.wowhead.com/tbc/spell=3411">Intervene</a> to jump to a teammate and eat a stun/hit for them, or reposition. <a href="https://www.wowhead.com/tbc/spell=5246">Intimidating Shout</a> (Fear) buys space or sets up a swap.</li>
+    </ul>
+
+    <h2 id="rotation-stance">Stance Dancing</h2>
+    <p>Arms is a stance-dancing spec: most of your kit lives in different stances, and macros do the swapping for you (see the <a href="#macros">Macros</a> section).</p>
+    <ul>
+        <li><strong>Berserker Stance</strong> is home base: <a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a>, <a href="https://www.wowhead.com/tbc/spell=6552">Pummel</a>, <a href="https://www.wowhead.com/tbc/spell=18499">Berserker Rage</a>, <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a>, <a href="https://www.wowhead.com/tbc/spell=1719">Recklessness</a>.</li>
+        <li><strong>Battle Stance</strong> for <a href="https://www.wowhead.com/tbc/spell=100">Charge</a> and <a href="https://www.wowhead.com/tbc/spell=7384">Overpower</a>.</li>
+        <li><strong>Defensive Stance</strong> for <a href="https://www.wowhead.com/tbc/spell=23920">Spell Reflection</a>, <a href="https://www.wowhead.com/tbc/spell=676">Disarm</a>, <a href="https://www.wowhead.com/tbc/spell=72">Shield Bash</a>, and to soak burst (10% less damage taken).</li>
+    </ul>
+    <div class="info-box">
+        <p><strong>Tactical Mastery</strong> lets you keep rage when you swap stances so you can immediately Disarm or Spell Reflect after switching. Even so, dump a big rage pool into an ability before swapping to Battle Stance for Overpower, or you lose that rage.</p>
+    </div>
+
+    <h2 id="rotation-cooldowns">Cooldowns &amp; Defensives</h2>
+    <ul>
+        <li><strong>Offensive:</strong> <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> (+20% dmg, Fear immunity), <a href="https://www.wowhead.com/tbc/spell=1719">Recklessness</a> (100% crit), your on-use trinket (e.g. <a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a>).</li>
+        <li><strong>Defensive:</strong> drop to Defensive Stance when focused; <a href="https://www.wowhead.com/tbc/spell=12975">Last Stand</a> (if specced) for +30% max HP when low; <a href="https://www.wowhead.com/tbc/spell=871">Shield Wall</a> (needs a shield equipped) for a 75% damage cut, save it for lethal burst or to survive to Execute range.</li>
+        <li><strong>Trinket:</strong> your PvP <a href="https://www.wowhead.com/tbc/item=37865" data-wh-icon-size="small">Medallion of the Horde</a> (or Alliance) breaks a stun/fear/poly. Do not waste it on the first CC; save it for the CC that would kill you or lose the game.</li>
+    </ul>
+
+    <h2 id="rotation-rage">Rage Management</h2>
+    <p>Rage is your resource and your tempo. Open with <a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a> for an instant pool, and remember that Resilience-heavy enemies take less of your damage, so rage from dealing damage is lower in PvP than PvE (this is why <a href="https://www.wowhead.com/tbc/spell=29623">Endless Rage</a> and being crit-fed via <a href="https://www.wowhead.com/tbc/spell=12317">Enrage</a> matter). Don't sit on a full rage bar: dump into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> so a stance swap or a disarm doesn't waste it, and keep enough banked to Hamstring and Pummel on demand.</p>
+
+    <!-- ===== MACROS ===== -->
+    <h1 id="macros">Macros</h1>
+    <p>Arms is unplayable at a high level without macros, they collapse stance-dance sequences into a single button so you can Charge, Intercept, Spell Reflect, and interrupt without fumbling stance keys. Copy these into <code>/macro</code>, and replace the bracketed weapon/shield names with your actual item names. These are pulled from the standard TBC warrior PvP macro sets.</p>
+
+    <h2 id="macros-movement">Charge / Intercept (gap closers)</h2>
+    <p>One button for both gap closers: out of combat it swaps to Battle Stance and Charges; in combat it swaps to Berserker Stance and Intercepts. The single most important Arms PvP macro.</p>
+    <div class="macro-box">#showtooltip
+/cast [nocombat] Charge; Intercept
+/cast [nocombat] Battle Stance; Berserker Stance</div>
+    <p>Simple stance-locked versions if you prefer separate buttons:</p>
+    <div class="macro-box">#showtooltip Charge
+/cast Battle Stance
+/cast Charge</div>
+    <div class="macro-box">#showtooltip Intercept
+/cast Berserker Stance
+/cast Intercept</div>
+
+    <h2 id="macros-defensive">Spell Reflect &amp; Weapon Swaps</h2>
+    <p>Drop to Defensive Stance, equip a one-hander plus shield, and reflect the incoming spell in one press. This turns Polymorph, Fear, and a Mage's burst back on the caster. Replace the names with your 1H and shield.</p>
+    <div class="macro-box">#showtooltip Spell Reflection
+/stopcasting
+/cast Defensive Stance
+/equipslot 16 Gladiator's Bonegrinder
+/equipslot 17 Gladiator's Shield Wall
+/cast Spell Reflection</div>
+    <p>Swap back to your two-hander afterward (stopcasting cancels a queued Heroic Strike so the swap is instant):</p>
+    <div class="macro-box">#showtooltip
+/stopcasting
+/cast Berserker Stance
+/equipslot 16 Brutal Gladiator's Bonegrinder</div>
+    <div class="tip-box">
+        <p><strong>Keep a 1H + shield in your bags</strong> (a <a href="https://www.wowhead.com/tbc/item=34989" data-wh-icon-size="small">Brutal Gladiator's Bonegrinder</a> is a two-hander, so carry a one-hand arena weapon and the arena shield like Gladiator's Shield Wall). Spell Reflect and Shield Bash both require the shield equipped, the macro handles the swap for you.</p>
+    </div>
+
+    <h2 id="macros-focus">Focus &amp; Interrupt</h2>
+    <p>Interrupt or snare the enemy healer/caster (set as your focus) without leaving your kill target:</p>
+    <div class="macro-box">#showtooltip Pummel
+/cast [target=focus,exists,nodead] Pummel; Pummel</div>
+    <div class="macro-box">#showtooltip Hamstring
+/cast [target=focus] Hamstring</div>
+    <p>Mouseover Intervene to peel for a teammate instantly:</p>
+    <div class="macro-box">#showtooltip Intervene
+/cast [target=mouseover,exists,nodead] Intervene; [help] Intervene; Intervene</div>
+
+    <h2 id="macros-burst">Burst &amp; Utility</h2>
+    <p>Line up both trinkets (slots 13/14) with Death Wish for a burst window:</p>
+    <div class="macro-box">#showtooltip Death Wish
+/use 13
+/use 14
+/cast Death Wish</div>
+    <p>Recklessness is Berserker-locked, so swap first:</p>
+    <div class="macro-box">#showtooltip Recklessness
+/cast Berserker Stance
+/cast Recklessness</div>
+    <p>Break or pre-empt a Fear (swaps to Berserker Stance and pops Berserker Rage):</p>
+    <div class="macro-box">#showtooltip Berserker Rage
+/cast Berserker Stance
+/cast Berserker Rage</div>
+    <p>Overpower after a dodge (Battle Stance), the main tool into Rogues:</p>
+    <div class="macro-box">#showtooltip Overpower
+/cast Battle Stance
+/cast Overpower</div>
+
+    <!-- ===== STARTER GEAR ===== -->
+    <h1 id="starter-gear">Starter Gear (Fresh 70)</h1>
+    <p>Before you have a rating and a pile of Arena Points, gear up with what you can buy or farm fast: <strong>Honor + Battleground Marks</strong> for the off-set pieces (bracers, belt, boots, rings, ranged), the <strong>PvP trinket</strong> so you can break a stun on day one, and a crafted <strong>stun weapon</strong>. Cap Honor every week while you build arena rating, then replace these with the Season set pieces below.</p>
+
+    <div class="filter-bar">
+        <span class="filter-label">Filter by source:</span>
+        <button class="filter-btn active" onclick="filterGear('all')">All</button>
+        <button class="filter-btn" onclick="filterGear('pvp')">⚔️ Arena / Honor</button>
+        <button class="filter-btn" onclick="filterGear('crafted')">🔨 Crafted</button>
+        <button class="filter-btn" onclick="filterGear('raid')">🐉 Raid</button>
+        <button class="filter-btn" onclick="filterGear('badge')">🎖️ Badge</button>
+        <button class="filter-btn" onclick="filterGear('drop')">🌍 World Drop</button>
+    </div>
+
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">Wrist</td><td><a href="https://www.wowhead.com/tbc/item=28381" data-wh-icon-size="small">General's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (wrist ~9,785 Honor)</td><td>Honor purchase, no rating needed, grab it while you climb.</td></tr>
+            <tr data-source="pvp"><td class="slot-label">Waist</td><td><a href="https://www.wowhead.com/tbc/item=28385" data-wh-icon-size="small">General's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (belt ~14,815 Honor)</td><td>Honor purchase, an easy early upgrade before you are winning games.</td></tr>
+            <tr data-source="pvp"><td class="slot-label">Feet</td><td><a href="https://www.wowhead.com/tbc/item=28383" data-wh-icon-size="small">General's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (boots ~14,815 Honor)</td><td>Honor purchase, no rating gate, pick it up early.</td></tr>
+            <tr data-source="raid"><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/item=28757" data-wh-icon-size="small">Ring of a Thousand Marks</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>A Karazhan drop despite the name; more threat but zero Resilience, so wear it only once you are already tanky.</td></tr>
+            <tr data-source="pvp"><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=37865" data-wh-icon-size="small">Medallion of the Horde</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Your PvP trinket and hard-CC break, never take it off. Save the active for the stun or fear that would kill you, not the first one.</td></tr>
+            <tr data-source="badge"><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td><td><span class="badge-icon">🎖️</span>Shattrath, Terrace of Light - <a href="https://www.wowhead.com/tbc/npc=18525">G'eras</a> - 41 Badge of Justice</td><td>On-use burst, your kill button; fire it inside a Death Wish window rather than on cooldown.</td></tr>
+            <tr data-source="crafted"><td class="slot-label">Weapon</td><td><a href="https://www.wowhead.com/tbc/item=28441" data-wh-icon-size="small">Deep Thunder</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing</td><td>The stun-proc mace is the whole point of the Mace-spec build; its stun chains with your own control. Craft it early.</td></tr>
+            <tr data-source="pvp"><td class="slot-label">Ranged</td><td><a href="https://www.wowhead.com/tbc/item=28319" data-wh-icon-size="small">Gladiator's War Edge</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Cheap arena-point off-set, the last thing on your shopping list.</td></tr>
+        </tbody>
+    </table>
+    <div class="info-box">
+        <p><strong>Then buy the Season set.</strong> The five armor set pieces (head, shoulders, chest, hands, legs) cost Arena Points and give the 2-piece (+35 Resilience) and 4-piece (Intercept cooldown reduced by 5 sec) bonuses, so they are the priority once points come in. The neck and ranged are also Arena-Point off-set pieces; wrist/belt/boots/rings stay Honor purchases.</p>
+    </div>
+
+    <!-- ===== SEASON 1 ===== -->
+    <h1 id="season1">Season 1 - Gladiator's Battlegear</h1>
+    <p>The first arena set. Every piece carries Resilience; the armor pieces form <a href="https://www.wowhead.com/tbc/item-set=567">Gladiator's Battlegear</a>. Prioritise the five set pieces for the bonuses, then fill the off-set slots with Honor and the standout raid/crafted pieces below.</p>
+    <div class="tip-box">
+        <p><strong>Set bonuses (all warrior arena Battlegear):</strong> <strong>2 pieces</strong> = +35 Resilience Rating. <strong>4 pieces</strong> = your <a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a> cooldown is reduced by 5 sec. Aim for the 5-piece so you always have the 4-set.</p>
+    </div>
+
+    <h2 id="season1-head">Head</h2>
+    <p class="gem-enchant-info"><strong>Gems:</strong> <span class="socket-meta">Meta</span> Relentless Earthstorm Diamond, <span class="socket-yellow">Yellow</span> Rigid Dawnstone (hit) or Bold Living Ruby (str). <strong>Enchant:</strong> Glyph of Ferocity (AP + hit).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24545" data-wh-icon-size="small">Gladiator's Plate Helm</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your only meta-socket slot; buy toward the 5-set for the Resilience and Intercept bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-neck">Neck</h2>
+    <p class="gem-enchant-info"><em>No socket or enchant.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28244" data-wh-icon-size="small">Pendant of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Arena-point off-set; buy it after the five set pieces are done.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-shoulder">Shoulder</h2>
+    <p class="gem-enchant-info"><strong>Gems:</strong> <span class="socket-red">Red</span> Bold Living Ruby (str) / <span class="socket-yellow">Yellow</span> Smooth Dawnstone (crit). <strong>Enchant:</strong> Greater Inscription of the Blade (crit + AP).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24546" data-wh-icon-size="small">Gladiator's Plate Shoulders</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1500 Arena Points</td><td>Set piece. Cheap in points for what it gives, an early pickup toward your set bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-back">Back</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Cloak - Greater Agility (+12 Agi).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28777" data-wh-icon-size="small">Cloak of the Pit Stalker</a></td><td><span class="boss-icon">🐉</span>Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>A raid cloak: pure damage, no Resilience. Take it early when kills matter more than the extra mitigation.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-chest">Chest</h2>
+    <p class="gem-enchant-info"><strong>Gems:</strong> <span class="socket-red">Red</span> Bold Living Ruby / <span class="socket-yellow">Yellow</span> Rigid Dawnstone (hit). <strong>Enchant:</strong> Exceptional Stats (+6 all) or Major Resilience.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24544" data-wh-icon-size="small">Gladiator's Plate Chestpiece</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your main gem home; prioritise it for the 2-set Resilience.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-wrist">Wrist</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Bracer - Brawn (+12 Str) or Fortitude (+12 Sta).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28381" data-wh-icon-size="small">General's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (wrist ~9,785 Honor)</td><td>Honor purchase, no rating needed, grab it while you climb.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-hands">Hands</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Gloves - Major Strength (+15 Str).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24549" data-wh-icon-size="small">Gladiator's Plate Gauntlets</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1125 Arena Points</td><td>Set piece. The cheaper Hamstring is a real tempo gain when you kite a target all game.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-waist">Waist</h2>
+    <p class="gem-enchant-info"><em>No enchant. Socket per piece.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28385" data-wh-icon-size="small">General's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (belt ~14,815 Honor)</td><td>Honor purchase, an easy early upgrade before you are winning games.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-legs">Legs</h2>
+    <p class="gem-enchant-info"><strong>Leg armor:</strong> Nethercobra Leg Armor (+50 AP, +12 crit).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=24547" data-wh-icon-size="small">Gladiator's Plate Legguards</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece, your biggest single upgrade and your leg-armor slot.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-feet">Feet</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Boots - Cat's Swiftness (agi + speed) or Surefooted (hit + snare resist).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28383" data-wh-icon-size="small">General's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (boots ~14,815 Honor)</td><td>Honor purchase, no rating gate, pick it up early.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-rings">Rings</h2>
+    <p class="gem-enchant-info"><strong>Enchant (Enchanters):</strong> Enchant Ring - Stats (+4 all).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28757" data-wh-icon-size="small">Ring of a Thousand Marks</a></td><td><span class="boss-icon">🐉</span>Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>A Karazhan drop despite the name; more threat but zero Resilience, so wear it only once you are already tanky.</td></tr>
+            <tr data-source="crafted"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28553" data-wh-icon-size="small">Band of the Exorcist</a></td><td><span class="craft-icon">🔨</span>Crafted - Jewelcrafting (BoP)</td><td>The rare crafted ring that carries Resilience, your default PvP band.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-trinkets">Trinkets</h2>
+    <p class="gem-enchant-info"><em>No socket or enchant.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=37865" data-wh-icon-size="small">Medallion of the Horde</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Your PvP trinket and hard-CC break, never take it off. Save the active for the stun or fear that would kill you, not the first one.</td></tr>
+            <tr data-source="badge"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td><td><span class="badge-icon">🎖️</span>Shattrath, Terrace of Light - <a href="https://www.wowhead.com/tbc/npc=18525">G'eras</a> - 41 Badge of Justice</td><td>On-use burst, your kill button; fire it inside a Death Wish window rather than on cooldown.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season1-weapon">Weapon</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Weapon - Mongoose (agi + haste proc) or Executioner (armor pen).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="crafted"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28441" data-wh-icon-size="small">Deep Thunder</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing</td><td>The stun-proc mace is the whole point of the Mace-spec build; its stun chains with your own control. Craft it early.</td></tr>
+        </tbody>
+    </table>
+    <div class="info-box">
+        <p><strong>Weapon choice:</strong> the arena vendor sells the same weapon as an axe (Gladiator's Decapitator), mace (Gladiator's Bonegrinder), and sword (Gladiator's Greatsword), take the one that matches your weapon specialization. The <strong>Mace + stun-proc</strong> line (Deep Thunder / Stormherald, then arena Bonegrinders) is the classic Arms PvP setup because the stun procs chain with your own control. Take Mace Specialization to match.</p>
+    </div>
+
+    <h2 id="season1-ranged">Ranged</h2>
+    <p class="gem-enchant-info"><em>No enchant needed.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28319" data-wh-icon-size="small">Gladiator's War Edge</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Cheap arena-point off-set, the last thing on your shopping list.</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SEASON 2 ===== -->
+    <h1 id="season2">Season 2 - Merciless Gladiator's Battlegear</h1>
+    <p>The Season 2 upgrade. Same Battlegear bonuses (2pc +35 Resilience, 4pc Intercept cooldown -5s), higher item level and more Resilience per piece. The <a href="https://www.wowhead.com/tbc/item-set=677">Merciless Gladiator's Battlegear</a> armor pieces are the priority.</p>
+    <div class="tip-box">
+        <p><strong>Set bonuses:</strong> 2pc = +35 Resilience Rating; 4pc = <a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a> cooldown reduced by 5 sec. Run the 5-piece.</p>
+    </div>
+
+    <h2 id="season2-head">Head</h2>
+    <p class="gem-enchant-info"><strong>Gems:</strong> <span class="socket-meta">Meta</span> Relentless Earthstorm Diamond, <span class="socket-yellow">Yellow</span> Rigid/Smooth Dawnstone. <strong>Enchant:</strong> Glyph of Ferocity.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30488" data-wh-icon-size="small">Merciless Gladiator's Plate Helm</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your only meta-socket slot; buy toward the 5-set for the Resilience and Intercept bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-neck">Neck</h2>
+    <p class="gem-enchant-info"><em>Yellow socket.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33066" data-wh-icon-size="small">Veteran's Pendant of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Arena-point off-set; buy it after the five set pieces are done.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-shoulder">Shoulder</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Greater Inscription of the Blade (crit + AP).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30490" data-wh-icon-size="small">Merciless Gladiator's Plate Shoulders</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1500 Arena Points</td><td>Set piece. Cheap in points for what it gives, an early pickup toward your set bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-back">Back</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Cloak - Greater Agility.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29994" data-wh-icon-size="small">Thalassian Wildercloak</a></td><td><span class="boss-icon">🐉</span>Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a> - <a href="https://www.wowhead.com/tbc/npc=19622">Kael'thas Sunstrider</a></td><td>A raid cloak, a clear damage gain over any PvP cloak once your Resilience is comfortable.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-chest">Chest</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Exceptional Stats or Major Resilience.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30486" data-wh-icon-size="small">Merciless Gladiator's Plate Chestpiece</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your main gem home; prioritise it for the 2-set Resilience.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-wrist">Wrist</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Brawn (+12 Str).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32818" data-wh-icon-size="small">Veteran's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (wrist ~9,785 Honor)</td><td>Honor purchase, no rating needed, grab it while you climb.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-hands">Hands</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Major Strength.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30487" data-wh-icon-size="small">Merciless Gladiator's Plate Gauntlets</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1125 Arena Points</td><td>Set piece. The cheaper Hamstring is a real tempo gain when you kite a target all game.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-waist">Waist</h2>
+    <p class="gem-enchant-info"><em>Socket per piece.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32805" data-wh-icon-size="small">Veteran's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (belt ~14,815 Honor)</td><td>Honor purchase, an easy early upgrade before you are winning games.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-legs">Legs</h2>
+    <p class="gem-enchant-info"><strong>Leg armor:</strong> Nethercobra Leg Armor.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=30489" data-wh-icon-size="small">Merciless Gladiator's Plate Legguards</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece, your biggest single upgrade and your leg-armor slot.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-feet">Feet</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Cat's Swiftness or Surefooted.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32793" data-wh-icon-size="small">Veteran's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (boots ~14,815 Honor)</td><td>Honor purchase, no rating gate, pick it up early.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-rings">Rings</h2>
+    <p class="gem-enchant-info"><strong>Enchant (Enchanters):</strong> Enchant Ring - Stats.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33057" data-wh-icon-size="small">Veteran's Band of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Honor ring, dependable Resilience filler until you can afford an arena band.</td></tr>
+            <tr data-source="crafted"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28553" data-wh-icon-size="small">Band of the Exorcist</a></td><td><span class="craft-icon">🔨</span>Crafted - Jewelcrafting (BoP)</td><td>The rare crafted ring that carries Resilience, your default PvP band.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-trinkets">Trinkets</h2>
+    <p class="gem-enchant-info"><em>No socket or enchant.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=37865" data-wh-icon-size="small">Medallion of the Horde</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Your PvP trinket and hard-CC break, never take it off. Save the active for the stun or fear that would kill you, not the first one.</td></tr>
+            <tr data-source="badge"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=29383" data-wh-icon-size="small">Bloodlust Brooch</a></td><td><span class="badge-icon">🎖️</span>Shattrath, Terrace of Light - <a href="https://www.wowhead.com/tbc/npc=18525">G'eras</a> - 41 Badge of Justice</td><td>On-use burst, your kill button; fire it inside a Death Wish window rather than on cooldown.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-weapon">Weapon</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Mongoose or Executioner.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="crafted"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28442" data-wh-icon-size="small">Stormherald</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing</td><td>Upgraded stun mace, the go-to for the stun build until you can buy an arena Bonegrinder.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season2-ranged">Ranged</h2>
+    <p class="gem-enchant-info"><em>No enchant needed.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=32054" data-wh-icon-size="small">Merciless Gladiator's War Edge</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Cheap arena-point off-set, the last thing on your shopping list.</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SEASON 3 ===== -->
+    <h1 id="season3">Season 3 - Vengeful Gladiator's Battlegear</h1>
+    <p>Season 3 introduces armor penetration on the plate pieces (your attacks ignore some enemy armor), which is a real damage boost against other plate wearers. Same Battlegear bonuses. The <a href="https://www.wowhead.com/tbc/item-set=706">Vengeful Gladiator's Battlegear</a> armor pieces are the priority.</p>
+    <div class="tip-box">
+        <p><strong>Set bonuses:</strong> 2pc = +35 Resilience Rating; 4pc = <a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a> cooldown reduced by 5 sec.</p>
+    </div>
+
+    <h2 id="season3-head">Head</h2>
+    <p class="gem-enchant-info"><strong>Gems:</strong> <span class="socket-meta">Meta</span> Relentless Earthstorm Diamond. <strong>Enchant:</strong> Glyph of Ferocity.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33730" data-wh-icon-size="small">Vengeful Gladiator's Plate Helm</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your only meta-socket slot; buy toward the 5-set for the Resilience and Intercept bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-neck">Neck</h2>
+    <p class="gem-enchant-info"><em>Yellow socket.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33923" data-wh-icon-size="small">Vindicator's Pendant of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Arena-point off-set; buy it after the five set pieces are done.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-shoulder">Shoulder</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Greater Inscription of the Blade.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33732" data-wh-icon-size="small">Vengeful Gladiator's Plate Shoulders</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1500 Arena Points</td><td>Set piece. Cheap in points for what it gives, an early pickup toward your set bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-back">Back</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Cloak - Greater Agility.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="badge"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33484" data-wh-icon-size="small">Dory's Embrace</a></td><td><span class="badge-icon">🎖️</span>Shattrath, Terrace of Light - <a href="https://www.wowhead.com/tbc/npc=18525">G'eras</a> - 60 Badge of Justice</td><td>A badge cloak that actually carries Resilience, the best-of-both back slot; buy it and forget the slot.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-chest">Chest</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Exceptional Stats or Major Resilience.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33728" data-wh-icon-size="small">Vengeful Gladiator's Plate Chestpiece</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your main gem home; prioritise it for the 2-set Resilience.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-wrist">Wrist</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Brawn.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33813" data-wh-icon-size="small">Vindicator's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (wrist ~9,785 Honor)</td><td>Honor purchase, no rating needed, grab it while you climb.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-hands">Hands</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Major Strength.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33729" data-wh-icon-size="small">Vengeful Gladiator's Plate Gauntlets</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1125 Arena Points</td><td>Set piece. The cheaper Hamstring is a real tempo gain when you kite a target all game.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-waist">Waist</h2>
+    <p class="gem-enchant-info"><em>Socket per piece.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33811" data-wh-icon-size="small">Vindicator's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (belt ~14,815 Honor)</td><td>Honor purchase, an easy early upgrade before you are winning games.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-legs">Legs</h2>
+    <p class="gem-enchant-info"><strong>Leg armor:</strong> Nethercobra Leg Armor.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33731" data-wh-icon-size="small">Vengeful Gladiator's Plate Legguards</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece, your biggest single upgrade and your leg-armor slot.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-feet">Feet</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Cat's Swiftness or Surefooted.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33812" data-wh-icon-size="small">Vindicator's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (boots ~14,815 Honor)</td><td>Honor purchase, no rating gate, pick it up early.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-rings">Rings</h2>
+    <p class="gem-enchant-info"><strong>Enchant (Enchanters):</strong> Enchant Ring - Stats.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33919" data-wh-icon-size="small">Vindicator's Band of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Honor ring, run two Triumph bands together until something beats them.</td></tr>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33057" data-wh-icon-size="small">Veteran's Band of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Honor ring, dependable Resilience filler until you can afford an arena band.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-trinkets">Trinkets</h2>
+    <p class="gem-enchant-info"><em>No socket or enchant.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=37865" data-wh-icon-size="small">Medallion of the Horde</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Your PvP trinket and hard-CC break, never take it off. Save the active for the stun or fear that would kill you, not the first one.</td></tr>
+            <tr data-source="drop"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=34576" data-wh-icon-size="small">Battlemaster's Cruelty</a></td><td><span class="drop-icon">🌍</span>World Drop - BoE</td><td>A panic trinket, the on-use health block can carry you through a burst you would otherwise die to.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-weapon">Weapon</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Mongoose or Executioner.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="crafted"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=28442" data-wh-icon-size="small">Stormherald</a></td><td><span class="craft-icon">🔨</span>Crafted - Blacksmithing</td><td>Upgraded stun mace, the go-to for the stun build until you can buy an arena Bonegrinder.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season3-ranged">Ranged</h2>
+    <p class="gem-enchant-info"><em>No enchant needed.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33765" data-wh-icon-size="small">Vengeful Gladiator's War Edge</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Cheap arena-point off-set, the last thing on your shopping list.</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SEASON 4 ===== -->
+    <h1 id="season4">Season 4 - Brutal Gladiator's Battlegear</h1>
+    <p>The final and best arena set. Highest item level, most Resilience, and the strongest arena weapons. Same Battlegear bonuses. The <a href="https://www.wowhead.com/tbc/item-set=763">Brutal Gladiator's Battlegear</a> armor pieces are the endgame goal.</p>
+    <div class="tip-box">
+        <p><strong>Set bonuses:</strong> 2pc = +35 Resilience Rating; 4pc = <a href="https://www.wowhead.com/tbc/spell=20252">Intercept</a> cooldown reduced by 5 sec.</p>
+    </div>
+
+    <h2 id="season4-head">Head</h2>
+    <p class="gem-enchant-info"><strong>Gems:</strong> <span class="socket-meta">Meta</span> Relentless Earthstorm Diamond. <strong>Enchant:</strong> Glyph of Ferocity.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35068" data-wh-icon-size="small">Brutal Gladiator's Plate Helm</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your only meta-socket slot; buy toward the 5-set for the Resilience and Intercept bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-neck">Neck</h2>
+    <p class="gem-enchant-info"><em>Yellow socket.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35135" data-wh-icon-size="small">Guardian's Pendant of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Arena-point off-set; buy it after the five set pieces are done.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-shoulder">Shoulder</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Greater Inscription of the Blade.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35070" data-wh-icon-size="small">Brutal Gladiator's Plate Shoulders</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1500 Arena Points</td><td>Set piece. Cheap in points for what it gives, an early pickup toward your set bonus.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-back">Back</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Enchant Cloak - Greater Agility.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="badge"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33484" data-wh-icon-size="small">Dory's Embrace</a></td><td><span class="badge-icon">🎖️</span>Shattrath, Terrace of Light - <a href="https://www.wowhead.com/tbc/npc=18525">G'eras</a> - 60 Badge of Justice</td><td>A badge cloak that actually carries Resilience, the best-of-both back slot; buy it and forget the slot.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-chest">Chest</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Exceptional Stats or Major Resilience.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35066" data-wh-icon-size="small">Brutal Gladiator's Plate Chestpiece</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece and your main gem home; prioritise it for the 2-set Resilience.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-wrist">Wrist</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Brawn.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35176" data-wh-icon-size="small">Guardian's Plate Bracers</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (wrist ~9,785 Honor)</td><td>Honor purchase, no rating needed, grab it while you climb.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-hands">Hands</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Major Strength.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35067" data-wh-icon-size="small">Brutal Gladiator's Plate Gauntlets</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1125 Arena Points</td><td>Set piece. The cheaper Hamstring is a real tempo gain when you kite a target all game.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-waist">Waist</h2>
+    <p class="gem-enchant-info"><em>Socket per piece.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35161" data-wh-icon-size="small">Guardian's Plate Belt</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (belt ~14,815 Honor)</td><td>Honor purchase, an easy early upgrade before you are winning games.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-legs">Legs</h2>
+    <p class="gem-enchant-info"><strong>Leg armor:</strong> Nethercobra Leg Armor.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35069" data-wh-icon-size="small">Brutal Gladiator's Plate Legguards</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - 1875 Arena Points</td><td>Set piece, your biggest single upgrade and your leg-armor slot.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-feet">Feet</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Cat's Swiftness or Surefooted.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35146" data-wh-icon-size="small">Guardian's Plate Greaves</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks (boots ~14,815 Honor)</td><td>Honor purchase, no rating gate, pick it up early.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-rings">Rings</h2>
+    <p class="gem-enchant-info"><strong>Enchant (Enchanters):</strong> Enchant Ring - Stats.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35131" data-wh-icon-size="small">Guardian's Band of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Honor ring, pair it with a second Triumph band.</td></tr>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=33919" data-wh-icon-size="small">Vindicator's Band of Triumph</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Honor ring, run two Triumph bands together until something beats them.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-trinkets">Trinkets</h2>
+    <p class="gem-enchant-info"><em>No socket or enchant.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=37865" data-wh-icon-size="small">Medallion of the Horde</a></td><td><span class="pvp-icon">⚔️</span>Hall of Legends, Orgrimmar (H) / Champions' Hall, Stormwind (A) - Honor + BG Marks</td><td>Your PvP trinket and hard-CC break, never take it off. Save the active for the stun or fear that would kill you, not the first one.</td></tr>
+            <tr data-source="drop"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=34576" data-wh-icon-size="small">Battlemaster's Cruelty</a></td><td><span class="drop-icon">🌍</span>World Drop - BoE</td><td>A panic trinket, the on-use health block can carry you through a burst you would otherwise die to.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-weapon">Weapon</h2>
+    <p class="gem-enchant-info"><strong>Enchant:</strong> Mongoose or Executioner.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=34989" data-wh-icon-size="small">Brutal Gladiator's Bonegrinder</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=26352">Big Zokk Torquewrench</a> - Arena Points (rating-gated)</td><td>Best arena mace with Resilience built in, the endgame stun-build weapon.</td></tr>
+            <tr data-source="raid"><td class="slot-label">Alt</td><td><a href="https://www.wowhead.com/tbc/item=34247" data-wh-icon-size="small">Apolyon, the Soul-Render</a></td><td><span class="boss-icon">🐉</span>Isle of Quel'Danas - <a href="https://www.wowhead.com/tbc/zone=4075">Sunwell Plateau</a> - <a href="https://www.wowhead.com/tbc/npc=25315">Kil'jaeden</a></td><td>A raid sword with huge raw stats but no Resilience; a Sword-spec option only when you are already tanky.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="season4-ranged">Ranged</h2>
+    <p class="gem-enchant-info"><em>No enchant needed.</em></p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="pvp"><td class="slot-label">BiS</td><td><a href="https://www.wowhead.com/tbc/item=35108" data-wh-icon-size="small">Brutal Gladiator's War Edge</a></td><td><span class="pvp-icon">⚔️</span>Area 52, Netherstorm - <a href="https://www.wowhead.com/tbc/npc=20278">Vixton Pinchwhistle</a> - Arena Points</td><td>Cheap arena-point off-set, the last thing on your shopping list.</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== GEMS ===== -->
+    <h1 id="gems">Gems</h1>
+    <p>PvP gemming balances survival and damage. There is no Resilience gem in TBC (Resilience only comes on gear), so gems supply <strong>Stamina, Strength, Crit, and the Hit you need to reach 5%</strong>. A common approach is Stamina-heavy for survivability with enough Strength/Crit to keep pressure up; hit the 5% Hit floor first if your gear is short.</p>
+
+    <h2 id="gems-summary">Gem Summary</h2>
+    <table class="gear-table">
+        <thead><tr><th>Socket</th><th>Best Gem</th><th>When</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Meta</td><td><a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a></td><td>Damage default (+12 Agi, +3% crit damage). Needs 2 red + 2 yellow active</td></tr>
+            <tr><td class="slot-label">Meta (survival)</td><td><a href="https://www.wowhead.com/tbc/item=25896" data-wh-icon-size="small">Powerful Earthstorm Diamond</a></td><td>+18 Stamina and 5% Stun Resistance. Great vs stun-heavy teams (Rogues, Mace warriors)</td></tr>
+            <tr><td class="slot-label">Red socket</td><td><a href="https://www.wowhead.com/tbc/item=24027" data-wh-icon-size="small">Bold Living Ruby</a></td><td>+Strength for damage</td></tr>
+            <tr><td class="slot-label">Red (survival)</td><td><a href="https://www.wowhead.com/tbc/item=24054" data-wh-icon-size="small">Sovereign Nightseye</a></td><td>Str + Sta hybrid to activate a socket bonus while staying tanky</td></tr>
+            <tr><td class="slot-label">Yellow socket</td><td><a href="https://www.wowhead.com/tbc/item=24051" data-wh-icon-size="small">Rigid Dawnstone</a></td><td>+Hit until you reach the ~5% Hit floor</td></tr>
+            <tr><td class="slot-label">Yellow (after hit)</td><td><a href="https://www.wowhead.com/tbc/item=24048" data-wh-icon-size="small">Smooth Dawnstone</a></td><td>+Crit once you are hit-capped</td></tr>
+            <tr><td class="slot-label">Yellow (hybrid)</td><td><a href="https://www.wowhead.com/tbc/item=24058" data-wh-icon-size="small">Inscribed Noble Topaz</a></td><td>Str + Crit to activate a red/yellow socket bonus</td></tr>
+            <tr><td class="slot-label">Blue socket</td><td><a href="https://www.wowhead.com/tbc/item=24033" data-wh-icon-size="small">Solid Star of Elune</a></td><td>+12 Stamina, the highest-survivability gem</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box">
+        <p><strong>Meta choice:</strong> run <a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a> for damage once your survival feels safe; swap to <a href="https://www.wowhead.com/tbc/item=25896" data-wh-icon-size="small">Powerful Earthstorm Diamond</a> when you keep dying to stun-lock (the +18 Stamina and 5% Stun Resistance are a real defensive gain into Rogues and Mace warriors).</p>
+    </div>
+
+    <!-- ===== ENCHANTS ===== -->
+    <h1 id="enchants">Enchants</h1>
+    <p>PvP enchants favour Strength, Crit, AP, and the utility that keeps you on target (movement speed, snare resistance). Enchant for damage on most slots; use the survival options on boots and chest if you struggle to stay alive.</p>
+
+    <h2 id="enchants-summary">Enchant Summary</h2>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Best Enchant</th><th>Effect</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Head</td><td><a href="https://www.wowhead.com/tbc/item=29192" data-wh-icon-size="small">Glyph of Ferocity</a></td><td>+34 AP, +16 Hit</td><td>Thrallmar / Honor Hold - Revered. Best melee head enchant</td></tr>
+            <tr><td class="slot-label">Shoulder (Scryers)</td><td><a href="https://www.wowhead.com/tbc/item=28910" data-wh-icon-size="small">Greater Inscription of the Blade</a></td><td>+15 Crit, +20 AP</td><td>Scryers - Exalted</td></tr>
+            <tr><td class="slot-label">Shoulder (Aldor)</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a></td><td>+30 AP, +10 Crit</td><td>Aldor - Exalted. Same value, pick your faction</td></tr>
+            <tr><td class="slot-label">Cloak</td><td><a href="https://www.wowhead.com/tbc/spell=34004">Enchant Cloak - Greater Agility</a></td><td>+12 Agility</td><td>Crit + dodge + armor in one</td></tr>
+            <tr><td class="slot-label">Chest</td><td><a href="https://www.wowhead.com/tbc/spell=27960">Enchant Chest - Exceptional Stats</a></td><td>+6 All Stats</td><td>Best all-round chest enchant</td></tr>
+            <tr><td class="slot-label">Chest (survival)</td><td><a href="https://www.wowhead.com/tbc/spell=33992">Enchant Chest - Major Resilience</a></td><td>+15 Resilience</td><td>Take when you need more mitigation</td></tr>
+            <tr><td class="slot-label">Bracer</td><td><a href="https://www.wowhead.com/tbc/spell=27899">Enchant Bracer - Brawn</a></td><td>+12 Strength</td><td>Damage default</td></tr>
+            <tr><td class="slot-label">Bracer (survival)</td><td><a href="https://www.wowhead.com/tbc/spell=27914">Enchant Bracer - Fortitude</a></td><td>+12 Stamina</td><td>More HP if you need it</td></tr>
+            <tr><td class="slot-label">Gloves</td><td><a href="https://www.wowhead.com/tbc/spell=33995">Enchant Gloves - Major Strength</a></td><td>+15 Strength</td><td>Straight damage</td></tr>
+            <tr><td class="slot-label">Legs</td><td><a href="https://www.wowhead.com/tbc/item=29535" data-wh-icon-size="small">Nethercobra Leg Armor</a></td><td>+50 AP, +12 Crit</td><td>Leatherworking pattern, big damage boost</td></tr>
+            <tr><td class="slot-label">Boots</td><td><a href="https://www.wowhead.com/tbc/spell=34007">Enchant Boots - Cat's Swiftness</a></td><td>+6 Agility, +8% Move Speed</td><td>Mobility to stay on kiting targets</td></tr>
+            <tr><td class="slot-label">Boots (anti-kite)</td><td><a href="https://www.wowhead.com/tbc/spell=27953">Enchant Boots - Surefooted</a></td><td>+10 Hit, reduces snare/root duration 5%</td><td>Excellent into Mages and snare classes</td></tr>
+            <tr><td class="slot-label">Weapon</td><td><a href="https://www.wowhead.com/tbc/spell=27984">Enchant Weapon - Mongoose</a></td><td>+120 Agility, +2% Haste (proc)</td><td>Top 2H PvP enchant</td></tr>
+            <tr><td class="slot-label">Weapon (armor pen)</td><td><a href="https://www.wowhead.com/tbc/spell=42974">Enchant Weapon - Executioner</a></td><td>Ignores 840 armor (proc)</td><td>Strong vs plate targets</td></tr>
+            <tr><td class="slot-label">Ring (Enchanter)</td><td><a href="https://www.wowhead.com/tbc/spell=27927">Enchant Ring - Stats</a></td><td>+4 All Stats</td><td>Enchanters only, both rings</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== ARENA COMPS ===== -->
+    <h1 id="comps">Arena Comps</h1>
+    <p>Arms is a healer's best friend: it applies constant pressure and healing reduction so your team wins the long game. The strongest setups pair the warrior with a healer who can peel and CC (Druid, Paladin) or a partner who amplifies burst (Shaman). Below are the comps that include an Arms Warrior, with how each one plays.</p>
+
+    <h2 id="comps-2v2">2v2 Comps</h2>
+    <table class="gear-table">
+        <thead><tr><th>Comp</th><th>Tier</th><th>How it plays</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Warrior + Restoration Druid</td><td>S (best)</td><td>The premier 2v2 "WD". You apply nonstop Mortal Strike pressure while the Druid keeps you alive with HoTs and controls the enemy healer with Cyclone. Chain Cyclone into your Intercept stun for kill windows. Excels in long games, don't rush</td></tr>
+            <tr><td class="slot-label">Warrior + Holy Paladin</td><td>S</td><td>Nearly unkillable: Blessing of Freedom removes snares/roots so you never get kited, Blessing of Sacrifice and Lay on Hands keep you topped. Grind the enemy down with pressure and win attrition</td></tr>
+            <tr><td class="slot-label">Warrior + Shaman</td><td>A</td><td>Windfury Totem turns your autos and burst window into deletes; the Shaman purges enemy defensives (Ice Block, shields, HoTs) and can Grounding/Tremor your CC. Big upfront damage, call Bloodlust in kill windows</td></tr>
+            <tr><td class="slot-label">Warrior + Discipline Priest</td><td>A</td><td>The Priest Mana Burns the enemy healer out of the game while you pressure, and Fear chains control the match. Pain Suppression and Mass Dispel (bubbles, Ice Block) are clutch. Double-Fear kills are the finisher</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="comps-3v3">3v3 Comps</h2>
+    <p>In 3v3 the warrior is the pressure engine in a double-melee cleave or a warrior/caster/healer setup. These are viable Arms setups; the double-melee-plus-Druid variants are the most common.</p>
+    <table class="gear-table">
+        <thead><tr><th>Comp</th><th>How it plays</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Warrior / Enhancement Shaman / Resto Druid</td><td>Double-melee cleave under Druid CC and heals. Windfury + Mortal Strike burst, Cyclone locks the healer. Heavy, sustained pressure</td></tr>
+            <tr><td class="slot-label">Warrior / Retribution Paladin / Resto Druid</td><td>Double melee with Hammer of Justice + Intercept + Cyclone kill chains. Strong burst on a CCed healer</td></tr>
+            <tr><td class="slot-label">Warrior / Subtlety Rogue / Resto Druid</td><td>Double melee with heavy stun-lock kill setups plus Mortal Strike healing reduction and Cyclone</td></tr>
+            <tr><td class="slot-label">Warrior / Frost Mage / Resto Druid</td><td>Mage roots/CC (Polymorph, Frost Nova) set up your burst windows; you provide MS pressure and peels</td></tr>
+            <tr><td class="slot-label">Warrior / Affliction Warlock / Resto Druid</td><td>Warrior pressure + Warlock DoT/Fear/Curse pressure under Druid Cyclone and HoTs</td></tr>
+            <tr><td class="slot-label">Warrior / Retribution Paladin / Resto Shaman</td><td>A 2200+ setup: double melee with Shaman totems/heals and Windfury burst</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="comps-priority">Kill Priority &amp; Win Conditions</h2>
+    <ul>
+        <li><strong>Keep Mortal Strike up on the kill target at all times</strong>, the 50% healing reduction is why your team wins. A missed MS or Hamstring can lose the game, hence the 5% Hit floor.</li>
+        <li><strong>vs Healer + DPS:</strong> either train the healer so they cannot cast (they can't heal while eating MS every few seconds), or force healer CC and burst the DPS. Pick based on which healer you face.</li>
+        <li><strong>vs Double DPS:</strong> pressure and swap to whoever is low; you usually win the damage race if you can peel one of them with Disarm/Intimidating Shout.</li>
+        <li><strong>Lock out the healer:</strong> at high damage, <a href="https://www.wowhead.com/tbc/spell=6552">Pummel</a> the healer to secure a kill instead of tunneling the DPS. Intercept &rarr; Pummel the healer when the window opens.</li>
+        <li><strong>Execute range dominance:</strong> below 20% HP, swap to low targets and Execute before the heals land.</li>
+    </ul>
+
+    <!-- ===== RACES ===== -->
+    <h1 id="races">Best Races</h1>
+    <p>Warrior is Horde or Alliance; race matters most for the racials that survive stuns and escape roots. Weapon-type racials also nudge your weapon-specialization choice.</p>
+    <table class="gear-table">
+        <thead><tr><th>Faction</th><th>Race</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Horde</td><td><strong>Orc (best)</strong></td><td>Hardiness gives 15% stun resistance (huge vs Rogues, Mace warriors, HoJ), Blood Fury is an AP burst that also overwrites healing debuffs like Wound Poison, and Axe Specialization supports an axe/poleaxe build</td></tr>
+            <tr><td class="slot-label">Horde</td><td>Tauren</td><td>War Stomp is an extra AoE stun that shines in Warrior/Druid and Warrior/Shaman; more Stamina too</td></tr>
+            <tr><td class="slot-label">Alliance</td><td><strong>Gnome (best)</strong></td><td>Escape Artist breaks roots on demand, the single most valuable racial for a warrior against the dominant Mages and Druids (no Bladestorm/Avatar in TBC to break roots)</td></tr>
+            <tr><td class="slot-label">Alliance</td><td>Dwarf</td><td>Stoneform removes bleeds and poisons and gives armor, a niche pick that is excellent into Rogue and Rogue/Priest comps. Human gives sword/mace weapon skill for those specs</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== CONSUMABLES ===== -->
+    <h1 id="consumables">Consumables</h1>
+    <p>Buff before every arena game. A flask lasts through deaths and is the standard for rated play; elixirs are cheaper for skirmish/BG grinding. Keep a weapon stone applied and a Free Action Potion handy for a snare/stun break in a pinch.</p>
+    <table class="gear-table">
+        <thead><tr><th>Type</th><th>Consumable</th><th>Effect</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Flask</td><td><a href="https://www.wowhead.com/tbc/item=22854" data-wh-icon-size="small">Flask of Relentless Assault</a></td><td>+120 Attack Power</td><td>Persists through death. Standard rated-arena flask</td></tr>
+            <tr><td class="slot-label">Flask (hybrid)</td><td><a href="https://www.wowhead.com/tbc/item=32598" data-wh-icon-size="small">Unstable Flask of the Beast</a></td><td>AP + Stamina + Armor</td><td>More survivability. Zul'Aman flask</td></tr>
+            <tr><td class="slot-label">Battle Elixir</td><td><a href="https://www.wowhead.com/tbc/item=22824" data-wh-icon-size="small">Elixir of Major Strength</a></td><td>+35 Strength</td><td>Cheaper alternative to a flask</td></tr>
+            <tr><td class="slot-label">Battle Elixir</td><td><a href="https://www.wowhead.com/tbc/item=13452" data-wh-icon-size="small">Elixir of the Mongoose</a></td><td>+25 Agi, +2% Crit</td><td>Agility + crit option</td></tr>
+            <tr><td class="slot-label">Guardian Elixir</td><td><a href="https://www.wowhead.com/tbc/item=32062" data-wh-icon-size="small">Elixir of Major Fortitude</a></td><td>+250 Health</td><td>Pair with a battle elixir for survivability</td></tr>
+            <tr><td class="slot-label">Food</td><td><a href="https://www.wowhead.com/tbc/item=27658" data-wh-icon-size="small">Roasted Clefthoof</a></td><td>+20 Strength</td><td>Best damage food buff</td></tr>
+            <tr><td class="slot-label">Potion</td><td><a href="https://www.wowhead.com/tbc/item=5634" data-wh-icon-size="small">Free Action Potion</a></td><td>Immune to stun/snare 30s</td><td>Emergency escape from stun-lock or a kite</td></tr>
+            <tr><td class="slot-label">Potion</td><td><a href="https://www.wowhead.com/tbc/item=22838" data-wh-icon-size="small">Haste Potion</a></td><td>+400 Haste Rating 15s</td><td>Extra swings inside a burst window</td></tr>
+            <tr><td class="slot-label">Weapon stone</td><td><a href="https://www.wowhead.com/tbc/item=23529" data-wh-icon-size="small">Adamantite Sharpening Stone</a></td><td>+14 weapon damage</td><td>Apply before games (Weightstone for maces/fists is equivalent)</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== USEFUL LINKS ===== -->
+    <h1 id="useful-links">Useful Links</h1>
+    <ul>
+        <li><a href="https://www.icy-veins.com/tbc-classic/arms-warrior-pvp-guide" target="_blank" rel="noopener">Icy Veins - Arms Warrior PvP Guide</a> (talents, stat priority, macros)</li>
+        <li><a href="https://www.icy-veins.com/tbc-classic/warrior-pvp-gear-guide" target="_blank" rel="noopener">Icy Veins - Warrior PvP Gear Guide</a> (gear by Arena Season)</li>
+        <li><a href="https://www.warcrafttavern.com/tbc/guides/pvp-arms-warrior/" target="_blank" rel="noopener">Warcraft Tavern - Arms Warrior PvP Guide</a> (builds, enchants, comps)</li>
+        <li><a href="https://www.pvpskills.com/classes/warrior" target="_blank" rel="noopener">PvPSkills - Warrior Arena Guide</a> (matchups, builds)</li>
+        <li><a href="https://noobtoboss.com/tbc-classic-warrior-macro-guide/" target="_blank" rel="noopener">NoobToBoss - Warrior Macro Guide</a> (full macro list)</li>
+    </ul>
+
+    <!-- ===== EXPORT TO ATLASLOOT ===== -->
+    <h1 id="export-atlasloot">Export to AtlasLoot</h1>
+    <p>Send every gear pick in this guide straight into <strong>AtlasLoot</strong> so the recommended items show up as favourites (gold stars) on the in-game vendor and loot tables. Requires the <em>AtlasLoot Wishlist</em> addon (v1.3+).</p>
+    <p class="tip-box">Just want one slot or one season? Every gear table has its own <strong>Export to AtlasLoot</strong> button that lets you grab that single slot or that whole season. Use the export below for the entire guide at once.</p>
+    <ol>
+        <li>Pick which seasons to include (all on by default), then click <strong>Copy Export String</strong>.</li>
+        <li>In game, type <code>/alimport</code> (or click <strong>Import</strong> on the AtlasLoot Wishlist tab).</li>
+        <li>Name the list (e.g. "Arms Warrior PvP"), paste with <kbd>Ctrl+V</kbd>, and click <strong>Import</strong>.</li>
+        <li>Browse the arena vendors or any zone in AtlasLoot: this guide's items are now favourited, and each slot's BiS pick is flagged as the main item.</li>
+    </ol>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('al-picker')">Choose Seasons</button>
+        <label class="al-opt"><input type="checkbox" id="al-bis-only" onchange="buildAtlasLootExport()"> BiS rows only</label>
+    </div>
+    <div id="al-picker" class="spoiler-content">
+        <div id="al-phase-list"><!-- season checkboxes injected by JS --></div>
+    </div>
+    <textarea class="bbcode-area" id="atlasloot-export" readonly style="height: 90px;"></textarea><br>
+    <button class="copy-btn" onclick="copyText('atlasloot-export')">Copy Export String</button>
+    <span id="al-count" class="al-count"></span>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this guide:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wow_class_guides/warrior/arms-pvp/classguide-warrior-arms-pvp.html]WoW Classic TBC Arms Warrior PvP / Arena Guide[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[WoW Classic TBC Arms Warrior PvP / Arena Guide](https://supertron42.github.io/wow_class_guides/warrior/arms-pvp/classguide-warrior-arms-pvp.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+
+// Filter gear by source type
+function filterGear(source) {
+    var rows = document.querySelectorAll('tr[data-source]');
+    for (var i = 0; i < rows.length; i++) {
+        if (source === 'all' || rows[i].getAttribute('data-source') === source) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+    }
+    event.target.classList.add('active');
+}
+
+// Wrap every gear-table in a horizontally-scrollable container.
+(function() {
+    var tables = document.querySelectorAll('.gear-table');
+    for (var i = 0; i < tables.length; i++) {
+        var t = tables[i];
+        if (t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('table-wrap')) continue;
+        var wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        t.parentNode.insertBefore(wrap, t);
+        wrap.appendChild(t);
+    }
+})();
+
+// Wrap each nav section's links in a collapsible container.
+(function() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var headers = Array.prototype.slice.call(nav.querySelectorAll('h3'));
+    headers.forEach(function(header) {
+        var section = document.createElement('div');
+        section.className = 'nav-section';
+        header.parentNode.insertBefore(section, header.nextSibling);
+        var next;
+        while ((next = section.nextElementSibling)) {
+            if (next.tagName === 'H3') break;
+            if (next.tagName === 'DIV' && next.style && next.style.position === 'absolute') break;
+            section.appendChild(next);
+        }
+        header.addEventListener('click', function() {
+            header.classList.toggle('open');
+            section.classList.toggle('open');
+        });
+    });
+
+    Array.prototype.slice.call(nav.querySelectorAll('.nav-section')).forEach(function(section) {
+        var kids = Array.prototype.slice.call(section.children);
+        for (var i = 0; i < kids.length; i++) {
+            var el = kids[i];
+            if (el.tagName === 'A' && !el.classList.contains('nav-sub')) {
+                var subs = [], j = i + 1;
+                while (j < kids.length && kids[j].tagName === 'A' && kids[j].classList.contains('nav-sub')) {
+                    subs.push(kids[j]); j++;
+                }
+                if (subs.length) {
+                    var sub = document.createElement('div');
+                    sub.className = 'nav-subsection';
+                    section.insertBefore(sub, subs[0]);
+                    subs.forEach(function(x) { sub.appendChild(x); });
+                    (function(parentLink, subEl) {
+                        parentLink.addEventListener('click', function() {
+                            var all = section.querySelectorAll('.nav-subsection');
+                            for (var k = 0; k < all.length; k++) all[k].classList.toggle('open', all[k] === subEl);
+                        });
+                    })(el, sub);
+                }
+            }
+        }
+    });
+})();
+
+// Mobile nav toggle
+function toggleNav() {
+    var nav = document.getElementById('nav');
+    var backdrop = document.querySelector('.nav-backdrop');
+    nav.classList.toggle('open');
+    backdrop.classList.toggle('show');
+}
+(function() {
+    var links = document.querySelectorAll('#nav a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('nav').classList.remove('open');
+                document.querySelector('.nav-backdrop').classList.remove('show');
+            }
+        });
+    }
+})();
+
+// Scrollspy
+(function() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+
+    var entries = [];
+    links.forEach(function(link) {
+        var target = document.getElementById(link.getAttribute('href').slice(1));
+        if (target) entries.push({ link: link, target: target });
+    });
+    if (!entries.length) return;
+
+    var sections = Array.prototype.slice.call(nav.querySelectorAll('.nav-section'));
+    var subsections = Array.prototype.slice.call(nav.querySelectorAll('.nav-subsection'));
+    var headers = Array.prototype.slice.call(nav.querySelectorAll('h3'));
+    var currentLink = null;
+    var ticking = false;
+
+    var scroller = document.getElementById('content');
+    function update() {
+        ticking = false;
+        var line = Math.max(120, window.innerHeight * 0.33);
+        var atBottom = false;
+        if (scroller && scroller.scrollHeight > scroller.clientHeight + 4) {
+            atBottom = (scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight) <= 2;
+        } else {
+            atBottom = (window.innerHeight + window.pageYOffset) >= (document.documentElement.scrollHeight - 2);
+        }
+        var active = entries[0];
+        if (atBottom) {
+            active = entries[entries.length - 1];
+        } else {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].target.getBoundingClientRect().top <= line) {
+                    active = entries[i];
+                } else {
+                    break;
+                }
+            }
+        }
+        if (active.link === currentLink) return;
+        currentLink = active.link;
+
+        var section = active.link.parentNode;
+        while (section && !(section.classList && section.classList.contains('nav-section'))) {
+            section = section.parentNode;
+        }
+        var header = section ? section.previousElementSibling : null;
+        if (header && header.tagName !== 'H3') header = null;
+
+        entries.forEach(function(e) { e.link.classList.remove('active'); });
+        active.link.classList.add('active');
+
+        for (var s = 0; s < sections.length; s++) {
+            sections[s].classList.toggle('open', sections[s] === section);
+        }
+        for (var h = 0; h < headers.length; h++) {
+            var isActive = headers[h] === header;
+            headers[h].classList.toggle('active-section', isActive);
+            headers[h].classList.toggle('open', isActive);
+        }
+
+        for (var ss = 0; ss < subsections.length; ss++) {
+            var open = subsections[ss].contains(active.link) ||
+                       subsections[ss].previousElementSibling === active.link;
+            subsections[ss].classList.toggle('open', open);
+        }
+
+        var lr = active.link.getBoundingClientRect();
+        var nr = nav.getBoundingClientRect();
+        if (lr.top < nr.top || lr.bottom > nr.bottom) {
+            active.link.scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    function onScroll() {
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }
+    }
+
+    window.addEventListener('scroll', onScroll, true);
+    window.addEventListener('resize', onScroll);
+    update();
+})();
+
+// ---- Export to AtlasLoot (GREP: export-atlasloot) ----
+// Builds AtlasLoot's native favourite-import string from the gear tables. Only
+// the Starter + Season gear sections are scanned (gems/enchants/consumables live
+// under other <h1>s and are skipped).
+function alStringFromRows(rows, bisOnly) {
+    var seen = {}, entries = [];
+    rows.forEach(function(r) {
+        var isBis = /bis|best/i.test(r.rank);
+        if (bisOnly && !isBis) return;
+        if (seen[r.id] !== undefined) {
+            if (isBis && !/bis|best/i.test(entries[seen[r.id]].note)) {
+                entries[seen[r.id]].note = r.rank;
+            }
+            return;
+        }
+        seen[r.id] = entries.length;
+        entries.push({ id: r.id, note: r.rank });
+    });
+    var str = entries.map(function(e) {
+        var note = (e.note || '').replace(/[,:]/g, ' ').replace(/\s+/g, ' ').trim();
+        return note ? ('i:' + e.id + ':' + note) : ('i:' + e.id);
+    }).join(',');
+    return { str: str, count: entries.length };
+}
+
+function alFlashCopy(textarea, btn) {
+    textarea.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    if (btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+}
+
+function buildAtlasLootExport() {
+    var out = document.getElementById('atlasloot-export');
+    if (!out) return;
+    var listEl = document.getElementById('al-phase-list');
+    var bisEl = document.getElementById('al-bis-only');
+    var bisOnly = bisEl && bisEl.checked;
+    var groups = window._alGroups || [];
+    var rows = [];
+    groups.forEach(function(g) {
+        var cb = listEl && listEl.querySelector('input[data-phase="' + g.key + '"]');
+        if (cb && !cb.checked) return;
+        rows = rows.concat(g.rows);
+    });
+    var res = alStringFromRows(rows, bisOnly);
+    out.value = res.str;
+    var c = document.getElementById('al-count');
+    if (c) c.textContent = res.count ? (res.count + ' items') : 'No items selected';
+}
+
+function alEnsureModal() {
+    if (document.getElementById('al-modal')) return;
+    var bd = document.createElement('div');
+    bd.id = 'al-modal';
+    bd.className = 'al-modal-backdrop';
+    bd.innerHTML =
+        '<div class="al-modal">' +
+            '<button type="button" class="al-modal-close" aria-label="Close">&times;</button>' +
+            '<h3 class="al-modal-title">Export to AtlasLoot Wishlist</h3>' +
+            '<p class="al-modal-sub" id="al-modal-sub"></p>' +
+            '<div class="al-modal-choices">' +
+                '<button type="button" class="al-choice" id="al-choice-slot"></button>' +
+                '<button type="button" class="al-choice" id="al-choice-section"></button>' +
+            '</div>' +
+            '<p class="al-modal-note">Want the <strong>entire guide</strong>? Go to the ' +
+                '<a href="#export-atlasloot" class="al-modal-reslink">Resources &rarr; Export to AtlasLoot</a> ' +
+                'section and follow the instructions there.</p>' +
+            '<textarea class="bbcode-area al-modal-out" id="al-modal-out" readonly style="height: 80px; display: none;"></textarea>' +
+            '<button type="button" class="copy-btn" id="al-modal-copy" style="display: none;">Copy to Clipboard</button>' +
+        '</div>';
+    document.body.appendChild(bd);
+    function hide() { bd.style.display = 'none'; }
+    bd.addEventListener('click', function(e) { if (e.target === bd) hide(); });
+    bd.querySelector('.al-modal-close').addEventListener('click', hide);
+    bd.querySelector('.al-modal-reslink').addEventListener('click', hide);
+    document.getElementById('al-modal-copy').addEventListener('click', function() {
+        alFlashCopy(document.getElementById('al-modal-out'), this);
+    });
+}
+
+function alOpenTableModal(group, slotName, tableRows) {
+    alEnsureModal();
+    var bd = document.getElementById('al-modal');
+    document.getElementById('al-modal-sub').textContent = group.label + ' - ' + slotName;
+    var slotRes = alStringFromRows(tableRows, false);
+    var secRes = alStringFromRows(group.rows, false);
+    var out = document.getElementById('al-modal-out');
+    var copy = document.getElementById('al-modal-copy');
+    out.value = ''; out.style.display = 'none'; copy.style.display = 'none';
+    function show(res) {
+        out.value = res.str;
+        out.style.display = '';
+        copy.style.display = '';
+        alFlashCopy(out, copy);
+    }
+    var slotBtn = document.getElementById('al-choice-slot');
+    var secBtn = document.getElementById('al-choice-section');
+    slotBtn.textContent = 'This slot only: ' + slotName + ' (' + slotRes.count + ' item' + (slotRes.count === 1 ? '' : 's') + ')';
+    secBtn.textContent = 'Entire ' + group.label + ' (' + secRes.count + ' items)';
+    slotBtn.onclick = function() { show(slotRes); };
+    secBtn.onclick = function() { show(secRes); };
+    bd.style.display = 'flex';
+}
+
+(function() {
+    var content = document.getElementById('content');
+    if (!content) return;
+    var nodes = content.querySelectorAll('h1, table.gear-table');
+    var groups = [], current = null;
+    Array.prototype.forEach.call(nodes, function(node) {
+        if (node.tagName === 'H1') {
+            var id = node.id || '';
+            if (id === 'starter-gear') {
+                current = { key: 'starter', label: 'Starter Gear', rows: [] };
+                groups.push(current);
+            } else {
+                var sm = id.match(/^season(\d+)$/);
+                if (sm) {
+                    current = { key: id, label: 'Season ' + sm[1], rows: [] };
+                    groups.push(current);
+                } else {
+                    current = null; // non-gear section, skip its tables
+                }
+            }
+            return;
+        }
+        if (!current) return;
+        var grp = current;
+        var tableRows = [];
+        var rows = node.querySelectorAll('tr[data-source]');
+        Array.prototype.forEach.call(rows, function(tr) {
+            var a = tr.querySelector('a[href*="/item="]');
+            if (!a) return;
+            var mm = a.getAttribute('href').match(/\/item=(\d+)/);
+            if (!mm) return;
+            var rankCell = tr.querySelector('.slot-label');
+            var row = { id: mm[1], rank: rankCell ? rankCell.textContent.trim() : '', name: a.textContent.trim() };
+            grp.rows.push(row);
+            tableRows.push(row);
+        });
+        if (!tableRows.length) return;
+        var wrap = (node.closest && node.closest('.table-wrap')) || node;
+        var h2 = wrap.previousElementSibling;
+        while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
+        var slotName = h2 ? h2.textContent.trim() : 'Slot';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'al-table-btn';
+        btn.textContent = 'Export to AtlasLoot';
+        btn.addEventListener('click', function() { alOpenTableModal(grp, slotName, tableRows); });
+        wrap.parentNode.insertBefore(btn, wrap);
+    });
+    groups = groups.filter(function(g) { return g.rows.length > 0; });
+    window._alGroups = groups;
+
+    var listEl = document.getElementById('al-phase-list');
+    if (listEl) {
+        groups.forEach(function(g) {
+            var lbl = document.createElement('label');
+            var cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = true;
+            cb.setAttribute('data-phase', g.key);
+            cb.addEventListener('change', buildAtlasLootExport);
+            var span = document.createElement('span');
+            span.textContent = g.label + ' (' + g.rows.length + ')';
+            lbl.appendChild(cb);
+            lbl.appendChild(span);
+            listEl.appendChild(lbl);
+        });
+    }
+    buildAtlasLootExport();
+})();
+</script>
+</body>
+</html>

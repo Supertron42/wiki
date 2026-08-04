@@ -234,6 +234,12 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://supertron42.github.io/wow_class_guides/warrior/arms-pvp/classguide-warrior-arms-pvp.html</loc>
+        <lastmod>2026-07-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://supertron42.github.io/wow_class_guides/mage/frost/classguide-mage-frost.html</loc>
         <lastmod>2026-06-27</lastmod>
         <changefreq>monthly</changefreq>

@@ -678,16 +678,17 @@ code {
 <div class="nav-backdrop" onclick="toggleNav()"></div>
 
 <div id="nav">
+    <div class="nav-grouplabel">Class Guides</div>
     <a href="../../index.html">&#8592; All Guides</a>
+    <a href="../prot/classguide-warrior-prot.html">Warrior - Protection</a>
+    <a href="classguide-warrior-fury.html" style="color:#4ec9b0;font-weight:bold;">Warrior - Fury</a>
+    <a href="../arms/classguide-warrior-arms.html">Warrior - Arms (PvE)</a>
+    <a href="../arms-pvp/classguide-warrior-arms-pvp.html">Warrior - Arms (PvP)</a>
+    <a href="../../mage/frost/classguide-mage-frost.html">Mage - Frost</a>
 
     <h3>Fury Warrior</h3>
     <a href="classguide-warrior-fury.html">Guide Home</a>
     <a href="#overview">Overview</a>
-
-    <h3>Talents</h3>
-    <a href="#talents">Overview</a>
-    <a href="#talent-build" class="nav-sub">Talent Build</a>
-    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
 
     <h3>Rotation &amp; DPS</h3>
     <a href="#rotation">Overview</a>
@@ -696,16 +697,6 @@ code {
     <a href="#rotation-cooldowns" class="nav-sub">DPS Cooldowns</a>
     <a href="#rotation-rage" class="nav-sub">Rage Management</a>
     <a href="#rotation-buffs" class="nav-sub">Keep These Up</a>
-
-    <h3>Quest Strategy</h3>
-    <a href="#quest-strategy">Overview</a>
-    <a href="#quest-fresh70" class="nav-sub">Fresh 70 Gearing</a>
-
-    <h3>Reputation</h3>
-    <a href="#reputation">Overview</a>
-    <a href="#heroic-keys" class="nav-sub">Heroic Keys</a>
-    <a href="#rep-factions" class="nav-sub">Aldor vs Scryers</a>
-    <a href="#rep-priority" class="nav-sub">DPS Priority</a>
 
     <h3>Pre-Raid BiS</h3>
     <a href="#pre-raid-bis">Overview</a>
@@ -775,6 +766,11 @@ code {
     <h3>Enchants</h3>
     <a href="#enchants">Overview</a>
 
+    <h3>Talents</h3>
+    <a href="#talents">Overview</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
+
     <h3>Consumables</h3>
     <a href="#consumables">Overview</a>
 
@@ -783,6 +779,16 @@ code {
     <a href="#class-buffs" class="nav-sub">Class Buffs</a>
     <a href="#offensive-debuffs" class="nav-sub">Boss Debuffs</a>
     <a href="#ideal-party" class="nav-sub">Melee Party</a>
+
+    <h3>Quest Strategy</h3>
+    <a href="#quest-strategy">Overview</a>
+    <a href="#quest-fresh70" class="nav-sub">Fresh 70 Gearing</a>
+
+    <h3>Reputation</h3>
+    <a href="#reputation">Overview</a>
+    <a href="#rep-priority" class="nav-sub">DPS Priority</a>
+    <a href="#rep-factions" class="nav-sub">Aldor vs Scryers</a>
+    <a href="#heroic-keys" class="nav-sub">Heroic Keys</a>
 
     <h3>Resources</h3>
     <a href="#useful-links">Useful Links</a>
@@ -817,87 +823,6 @@ code {
     </ul>
 
     <!-- ===== PRE-RAID BIS ===== -->
-    <!-- ===== TALENTS ===== -->
-    <h1 id="talents">Talents</h1>
-    <p>The two raid builds are <strong>21/40/0</strong> (the Impale / Death Wish hybrid, the strongest burst on short fights, shown below) and <strong>17/44/0</strong> (the Rampage build, smoother sustained damage and more raid attack power from <a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a>). Both run Fury down to <a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a>; they differ only in how deep they dip into Arms. The table below is the 21/40/0 build.</p>
-
-    <div class="info-box">
-        <p><strong>The talents that define the spec:</strong></p>
-        <ul>
-            <li><a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a>, the Fury capstone and your highest-damage button.</li>
-            <li><strong>Dual Wield Specialization</strong> (off-hand damage) and <strong>Flurry</strong> (haste after a crit), the core of Fury's scaling.</li>
-            <li><strong>Precision</strong> (+3% hit), which helps you reach the hit cap with less gear.</li>
-            <li><strong>Cruelty</strong> (+5% crit) and <strong>Improved Whirlwind</strong> for single-target and AoE damage.</li>
-            <li><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> and <a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a>, your big cooldown and Attack Power buff.</li>
-            <li>The Arms dip grabs rage and threat utility (Improved Heroic Strike, Tactical Mastery, Anger Management, Deep Wounds).</li>
-        </ul>
-    </div>
-
-    <div class="tip-box">
-        <p>Some players run <strong>18/43/0</strong> or move a few flexible points (for example into Improved Demoralizing Shout for raid mitigation). The Fury core down to Bloodthirst is fixed; only the Arms dip varies.</p>
-    </div>
-
-    <!-- ===== CONSUMABLES ===== -->
-    <h2 id="talent-build">Talent Build: 21/40/0</h2>
-    <p>The level-70 raid build, <strong>21/40/0</strong> (Arms 21, Fury 40). Spent talents are shown on the tree below; open the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> for the full interactive tree.</p>
-    <div class="talent-trees">
-      <div class="talent-tree">
-        <h4>Arms &middot; 21</h4>
-        <div class="talent-grid">
-          <div class="talent-cell on max" style="grid-row:1;grid-column:1;" title="Improved Heroic Strike 3/3">Improved Heroic Strike<span class="talent-rank">3/3</span></div>
-          <div class="talent-cell on max" style="grid-row:1;grid-column:2;" title="Deflection 5/5">Deflection<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:2;grid-column:2;" title="Iron Will 5/5">Iron Will<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on" style="grid-row:3;grid-column:1;" title="Improved Overpower 1/2">Improved Overpower<span class="talent-rank">1/2</span></div>
-          <div class="talent-cell on max" style="grid-row:3;grid-column:2;" title="Anger Management 1/1">Anger Management<span class="talent-rank">1/1</span></div>
-          <div class="talent-cell on max" style="grid-row:3;grid-column:3;" title="Deep Wounds 3/3">Deep Wounds<span class="talent-rank">3/3</span></div>
-          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Impale 2/2">Impale<span class="talent-rank">2/2</span></div>
-          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Sweeping Strikes 1/1">Sweeping Strikes<span class="talent-rank">1/1</span></div>
-        </div>
-      </div>
-      <div class="talent-tree">
-        <h4>Fury &middot; 40</h4>
-        <div class="talent-grid">
-          <div class="talent-cell on max" style="grid-row:1;grid-column:3;" title="Cruelty 5/5">Cruelty<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:2;grid-column:3;" title="Unbridled Wrath 5/5">Unbridled Wrath<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:3;grid-column:4;" title="Commanding Presence 5/5">Commanding Presence<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:4;grid-column:1;" title="Dual Wield Specialization 5/5">Dual Wield Specialization<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Enrage 5/5">Enrage<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Death Wish 1/1">Death Wish<span class="talent-rank">1/1</span></div>
-          <div class="talent-cell on max" style="grid-row:5;grid-column:4;" title="Weapon Mastery 2/2">Weapon Mastery<span class="talent-rank">2/2</span></div>
-          <div class="talent-cell on max" style="grid-row:6;grid-column:3;" title="Flurry 5/5">Flurry<span class="talent-rank">5/5</span></div>
-          <div class="talent-cell on max" style="grid-row:7;grid-column:2;" title="Bloodthirst 1/1">Bloodthirst<span class="talent-rank">1/1</span></div>
-          <div class="talent-cell on" style="grid-row:7;grid-column:3;" title="Improved Whirlwind 1/2">Improved Whirlwind<span class="talent-rank">1/2</span></div>
-          <div class="talent-cell on max" style="grid-row:8;grid-column:3;" title="Improved Berserker Stance 5/5">Improved Berserker Stance<span class="talent-rank">5/5</span></div>
-        </div>
-      </div>
-    </div>
-    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
-    <p>A clean order to spend your 61 talent points as you level. Pour into the <strong>Fury</strong> tree first to bring your core ability online fast, then fill the rest. Early points are flexible, prioritise what helps you kill and survive while questing; the end result is the 21/40/0 build above.</p>
-    <table class="gear-table">
-      <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
-      <tbody>
-        <tr><td class="slot-label">1</td><td>Cruelty</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">2</td><td>Unbridled Wrath</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">3</td><td>Commanding Presence</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">4</td><td>Dual Wield Specialization</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">5</td><td>Enrage</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">6</td><td>Death Wish</td><td>1/1</td><td>Fury</td></tr>
-        <tr><td class="slot-label">7</td><td>Weapon Mastery</td><td>2/2</td><td>Fury</td></tr>
-        <tr><td class="slot-label">8</td><td>Flurry</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">9</td><td>Bloodthirst</td><td>1/1</td><td>Fury</td></tr>
-        <tr><td class="slot-label">10</td><td>Improved Whirlwind</td><td>1/2</td><td>Fury</td></tr>
-        <tr><td class="slot-label">11</td><td>Improved Berserker Stance</td><td>5/5</td><td>Fury</td></tr>
-        <tr><td class="slot-label">12</td><td>Improved Heroic Strike</td><td>3/3</td><td>Arms</td></tr>
-        <tr><td class="slot-label">13</td><td>Deflection</td><td>5/5</td><td>Arms</td></tr>
-        <tr><td class="slot-label">14</td><td>Iron Will</td><td>5/5</td><td>Arms</td></tr>
-        <tr><td class="slot-label">15</td><td>Improved Overpower</td><td>1/2</td><td>Arms</td></tr>
-        <tr><td class="slot-label">16</td><td>Anger Management</td><td>1/1</td><td>Arms</td></tr>
-        <tr><td class="slot-label">17</td><td>Deep Wounds</td><td>3/3</td><td>Arms</td></tr>
-        <tr><td class="slot-label">18</td><td>Impale</td><td>2/2</td><td>Arms</td></tr>
-        <tr><td class="slot-label">19</td><td>Sweeping Strikes</td><td>1/1</td><td>Arms</td></tr>
-      </tbody>
-    </table>
-
     <!-- ===== ROTATION & DPS ===== -->
     <h1 id="rotation">Rotation &amp; DPS</h1>
     <p>Fury damage is a short <strong>priority loop</strong> wrapped around two big instant attacks, with spare Rage dumped into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a>. Cast the highest available ability, then keep auto-attacking. Built from the Icy Veins Fury rotation guide.</p>
@@ -948,69 +873,6 @@ code {
         <li>Five stacks of <a href="https://www.wowhead.com/tbc/spell=25225">Sunder Armor</a> on the boss (raid responsibility, often shared).</li>
         <li><a href="https://www.wowhead.com/tbc/spell=25203">Demoralizing Shout</a> if you are asked to help mitigate, and <a href="https://www.wowhead.com/tbc/spell=25212">Hamstring</a> for kiting or runners.</li>
     </ul>
-
-    <!-- ===== QUEST STRATEGY ===== -->
-    <h1 id="quest-strategy">Questing Strategy</h1>
-    <p>Before heroics and Karazhan, a handful of solo and normal-dungeon quests hand out strong DPS gear. Knock these out on a fresh 70 to skip the worst of the grind.</p>
-    <h2 id="quest-fresh70">Fresh 70 Gearing Quests</h2>
-    <table class="gear-table">
-        <thead><tr><th>Slot</th><th>Item</th><th>Quest</th></tr></thead>
-        <tbody>
-            <tr><td class="slot-label">Head</td><td><a href="https://www.wowhead.com/tbc/item=31105" data-wh-icon-size="small">Overlord's Helmet of Second Sight</a></td><td><a href="https://www.wowhead.com/tbc/quest=10645">Teron Gorefiend, I am...</a> (Shadowmoon)</td></tr>
-            <tr><td class="slot-label">Neck</td><td><a href="https://www.wowhead.com/tbc/item=31695" data-wh-icon-size="small">Natasha's Choker</a></td><td><a href="https://www.wowhead.com/tbc/quest=10724">The Hound-Master</a> (Blade's Edge)</td></tr>
-            <tr><td class="slot-label">Hands</td><td><a href="https://www.wowhead.com/tbc/item=30341" data-wh-icon-size="small">Flesh Handler's Gauntlets</a></td><td><a href="https://www.wowhead.com/tbc/quest=10286">The Flesh Lies...</a> (Shadowmoon)</td></tr>
-            <tr><td class="slot-label">Legs</td><td><a href="https://www.wowhead.com/tbc/item=30257" data-wh-icon-size="small">Shattrath Leggings</a></td><td><a href="https://www.wowhead.com/tbc/quest=10280">Special Delivery to Shattrath City</a></td></tr>
-            <tr><td class="slot-label">Feet</td><td><a href="https://www.wowhead.com/tbc/item=28176" data-wh-icon-size="small">Sha'tari Wrought Greaves</a></td><td><a href="https://www.wowhead.com/tbc/quest=10649">Into the Heart of the Labyrinth</a> (Shadow Labyrinth)</td></tr>
-            <tr><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/item=30365" data-wh-icon-size="small">Overseer's Signet</a></td><td><a href="https://www.wowhead.com/tbc/quest=10323">Shutting Down Manaforge Ara</a> (Netherstorm)</td></tr>
-            <tr><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=28041" data-wh-icon-size="small">Bladefist's Breadth</a></td><td><a href="https://www.wowhead.com/tbc/quest=10484">Cruel's Intentions</a> (Shattered Halls)</td></tr>
-            <tr><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=25937" data-wh-icon-size="small">Terokkar Tablet of Precision</a></td><td><a href="https://www.wowhead.com/tbc/quest=10035">Torgos!</a> (Terokkar)</td></tr>
-            <tr><td class="slot-label">Ranged</td><td><a href="https://www.wowhead.com/tbc/item=30279" data-wh-icon-size="small">Mama's Insurance</a></td><td><a href="https://www.wowhead.com/tbc/quest=10820">Declawing Doomclaw</a> (Blade's Edge)</td></tr>
-        </tbody>
-    </table>
-    <div class="tip-box"><p>These are quick wins, not BiS. Replace them with heroic, badge, and Karazhan drops from the gear tables above as you go.</p></div>
-
-    <h1 id="reputation">Reputation</h1>
-    <p>Reputation unlocks heroic dungeons, shoulder enchants, key recipes, and powerful gear. Here's what matters for a Fury Warrior.</p>
-
-    <h2 id="heroic-keys">Heroic Dungeon Keys</h2>
-    <p>All heroic keys require <strong>Revered</strong> with the corresponding faction. Buy the key from the faction's Quartermaster.</p>
-    <table class="gear-table">
-        <thead><tr><th>Region</th><th>Dungeons</th><th>Key</th><th>Faction</th><th>Quartermaster / Location</th></tr></thead>
-        <tbody>
-            <tr><td>Hellfire Peninsula</td><td>Ramparts, Blood Furnace, Shattered Halls</td><td><a href="https://www.wowhead.com/tbc/item=30622" data-wh-icon-size="small">Flamewrought Key</a></td><td>Honor Hold (A) / Thrallmar (H)</td><td><a href="https://www.wowhead.com/tbc/npc=17657">Logistics Officer Ulrike</a> - Honor Hold<br><a href="https://www.wowhead.com/tbc/npc=17585">Quartermaster Urgronn</a> - Thrallmar</td></tr>
-            <tr><td>Zangarmarsh</td><td>Slave Pens, Underbog, Steamvault</td><td><a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a></td><td>Cenarion Expedition</td><td><a href="https://www.wowhead.com/tbc/npc=17904">Fedryen Swiftspear</a> - Cenarion Refuge, Zangarmarsh</td></tr>
-            <tr><td>Terokkar Forest</td><td>Mana-Tombs, Auchenai Crypts, Sethekk Halls, Shadow Lab</td><td><a href="https://www.wowhead.com/tbc/item=30633" data-wh-icon-size="small">Auchenai Key</a></td><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td></tr>
-            <tr><td>Netherstorm</td><td>Mechanar, Botanica, Arcatraz</td><td><a href="https://www.wowhead.com/tbc/item=30634" data-wh-icon-size="small">Warpforged Key</a></td><td>The Sha'tar</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td></tr>
-            <tr><td>Caverns of Time</td><td>Old Hillsbrad, Black Morass</td><td><a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a></td><td>Keepers of Time</td><td><a href="https://www.wowhead.com/tbc/npc=21643">Alurmi</a> - Caverns of Time, Tanaris</td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="rep-factions">Aldor vs Scryers</h2>
-    <div class="warn-box">
-        <p><strong>Choose wisely:</strong> Gaining rep with one loses rep with the other. Most Fury Warriors go <strong>Aldor</strong> for the stronger AP-focused shoulder enchant.</p>
-    </div>
-    <table class="gear-table">
-        <thead><tr><th>Faction</th><th>Exalted Shoulder Enchant</th><th>Stats</th><th>Other Notable Rewards</th></tr></thead>
-        <tbody>
-            <tr><td class="slot-label">The Aldor</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a></td><td>+30 AP, +10 Crit</td><td><a href="https://www.wowhead.com/tbc/item=29124" data-wh-icon-size="small">Vindicator's Brand</a> (Exalted sword)</td></tr>
-            <tr><td class="slot-label">The Scryers</td><td><a href="https://www.wowhead.com/tbc/item=28910" data-wh-icon-size="small">Greater Inscription of the Blade</a></td><td>+15 Crit, +20 AP</td><td>Enchanted Clefthoof LW patterns</td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="rep-priority">Warrior DPS Priority Reputations</h2>
-    <table class="gear-table">
-        <thead><tr><th>Priority</th><th>Faction</th><th>Goal</th><th>Why</th></tr></thead>
-        <tbody>
-            <tr><td class="slot-label">1</td><td>All 5 key factions</td><td><span class="rep-icon">📜</span>Revered</td><td>Unlock heroic dungeons for badges and gear</td></tr>
-            <tr><td class="slot-label">2</td><td>Cenarion Expedition</td><td><span class="rep-icon">📜</span>Revered</td><td><a href="https://www.wowhead.com/tbc/item=29192" data-wh-icon-size="small">Glyph of Ferocity</a> head enchant (+34 AP, +16 Hit)</td></tr>
-            <tr><td class="slot-label">3</td><td>The Aldor</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a> shoulder enchant</td></tr>
-            <tr><td class="slot-label">4</td><td>Lower City</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a> (expertise ring)</td></tr>
-            <tr><td class="slot-label">5</td><td>The Violet Eye</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29283" data-wh-icon-size="small">Violet Signet of the Master Assassin</a> (upgradeable Karazhan ring)</td></tr>
-            <tr><td class="slot-label">6</td><td>The Consortium</td><td><span class="rep-icon">📜</span>Exalted</td><td>Design: <a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a> meta gem</td></tr>
-            <tr><td class="slot-label">7</td><td>Keepers of Time</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/spell=25080">Enchant Gloves - Superior Agility</a> recipe</td></tr>
-            <tr><td class="slot-label">8</td><td>Shattered Sun Offensive</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=34679" data-wh-icon-size="small">Shattered Sun Pendant of Might</a> (Phase 5 neck)</td></tr>
-        </tbody>
-    </table>
 
     <h1 id="pre-raid-bis">Pre-Raid Best in Slot (Fury)</h1>
     <p>Gear to target before stepping into <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a>. Items ranked best to easiest to obtain per slot.</p>
@@ -2158,6 +2020,87 @@ code {
         <p><strong>Mongoose Stacking:</strong> The Lightning Speed buff from MH and OH Mongoose procs can stack (double the effect). This is why Mongoose stays on off-hand even after Executioner becomes available in Phase 4.</p>
     </div>
 
+    <!-- ===== TALENTS ===== -->
+    <h1 id="talents">Talents</h1>
+    <p>The two raid builds are <strong>21/40/0</strong> (the Impale / Death Wish hybrid, the strongest burst on short fights, shown below) and <strong>17/44/0</strong> (the Rampage build, smoother sustained damage and more raid attack power from <a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a>). Both run Fury down to <a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a>; they differ only in how deep they dip into Arms. The table below is the 21/40/0 build.</p>
+
+    <div class="info-box">
+        <p><strong>The talents that define the spec:</strong></p>
+        <ul>
+            <li><a href="https://www.wowhead.com/tbc/spell=30335">Bloodthirst</a>, the Fury capstone and your highest-damage button.</li>
+            <li><strong>Dual Wield Specialization</strong> (off-hand damage) and <strong>Flurry</strong> (haste after a crit), the core of Fury's scaling.</li>
+            <li><strong>Precision</strong> (+3% hit), which helps you reach the hit cap with less gear.</li>
+            <li><strong>Cruelty</strong> (+5% crit) and <strong>Improved Whirlwind</strong> for single-target and AoE damage.</li>
+            <li><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> and <a href="https://www.wowhead.com/tbc/spell=30033">Rampage</a>, your big cooldown and Attack Power buff.</li>
+            <li>The Arms dip grabs rage and threat utility (Improved Heroic Strike, Tactical Mastery, Anger Management, Deep Wounds).</li>
+        </ul>
+    </div>
+
+    <div class="tip-box">
+        <p>Some players run <strong>18/43/0</strong> or move a few flexible points (for example into Improved Demoralizing Shout for raid mitigation). The Fury core down to Bloodthirst is fixed; only the Arms dip varies.</p>
+    </div>
+
+    <!-- ===== CONSUMABLES ===== -->
+    <h2 id="talent-build">Talent Build: 21/40/0</h2>
+    <p>The level-70 raid build, <strong>21/40/0</strong> (Arms 21, Fury 40). Spent talents are shown on the tree below; open the <a href="https://www.wowhead.com/tbc/talent-calc/warrior">Wowhead TBC talent calculator</a> for the full interactive tree.</p>
+    <div class="talent-trees">
+      <div class="talent-tree">
+        <h4>Arms &middot; 21</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:1;" title="Improved Heroic Strike 3/3">Improved Heroic Strike<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:1;grid-column:2;" title="Deflection 5/5">Deflection<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:2;" title="Iron Will 5/5">Iron Will<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on" style="grid-row:3;grid-column:1;" title="Improved Overpower 1/2">Improved Overpower<span class="talent-rank">1/2</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:2;" title="Anger Management 1/1">Anger Management<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:3;" title="Deep Wounds 3/3">Deep Wounds<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Impale 2/2">Impale<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Sweeping Strikes 1/1">Sweeping Strikes<span class="talent-rank">1/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Fury &middot; 40</h4>
+        <div class="talent-grid">
+          <div class="talent-cell on max" style="grid-row:1;grid-column:3;" title="Cruelty 5/5">Cruelty<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:2;grid-column:3;" title="Unbridled Wrath 5/5">Unbridled Wrath<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:3;grid-column:4;" title="Commanding Presence 5/5">Commanding Presence<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:1;" title="Dual Wield Specialization 5/5">Dual Wield Specialization<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:4;grid-column:3;" title="Enrage 5/5">Enrage<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:2;" title="Death Wish 1/1">Death Wish<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on max" style="grid-row:5;grid-column:4;" title="Weapon Mastery 2/2">Weapon Mastery<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell on max" style="grid-row:6;grid-column:3;" title="Flurry 5/5">Flurry<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell on max" style="grid-row:7;grid-column:2;" title="Bloodthirst 1/1">Bloodthirst<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell on" style="grid-row:7;grid-column:3;" title="Improved Whirlwind 1/2">Improved Whirlwind<span class="talent-rank">1/2</span></div>
+          <div class="talent-cell on max" style="grid-row:8;grid-column:3;" title="Improved Berserker Stance 5/5">Improved Berserker Stance<span class="talent-rank">5/5</span></div>
+        </div>
+      </div>
+    </div>
+    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
+    <p>A clean order to spend your 61 talent points as you level. Pour into the <strong>Fury</strong> tree first to bring your core ability online fast, then fill the rest. Early points are flexible, prioritise what helps you kill and survive while questing; the end result is the 21/40/0 build above.</p>
+    <table class="gear-table">
+      <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
+      <tbody>
+        <tr><td class="slot-label">1</td><td>Cruelty</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">2</td><td>Unbridled Wrath</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">3</td><td>Commanding Presence</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">4</td><td>Dual Wield Specialization</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">5</td><td>Enrage</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">6</td><td>Death Wish</td><td>1/1</td><td>Fury</td></tr>
+        <tr><td class="slot-label">7</td><td>Weapon Mastery</td><td>2/2</td><td>Fury</td></tr>
+        <tr><td class="slot-label">8</td><td>Flurry</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">9</td><td>Bloodthirst</td><td>1/1</td><td>Fury</td></tr>
+        <tr><td class="slot-label">10</td><td>Improved Whirlwind</td><td>1/2</td><td>Fury</td></tr>
+        <tr><td class="slot-label">11</td><td>Improved Berserker Stance</td><td>5/5</td><td>Fury</td></tr>
+        <tr><td class="slot-label">12</td><td>Improved Heroic Strike</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">13</td><td>Deflection</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">14</td><td>Iron Will</td><td>5/5</td><td>Arms</td></tr>
+        <tr><td class="slot-label">15</td><td>Improved Overpower</td><td>1/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">16</td><td>Anger Management</td><td>1/1</td><td>Arms</td></tr>
+        <tr><td class="slot-label">17</td><td>Deep Wounds</td><td>3/3</td><td>Arms</td></tr>
+        <tr><td class="slot-label">18</td><td>Impale</td><td>2/2</td><td>Arms</td></tr>
+        <tr><td class="slot-label">19</td><td>Sweeping Strikes</td><td>1/1</td><td>Arms</td></tr>
+      </tbody>
+    </table>
+
     <h1 id="consumables">Consumables</h1>
     <p>Raid consumable loadout for a Fury Warrior. Priority is ordered top-to-bottom: flask + stone + food are non-negotiable on progression, the rest stack with them for burn windows and execute.</p>
     <table class="gear-table">
@@ -2217,6 +2160,69 @@ code {
         </tbody>
     </table>
     <div class="info-box"><p><strong>Alliance bonus:</strong> a <span style="color:#0070DE;">Draenei</span> in the party gives <a href="https://www.wowhead.com/tbc/spell=6562">Heroic Presence</a> (+1% hit), best on the Ret Paladin. <strong>Drums of Battle:</strong> one <a href="https://www.wowhead.com/tbc/spell=35476">Drums of Battle</a> user per party (+80 haste), usually the Enh Shaman.</p></div>
+
+    <!-- ===== QUEST STRATEGY ===== -->
+    <h1 id="quest-strategy">Questing Strategy</h1>
+    <p>Before heroics and Karazhan, a handful of solo and normal-dungeon quests hand out strong DPS gear. Knock these out on a fresh 70 to skip the worst of the grind.</p>
+    <h2 id="quest-fresh70">Fresh 70 Gearing Quests</h2>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Quest</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Head</td><td><a href="https://www.wowhead.com/tbc/item=31105" data-wh-icon-size="small">Overlord's Helmet of Second Sight</a></td><td><a href="https://www.wowhead.com/tbc/quest=10645">Teron Gorefiend, I am...</a> (Shadowmoon)</td></tr>
+            <tr><td class="slot-label">Neck</td><td><a href="https://www.wowhead.com/tbc/item=31695" data-wh-icon-size="small">Natasha's Choker</a></td><td><a href="https://www.wowhead.com/tbc/quest=10724">The Hound-Master</a> (Blade's Edge)</td></tr>
+            <tr><td class="slot-label">Hands</td><td><a href="https://www.wowhead.com/tbc/item=30341" data-wh-icon-size="small">Flesh Handler's Gauntlets</a></td><td><a href="https://www.wowhead.com/tbc/quest=10286">The Flesh Lies...</a> (Shadowmoon)</td></tr>
+            <tr><td class="slot-label">Legs</td><td><a href="https://www.wowhead.com/tbc/item=30257" data-wh-icon-size="small">Shattrath Leggings</a></td><td><a href="https://www.wowhead.com/tbc/quest=10280">Special Delivery to Shattrath City</a></td></tr>
+            <tr><td class="slot-label">Feet</td><td><a href="https://www.wowhead.com/tbc/item=28176" data-wh-icon-size="small">Sha'tari Wrought Greaves</a></td><td><a href="https://www.wowhead.com/tbc/quest=10649">Into the Heart of the Labyrinth</a> (Shadow Labyrinth)</td></tr>
+            <tr><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/item=30365" data-wh-icon-size="small">Overseer's Signet</a></td><td><a href="https://www.wowhead.com/tbc/quest=10323">Shutting Down Manaforge Ara</a> (Netherstorm)</td></tr>
+            <tr><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=28041" data-wh-icon-size="small">Bladefist's Breadth</a></td><td><a href="https://www.wowhead.com/tbc/quest=10484">Cruel's Intentions</a> (Shattered Halls)</td></tr>
+            <tr><td class="slot-label">Trinket</td><td><a href="https://www.wowhead.com/tbc/item=25937" data-wh-icon-size="small">Terokkar Tablet of Precision</a></td><td><a href="https://www.wowhead.com/tbc/quest=10035">Torgos!</a> (Terokkar)</td></tr>
+            <tr><td class="slot-label">Ranged</td><td><a href="https://www.wowhead.com/tbc/item=30279" data-wh-icon-size="small">Mama's Insurance</a></td><td><a href="https://www.wowhead.com/tbc/quest=10820">Declawing Doomclaw</a> (Blade's Edge)</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box"><p>These are quick wins, not BiS. Replace them with heroic, badge, and Karazhan drops from the gear tables above as you go.</p></div>
+
+    <h1 id="reputation">Reputation</h1>
+    <p>Reputation unlocks heroic dungeons, shoulder enchants, key recipes, and powerful gear. Here's what matters for a Fury Warrior.</p>
+
+    <h2 id="heroic-keys">Heroic Dungeon Keys</h2>
+    <p>All heroic keys require <strong>Revered</strong> with the corresponding faction. Buy the key from the faction's Quartermaster.</p>
+    <table class="gear-table">
+        <thead><tr><th>Region</th><th>Dungeons</th><th>Key</th><th>Faction</th><th>Quartermaster / Location</th></tr></thead>
+        <tbody>
+            <tr><td>Hellfire Peninsula</td><td>Ramparts, Blood Furnace, Shattered Halls</td><td><a href="https://www.wowhead.com/tbc/item=30622" data-wh-icon-size="small">Flamewrought Key</a></td><td>Honor Hold (A) / Thrallmar (H)</td><td><a href="https://www.wowhead.com/tbc/npc=17657">Logistics Officer Ulrike</a> - Honor Hold<br><a href="https://www.wowhead.com/tbc/npc=17585">Quartermaster Urgronn</a> - Thrallmar</td></tr>
+            <tr><td>Zangarmarsh</td><td>Slave Pens, Underbog, Steamvault</td><td><a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a></td><td>Cenarion Expedition</td><td><a href="https://www.wowhead.com/tbc/npc=17904">Fedryen Swiftspear</a> - Cenarion Refuge, Zangarmarsh</td></tr>
+            <tr><td>Terokkar Forest</td><td>Mana-Tombs, Auchenai Crypts, Sethekk Halls, Shadow Lab</td><td><a href="https://www.wowhead.com/tbc/item=30633" data-wh-icon-size="small">Auchenai Key</a></td><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td></tr>
+            <tr><td>Netherstorm</td><td>Mechanar, Botanica, Arcatraz</td><td><a href="https://www.wowhead.com/tbc/item=30634" data-wh-icon-size="small">Warpforged Key</a></td><td>The Sha'tar</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td></tr>
+            <tr><td>Caverns of Time</td><td>Old Hillsbrad, Black Morass</td><td><a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a></td><td>Keepers of Time</td><td><a href="https://www.wowhead.com/tbc/npc=21643">Alurmi</a> - Caverns of Time, Tanaris</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="rep-factions">Aldor vs Scryers</h2>
+    <div class="warn-box">
+        <p><strong>Choose wisely:</strong> Gaining rep with one loses rep with the other. Most Fury Warriors go <strong>Aldor</strong> for the stronger AP-focused shoulder enchant.</p>
+    </div>
+    <table class="gear-table">
+        <thead><tr><th>Faction</th><th>Exalted Shoulder Enchant</th><th>Stats</th><th>Other Notable Rewards</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">The Aldor</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a></td><td>+30 AP, +10 Crit</td><td><a href="https://www.wowhead.com/tbc/item=29124" data-wh-icon-size="small">Vindicator's Brand</a> (Exalted sword)</td></tr>
+            <tr><td class="slot-label">The Scryers</td><td><a href="https://www.wowhead.com/tbc/item=28910" data-wh-icon-size="small">Greater Inscription of the Blade</a></td><td>+15 Crit, +20 AP</td><td>Enchanted Clefthoof LW patterns</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="rep-priority">Warrior DPS Priority Reputations</h2>
+    <table class="gear-table">
+        <thead><tr><th>Priority</th><th>Faction</th><th>Goal</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td>All 5 key factions</td><td><span class="rep-icon">📜</span>Revered</td><td>Unlock heroic dungeons for badges and gear</td></tr>
+            <tr><td class="slot-label">2</td><td>Cenarion Expedition</td><td><span class="rep-icon">📜</span>Revered</td><td><a href="https://www.wowhead.com/tbc/item=29192" data-wh-icon-size="small">Glyph of Ferocity</a> head enchant (+34 AP, +16 Hit)</td></tr>
+            <tr><td class="slot-label">3</td><td>The Aldor</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=28888" data-wh-icon-size="small">Greater Inscription of Vengeance</a> shoulder enchant</td></tr>
+            <tr><td class="slot-label">4</td><td>Lower City</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a> (expertise ring)</td></tr>
+            <tr><td class="slot-label">5</td><td>The Violet Eye</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29283" data-wh-icon-size="small">Violet Signet of the Master Assassin</a> (upgradeable Karazhan ring)</td></tr>
+            <tr><td class="slot-label">6</td><td>The Consortium</td><td><span class="rep-icon">📜</span>Exalted</td><td>Design: <a href="https://www.wowhead.com/tbc/item=32409" data-wh-icon-size="small">Relentless Earthstorm Diamond</a> meta gem</td></tr>
+            <tr><td class="slot-label">7</td><td>Keepers of Time</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/spell=25080">Enchant Gloves - Superior Agility</a> recipe</td></tr>
+            <tr><td class="slot-label">8</td><td>Shattered Sun Offensive</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=34679" data-wh-icon-size="small">Shattered Sun Pendant of Might</a> (Phase 5 neck)</td></tr>
+        </tbody>
+    </table>
 
     <!-- ===== USEFUL LINKS ===== -->
     <h1 id="useful-links">Useful Links</h1>

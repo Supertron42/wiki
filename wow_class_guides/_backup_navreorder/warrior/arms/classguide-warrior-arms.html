@@ -45,15 +45,10 @@ REQUIRED FEATURES (every guide MUST have all of these):
 13. Gem/enchant per-slot     GREP: gem-enchant-info      + socket-red/yellow/blue/meta
 14. Copy-link buttons        GREP: spoiler-btn           BB Code + Markdown, copyText()
 15. "My Other Projects" btn  GREP: My Other Projects     absolute-positioned nav footer
-17. Hub back-link            GREP: All Guides            always-visible single link at the
-       TOP of #nav (before the first <h3>, so collapse/scrollspy never hides it):
-       "<- All Guides" -> ../../index.html, and NOTHING else. The old per-guide switcher
-       list was removed by user request; do NOT re-add it. New guides get a card in
-       index.html (hub) + a sitemap.xml entry instead.
-   NOTE: nav link order MUST match <h1>/<h2> document order (Scrollspy walks nav order
-       and breaks at the first target below the reading line). Section order is:
-       Overview, Talents, Rotation, Quest Strategy, Reputation, Pre-Raid BiS, Badge
-       Priority, Phases 1-5, Gems, Enchants, Consumables, Raid Buffs, Resources.
+17. Class-guide switcher     GREP: nav-grouplabel        always-visible block at the TOP
+       of #nav (before the first <h3>, so collapse/scrollspy never hides it): links the
+       hub (../../index.html) + every class/spec guide; current guide styled active.
+       Add new guides to the switcher in EVERY guide and as a card in index.html (hub).
 18. Export to AtlasLoot      GREP: export-atlasloot      <h1 id="export-atlasloot"> section
        near the bottom (before "Link to This Page") + a nav link under Resources, AND a
        per-table "Export to AtlasLoot" button (class al-table-btn) injected above EVERY
@@ -723,15 +718,16 @@ code {
 <div class="nav-backdrop" onclick="toggleNav()"></div>
 
 <div id="nav">
+    <div class="nav-grouplabel">Class Guides</div>
     <a href="../../index.html">&#8592; All Guides</a>
+    <a href="classguide-warrior-prot.html">Warrior - Protection</a>
+    <a href="../fury/classguide-warrior-fury.html">Warrior - Fury</a>
+    <a href="classguide-warrior-arms.html" style="color:#4ec9b0;font-weight:bold;">Warrior - Arms (PvE)</a>
+    <a href="../arms-pvp/classguide-warrior-arms-pvp.html">Warrior - Arms (PvP)</a>
+    <a href="../../mage/frost/classguide-mage-frost.html">Mage - Frost</a>
 
     <h3>Arms Warrior</h3>
     <a href="#overview">Overview</a>
-
-    <h3>Talents</h3>
-    <a href="#talents">Build &amp; Key Talents</a>
-    <a href="#talent-build" class="nav-sub">Talent Build</a>
-    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
 
     <h3>Rotation</h3>
     <a href="#rotation">Overview</a>
@@ -742,17 +738,10 @@ code {
     <a href="#rotation-rage" class="nav-sub">Rage Management</a>
     <a href="#rotation-buffs" class="nav-sub">Keep These Up</a>
 
-    <h3>Quest Strategy</h3>
-    <a href="#quest-strategy">Overview</a>
-    <a href="#quest-pre-flight">Pre-Flight Checklist</a>
-    <a href="#quest-fresh70-sweep">Fresh 70 Sweep</a>
-    <a href="#quest-aldor-turn-in-flow">Aldor Turn-In Flow</a>
-
-    <h3>Reputation</h3>
-    <a href="#reputation">Overview</a>
-    <a href="#rep-priority">DPS Priority</a>
-    <a href="#heroic-keys">Heroic Keys</a>
-    <a href="#rep-speedups">Easy Speedups</a>
+    <h3>Talents</h3>
+    <a href="#talents">Build &amp; Key Talents</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
 
     <h3>Pre-Raid Gear</h3>
     <a href="#pre-raid-bis">Overview</a>
@@ -879,6 +868,18 @@ code {
     <a href="#offensive-debuffs">Offensive Debuffs</a>
     <a href="#ideal-party">Ideal Party</a>
 
+    <h3>Quest Strategy</h3>
+    <a href="#quest-strategy">Overview</a>
+    <a href="#quest-pre-flight">Pre-Flight Checklist</a>
+    <a href="#quest-fresh70-sweep">Fresh 70 Sweep</a>
+    <a href="#quest-aldor-turn-in-flow">Aldor Turn-In Flow</a>
+
+    <h3>Reputation</h3>
+    <a href="#reputation">Overview</a>
+    <a href="#rep-priority">DPS Priority</a>
+    <a href="#heroic-keys">Heroic Keys</a>
+    <a href="#rep-speedups">Easy Speedups</a>
+
     <h3>Resources</h3>
     <a href="#useful-links">Useful Links</a>
     <a href="#export-atlasloot">Export to AtlasLoot</a>
@@ -903,6 +904,63 @@ code {
     <div class="info-box">
         <p><strong>2. Then follow the stat priority:</strong> Hit (to 9%) &gt; Expertise (to 6.5%) &gt; Critical Strike &gt; Armor Penetration &gt; Strength / Attack Power &gt; Agility &gt; Haste.</p>
     </div>
+
+    <!-- ===== ROTATION ===== -->
+    <h1 id="rotation">Rotation</h1>
+    <p>Arms is a <strong>priority system</strong> on a slow 2H weapon: cast the highest available ability, weave <a href="https://www.wowhead.com/tbc/spell=25242">Slam</a> between swings, and dump spare Rage into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a>. Built from the Icy Veins and Warcraft Tavern Arms guides.</p>
+
+    <div class="info-box"><p><strong>The whole rotation in one line:</strong> keep <a href="https://www.wowhead.com/tbc/spell=25208">Rend</a> up for <a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a>, then <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> on cooldown &gt; <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> on cooldown &gt; <a href="https://www.wowhead.com/tbc/spell=25242">Slam</a> as filler &gt; <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> as the Rage dump.</p></div>
+
+    <h2 id="rotation-priority">Single-Target Priority</h2>
+    <p>Top to bottom, use the first ability that is off cooldown and affordable:</p>
+    <ol>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=25208">Rend</a></strong> kept on the target. It is a weak hit on its own, but its bleed (with <a href="https://www.wowhead.com/tbc/spell=12867">Deep Wounds</a> from your crits) keeps <a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> active, buffing the whole raid's physical damage on that target.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a></strong> on cooldown. Your hardest-hitting strike and it applies Mortal Wounds.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a></strong> on cooldown. Strong instant damage; pairs with Mortal Strike off the same Rage pool.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=25242">Slam</a></strong> as filler between swings. With <a href="https://www.wowhead.com/tbc/spell=12862">Improved Slam</a> its cast fits inside your 2H swing timer; cast it only when Mortal Strike and Whirlwind are both on cooldown and you are not about to auto-attack.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=11585">Overpower</a></strong> when it procs (target dodges), if you are in <a href="https://www.wowhead.com/tbc/spell=2457">Battle Stance</a>; it cannot be dodged/blocked and crits hard with <a href="https://www.wowhead.com/tbc/spell=16493">Impale</a>.</li>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a></strong> as your Rage dump. Queue it on your next swing whenever Rage is plentiful; it does not cost a global.</li>
+    </ol>
+
+    <h2 id="rotation-execute">Execute Phase (sub-20%)</h2>
+    <ul>
+        <li>Below 20% boss health, <strong><a href="https://www.wowhead.com/tbc/spell=25236">Execute</a></strong> becomes your top priority and replaces Slam/Heroic Strike as your Rage sink.</li>
+        <li>Still use <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> and <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> on cooldown, and keep <a href="https://www.wowhead.com/tbc/spell=25208">Rend</a>/<a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> up, then pour everything else into Execute.</li>
+        <li>Line up <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> and trinkets for the execute window when possible for a big finish.</li>
+    </ul>
+
+    <h2 id="rotation-aoe">Multi-Target / AoE</h2>
+    <ul>
+        <li><strong><a href="https://www.wowhead.com/tbc/spell=12328">Sweeping Strikes</a></strong> then <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> and <a href="https://www.wowhead.com/tbc/spell=25231">Cleave</a> to spread damage to extra targets.</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=25264">Thunder Clap</a> and <a href="https://www.wowhead.com/tbc/spell=25208">Rend</a> on multiple targets for bleed/AoE pressure.</li>
+        <li>On true AoE packs, Warriors are filler DPS; focus Sweeping Strikes + Whirlwind on cooldown and let the AoE classes lead.</li>
+    </ul>
+
+    <h2 id="rotation-cooldowns">Cooldowns</h2>
+    <table class="gear-table">
+        <thead><tr><th>Ability</th><th>Effect</th><th>When to use</th></tr></thead>
+        <tbody>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a></td><td>+20% damage for 30 sec (and you take +5% damage)</td><td>On cooldown; stack with trinkets and the execute phase</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=1719">Recklessness</a></td><td>+100% crit for 15 sec (and +20% damage taken)</td><td>Burn phases / Bloodlust windows; risky on progression</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=18499">Berserker Rage</a></td><td>Generates Rage and frees you of fear</td><td>To top up Rage or break/ignore fear effects</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a></td><td>Instant Rage</td><td>Pre-pull and whenever you are Rage-starved</td></tr>
+            <tr><td><a href="https://www.wowhead.com/tbc/spell=12328">Sweeping Strikes</a></td><td>Next 10 melee swings hit a second nearby target</td><td>Two or more stacked targets</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="rotation-rage">Rage Management</h2>
+    <ul>
+        <li>On a slow 2H, Rage comes in chunks; do not empty the bar on <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> if it would delay <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> or <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a>.</li>
+        <li>Queue <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> only when Rage is plentiful; skip it when banking for your strikes.</li>
+        <li>Open with <a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a> so you start with a Rage pool, and use <a href="https://www.wowhead.com/tbc/spell=18499">Berserker Rage</a> to refill in long fights.</li>
+    </ul>
+
+    <h2 id="rotation-buffs">Keep These Up</h2>
+    <ul>
+        <li><a href="https://www.wowhead.com/tbc/spell=2048">Battle Shout</a> (talented with <a href="https://www.wowhead.com/tbc/spell=12318">Commanding Presence</a>) for the whole raid's attack power.</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=25208">Rend</a> / <a href="https://www.wowhead.com/tbc/spell=12867">Deep Wounds</a> on the boss so <a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> stays active for the melee group.</li>
+        <li>Five stacks of <a href="https://www.wowhead.com/tbc/spell=7386">Sunder Armor</a> on the boss (raid-shared) so your physical hits land harder.</li>
+    </ul>
 
     <!-- ===== TALENTS ===== -->
     <h1 id="talents">Talents</h1>
@@ -986,338 +1044,6 @@ code {
         <tr><td class="slot-label">22</td><td>Flurry</td><td>3/5</td><td>Fury</td></tr>
       </tbody>
     </table>
-
-    <!-- ===== ROTATION ===== -->
-    <h1 id="rotation">Rotation</h1>
-    <p>Arms is a <strong>priority system</strong> on a slow 2H weapon: cast the highest available ability, weave <a href="https://www.wowhead.com/tbc/spell=25242">Slam</a> between swings, and dump spare Rage into <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a>. Built from the Icy Veins and Warcraft Tavern Arms guides.</p>
-
-    <div class="info-box"><p><strong>The whole rotation in one line:</strong> keep <a href="https://www.wowhead.com/tbc/spell=25208">Rend</a> up for <a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a>, then <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> on cooldown &gt; <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> on cooldown &gt; <a href="https://www.wowhead.com/tbc/spell=25242">Slam</a> as filler &gt; <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> as the Rage dump.</p></div>
-
-    <h2 id="rotation-priority">Single-Target Priority</h2>
-    <p>Top to bottom, use the first ability that is off cooldown and affordable:</p>
-    <ol>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=25208">Rend</a></strong> kept on the target. It is a weak hit on its own, but its bleed (with <a href="https://www.wowhead.com/tbc/spell=12867">Deep Wounds</a> from your crits) keeps <a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> active, buffing the whole raid's physical damage on that target.</li>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a></strong> on cooldown. Your hardest-hitting strike and it applies Mortal Wounds.</li>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a></strong> on cooldown. Strong instant damage; pairs with Mortal Strike off the same Rage pool.</li>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=25242">Slam</a></strong> as filler between swings. With <a href="https://www.wowhead.com/tbc/spell=12862">Improved Slam</a> its cast fits inside your 2H swing timer; cast it only when Mortal Strike and Whirlwind are both on cooldown and you are not about to auto-attack.</li>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=11585">Overpower</a></strong> when it procs (target dodges), if you are in <a href="https://www.wowhead.com/tbc/spell=2457">Battle Stance</a>; it cannot be dodged/blocked and crits hard with <a href="https://www.wowhead.com/tbc/spell=16493">Impale</a>.</li>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a></strong> as your Rage dump. Queue it on your next swing whenever Rage is plentiful; it does not cost a global.</li>
-    </ol>
-
-    <h2 id="rotation-execute">Execute Phase (sub-20%)</h2>
-    <ul>
-        <li>Below 20% boss health, <strong><a href="https://www.wowhead.com/tbc/spell=25236">Execute</a></strong> becomes your top priority and replaces Slam/Heroic Strike as your Rage sink.</li>
-        <li>Still use <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> and <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> on cooldown, and keep <a href="https://www.wowhead.com/tbc/spell=25208">Rend</a>/<a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> up, then pour everything else into Execute.</li>
-        <li>Line up <a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a> and trinkets for the execute window when possible for a big finish.</li>
-    </ul>
-
-    <h2 id="rotation-aoe">Multi-Target / AoE</h2>
-    <ul>
-        <li><strong><a href="https://www.wowhead.com/tbc/spell=12328">Sweeping Strikes</a></strong> then <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a> and <a href="https://www.wowhead.com/tbc/spell=25231">Cleave</a> to spread damage to extra targets.</li>
-        <li><a href="https://www.wowhead.com/tbc/spell=25264">Thunder Clap</a> and <a href="https://www.wowhead.com/tbc/spell=25208">Rend</a> on multiple targets for bleed/AoE pressure.</li>
-        <li>On true AoE packs, Warriors are filler DPS; focus Sweeping Strikes + Whirlwind on cooldown and let the AoE classes lead.</li>
-    </ul>
-
-    <h2 id="rotation-cooldowns">Cooldowns</h2>
-    <table class="gear-table">
-        <thead><tr><th>Ability</th><th>Effect</th><th>When to use</th></tr></thead>
-        <tbody>
-            <tr><td><a href="https://www.wowhead.com/tbc/spell=12292">Death Wish</a></td><td>+20% damage for 30 sec (and you take +5% damage)</td><td>On cooldown; stack with trinkets and the execute phase</td></tr>
-            <tr><td><a href="https://www.wowhead.com/tbc/spell=1719">Recklessness</a></td><td>+100% crit for 15 sec (and +20% damage taken)</td><td>Burn phases / Bloodlust windows; risky on progression</td></tr>
-            <tr><td><a href="https://www.wowhead.com/tbc/spell=18499">Berserker Rage</a></td><td>Generates Rage and frees you of fear</td><td>To top up Rage or break/ignore fear effects</td></tr>
-            <tr><td><a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a></td><td>Instant Rage</td><td>Pre-pull and whenever you are Rage-starved</td></tr>
-            <tr><td><a href="https://www.wowhead.com/tbc/spell=12328">Sweeping Strikes</a></td><td>Next 10 melee swings hit a second nearby target</td><td>Two or more stacked targets</td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="rotation-rage">Rage Management</h2>
-    <ul>
-        <li>On a slow 2H, Rage comes in chunks; do not empty the bar on <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> if it would delay <a href="https://www.wowhead.com/tbc/spell=30330">Mortal Strike</a> or <a href="https://www.wowhead.com/tbc/spell=1680">Whirlwind</a>.</li>
-        <li>Queue <a href="https://www.wowhead.com/tbc/spell=25286">Heroic Strike</a> only when Rage is plentiful; skip it when banking for your strikes.</li>
-        <li>Open with <a href="https://www.wowhead.com/tbc/spell=2687">Bloodrage</a> so you start with a Rage pool, and use <a href="https://www.wowhead.com/tbc/spell=18499">Berserker Rage</a> to refill in long fights.</li>
-    </ul>
-
-    <h2 id="rotation-buffs">Keep These Up</h2>
-    <ul>
-        <li><a href="https://www.wowhead.com/tbc/spell=2048">Battle Shout</a> (talented with <a href="https://www.wowhead.com/tbc/spell=12318">Commanding Presence</a>) for the whole raid's attack power.</li>
-        <li><a href="https://www.wowhead.com/tbc/spell=25208">Rend</a> / <a href="https://www.wowhead.com/tbc/spell=12867">Deep Wounds</a> on the boss so <a href="https://www.wowhead.com/tbc/spell=29859">Blood Frenzy</a> stays active for the melee group.</li>
-        <li>Five stacks of <a href="https://www.wowhead.com/tbc/spell=7386">Sunder Armor</a> on the boss (raid-shared) so your physical hits land harder.</li>
-    </ul>
-
-    <!-- ===== QUEST STRATEGY ===== -->
-    <h1 id="quest-strategy">Questing Strategy</h1>
-    <p>Quests reward gear, gold, rep, and XP all at once, but only if you batch them. The pickup-everything-first workflow saves hours of backtracking and turns every mob kill into 3-4 simultaneous progress bars (rep + quest + farm + Marks for Aldor turn-ins).</p>
-
-    <div class="info-box">
-        <p><strong>Universal rule:</strong> When you arrive at a quest hub or new zone, <strong>walk every NPC with a yellow ! before doing anything else.</strong> Then leave town with a full quest log (25 quests) and a plan that completes 4-6 quests per loop. Never kill or gather "just to grind", there's almost always a quest objective for that mob/node.</p>
-    </div>
-
-    <div class="warn-box">
-        <p><strong>Link convention:</strong> Entries shown as "[Item Name] quest" use the quest ID from the source BiS guides. Hover the link to see the actual quest title, NPC, and location. Names displayed literally (like <em>Hero of the Mag'har</em> or <em>Teron Gorefiend, I am...</em>) are confirmed; generic "[Item] quest" labels are used where the source guide didn't spell out the quest title.</p>
-    </div>
-
-    <h2 id="quest-pre-flight">Pre-Flight Checklist (Before Any Heroic Run)</h2>
-    <p>Pick these up <strong>before</strong> you queue or summon. One full heroic clear = 5+ progress bars stacked.</p>
-    <table class="gear-table">
-        <thead><tr><th>Pickup</th><th>NPC / Location</th><th>Why</th></tr></thead>
-        <tbody>
-            <tr><td>Sha'tar daily heroic quest</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td><td>+250 Sha'tar rep + Badge bonus</td></tr>
-            <tr><td>Lower City daily heroic quest</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td><td>+250 Lower City rep</td></tr>
-            <tr><td>Cooking daily</td><td>"The Rokk" - Lower City, Shattrath</td><td>~250 Lower City rep + recipe tokens</td></tr>
-            <tr><td>Fishing daily</td><td>Old Man Barlo - Silmyr Lake, Terokkar (or Lower City)</td><td>~250 Lower City rep + lure rewards</td></tr>
-            <tr><td>Scryers/Aldor daily (Phase 2+)</td><td>Aldor Rise / Scryers' Tier</td><td>+250 to your chosen Shattrath faction</td></tr>
-            <tr><td>Skyguard / Ogri'la dailies (Phase 2+)</td><td>Blade's Edge Plateaus</td><td>Bonus rep, gold, gems</td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="quest-fresh70-sweep">Fresh 70 Arms Quest Sweep</h2>
-    <p>If you're newly 70 and haven't run these zones yet (or rolled an alt), do them in this order. Each zone has gear quests that go directly into your pre-raid set.</p>
-
-    <h3>Zangarmarsh</h3>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Cenarion Refuge / Telredor</td><td><a href="https://www.wowhead.com/tbc/quest=9902">The Terror of Marshlight Lake</a></td><td><a href="https://www.wowhead.com/tbc/item=25922" data-wh-icon-size="small">Fearless Girdle</a> (waist starter)</td></tr>
-            <tr><td>Telredor / Sporeggar</td><td>Cenarion Refuge intro chain</td><td>Cenarion Expedition rep → unlocks <a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a> for heroic Slave Pens / Underbog / Steamvault</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Terokkar Forest</h3>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Allerian Stronghold / Stonebreaker Hold</td><td><a href="https://www.wowhead.com/tbc/quest=10091">The Soul Devices</a></td><td><a href="https://www.wowhead.com/tbc/item=28167" data-wh-icon-size="small">Sha'tari Wrought Armguards</a></td></tr>
-            <tr><td>Allerian / Stonebreaker</td><td><a href="https://www.wowhead.com/tbc/quest=10095">Into the Heart of the Labyrinth</a></td><td><a href="https://www.wowhead.com/tbc/item=28176" data-wh-icon-size="small">Sha'tari Wrought Greaves</a></td></tr>
-            <tr><td>Quest hub near pickup zone</td><td><a href="https://www.wowhead.com/tbc/quest=9763">The Warlord's Hideout</a></td><td><a href="https://www.wowhead.com/tbc/item=28180" data-wh-icon-size="small">Myrmidon's Headdress</a> (tank head; Arms prefers Mask of the Deceiver or Helm of the Claw)</td></tr>
-            <tr><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/quest=10097">Brother Against Brother</a></td><td><a href="https://www.wowhead.com/tbc/item=29335" data-wh-icon-size="small">Talon Lord's Collar</a> (hit neck)</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Nagrand</h3>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Telaar (A) / Garadar (H)</td><td><a href="https://www.wowhead.com/tbc/quest=10011">Forge Camp: Annihilated</a></td><td><a href="https://www.wowhead.com/tbc/item=25819" data-wh-icon-size="small">Breastplate of the Warbringer</a> (chest starter)</td></tr>
-            <tr><td>Garadar (Horde only)</td><td><a href="https://www.wowhead.com/tbc/quest=10212">Hero of the Mag'har</a></td><td><a href="https://www.wowhead.com/tbc/item=28175" data-wh-icon-size="small">Mag'hari Warlord's Legplates</a></td></tr>
-            <tr><td>Throne of the Elements / surrounding</td><td>Consortium quest chain</td><td>Heavy Consortium rep + sets up <a href="https://www.wowhead.com/tbc/item=29115" data-wh-icon-size="small">Consortium Blaster</a> at Revered</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Blade's Edge Mountains</h3>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Sylvanaar (A) / Thunderlord Stronghold (H)</td><td>Main BEM questline</td><td>Cenarion Expedition + Consortium rep + gear/gold</td></tr>
-            <tr><td>Mok'Nathal Village</td><td>Mok'Nathal/Skettis chain</td><td>Phase 2 gateway to Skyguard / Ogri'la dailies</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Netherstorm</h3>
-    <p>Netherstorm has one of the densest concentrations of plate-DPS gear quests in the game. Walk every quest hub before pulling a single mob.</p>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Area 52</td><td><a href="https://www.wowhead.com/tbc/quest=10186">You're Hired!</a></td><td><a href="https://www.wowhead.com/tbc/item=30225" data-wh-icon-size="small">Junior Technician 3rd Grade Bracers</a></td></tr>
-            <tr><td>Area 52 / Stormspire</td><td><a href="https://www.wowhead.com/tbc/quest=10318">Dealing with the Overmaster</a></td><td><a href="https://www.wowhead.com/tbc/item=30006" data-wh-icon-size="small">Wind Trader's Band</a> (green ring with absurd stats)</td></tr>
-            <tr><td>Area 52</td><td><a href="https://www.wowhead.com/tbc/quest=10507">Turning Point</a></td><td><a href="https://www.wowhead.com/tbc/item=30375" data-wh-icon-size="small">Gauntlets of the Vanquisher</a></td></tr>
-            <tr><td>Eco-Dome Midrealm</td><td><a href="https://www.wowhead.com/tbc/quest=10320">Destroy Naberius!</a></td><td><a href="https://www.wowhead.com/tbc/item=29783" data-wh-icon-size="small">Legguards of the Resolute Defender</a></td></tr>
-            <tr><td>Manaforge B'naar / Coruu</td><td><a href="https://www.wowhead.com/tbc/quest=10345">The Flesh Lies...</a></td><td><a href="https://www.wowhead.com/tbc/item=30341" data-wh-icon-size="small">Flesh Handler's Gauntlets</a> (plate quest gloves)</td></tr>
-            <tr><td>Manaforge Ara (Scryers only)</td><td><a href="https://www.wowhead.com/tbc/quest=10365">Shutting Down Manaforge Ara</a></td><td><a href="https://www.wowhead.com/tbc/item=30378" data-wh-icon-size="small">Thalodien's Charm</a> (Scryers neck)</td></tr>
-            <tr><td>Stormspire (Netherstorm)</td><td><a href="https://www.wowhead.com/tbc/quest=10400">Overlord</a></td><td><a href="https://www.wowhead.com/tbc/item=28042" data-wh-icon-size="small">Regal Protectorate</a> (trinket)</td></tr>
-            <tr><td>Eco-Dome / Stormspire</td><td><a href="https://www.wowhead.com/tbc/quest=10439">Dimensius the All-Devouring</a></td><td><a href="https://www.wowhead.com/tbc/item=30300" data-wh-icon-size="small">Dabiri's Enigma</a> (trinket)</td></tr>
-            <tr><td>Area 52 → Tempest Keep</td><td><a href="https://www.wowhead.com/tbc/quest=10704">How to Break Into the Arcatraz</a> chain (Arcatraz key)</td><td><a href="https://www.wowhead.com/tbc/item=31460" data-wh-icon-size="small">Sha'tari Vindicator's Waistguard</a> + unlocks Arcatraz heroic</td></tr>
-        </tbody>
-    </table>
-    <div class="tip-box">
-        <p><strong>Netherstorm efficiency:</strong> All Sunfury blood elf and demon kills here drop <strong>both</strong> Aldor turn-in items (Marks of Sargeras, Fel Armaments) AND Scryers turn-in items (Sunfury Signets). Whichever Shattrath faction you picked, this zone is a goldmine. Don't kill anything here without quests on you.</p>
-    </div>
-
-    <h3>Shadowmoon Valley</h3>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Wildhammer Stronghold (A) / Shadowmoon Village (H)</td><td><a href="https://www.wowhead.com/tbc/quest=11090">Subdue the Subduer</a></td><td><a href="https://www.wowhead.com/tbc/item=32871" data-wh-icon-size="small">Horns of the Illidari</a> (head starter)</td></tr>
-            <tr><td>Shadowmoon Valley (chain progression)</td><td><a href="https://www.wowhead.com/tbc/quest=10588">The Cipher of Damnation</a> (final step of the SMV main chain)</td><td><a href="https://www.wowhead.com/tbc/item=31071" data-wh-icon-size="small">Grom'tor's Charge</a> (1H leveling weapon; Arms wants a 2H, so take another reward if the quest offers one) + huge XP/gold/rep</td></tr>
-            <tr><td>SMV (Aldor or Scryers hub)</td><td><a href="https://www.wowhead.com/tbc/quest=10639">Teron Gorefiend, I am...</a></td><td><a href="https://www.wowhead.com/tbc/item=31105" data-wh-icon-size="small">Overlord's Helmet of Second Sight</a> (hit head)</td></tr>
-            <tr><td>Wildhammer / Shadowmoon Village</td><td><a href="https://www.wowhead.com/tbc/quest=10769">Dissension Amongst the Ranks...</a></td><td><a href="https://www.wowhead.com/tbc/item=31078" data-wh-icon-size="small">Protector's Mark of the Redemption</a> (tank ring; pick another reward if offered)</td></tr>
-            <tr><td>SMV quest hub</td><td><a href="https://www.wowhead.com/tbc/quest=10198">Information Gathering</a></td><td><a href="https://www.wowhead.com/tbc/item=30386" data-wh-icon-size="small">Bloodguard's Greaves</a> (feet starter)</td></tr>
-        </tbody>
-    </table>
-    <div class="tip-box">
-        <p><strong>Aldor double-dip:</strong> Every Burning Legion mob in SMV drops <strong>Mark of Sargeras + Fel Armaments</strong>. Pick up every quest hub here before pulling a single demon. The quest chain alone gives meaningful Aldor rep on top of the turn-in farm.</p>
-    </div>
-
-    <h3>Caverns of Time / Tanaris</h3>
-    <table class="gear-table">
-        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
-        <tbody>
-            <tr><td>Andormu - Caverns of Time entrance</td><td><a href="https://www.wowhead.com/tbc/quest=10285">Return to Andormu</a> (after CoT dungeon clears)</td><td><a href="https://www.wowhead.com/tbc/item=29316" data-wh-icon-size="small">Warchief's Mantle</a> (shoulder starter)</td></tr>
-            <tr><td>Caverns of Time questgivers</td><td>Old Hillsbrad / Black Morass intro chains</td><td>Heavy Keepers of Time rep → <a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a> for heroic CoT</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Dungeon Quest Pickup (Critical)</h3>
-    <p>Many dungeons have quests posted at hubs you'd never visit otherwise. <strong>Always</strong> check for dungeon quests before queueing, or you'll re-clear later.</p>
-    <table class="gear-table">
-        <thead><tr><th>Dungeon</th><th>Quest Hub for Pickup</th><th>Reward Highlights</th></tr></thead>
-        <tbody>
-            <tr><td>Auchenai Crypts</td><td>Lower City quest board + outside Auchindoun</td><td><a href="https://www.wowhead.com/tbc/item=28180" data-wh-icon-size="small">Myrmidon's Headdress</a> from inside the dungeon (tank head, off-spec for Arms)</td></tr>
-            <tr><td>Mechanar / Botanica / Arcatraz</td><td>Stormspire (Netherstorm) - check the area for posted dungeon quests</td><td>Multiple gear/key chains + Sha'tar rep on completion</td></tr>
-            <tr><td>Old Hillsbrad / Black Morass</td><td>Caverns of Time entrance (Andormu, Soridormi)</td><td>Keepers of Time rep + <a href="https://www.wowhead.com/tbc/item=29184" data-wh-icon-size="small">Timewarden's Leggings</a> path at Revered</td></tr>
-            <tr><td>Steamvault</td><td>Cenarion Refuge - check Watcher Jhang for quest</td><td>Cenarion Expedition Exalted unlock; Devilshark Cape farm</td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="quest-aldor-turn-in-flow">Aldor Turn-In Flow (Your Faction)</h2>
-    <p>Combine your Aldor rep grind with your gear quest sweep. Every demon you kill in SMV / Netherstorm / HFP can drop Mark items <strong>and</strong> count toward gear quests <strong>and</strong> Honor Hold/Thrallmar rep.</p>
-    <table class="gear-table">
-        <thead><tr><th>Zone</th><th>Demon Concentration</th><th>Stacks With</th></tr></thead>
-        <tbody>
-            <tr><td>Hellfire Peninsula - Pools of Aggonar / Throne of Kil'jaeden</td><td>Mark of Kil'jaeden</td><td>Honor Hold/Thrallmar quests + rep</td></tr>
-            <tr><td>Shadowmoon Valley - Legion Front (around Wildhammer)</td><td>Mark of Sargeras + Fel Armaments (densest combined)</td><td>SMV main quest chain Aldor rep</td></tr>
-            <tr><td>Netherstorm - Manaforge B'naar / Coruu surroundings</td><td>Marks of Sargeras + Fel Armaments + Sunfury Signets</td><td>Multiple gear quests + Sha'tar dailies</td></tr>
-            <tr><td>Bash'ir Landing event (BEM)</td><td>Marks + Bash'ir Phasing Devices</td><td>Skyguard rep + group event drops</td></tr>
-        </tbody>
-    </table>
-    <div class="info-box">
-        <p><strong>Hand-in location:</strong> Turn in Marks of Kil'jaeden, Marks of Sargeras, and Fel Armaments at <strong>Aldor Rise (upper Shattrath)</strong>. Take the elevator up from the central plaza. The turn-in NPCs sit near the Tabard quartermaster.</p>
-    </div>
-
-    <!-- ===== REPUTATION ===== -->
-    <h1 id="reputation">Reputation</h1>
-    <p>Reputation unlocks heroic dungeons, the shoulder enchant, the Glyph of Ferocity head enchant (Honor Hold / Thrallmar), and several gear pieces. The faster you grind these, the faster your set comes online.</p>
-
-    <h2 id="rep-priority">DPS Priority Reputations</h2>
-    <table class="gear-table">
-        <thead><tr><th>Priority</th><th>Faction</th><th>Goal</th><th>Why</th></tr></thead>
-        <tbody>
-            <tr><td class="slot-label">1</td><td>All 5 keymaster factions</td><td><span class="rep-icon">📜</span>Revered</td><td>Unlock heroic dungeons - your main pre-raid gear pipeline</td></tr>
-            <tr><td class="slot-label">2</td><td>Lower City</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a> - best DPS ring until Phase 4</td></tr>
-            <tr><td class="slot-label">3</td><td>The Sha'tar</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29176" data-wh-icon-size="small">Crest of the Sha'tar</a> shield + <a href="https://www.wowhead.com/tbc/item=35407" data-wh-icon-size="small">Savage Plate Chestpiece</a> at Honored</td></tr>
-            <tr><td class="slot-label">4</td><td>Keepers of Time</td><td><span class="rep-icon">📜</span>Revered → Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29184" data-wh-icon-size="small">Timewarden's Leggings</a> at Revered, <a href="https://www.wowhead.com/tbc/item=29181" data-wh-icon-size="small">Timelapse Shard</a> at Exalted, <a href="https://www.wowhead.com/tbc/item=29186" data-wh-icon-size="small">Glyph of the Defender</a> head enchant</td></tr>
-            <tr><td class="slot-label">5</td><td>The Aldor <strong>OR</strong> The Scryers</td><td><span class="rep-icon">📜</span>Exalted</td><td>Mutually exclusive - pick one. Determines your shoulder inscription vendor and Shattrath hub; the DPS inscriptions are equivalent, so choose by your other gear/utility.</td></tr>
-            <tr><td class="slot-label">6</td><td>Honor Hold (A) / Thrallmar (H)</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29156" data-wh-icon-size="small">Honor's Call</a> / <a href="https://www.wowhead.com/tbc/item=29165" data-wh-icon-size="small">Warbringer</a> weapons</td></tr>
-            <tr><td class="slot-label">7</td><td>The Violet Eye</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29279" data-wh-icon-size="small">Violet Signet of the Great Protector</a> - upgradeable Karazhan ring</td></tr>
-            <tr><td class="slot-label">8</td><td>The Consortium</td><td><span class="rep-icon">📜</span>Revered</td><td><a href="https://www.wowhead.com/tbc/item=29115" data-wh-icon-size="small">Consortium Blaster</a> ranged</td></tr>
-            <tr><td class="slot-label">9</td><td>Shattered Sun Offensive</td><td><span class="rep-icon">📜</span>Exalted</td><td>Phase 5 - SSO Pendant of Resolve: <a href="https://www.wowhead.com/tbc/item=34680" data-wh-icon-size="small">Aldor (dodge proc)</a> or <a href="https://www.wowhead.com/tbc/item=34680" data-wh-icon-size="small">Scryers (expertise proc)</a></td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="heroic-keys">Heroic Dungeon Keys</h2>
-    <p>All heroic keys require <strong>Revered</strong> with the corresponding faction. Buy the key from the faction's Quartermaster.</p>
-    <table class="gear-table">
-        <thead><tr><th>Region</th><th>Dungeons</th><th>Key</th><th>Faction</th><th>Quartermaster / Location</th></tr></thead>
-        <tbody>
-            <tr><td>Hellfire Peninsula</td><td>Ramparts, Blood Furnace, Shattered Halls</td><td><a href="https://www.wowhead.com/tbc/item=30622" data-wh-icon-size="small">Flamewrought Key</a></td><td>Honor Hold (A) / Thrallmar (H)</td><td><a href="https://www.wowhead.com/tbc/npc=17657">Logistics Officer Ulrike</a> - Honor Hold<br><a href="https://www.wowhead.com/tbc/npc=17585">Quartermaster Urgronn</a> - Thrallmar</td></tr>
-            <tr><td>Zangarmarsh</td><td>Slave Pens, Underbog, Steamvault</td><td><a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a></td><td>Cenarion Expedition</td><td><a href="https://www.wowhead.com/tbc/npc=17904">Fedryen Swiftspear</a> - Cenarion Refuge, Zangarmarsh</td></tr>
-            <tr><td>Terokkar Forest</td><td>Mana-Tombs, Auchenai Crypts, Sethekk Halls, Shadow Lab</td><td><a href="https://www.wowhead.com/tbc/item=30633" data-wh-icon-size="small">Auchenai Key</a></td><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td></tr>
-            <tr><td>Netherstorm</td><td>Mechanar, Botanica, Arcatraz</td><td><a href="https://www.wowhead.com/tbc/item=30634" data-wh-icon-size="small">Warpforged Key</a></td><td>The Sha'tar</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td></tr>
-            <tr><td>Caverns of Time</td><td>Old Hillsbrad, Black Morass</td><td><a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a></td><td>Keepers of Time</td><td><a href="https://www.wowhead.com/tbc/npc=21643">Alurmi</a> - Caverns of Time, Tanaris</td></tr>
-        </tbody>
-    </table>
-
-    <h2 id="rep-speedups">Easy &amp; Minor Rep Speedups</h2>
-    <p>Most factions can be ground out far faster with turn-in items, dungeon completion bonuses, and the Outland zone quest chains. Pick the methods that overlap with your current farming.</p>
-
-    <div class="info-box">
-        <p><strong>Heroic completion bonus:</strong> Every full Heroic dungeon clear awards <strong>+1500 reputation</strong> with the corresponding keymaster faction (on top of trash/boss kill rep). Daily heroic = bulk rep + Badges. Always your most efficient grind.</p>
-    </div>
-
-    <h3>The Sha'tar (Honored / Exalted)</h3>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td>Heroic Netherstorm dungeons</td><td>Mechanar / Botanica / Arcatraz clears</td><td>~1500 per clear</td><td>Best method by far. Doubles as badge / loot farm</td></tr>
-            <tr><td>Normal Netherstorm dungeons</td><td>Same dungeons, normal mode</td><td>~50 per boss</td><td>Pre-Revered grind option</td></tr>
-            <tr><td>Daily heroic bonus quest</td><td>From <a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> in the Terrace of Light, Shattrath</td><td>~+250 per daily</td><td>Always grab before any heroic run</td></tr>
-            <tr><td>Netherwing/Sha'tari Skyguard quests</td><td>Blade's Edge Mtns &amp; Shadowmoon Valley dailies</td><td>Varies</td><td>Indirect Sha'tar rep at higher tiers</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Lower City (Honored / Exalted)</h3>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td>Heroic Auchindoun dungeons</td><td>Mana-Tombs / Auchenai / Sethekk / Shadow Lab</td><td>~1500 per clear</td><td>4 heroics in one zone - very efficient</td></tr>
-            <tr><td>Daily heroic quest</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> in Lower City, Shattrath</td><td>+250 per daily</td><td>Pick up before any heroic. Stacks with A'dal's Command</td></tr>
-            <tr><td>Shattrath cooking / fishing dailies</td><td>"The Rokk" (cooking) &amp; Old Man Barlo (fishing) - Shattrath</td><td>~250 per daily</td><td>10 minutes total. Easy passive rep + recipes &amp; lures</td></tr>
-            <tr><td>Terokkar Forest quests</td><td>Allerian Stronghold / Stonebreaker Hold quest hubs</td><td>~250-500 per quest</td><td>Pre-70 leveling already gets you to Honored</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Keepers of Time (Revered / Exalted)</h3>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td>Heroic CoT dungeons</td><td>Old Hillsbrad / Black Morass</td><td>~1500 per clear</td><td>Only 2 heroics, but you'll farm them anyway for Latro's Sword + Hourglass</td></tr>
-            <tr><td>Normal CoT dungeons</td><td>Same dungeons, normal mode</td><td>~75 per boss</td><td>Required to reach Honored before heroics</td></tr>
-            <tr><td>Tanaris / Caverns of Time questline</td><td>Andormu &amp; Soridormi quest chains</td><td>~250-500 per quest</td><td>One-time chains - finish them all</td></tr>
-        </tbody>
-    </table>
-
-    <h3>The Aldor (to Exalted)</h3>
-    <p>You're working this faction. Demons drop the turn-in items, so any Burning Legion farm doubles as Aldor rep.</p>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td><strong>Fel Armaments</strong> turn-ins</td><td>Burning Legion drops in SMV / Netherstorm</td><td>+350 per turn-in</td><td><strong>Most efficient Aldor turn-in by far.</strong> Hand in at Aldor Rise (upper Shattrath)</td></tr>
-            <tr><td><strong>Mark of Sargeras</strong> turn-ins</td><td>Demons in Shadowmoon Valley / Netherstorm</td><td>+12 per mark (10-stack)</td><td>Honored → Exalted main grind. Drops while you Fel-Armament farm</td></tr>
-            <tr><td><strong>Mark of Kil'jaeden</strong> turn-ins</td><td>Demon mobs in Hellfire / Terokkar</td><td>+10 per mark (10-stack)</td><td>Pre-Honored grind. Skip once you're past Friendly</td></tr>
-            <tr><td>Shadowmoon Valley quests</td><td>Wildhammer Stronghold / Shadowmoon Village</td><td>~250-500 per quest</td><td>SMV main quest chain gives substantial Aldor rep along the way</td></tr>
-            <tr><td>Bash'ir Landing event (BEM)</td><td>Skettis &amp; Bash'ir Landing daily events</td><td>+250-500 per kill chain</td><td>Group event drops Marks plus other tradables</td></tr>
-        </tbody>
-    </table>
-    <div class="tip-box">
-        <p><strong>Aldor farming tip:</strong> The Legion Front in Shadowmoon Valley (around Wildhammer Stronghold) is the densest demon farm, Marks of Sargeras + Fel Armaments at the same time. Bring an AoE plan.</p>
-    </div>
-
-    <h3>The Scryers (to Exalted)</h3>
-    <p>If you went Scryers instead, the turn-in items come from blood elves rather than demons.</p>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td><strong>Sunfury Signet</strong> turn-ins</td><td>Sunfury blood elf mobs in Netherstorm &amp; SMV</td><td>+25 per signet (10-stack)</td><td>Bulk farm at Manaforge Coruu / Bash'ir Landing / Sanctum of the Stars</td></tr>
-            <tr><td><strong>Arcane Tome</strong> turn-ins</td><td>Caster mobs in Auchindoun zone &amp; Auchenai Crypts</td><td>~+150 per turn-in</td><td>Bulk farm while doing Lower City heroics in the same zone</td></tr>
-            <tr><td><strong>Firewing Signet</strong> turn-ins</td><td>Firewing blood elves around Firewing Point, Terokkar</td><td>+10 per signet</td><td>Pre-Honored / pre-70 - low value but easy</td></tr>
-            <tr><td>Netherstorm Manaforge dailies</td><td>Area 52 / Manaforge questgivers</td><td>~250 per quest</td><td>Chain with Consortium and Sha'tar dailies in the same zone</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Honor Hold / Thrallmar (to Exalted)</h3>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td>Hellfire Peninsula questline</td><td>Honor Hold / Thrallmar quest hubs</td><td>~250-500 per quest</td><td>Leveling through HFP gets you to Honored on its own</td></tr>
-            <tr><td>Normal HFP dungeon clears</td><td>Ramparts / Blood Furnace / Shattered Halls</td><td>+10-100 per kill</td><td>Bridges Honored → Revered before heroic key unlock</td></tr>
-            <tr><td>Heroic HFP dungeons</td><td>Same dungeons, heroic mode</td><td>~1500 per clear</td><td>Heroic Shattered Halls = highest rep yield</td></tr>
-            <tr><td>HFP world mobs (Fel Orcs)</td><td>Hellfire Citadel exterior, Throne of Kil'jaeden</td><td>+5-10 per kill</td><td>Slow but steady AFK option while waiting on group queues. Also drops Marks of Kil'jaeden for Aldor rep</td></tr>
-        </tbody>
-    </table>
-
-    <h3>The Consortium (to Revered)</h3>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td><strong>Obsidian Warbeads</strong> turn-ins</td><td>Ogre mobs in Nagrand &amp; Blade's Edge</td><td>+50 per turn-in (10-stack)</td><td>Bulk farm Warmaul Hill or Bash'ir Landing</td></tr>
-            <tr><td>Netherstorm Eco-Dome dailies</td><td>Karaaz / Vendor crew in Stormspire</td><td>~250 per daily</td><td>Chain with Scryers Netherstorm grind</td></tr>
-            <tr><td>Nagrand questline</td><td>Sunspring Post / Telaar quest hubs</td><td>~250-500 per quest</td><td>Most Nagrand quests grant Consortium rep</td></tr>
-        </tbody>
-    </table>
-
-    <h3>Cenarion Expedition (Reservoir Key)</h3>
-    <p>Less critical for direct gear, but unlocks the heroic Zangarmarsh keys (Devilshark Cape, Amber Bands, Gauntlets of the Bold all gate behind here).</p>
-    <table class="gear-table">
-        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
-        <tbody>
-            <tr><td><strong>Unidentified Plant Parts</strong> turn-ins</td><td>Naga mobs in Zangarmarsh</td><td>+25 per turn-in (10-stack)</td><td>Hand in at Cenarion Refuge</td></tr>
-            <tr><td>Zangarmarsh + Hellfire CE quests</td><td>Cenarion Refuge / Cenarion Post</td><td>~250-500 per quest</td><td>Most Zangarmarsh leveling quests give CE rep</td></tr>
-            <tr><td>Heroic Zangarmarsh dungeons</td><td>Slave Pens / Underbog / Steamvault</td><td>~1500 per clear</td><td>Quickest path Revered → Exalted</td></tr>
-        </tbody>
-    </table>
-
-    <div class="tip-box">
-        <p><strong>Stacking tip:</strong> When you do a heroic, make sure you have the daily heroic quest from <a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> (Sha'tar) AND the relevant keymaster faction's daily picked up. One run = badges + faction rep + Sha'tar rep + daily completion bonus. Don't run heroics without the daily quests on you.</p>
-    </div>
 
     <h1 id="pre-raid-bis">Pre-Raid Best in Slot</h1>
     <p>Pre-raid Arms Warrior gear, ranked per slot (BiS first). Gather these from heroic dungeons, crafting, Badge of Justice, and early reputation before stepping into Karazhan. Priority: reach the melee <strong>hit cap</strong> and <strong>9% expertise</strong>, then stack Strength, crit, and AP.</p>
@@ -2503,6 +2229,281 @@ code {
     </div>
     <div class="info-box">
         <p><strong>Drums of Battle:</strong> One player per party should have <a href="https://www.wowhead.com/tbc/spell=35476">Drums of Battle</a> (+80 haste rating) via Leatherworking. This usually goes to the Enh Shaman.</p>
+    </div>
+
+    <!-- ===== QUEST STRATEGY ===== -->
+    <h1 id="quest-strategy">Questing Strategy</h1>
+    <p>Quests reward gear, gold, rep, and XP all at once, but only if you batch them. The pickup-everything-first workflow saves hours of backtracking and turns every mob kill into 3-4 simultaneous progress bars (rep + quest + farm + Marks for Aldor turn-ins).</p>
+
+    <div class="info-box">
+        <p><strong>Universal rule:</strong> When you arrive at a quest hub or new zone, <strong>walk every NPC with a yellow ! before doing anything else.</strong> Then leave town with a full quest log (25 quests) and a plan that completes 4-6 quests per loop. Never kill or gather "just to grind", there's almost always a quest objective for that mob/node.</p>
+    </div>
+
+    <div class="warn-box">
+        <p><strong>Link convention:</strong> Entries shown as "[Item Name] quest" use the quest ID from the source BiS guides. Hover the link to see the actual quest title, NPC, and location. Names displayed literally (like <em>Hero of the Mag'har</em> or <em>Teron Gorefiend, I am...</em>) are confirmed; generic "[Item] quest" labels are used where the source guide didn't spell out the quest title.</p>
+    </div>
+
+    <h2 id="quest-pre-flight">Pre-Flight Checklist (Before Any Heroic Run)</h2>
+    <p>Pick these up <strong>before</strong> you queue or summon. One full heroic clear = 5+ progress bars stacked.</p>
+    <table class="gear-table">
+        <thead><tr><th>Pickup</th><th>NPC / Location</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td>Sha'tar daily heroic quest</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td><td>+250 Sha'tar rep + Badge bonus</td></tr>
+            <tr><td>Lower City daily heroic quest</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td><td>+250 Lower City rep</td></tr>
+            <tr><td>Cooking daily</td><td>"The Rokk" - Lower City, Shattrath</td><td>~250 Lower City rep + recipe tokens</td></tr>
+            <tr><td>Fishing daily</td><td>Old Man Barlo - Silmyr Lake, Terokkar (or Lower City)</td><td>~250 Lower City rep + lure rewards</td></tr>
+            <tr><td>Scryers/Aldor daily (Phase 2+)</td><td>Aldor Rise / Scryers' Tier</td><td>+250 to your chosen Shattrath faction</td></tr>
+            <tr><td>Skyguard / Ogri'la dailies (Phase 2+)</td><td>Blade's Edge Plateaus</td><td>Bonus rep, gold, gems</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="quest-fresh70-sweep">Fresh 70 Arms Quest Sweep</h2>
+    <p>If you're newly 70 and haven't run these zones yet (or rolled an alt), do them in this order. Each zone has gear quests that go directly into your pre-raid set.</p>
+
+    <h3>Zangarmarsh</h3>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Cenarion Refuge / Telredor</td><td><a href="https://www.wowhead.com/tbc/quest=9902">The Terror of Marshlight Lake</a></td><td><a href="https://www.wowhead.com/tbc/item=25922" data-wh-icon-size="small">Fearless Girdle</a> (waist starter)</td></tr>
+            <tr><td>Telredor / Sporeggar</td><td>Cenarion Refuge intro chain</td><td>Cenarion Expedition rep → unlocks <a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a> for heroic Slave Pens / Underbog / Steamvault</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Terokkar Forest</h3>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Allerian Stronghold / Stonebreaker Hold</td><td><a href="https://www.wowhead.com/tbc/quest=10091">The Soul Devices</a></td><td><a href="https://www.wowhead.com/tbc/item=28167" data-wh-icon-size="small">Sha'tari Wrought Armguards</a></td></tr>
+            <tr><td>Allerian / Stonebreaker</td><td><a href="https://www.wowhead.com/tbc/quest=10095">Into the Heart of the Labyrinth</a></td><td><a href="https://www.wowhead.com/tbc/item=28176" data-wh-icon-size="small">Sha'tari Wrought Greaves</a></td></tr>
+            <tr><td>Quest hub near pickup zone</td><td><a href="https://www.wowhead.com/tbc/quest=9763">The Warlord's Hideout</a></td><td><a href="https://www.wowhead.com/tbc/item=28180" data-wh-icon-size="small">Myrmidon's Headdress</a> (tank head; Arms prefers Mask of the Deceiver or Helm of the Claw)</td></tr>
+            <tr><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/quest=10097">Brother Against Brother</a></td><td><a href="https://www.wowhead.com/tbc/item=29335" data-wh-icon-size="small">Talon Lord's Collar</a> (hit neck)</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Nagrand</h3>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Telaar (A) / Garadar (H)</td><td><a href="https://www.wowhead.com/tbc/quest=10011">Forge Camp: Annihilated</a></td><td><a href="https://www.wowhead.com/tbc/item=25819" data-wh-icon-size="small">Breastplate of the Warbringer</a> (chest starter)</td></tr>
+            <tr><td>Garadar (Horde only)</td><td><a href="https://www.wowhead.com/tbc/quest=10212">Hero of the Mag'har</a></td><td><a href="https://www.wowhead.com/tbc/item=28175" data-wh-icon-size="small">Mag'hari Warlord's Legplates</a></td></tr>
+            <tr><td>Throne of the Elements / surrounding</td><td>Consortium quest chain</td><td>Heavy Consortium rep + sets up <a href="https://www.wowhead.com/tbc/item=29115" data-wh-icon-size="small">Consortium Blaster</a> at Revered</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Blade's Edge Mountains</h3>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Sylvanaar (A) / Thunderlord Stronghold (H)</td><td>Main BEM questline</td><td>Cenarion Expedition + Consortium rep + gear/gold</td></tr>
+            <tr><td>Mok'Nathal Village</td><td>Mok'Nathal/Skettis chain</td><td>Phase 2 gateway to Skyguard / Ogri'la dailies</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Netherstorm</h3>
+    <p>Netherstorm has one of the densest concentrations of plate-DPS gear quests in the game. Walk every quest hub before pulling a single mob.</p>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Area 52</td><td><a href="https://www.wowhead.com/tbc/quest=10186">You're Hired!</a></td><td><a href="https://www.wowhead.com/tbc/item=30225" data-wh-icon-size="small">Junior Technician 3rd Grade Bracers</a></td></tr>
+            <tr><td>Area 52 / Stormspire</td><td><a href="https://www.wowhead.com/tbc/quest=10318">Dealing with the Overmaster</a></td><td><a href="https://www.wowhead.com/tbc/item=30006" data-wh-icon-size="small">Wind Trader's Band</a> (green ring with absurd stats)</td></tr>
+            <tr><td>Area 52</td><td><a href="https://www.wowhead.com/tbc/quest=10507">Turning Point</a></td><td><a href="https://www.wowhead.com/tbc/item=30375" data-wh-icon-size="small">Gauntlets of the Vanquisher</a></td></tr>
+            <tr><td>Eco-Dome Midrealm</td><td><a href="https://www.wowhead.com/tbc/quest=10320">Destroy Naberius!</a></td><td><a href="https://www.wowhead.com/tbc/item=29783" data-wh-icon-size="small">Legguards of the Resolute Defender</a></td></tr>
+            <tr><td>Manaforge B'naar / Coruu</td><td><a href="https://www.wowhead.com/tbc/quest=10345">The Flesh Lies...</a></td><td><a href="https://www.wowhead.com/tbc/item=30341" data-wh-icon-size="small">Flesh Handler's Gauntlets</a> (plate quest gloves)</td></tr>
+            <tr><td>Manaforge Ara (Scryers only)</td><td><a href="https://www.wowhead.com/tbc/quest=10365">Shutting Down Manaforge Ara</a></td><td><a href="https://www.wowhead.com/tbc/item=30378" data-wh-icon-size="small">Thalodien's Charm</a> (Scryers neck)</td></tr>
+            <tr><td>Stormspire (Netherstorm)</td><td><a href="https://www.wowhead.com/tbc/quest=10400">Overlord</a></td><td><a href="https://www.wowhead.com/tbc/item=28042" data-wh-icon-size="small">Regal Protectorate</a> (trinket)</td></tr>
+            <tr><td>Eco-Dome / Stormspire</td><td><a href="https://www.wowhead.com/tbc/quest=10439">Dimensius the All-Devouring</a></td><td><a href="https://www.wowhead.com/tbc/item=30300" data-wh-icon-size="small">Dabiri's Enigma</a> (trinket)</td></tr>
+            <tr><td>Area 52 → Tempest Keep</td><td><a href="https://www.wowhead.com/tbc/quest=10704">How to Break Into the Arcatraz</a> chain (Arcatraz key)</td><td><a href="https://www.wowhead.com/tbc/item=31460" data-wh-icon-size="small">Sha'tari Vindicator's Waistguard</a> + unlocks Arcatraz heroic</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box">
+        <p><strong>Netherstorm efficiency:</strong> All Sunfury blood elf and demon kills here drop <strong>both</strong> Aldor turn-in items (Marks of Sargeras, Fel Armaments) AND Scryers turn-in items (Sunfury Signets). Whichever Shattrath faction you picked, this zone is a goldmine. Don't kill anything here without quests on you.</p>
+    </div>
+
+    <h3>Shadowmoon Valley</h3>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Wildhammer Stronghold (A) / Shadowmoon Village (H)</td><td><a href="https://www.wowhead.com/tbc/quest=11090">Subdue the Subduer</a></td><td><a href="https://www.wowhead.com/tbc/item=32871" data-wh-icon-size="small">Horns of the Illidari</a> (head starter)</td></tr>
+            <tr><td>Shadowmoon Valley (chain progression)</td><td><a href="https://www.wowhead.com/tbc/quest=10588">The Cipher of Damnation</a> (final step of the SMV main chain)</td><td><a href="https://www.wowhead.com/tbc/item=31071" data-wh-icon-size="small">Grom'tor's Charge</a> (1H leveling weapon; Arms wants a 2H, so take another reward if the quest offers one) + huge XP/gold/rep</td></tr>
+            <tr><td>SMV (Aldor or Scryers hub)</td><td><a href="https://www.wowhead.com/tbc/quest=10639">Teron Gorefiend, I am...</a></td><td><a href="https://www.wowhead.com/tbc/item=31105" data-wh-icon-size="small">Overlord's Helmet of Second Sight</a> (hit head)</td></tr>
+            <tr><td>Wildhammer / Shadowmoon Village</td><td><a href="https://www.wowhead.com/tbc/quest=10769">Dissension Amongst the Ranks...</a></td><td><a href="https://www.wowhead.com/tbc/item=31078" data-wh-icon-size="small">Protector's Mark of the Redemption</a> (tank ring; pick another reward if offered)</td></tr>
+            <tr><td>SMV quest hub</td><td><a href="https://www.wowhead.com/tbc/quest=10198">Information Gathering</a></td><td><a href="https://www.wowhead.com/tbc/item=30386" data-wh-icon-size="small">Bloodguard's Greaves</a> (feet starter)</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box">
+        <p><strong>Aldor double-dip:</strong> Every Burning Legion mob in SMV drops <strong>Mark of Sargeras + Fel Armaments</strong>. Pick up every quest hub here before pulling a single demon. The quest chain alone gives meaningful Aldor rep on top of the turn-in farm.</p>
+    </div>
+
+    <h3>Caverns of Time / Tanaris</h3>
+    <table class="gear-table">
+        <thead><tr><th>Pickup From</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td>Andormu - Caverns of Time entrance</td><td><a href="https://www.wowhead.com/tbc/quest=10285">Return to Andormu</a> (after CoT dungeon clears)</td><td><a href="https://www.wowhead.com/tbc/item=29316" data-wh-icon-size="small">Warchief's Mantle</a> (shoulder starter)</td></tr>
+            <tr><td>Caverns of Time questgivers</td><td>Old Hillsbrad / Black Morass intro chains</td><td>Heavy Keepers of Time rep → <a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a> for heroic CoT</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Dungeon Quest Pickup (Critical)</h3>
+    <p>Many dungeons have quests posted at hubs you'd never visit otherwise. <strong>Always</strong> check for dungeon quests before queueing, or you'll re-clear later.</p>
+    <table class="gear-table">
+        <thead><tr><th>Dungeon</th><th>Quest Hub for Pickup</th><th>Reward Highlights</th></tr></thead>
+        <tbody>
+            <tr><td>Auchenai Crypts</td><td>Lower City quest board + outside Auchindoun</td><td><a href="https://www.wowhead.com/tbc/item=28180" data-wh-icon-size="small">Myrmidon's Headdress</a> from inside the dungeon (tank head, off-spec for Arms)</td></tr>
+            <tr><td>Mechanar / Botanica / Arcatraz</td><td>Stormspire (Netherstorm) - check the area for posted dungeon quests</td><td>Multiple gear/key chains + Sha'tar rep on completion</td></tr>
+            <tr><td>Old Hillsbrad / Black Morass</td><td>Caverns of Time entrance (Andormu, Soridormi)</td><td>Keepers of Time rep + <a href="https://www.wowhead.com/tbc/item=29184" data-wh-icon-size="small">Timewarden's Leggings</a> path at Revered</td></tr>
+            <tr><td>Steamvault</td><td>Cenarion Refuge - check Watcher Jhang for quest</td><td>Cenarion Expedition Exalted unlock; Devilshark Cape farm</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="quest-aldor-turn-in-flow">Aldor Turn-In Flow (Your Faction)</h2>
+    <p>Combine your Aldor rep grind with your gear quest sweep. Every demon you kill in SMV / Netherstorm / HFP can drop Mark items <strong>and</strong> count toward gear quests <strong>and</strong> Honor Hold/Thrallmar rep.</p>
+    <table class="gear-table">
+        <thead><tr><th>Zone</th><th>Demon Concentration</th><th>Stacks With</th></tr></thead>
+        <tbody>
+            <tr><td>Hellfire Peninsula - Pools of Aggonar / Throne of Kil'jaeden</td><td>Mark of Kil'jaeden</td><td>Honor Hold/Thrallmar quests + rep</td></tr>
+            <tr><td>Shadowmoon Valley - Legion Front (around Wildhammer)</td><td>Mark of Sargeras + Fel Armaments (densest combined)</td><td>SMV main quest chain Aldor rep</td></tr>
+            <tr><td>Netherstorm - Manaforge B'naar / Coruu surroundings</td><td>Marks of Sargeras + Fel Armaments + Sunfury Signets</td><td>Multiple gear quests + Sha'tar dailies</td></tr>
+            <tr><td>Bash'ir Landing event (BEM)</td><td>Marks + Bash'ir Phasing Devices</td><td>Skyguard rep + group event drops</td></tr>
+        </tbody>
+    </table>
+    <div class="info-box">
+        <p><strong>Hand-in location:</strong> Turn in Marks of Kil'jaeden, Marks of Sargeras, and Fel Armaments at <strong>Aldor Rise (upper Shattrath)</strong>. Take the elevator up from the central plaza. The turn-in NPCs sit near the Tabard quartermaster.</p>
+    </div>
+
+    <!-- ===== REPUTATION ===== -->
+    <h1 id="reputation">Reputation</h1>
+    <p>Reputation unlocks heroic dungeons, the shoulder enchant, the Glyph of Ferocity head enchant (Honor Hold / Thrallmar), and several gear pieces. The faster you grind these, the faster your set comes online.</p>
+
+    <h2 id="rep-priority">DPS Priority Reputations</h2>
+    <table class="gear-table">
+        <thead><tr><th>Priority</th><th>Faction</th><th>Goal</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td>All 5 keymaster factions</td><td><span class="rep-icon">📜</span>Revered</td><td>Unlock heroic dungeons - your main pre-raid gear pipeline</td></tr>
+            <tr><td class="slot-label">2</td><td>Lower City</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=30834" data-wh-icon-size="small">Shapeshifter's Signet</a> - best DPS ring until Phase 4</td></tr>
+            <tr><td class="slot-label">3</td><td>The Sha'tar</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29176" data-wh-icon-size="small">Crest of the Sha'tar</a> shield + <a href="https://www.wowhead.com/tbc/item=35407" data-wh-icon-size="small">Savage Plate Chestpiece</a> at Honored</td></tr>
+            <tr><td class="slot-label">4</td><td>Keepers of Time</td><td><span class="rep-icon">📜</span>Revered → Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29184" data-wh-icon-size="small">Timewarden's Leggings</a> at Revered, <a href="https://www.wowhead.com/tbc/item=29181" data-wh-icon-size="small">Timelapse Shard</a> at Exalted, <a href="https://www.wowhead.com/tbc/item=29186" data-wh-icon-size="small">Glyph of the Defender</a> head enchant</td></tr>
+            <tr><td class="slot-label">5</td><td>The Aldor <strong>OR</strong> The Scryers</td><td><span class="rep-icon">📜</span>Exalted</td><td>Mutually exclusive - pick one. Determines your shoulder inscription vendor and Shattrath hub; the DPS inscriptions are equivalent, so choose by your other gear/utility.</td></tr>
+            <tr><td class="slot-label">6</td><td>Honor Hold (A) / Thrallmar (H)</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29156" data-wh-icon-size="small">Honor's Call</a> / <a href="https://www.wowhead.com/tbc/item=29165" data-wh-icon-size="small">Warbringer</a> weapons</td></tr>
+            <tr><td class="slot-label">7</td><td>The Violet Eye</td><td><span class="rep-icon">📜</span>Exalted</td><td><a href="https://www.wowhead.com/tbc/item=29279" data-wh-icon-size="small">Violet Signet of the Great Protector</a> - upgradeable Karazhan ring</td></tr>
+            <tr><td class="slot-label">8</td><td>The Consortium</td><td><span class="rep-icon">📜</span>Revered</td><td><a href="https://www.wowhead.com/tbc/item=29115" data-wh-icon-size="small">Consortium Blaster</a> ranged</td></tr>
+            <tr><td class="slot-label">9</td><td>Shattered Sun Offensive</td><td><span class="rep-icon">📜</span>Exalted</td><td>Phase 5 - SSO Pendant of Resolve: <a href="https://www.wowhead.com/tbc/item=34680" data-wh-icon-size="small">Aldor (dodge proc)</a> or <a href="https://www.wowhead.com/tbc/item=34680" data-wh-icon-size="small">Scryers (expertise proc)</a></td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="heroic-keys">Heroic Dungeon Keys</h2>
+    <p>All heroic keys require <strong>Revered</strong> with the corresponding faction. Buy the key from the faction's Quartermaster.</p>
+    <table class="gear-table">
+        <thead><tr><th>Region</th><th>Dungeons</th><th>Key</th><th>Faction</th><th>Quartermaster / Location</th></tr></thead>
+        <tbody>
+            <tr><td>Hellfire Peninsula</td><td>Ramparts, Blood Furnace, Shattered Halls</td><td><a href="https://www.wowhead.com/tbc/item=30622" data-wh-icon-size="small">Flamewrought Key</a></td><td>Honor Hold (A) / Thrallmar (H)</td><td><a href="https://www.wowhead.com/tbc/npc=17657">Logistics Officer Ulrike</a> - Honor Hold<br><a href="https://www.wowhead.com/tbc/npc=17585">Quartermaster Urgronn</a> - Thrallmar</td></tr>
+            <tr><td>Zangarmarsh</td><td>Slave Pens, Underbog, Steamvault</td><td><a href="https://www.wowhead.com/tbc/item=30623" data-wh-icon-size="small">Reservoir Key</a></td><td>Cenarion Expedition</td><td><a href="https://www.wowhead.com/tbc/npc=17904">Fedryen Swiftspear</a> - Cenarion Refuge, Zangarmarsh</td></tr>
+            <tr><td>Terokkar Forest</td><td>Mana-Tombs, Auchenai Crypts, Sethekk Halls, Shadow Lab</td><td><a href="https://www.wowhead.com/tbc/item=30633" data-wh-icon-size="small">Auchenai Key</a></td><td>Lower City</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td></tr>
+            <tr><td>Netherstorm</td><td>Mechanar, Botanica, Arcatraz</td><td><a href="https://www.wowhead.com/tbc/item=30634" data-wh-icon-size="small">Warpforged Key</a></td><td>The Sha'tar</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td></tr>
+            <tr><td>Caverns of Time</td><td>Old Hillsbrad, Black Morass</td><td><a href="https://www.wowhead.com/tbc/item=30635" data-wh-icon-size="small">Key of Time</a></td><td>Keepers of Time</td><td><a href="https://www.wowhead.com/tbc/npc=21643">Alurmi</a> - Caverns of Time, Tanaris</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="rep-speedups">Easy &amp; Minor Rep Speedups</h2>
+    <p>Most factions can be ground out far faster with turn-in items, dungeon completion bonuses, and the Outland zone quest chains. Pick the methods that overlap with your current farming.</p>
+
+    <div class="info-box">
+        <p><strong>Heroic completion bonus:</strong> Every full Heroic dungeon clear awards <strong>+1500 reputation</strong> with the corresponding keymaster faction (on top of trash/boss kill rep). Daily heroic = bulk rep + Badges. Always your most efficient grind.</p>
+    </div>
+
+    <h3>The Sha'tar (Honored / Exalted)</h3>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Heroic Netherstorm dungeons</td><td>Mechanar / Botanica / Arcatraz clears</td><td>~1500 per clear</td><td>Best method by far. Doubles as badge / loot farm</td></tr>
+            <tr><td>Normal Netherstorm dungeons</td><td>Same dungeons, normal mode</td><td>~50 per boss</td><td>Pre-Revered grind option</td></tr>
+            <tr><td>Daily heroic bonus quest</td><td>From <a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> in the Terrace of Light, Shattrath</td><td>~+250 per daily</td><td>Always grab before any heroic run</td></tr>
+            <tr><td>Netherwing/Sha'tari Skyguard quests</td><td>Blade's Edge Mtns &amp; Shadowmoon Valley dailies</td><td>Varies</td><td>Indirect Sha'tar rep at higher tiers</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Lower City (Honored / Exalted)</h3>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Heroic Auchindoun dungeons</td><td>Mana-Tombs / Auchenai / Sethekk / Shadow Lab</td><td>~1500 per clear</td><td>4 heroics in one zone - very efficient</td></tr>
+            <tr><td>Daily heroic quest</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> in Lower City, Shattrath</td><td>+250 per daily</td><td>Pick up before any heroic. Stacks with A'dal's Command</td></tr>
+            <tr><td>Shattrath cooking / fishing dailies</td><td>"The Rokk" (cooking) &amp; Old Man Barlo (fishing) - Shattrath</td><td>~250 per daily</td><td>10 minutes total. Easy passive rep + recipes &amp; lures</td></tr>
+            <tr><td>Terokkar Forest quests</td><td>Allerian Stronghold / Stonebreaker Hold quest hubs</td><td>~250-500 per quest</td><td>Pre-70 leveling already gets you to Honored</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Keepers of Time (Revered / Exalted)</h3>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Heroic CoT dungeons</td><td>Old Hillsbrad / Black Morass</td><td>~1500 per clear</td><td>Only 2 heroics, but you'll farm them anyway for Latro's Sword + Hourglass</td></tr>
+            <tr><td>Normal CoT dungeons</td><td>Same dungeons, normal mode</td><td>~75 per boss</td><td>Required to reach Honored before heroics</td></tr>
+            <tr><td>Tanaris / Caverns of Time questline</td><td>Andormu &amp; Soridormi quest chains</td><td>~250-500 per quest</td><td>One-time chains - finish them all</td></tr>
+        </tbody>
+    </table>
+
+    <h3>The Aldor (to Exalted)</h3>
+    <p>You're working this faction. Demons drop the turn-in items, so any Burning Legion farm doubles as Aldor rep.</p>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Fel Armaments</strong> turn-ins</td><td>Burning Legion drops in SMV / Netherstorm</td><td>+350 per turn-in</td><td><strong>Most efficient Aldor turn-in by far.</strong> Hand in at Aldor Rise (upper Shattrath)</td></tr>
+            <tr><td><strong>Mark of Sargeras</strong> turn-ins</td><td>Demons in Shadowmoon Valley / Netherstorm</td><td>+12 per mark (10-stack)</td><td>Honored → Exalted main grind. Drops while you Fel-Armament farm</td></tr>
+            <tr><td><strong>Mark of Kil'jaeden</strong> turn-ins</td><td>Demon mobs in Hellfire / Terokkar</td><td>+10 per mark (10-stack)</td><td>Pre-Honored grind. Skip once you're past Friendly</td></tr>
+            <tr><td>Shadowmoon Valley quests</td><td>Wildhammer Stronghold / Shadowmoon Village</td><td>~250-500 per quest</td><td>SMV main quest chain gives substantial Aldor rep along the way</td></tr>
+            <tr><td>Bash'ir Landing event (BEM)</td><td>Skettis &amp; Bash'ir Landing daily events</td><td>+250-500 per kill chain</td><td>Group event drops Marks plus other tradables</td></tr>
+        </tbody>
+    </table>
+    <div class="tip-box">
+        <p><strong>Aldor farming tip:</strong> The Legion Front in Shadowmoon Valley (around Wildhammer Stronghold) is the densest demon farm, Marks of Sargeras + Fel Armaments at the same time. Bring an AoE plan.</p>
+    </div>
+
+    <h3>The Scryers (to Exalted)</h3>
+    <p>If you went Scryers instead, the turn-in items come from blood elves rather than demons.</p>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Sunfury Signet</strong> turn-ins</td><td>Sunfury blood elf mobs in Netherstorm &amp; SMV</td><td>+25 per signet (10-stack)</td><td>Bulk farm at Manaforge Coruu / Bash'ir Landing / Sanctum of the Stars</td></tr>
+            <tr><td><strong>Arcane Tome</strong> turn-ins</td><td>Caster mobs in Auchindoun zone &amp; Auchenai Crypts</td><td>~+150 per turn-in</td><td>Bulk farm while doing Lower City heroics in the same zone</td></tr>
+            <tr><td><strong>Firewing Signet</strong> turn-ins</td><td>Firewing blood elves around Firewing Point, Terokkar</td><td>+10 per signet</td><td>Pre-Honored / pre-70 - low value but easy</td></tr>
+            <tr><td>Netherstorm Manaforge dailies</td><td>Area 52 / Manaforge questgivers</td><td>~250 per quest</td><td>Chain with Consortium and Sha'tar dailies in the same zone</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Honor Hold / Thrallmar (to Exalted)</h3>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>Hellfire Peninsula questline</td><td>Honor Hold / Thrallmar quest hubs</td><td>~250-500 per quest</td><td>Leveling through HFP gets you to Honored on its own</td></tr>
+            <tr><td>Normal HFP dungeon clears</td><td>Ramparts / Blood Furnace / Shattered Halls</td><td>+10-100 per kill</td><td>Bridges Honored → Revered before heroic key unlock</td></tr>
+            <tr><td>Heroic HFP dungeons</td><td>Same dungeons, heroic mode</td><td>~1500 per clear</td><td>Heroic Shattered Halls = highest rep yield</td></tr>
+            <tr><td>HFP world mobs (Fel Orcs)</td><td>Hellfire Citadel exterior, Throne of Kil'jaeden</td><td>+5-10 per kill</td><td>Slow but steady AFK option while waiting on group queues. Also drops Marks of Kil'jaeden for Aldor rep</td></tr>
+        </tbody>
+    </table>
+
+    <h3>The Consortium (to Revered)</h3>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Obsidian Warbeads</strong> turn-ins</td><td>Ogre mobs in Nagrand &amp; Blade's Edge</td><td>+50 per turn-in (10-stack)</td><td>Bulk farm Warmaul Hill or Bash'ir Landing</td></tr>
+            <tr><td>Netherstorm Eco-Dome dailies</td><td>Karaaz / Vendor crew in Stormspire</td><td>~250 per daily</td><td>Chain with Scryers Netherstorm grind</td></tr>
+            <tr><td>Nagrand questline</td><td>Sunspring Post / Telaar quest hubs</td><td>~250-500 per quest</td><td>Most Nagrand quests grant Consortium rep</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Cenarion Expedition (Reservoir Key)</h3>
+    <p>Less critical for direct gear, but unlocks the heroic Zangarmarsh keys (Devilshark Cape, Amber Bands, Gauntlets of the Bold all gate behind here).</p>
+    <table class="gear-table">
+        <thead><tr><th>Method</th><th>Source</th><th>Approx. Rep</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><strong>Unidentified Plant Parts</strong> turn-ins</td><td>Naga mobs in Zangarmarsh</td><td>+25 per turn-in (10-stack)</td><td>Hand in at Cenarion Refuge</td></tr>
+            <tr><td>Zangarmarsh + Hellfire CE quests</td><td>Cenarion Refuge / Cenarion Post</td><td>~250-500 per quest</td><td>Most Zangarmarsh leveling quests give CE rep</td></tr>
+            <tr><td>Heroic Zangarmarsh dungeons</td><td>Slave Pens / Underbog / Steamvault</td><td>~1500 per clear</td><td>Quickest path Revered → Exalted</td></tr>
+        </tbody>
+    </table>
+
+    <div class="tip-box">
+        <p><strong>Stacking tip:</strong> When you do a heroic, make sure you have the daily heroic quest from <a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> (Sha'tar) AND the relevant keymaster faction's daily picked up. One run = badges + faction rep + Sha'tar rep + daily completion bonus. Don't run heroics without the daily quests on you.</p>
     </div>
 
     <!-- ===== USEFUL LINKS ===== -->

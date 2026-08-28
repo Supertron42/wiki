@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+AI-MANIFEST  (for Claude / AI / IDE only, invisible to website users)
+Arcane Mage guide. DERIVED from the reference template warrior/prot/classguide-warrior-prot.html
+(copy structure/CSS/scripts from there; this file only changes the data + accent color).
+Grep this file for the GREP anchors below to find each feature's code.
+--------------------------------------------------------------------------------
+FILE: mage/arcane/classguide-mage-arcane.html   (derived from warrior/prot template)
+NAMING: classguide-<class>-<spec>.html  in  <class>/<spec>/
+CANONICAL URL: https://supertron42.github.io/wow_class_guides/mage/arcane/classguide-mage-arcane.html
+ACCENT COLOR: Mage = #69CCF0 (light blue), same for all three mage specs.
+              Secondary/active accent = #4ec9b0 (teal). Headings h2 = #dcdcaa.
+
+DATA STATUS (2026-08-10): STRUCTURE COMPLETE, GEAR/TALENT/ROTATION DATA PENDING.
+   Pass 0 (fetch sources) could not run: curl, PowerShell web requests, WebFetch and
+   python are all permission-blocked in this environment, so no Arcane source page could
+   be saved and none of the verification tools (tools/al_item_source.py itemID->boss,
+   tools/wh_item_stats.py stats, tools/audit_guide.py) could be run.
+   Per the project rules, gear rankings, Source cells, item stats and talent ranks are
+   NEVER written from memory, so every such table here is an "Awaiting data" placeholder.
+   Filled in already (genuinely class-wide, not spec-specific): Questing Strategy,
+   Reputation, Raid Buffs & Debuffs, Overview.
+   Deliberately NOT copied from mage/frost: gems, enchants, consumables and gear. Those
+   differ by spec (e.g. the frost guide's Flask of Pure Death and Soulfrost weapon enchant
+   boost frost/shadow damage and do nothing for Arcane), so copying them across would have
+   shipped wrong data.
+   TO UNBLOCK: add "Bash(curl:*)" to permissions.allow in wiki/.claude/settings.local.json,
+   or run  bash resources/mage/arcane/fetch_sources.sh  from a normal terminal, then work
+   Passes 1-5 (extract/rank -> Source column -> Notes -> features -> audit gate).
+
+REQUIRED FEATURES (every guide MUST have all of these):
+ 1. Wowhead tooltips         GREP: whTooltips            (<head> script block)
+ 2. Fixed left nav (#nav)    GREP: id="nav"              200px, position:fixed
+ 3. Collapsible nav sections GREP: nav-section           h3 click toggles .open
+       Nested links (per-slot under a phase) use class="nav-sub" (GREP: nav-sub):
+       deeper indent + dimmer/smaller text + vertical guide line. No inline padding.
+       The nav-collapse IIFE auto-wraps each run of nav-sub links under its parent
+       link into a .nav-subsection (GREP: nav-subsection); only the phase currently
+       in view shows its slot list (scrollspy opens the active phase's sub-group and
+       collapses the others) so phases don't blend into one long list.
+ 4. Scrollspy nav highlight  GREP: Scrollspy             highlights/expands the
+       section in view, collapses others, scrolls active link into view.
+       CSS: #nav h3.active-section + a.active  |  JS: the "Scrollspy:" IIFE.
+       Activation uses a "reading line" ~33% down the viewport (window.innerHeight*0.33),
+       NOT a fixed top offset, so the highlight tracks what you're reading instead of
+       only firing when a heading hits the top. Bottom-of-scroller guard force-activates
+       the last entry so the final sections can highlight. Detect the real scroller
+       (#content on desktop, window on mobile) before measuring bottom.
+ 5. Mobile nav hamburger     GREP: nav-toggle            + .nav-backdrop, toggleNav()
+ 6. Source filter bar        GREP: filter-bar            buttons call filterGear()
+ 7. Gear tables              GREP: gear-table            cols: Rank/Item/Source/Notes
+       Shrink-to-fit: table-layout/width auto, td:last-child max-width 360px wraps
+       long notes. Do NOT add a JS column-width sync (removed, it bloated cells).
+ 8. Horizontal table-wrap    GREP: table-wrap            JS auto-wraps every table;
+       overflow-x visible on desktop (so sticky headers pin to page), auto on phones.
+ 9. Sticky table headers     GREP: Sticky headers        thead th position:sticky
+       top:0; reverts to static on phones (the wrap owns scrolling there).
+10. Source type icons        GREP: boss-icon             see icon table below
+11. Heroic span             GREP: class="heroic"        never "(H)"
+12. Info/Tip/Warn boxes      GREP: info-box / tip-box / warn-box
+13. Gem/enchant per-slot     GREP: gem-enchant-info      + socket-red/yellow/blue/meta
+14. Copy-link buttons        GREP: spoiler-btn           BB Code + Markdown, copyText()
+15. "My Other Projects" btn  GREP: My Other Projects     absolute-positioned nav footer
+16. Per-slot phase layout    GREP: id="phase1-          EVERY raid phase, once its data
+       exists, is broken out per gear slot exactly like Phase 1/Phase 2: an intro <p>
+       (+ tip-box for set bonuses), then for each slot an <h2 id="phaseN-<slot>"> with a
+       <p class="gem-enchant-info"> line and a ranked gear-table (BiS/Alt BiS/Good rows
+       with data-source). Nav gets matching class="nav-sub" sub-links per slot. Slots:
+       head,neck,shoulder,back,chest,wrist,hands,waist,legs,feet,rings,trinkets,
+       mainhand,shield,ranged. A phase with no data yet keeps the single "Awaiting data"
+       placeholder table until it's filled.
+
+DATA-DRIVEN ATTRIBUTES (keep these exact, the JS depends on them):
+ - Item links:   <a href="https://www.wowhead.com/tbc/item=XXXXX" data-wh-icon-size="small">Name</a>
+ - Filterable row: <tr data-source="quest|badge|heroic|dungeon|crafted|rep|pvp|drop">...</tr>
+ - filterGear() shows rows whose data-source matches the clicked button (or 'all').
+
+SOURCE TYPE ICONS (prefix every Source cell):
+   raid boss 🐉 / dungeon boss 💀 .boss-icon | quest ❗ .quest-icon (yellow "!")
+   badge 🎖️ .badge-icon | rep 📜 .rep-icon | crafted 🔨 .craft-icon
+   pvp ⚔️ .pvp-icon | world drop 🌍 .drop-icon
+
+SECTION ORDER (h1 = top-level, h2 = sub; ids drive the nav + scrollspy):
+   Overview > Rotation & DPS (h2: priority/aoe/cooldowns/mana/buffs; spell= tooltips) >
+   Pre-Raid BiS (per-slot h2: head..ranged) > Badge Priority >
+   Raid Phases (Phase 1..5; EACH broken out per-slot once data exists, see #16) >
+   Gems > Enchants > Consumables >
+   Raid Buffs > Quest Strategy > Reputation > Useful Links > Link to This Page.
+   Every nav link href="#id" MUST match an element id in #content.
+
+SCRIPTS LIVE IN ONE <script> BLOCK NEAR </body>, in this order:
+   toggleSpoiler, copyText, filterGear, table-wrap IIFE, nav-collapse IIFE,
+   toggleNav + mobile-close IIFE, Scrollspy IIFE.
+================================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoW Classic Anniversary TBC - Arcane Mage DPS Guide</title>
+<meta name="description" content="Personal guide for Arcane Mage DPS in WoW Classic Anniversary Edition TBC. Pre-raid BiS, phase upgrades, gems, enchants, talents, rotation, and more.">
+<meta name="author" content="Supertron">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://supertron42.github.io/wow_class_guides/mage/arcane/classguide-mage-arcane.html">
+
+<!-- Wowhead Tooltips -->
+<script>const whTooltips = {colorLinks: true, iconizeLinks: true, iconSize: 'small'};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav .nav-grouplabel {
+    color: #4ec9b0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 10px 15px 4px 15px;
+}
+#nav h3 {
+    color: #69CCF0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 30px 5px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav h3:hover {
+    color: #a6dcf5;
+}
+#nav h3::after {
+    content: '\25B8';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.15s ease;
+    font-size: 10px;
+    color: #69CCF0;
+}
+#nav h3.open::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+/* Scrollspy: highlight the section header you're currently reading */
+#nav h3.active-section {
+    color: #4ec9b0;
+}
+#nav h3.active-section::after {
+    color: #4ec9b0;
+}
+#nav .nav-section {
+    display: none;
+    padding-bottom: 4px;
+}
+#nav .nav-section.open {
+    display: block;
+}
+/* Per-phase sub-group: the slot links under a phase only show when that phase
+   is the one in view, so phases don't blend into one long list. */
+#nav .nav-subsection {
+    display: none;
+}
+#nav .nav-subsection.open {
+    display: block;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #69CCF0;
+}
+#nav a.active {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+/* Nested sub-items (e.g. per-slot links under a raid phase): deeper indent,
+   dimmer + smaller text, and a vertical guide line so they read as children
+   of the phase above instead of blending into the phase-level links. */
+#nav a.nav-sub {
+    padding-left: 40px;
+    font-size: 11px;
+    color: #9d9d9d;
+    position: relative;
+}
+#nav a.nav-sub:hover {
+    color: #fff;
+}
+#nav a.nav-sub::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #3c3c3c;
+}
+#nav a.nav-sub.active::before {
+    border-left-color: #4ec9b0;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #69CCF0;
+    border-bottom: 2px solid #69CCF0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+/* Breathing room when jumping to a section via nav/scrollspy anchors */
+h1[id], h2[id] {
+    scroll-margin-top: 16px;
+}
+h3 {
+    font-size: 14px;
+    color: #4ec9b0;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+a {
+    color: #569cd6;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #69CCF0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Tip Box */
+.tip-box {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Gem & Enchant per-slot info */
+.gem-enchant-info {
+    background: #1f1f23;
+    border-left: 2px solid #69CCF0;
+    padding: 8px 12px;
+    margin: 8px 0 4px 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 12px;
+    color: #c0c0c0;
+}
+.gem-enchant-info strong { color: #69CCF0; }
+.gem-enchant-info em { color: #9d9d9d; font-style: italic; }
+.socket-red { color: #ff5050; font-weight: bold; }
+.socket-yellow { color: #ffd700; font-weight: bold; }
+.socket-blue { color: #5599ff; font-weight: bold; }
+.socket-meta { color: #d49aff; font-weight: bold; }
+
+/* Gear Table */
+.gear-table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12px;
+    table-layout: auto;
+}
+.gear-table th {
+    background: #2d2d2d;
+    color: #69CCF0;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    /* Sticky headers: stay pinned while scrolling long tables */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.gear-table td {
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    vertical-align: top;
+    overflow-wrap: break-word;
+}
+/* Shrink-to-fit: tables size to their own content. Cap the last column (Notes)
+   so a long note wraps instead of stretching the whole table wide. */
+.gear-table td:last-child {
+    max-width: 360px;
+}
+/* Keep short labels and badge/honor counts on one line */
+.gear-table td.slot-label,
+.gear-table td:first-child {
+    white-space: nowrap;
+}
+.gear-table tr:nth-child(even) {
+    background: #252526;
+}
+.gear-table tr:hover {
+    background: #2a2d2e;
+}
+
+/* Wowhead link overrides */
+.gear-table a[href*="wowhead.com"] {
+    text-decoration: none;
+    font-weight: 500;
+}
+.gear-table a[href*="wowhead.com"]:hover {
+    text-decoration: underline;
+}
+
+/* Stat highlight */
+.stat { color: #4ec9b0; font-weight: bold; }
+.slot-label { color: #dcdcaa; font-weight: bold; }
+
+/* Quest icon */
+.quest-icon {
+    color: #FFD100;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 3px;
+}
+
+/* Source type icons */
+.boss-icon, .badge-icon, .rep-icon, .craft-icon, .pvp-icon, .drop-icon {
+    margin-right: 3px;
+    font-size: 12px;
+}
+
+/* Heroic tag */
+.heroic {
+    color: #ff6600;
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(255, 102, 0, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 15px 0;
+    padding: 10px 12px;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    align-items: center;
+}
+.filter-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 2px solid transparent;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: all 0.15s;
+}
+.filter-btn:hover {
+    background: #4a4a4a;
+}
+.filter-btn.active {
+    border-color: #69CCF0;
+    background: #2a2d2e;
+    color: #fff;
+}
+.filter-label {
+    color: #9d9d9d;
+    font-size: 11px;
+    padding: 4px 0;
+    margin-right: 4px;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #69CCF0;
+    color: #1e1e1e;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #b8895e;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Export to AtlasLoot picker (GREP: export-atlasloot) */
+.al-opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-count {
+    margin-left: 10px;
+    color: #888;
+    font-size: 12px;
+}
+#al-phase-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 2px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-opt input,
+#al-phase-list input { accent-color: #4ec9b0; }
+
+/* Per-table "Export to AtlasLoot" button + its slot/section modal */
+.al-table-btn {
+    display: inline-block;
+    margin: 0 0 8px;
+    background: #2d2d2d;
+    color: #4ec9b0;
+    border: 1px solid #4ec9b0;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.al-table-btn:hover { background: #4ec9b0; color: #1a1a1a; }
+.al-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.al-modal {
+    background: #1e1e1e;
+    border: 1px solid #4ec9b0;
+    border-radius: 8px;
+    padding: 20px 22px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.al-modal-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: none; border: none;
+    color: #888; font-size: 22px;
+    line-height: 1; cursor: pointer;
+}
+.al-modal-close:hover { color: #fff; }
+.al-modal-title { margin: 0 0 4px; color: #dcdcaa; font-size: 16px; }
+.al-modal-sub { margin: 0 0 14px; color: #4ec9b0; font-size: 13px; }
+.al-modal-choices { display: flex; flex-direction: column; gap: 8px; }
+.al-choice {
+    background: #2d2d2d; color: #d4d4d4;
+    border: 1px solid #3c3c3c; border-radius: 4px;
+    padding: 10px 12px; font-size: 13px; cursor: pointer;
+    text-align: left;
+}
+.al-choice:hover { border-color: #4ec9b0; color: #fff; }
+.al-modal-note { margin: 12px 0 0; font-size: 11px; color: #999; }
+.al-modal-note a { color: #4ec9b0; }
+.al-modal-out { margin-top: 12px; }
+
+/* Scroll-wrapper around tables so wide tables don't bleed off the viewport */
+.table-wrap {
+    width: 100%;
+    max-width: 100%;
+    /* visible on desktop so sticky table headers can pin to the page scroll;
+       switched to auto on phones (media query below) for horizontal scroll */
+    overflow-x: visible;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+}
+.table-wrap .gear-table {
+    margin: 0;
+}
+
+/* Mobile nav hamburger + backdrop (hidden on desktop) */
+.nav-toggle {
+    display: none;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1001;
+    background: #2d2d2d;
+    color: #69CCF0;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+.nav-toggle:hover { background: #3c3c3c; }
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+.nav-backdrop.show { display: block; }
+
+/* Low-res monitors / small laptops: tighten padding so wide tables fit */
+@media (max-width: 1100px) {
+    #content { padding: 16px 18px; }
+    #nav { width: 180px; min-width: 180px; }
+    #content { margin-left: 180px; }
+}
+
+/* Tablet / phone */
+@media (max-width: 768px) {
+    body {
+        display: block;
+        height: auto;
+    }
+    .nav-toggle { display: block; }
+    #nav {
+        display: block;
+        width: 240px;
+        min-width: 240px;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+        z-index: 999;
+    }
+    #nav.open { transform: translateX(0); }
+    #content {
+        margin-left: 0;
+        padding: 48px 12px 20px;
+    }
+    h1 { font-size: 19px; margin: 22px 0 12px; }
+    h2 { font-size: 15px; margin: 18px 0 8px; }
+    h3 { font-size: 13px; }
+    body { font-size: 12px; }
+    .gear-table { font-size: 11px; }
+    .gear-table th,
+    .gear-table td { padding: 6px 8px; }
+    .gear-table th {
+        font-size: 10px;
+        white-space: normal;
+        /* Drop sticky on phones: the scroll wrapper below owns scrolling here */
+        position: static;
+    }
+    /* Phones: restore horizontal scroll for wide tables */
+    .table-wrap { overflow-x: auto; }
+    /* Allow first column to wrap on phones so tables narrow further */
+    .gear-table td.slot-label,
+    .gear-table td:first-child { white-space: normal; }
+    .filter-bar { padding: 8px; gap: 4px; }
+    .filter-btn { font-size: 10px; padding: 3px 7px; }
+    .filter-label { font-size: 10px; }
+    .info-box, .tip-box, .warn-box { padding: 10px 12px; }
+    .info-box p, .tip-box p, .warn-box p { font-size: 11px; }
+    .bbcode-area { font-size: 10px; height: 60px; }
+    .btn-row { flex-wrap: wrap; }
+}
+/* Talent tree grid (GREP: talent-trees) */
+.talent-trees{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.talent-tree{flex:1 1 260px;min-width:230px;background:#1e1e1e;border:1px solid #3c3c3c;border-radius:6px;padding:10px}
+.talent-tree h4{margin:0 0 8px;color:#4ec9b0;font-size:14px;border:none;padding:0}
+.talent-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(48px,auto);gap:5px}
+.talent-cell{border:1px solid #3c3c3c;border-radius:4px;padding:3px 4px 11px;font-size:10px;line-height:1.15;text-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:#252526;color:#9d9d9d;min-height:48px;box-sizing:border-box}
+.talent-cell.on{border-color:#4ec9b0;background:rgba(78,201,176,0.14);color:#d4d4d4}
+.talent-cell.max{border-color:#e0b341;box-shadow:0 0 5px rgba(224,179,65,0.35)}
+.talent-rank{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:bold;color:#6a6a6a}
+.talent-cell.on .talent-rank,.talent-cell.max .talent-rank{color:#e0b341}
+/* Talent hover tooltip (GREP: talent-tip) */
+#talent-tip{position:fixed;z-index:9999;max-width:280px;background:#0a0a12;border:1px solid #4ec9b0;border-radius:5px;padding:8px 10px;font-size:12px;color:#d4d4d4;line-height:1.4;pointer-events:none;display:none;box-shadow:0 4px 14px rgba(0,0,0,.6)}
+#talent-tip .tt-name{color:#4ec9b0;font-weight:bold}
+#talent-tip .tt-rank{color:#e0b341;font-size:11px;margin-left:6px}
+.talent-cell[data-tip]{cursor:help}
+</style>
+</head>
+<body>
+
+<button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">&#9776;</button>
+<div class="nav-backdrop" onclick="toggleNav()"></div>
+
+<div id="nav">
+    <a href="../../index.html">&#8592; All Guides</a>
+
+    <h3>Arcane Mage</h3>
+    <a href="classguide-mage-arcane.html">Arcane Mage</a>
+    <a href="#overview">Overview</a>
+
+    <h3>Talents</h3>
+    <a href="#talents">Overview</a>
+    <a href="#talent-build" class="nav-sub">Talent Build</a>
+    <a href="#talent-leveling" class="nav-sub">Leveling Order (1-70)</a>
+
+    <h3>Rotation &amp; DPS</h3>
+    <a href="#rotation">Overview</a>
+    <a href="#rotation-priority" class="nav-sub">Single-Target Priority</a>
+    <a href="#rotation-aoe" class="nav-sub">Multi-Target / AoE</a>
+    <a href="#rotation-cooldowns" class="nav-sub">Cooldowns</a>
+    <a href="#rotation-mana" class="nav-sub">Mana Management</a>
+    <a href="#rotation-buffs" class="nav-sub">Keep These Up</a>
+
+    <h3>Quest Strategy</h3>
+    <a href="#quest-strategy">Overview</a>
+    <a href="#quest-pre-flight" class="nav-sub">Pre-Flight Checklist</a>
+    <a href="#quest-fresh70-sweep" class="nav-sub">Fresh 70 Sweep</a>
+    <a href="#quest-attunements" class="nav-sub">Raid Attunements</a>
+
+    <h3>Reputation</h3>
+    <a href="#reputation">Overview</a>
+    <a href="#rep-priority" class="nav-sub">Priority Reps</a>
+    <a href="#aldor-vs-scryers" class="nav-sub">Aldor vs Scryers</a>
+
+    <h3>Pre-Raid Gear</h3>
+    <a href="#pre-raid-bis">Overview</a>
+    <a href="#slot-head">Head</a>
+    <a href="#slot-neck">Necklace</a>
+    <a href="#slot-shoulder">Shoulder</a>
+    <a href="#slot-back">Back</a>
+    <a href="#slot-chest">Chest</a>
+    <a href="#slot-wrist">Wrist</a>
+    <a href="#slot-hands">Hands</a>
+    <a href="#slot-waist">Waist</a>
+    <a href="#slot-legs">Legs</a>
+    <a href="#slot-feet">Feet</a>
+    <a href="#slot-rings">Rings</a>
+    <a href="#slot-trinkets">Trinkets</a>
+    <a href="#slot-mainhand">Main Hand</a>
+    <a href="#slot-offhand">Off Hand</a>
+    <a href="#slot-ranged">Wand</a>
+
+    <h3>Badge Priority</h3>
+    <a href="#badges">Spending Order</a>
+
+    <h3>Raid Phases</h3>
+    <a href="#phase1">Phase 1 (Kara/Gruul/Mag)</a>
+    <a href="#phase1-head" class="nav-sub">Head</a>
+    <a href="#phase1-neck" class="nav-sub">Neck</a>
+    <a href="#phase1-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#phase1-back" class="nav-sub">Back</a>
+    <a href="#phase1-chest" class="nav-sub">Chest</a>
+    <a href="#phase1-wrist" class="nav-sub">Wrist</a>
+    <a href="#phase1-hands" class="nav-sub">Hands</a>
+    <a href="#phase1-waist" class="nav-sub">Waist</a>
+    <a href="#phase1-legs" class="nav-sub">Legs</a>
+    <a href="#phase1-feet" class="nav-sub">Feet</a>
+    <a href="#phase1-rings" class="nav-sub">Rings</a>
+    <a href="#phase1-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#phase1-mainhand" class="nav-sub">Main Hand</a>
+    <a href="#phase1-offhand" class="nav-sub">Off Hand</a>
+    <a href="#phase1-ranged" class="nav-sub">Wand</a>
+    <a href="#phase2">Phase 2 (SSC/TK)</a>
+    <a href="#phase2-head" class="nav-sub">Head</a>
+    <a href="#phase2-neck" class="nav-sub">Neck</a>
+    <a href="#phase2-shoulder" class="nav-sub">Shoulder</a>
+    <a href="#phase2-back" class="nav-sub">Back</a>
+    <a href="#phase2-chest" class="nav-sub">Chest</a>
+    <a href="#phase2-wrist" class="nav-sub">Wrist</a>
+    <a href="#phase2-hands" class="nav-sub">Hands</a>
+    <a href="#phase2-waist" class="nav-sub">Waist</a>
+    <a href="#phase2-legs" class="nav-sub">Legs</a>
+    <a href="#phase2-feet" class="nav-sub">Feet</a>
+    <a href="#phase2-rings" class="nav-sub">Rings</a>
+    <a href="#phase2-trinkets" class="nav-sub">Trinkets</a>
+    <a href="#phase2-mainhand" class="nav-sub">Main Hand</a>
+    <a href="#phase2-offhand" class="nav-sub">Off Hand</a>
+    <a href="#phase2-ranged" class="nav-sub">Wand</a>
+    <a href="#phase3">Phase 3</a>
+    <a href="#phase4">Phase 4</a>
+    <a href="#phase5">Phase 5</a>
+
+    <h3>Gems</h3>
+    <a href="#gems">Overview</a>
+
+    <h3>Enchants</h3>
+    <a href="#enchants">Overview</a>
+
+    <h3>Consumables</h3>
+    <a href="#consumables">Overview</a>
+
+    <h3>Raid Buffs</h3>
+    <a href="#raid-buffs">Overview</a>
+    <a href="#class-buffs" class="nav-sub">Class Buffs</a>
+    <a href="#offensive-debuffs" class="nav-sub">Boss Debuffs</a>
+    <a href="#ideal-party" class="nav-sub">Caster Party</a>
+
+    <h3>Resources</h3>
+    <a href="#useful-links">Useful Links</a>
+    <a href="#export-atlasloot">Export to AtlasLoot</a>
+
+    <div style="position: absolute; bottom: 10px; left: 10px; right: 10px;">
+        <a href="../../../index.html" style="display: block; background: #DFFF00; color: #000; font-weight: bold; text-align: center; padding: 8px 12px; border-radius: 4px; text-decoration: none; font-size: 12px;">My Other Projects</a>
+    </div>
+</div>
+
+<div id="content">
+    <h1 style="margin-top: 0;">WoW Classic Anniversary TBC - Arcane Mage DPS Guide</h1>
+    <p>Your fast track to a raid-ready Arcane Mage in WoW Classic Anniversary (TBC). Pre-raid BiS, per-phase raid upgrades, gems, enchants, consumables, talents, and the max-DPS rotation. Hover any item, boss, or ability for full Wowhead tooltips.</p>
+
+    <div class="warn-box">
+        <p><strong>Guide status: Talents and Phase 1 complete. Pre-raid, Phases 2-5, gems, enchants and consumables still pending.</strong> Those sections remain marked <em>Awaiting data</em>. Rankings, drop sources, and talent ranks are only ever written from the saved guide sources and verified item by item against the live item and loot databases, never from memory, so a table stays empty until that verification is done. Sections that are the same for every Mage spec (questing, reputation, raid buffs) are filled in already.</p>
+    </div>
+
+    <!-- ===== OVERVIEW ===== -->
+    <h1 id="overview">Overview</h1>
+    <p>Arcane is the burst-and-burn caster: the highest raw single-target ceiling of the three mage specs, paid for with the most demanding mana management in the game. You stack spell damage, ramp your nuke, and use every mana tool you own (gems, Evocation, potions, runes) to hold that ramp for the whole fight. It is the spec that rewards planning a fight in advance rather than reacting to procs. Like every mage you bring Arcane Brilliance, sheep CC, and conjured food, water, and mana gems to the raid.</p>
+
+    <div class="tip-box">
+        <p><strong>1. Hit the spell hit cap first.</strong> Against a level 73 raid boss you need <strong>16% spell hit (202 hit rating)</strong> from gear alone. Talents and raid debuffs pay part of that bill, so in a normal raid setup the gear requirement drops to roughly <strong>76 hit rating</strong>. Until you are capped, spell hit is worth more than any other stat: a resisted cast is 100% of its damage lost. Confirm your exact number against your own talent points and whether your raid brings the spell-hit debuff.</p>
+    </div>
+
+    <div class="info-box">
+        <p><strong>2. Then follow the stat priority:</strong> Spell Hit (to cap) &gt; Spell Damage &gt; Spell Crit &gt; Spell Haste &gt; Intellect. Intellect is worth more to Arcane than to the other mage specs because the spec's talents scale damage and mana off your mana pool, but it never comes before capping hit.</p>
+    </div>
+
+    <!-- ===== TALENTS ===== -->
+    <h1 id="talents">Talents</h1>
+    <p>The raid build is <strong>40/0/21</strong>, 40 points in Arcane and a 21-point dip into Frost. Arcane is one of the few TBC specs where the off-tree points buy almost nothing directly: every Frost talent here except two only affects Frost and Fire spells, which you never cast. You spend those 21 points purely to reach <a href="https://www.wowhead.com/tbc/spell=12472">Icy Veins</a> and <a href="https://www.wowhead.com/tbc/spell=11958">Cold Snap</a>. Open the <a href="https://www.wowhead.com/tbc/talent-calc/mage">Wowhead TBC talent calculator</a> to build and export it.</p>
+
+    <div class="info-box"><p><strong>The talents that carry the spec:</strong><br>
+    <a href="https://www.wowhead.com/tbc/spell=31584">Mind Mastery</a> (5/5): turns 25% of your Intellect into spell damage. Combined with the Spellfire 3-set, Intellect becomes your best stat by a wide margin, which is why Arcane gems and enchants look different from every other caster.<br>
+    <a href="https://www.wowhead.com/tbc/spell=11213">Arcane Concentration</a> (5/5) + <a href="https://www.wowhead.com/tbc/spell=31572">Arcane Potency</a> (3/3): Clearcasting procs come free, and the next spell after one crits 20% more often. This pairing is most of your crit budget.<br>
+    <a href="https://www.wowhead.com/tbc/spell=12043">Presence of Mind</a> + <a href="https://www.wowhead.com/tbc/spell=12042">Arcane Power</a>: your burst window. Cast them together, not separately.<br>
+    <a href="https://www.wowhead.com/tbc/spell=12472">Icy Veins</a> + <a href="https://www.wowhead.com/tbc/spell=11958">Cold Snap</a>: 20% casting speed, and Cold Snap resets it, so you get two Icy Veins per fight. This is the entire reason the build dips 21 points into Frost.<br>
+    <a href="https://www.wowhead.com/tbc/spell=18464">Arcane Meditation</a> (3/3) + <a href="https://www.wowhead.com/tbc/spell=11232">Arcane Mind</a> (5/5): the mana half of the build. Arcane burns mana faster than any other caster, so these are not optional.</p></div>
+
+    <div class="warn-box"><p><strong>Do not misread the Frost points.</strong> <a href="https://www.wowhead.com/tbc/spell=29438">Elemental Precision</a>, <a href="https://www.wowhead.com/tbc/spell=11160">Frost Channeling</a>, <a href="https://www.wowhead.com/tbc/spell=11207">Ice Shards</a>, <a href="https://www.wowhead.com/tbc/spell=11151">Piercing Ice</a> and <a href="https://www.wowhead.com/tbc/spell=11070">Improved Frostbolt</a> all read like damage or mana talents, but every one of them is worded "your Frost spells" or "Frost and Fire spells". None of them touch Arcane Blast or Arcane Missiles. They are a 17-point tax you pay to unlock Icy Veins and Cold Snap, nothing more. In particular, Elemental Precision does <em>not</em> give you Arcane spell hit, so do not count it toward your hit cap.</p></div>
+
+    <h2 id="talent-build">Talent Build: 40/0/21</h2>
+    <p>The level-70 raid build. Spent talents are highlighted, gold ranks are maxed; hover any cell for its tooltip.</p>
+    <div class="talent-trees">
+      <div class="talent-tree">
+        <h4>Arcane &middot; 40</h4>
+        <div class="talent-grid">
+          <div class="talent-cell max" style="grid-row:1;grid-column:1;" data-name="Arcane Subtlety" data-rank="2/2" data-tip="Reduces your target&#x27;s resistance to all your spells by 5 and reduces the threat caused by your Arcane spells by 40%.">Arcane Subtlety<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell max" style="grid-row:1;grid-column:2;" data-name="Arcane Focus" data-rank="5/5" data-tip="Reduces the chance that the opponent can resist your Arcane spells by 10%.">Arcane Focus<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell" style="grid-row:1;grid-column:3;" data-name="Improved Arcane Missiles" data-rank="0/5" data-tip="Gives you a 20% chance to avoid interruption caused by damage while channeling Arcane Missiles. (Rank 1 of 5.)">Improved Arcane Missiles<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:1;" data-name="Wand Specialization" data-rank="0/2" data-tip="Increases your damage with wands by 13%. (Rank 1 of 2.)">Wand Specialization<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:2;" data-name="Magic Absorption" data-rank="0/5" data-tip="Increases all resistances by 2 and causes all spells you fully resist to restore 1% of your total mana. 1 sec. cooldown. (Rank 1 of 5.)">Magic Absorption<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell max" style="grid-row:2;grid-column:3;" data-name="Arcane Concentration" data-rank="5/5" data-tip="Gives you a 10% chance of entering a Clearcasting state after any damage spell hits a target. The Clearcasting state reduces the mana cost of your next damage spell by 100%.">Arcane Concentration<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:1;" data-name="Magic Attunement" data-rank="2/2" data-tip="Increases the effect of your Amplify Magic and Dampen Magic spells by 50%.">Magic Attunement<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:2;" data-name="Arcane Impact" data-rank="3/3" data-tip="Increases the critical strike chance of your Arcane Explosion and Arcane Blast spells by an additional 6%.">Arcane Impact<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:4;" data-name="Arcane Fortitude" data-rank="0/1" data-tip="Increases your armor by an amount equal to 100% of your Intellect.">Arcane Fortitude<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:1;" data-name="Improved Mana Shield" data-rank="0/2" data-tip="Decreases the mana lost per point of damage taken when Mana Shield is active by 10%. (Rank 1 of 2.)">Improved Mana Shield<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:2;" data-name="Improved Counterspell" data-rank="0/2" data-tip="Gives your Counterspell a 50% chance to silence the target for 4 sec. (Rank 1 of 2.)">Improved Counterspell<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:4;grid-column:4;" data-name="Arcane Meditation" data-rank="3/3" data-tip="Allows 30% of your mana regeneration to continue while casting.">Arcane Meditation<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:1;" data-name="Improved Blink" data-rank="0/2" data-tip="For 4 sec after casting Blink, your chance to be hit by all attacks and spells is reduced by 13%. (Rank 1 of 2.)">Improved Blink<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:5;grid-column:2;" data-name="Presence of Mind" data-rank="1/1" data-tip="">Presence of Mind<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell max" style="grid-row:5;grid-column:4;" data-name="Arcane Mind" data-rank="5/5" data-tip="Increases your total Intellect by 15%.">Arcane Mind<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:1;" data-name="Prismatic Cloak" data-rank="0/2" data-tip="Reduces all damage taken by 2% (Rank 1 of 2.)">Prismatic Cloak<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:6;grid-column:2;" data-name="Arcane Instability" data-rank="3/3" data-tip="Increases your spell damage and critical strike chance by 3%.">Arcane Instability<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell max" style="grid-row:6;grid-column:3;" data-name="Arcane Potency" data-rank="3/3" data-tip="Increases the critical strike chance of any spell cast while Clearcasting by 30%.">Arcane Potency<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:1;" data-name="Empowered Arcane Missiles" data-rank="0/3" data-tip="Your Arcane Missiles spell gains an additional 15% of your bonus spell damage effects, but mana cost is increased by 2%. (Rank 1 of 3.)">Empowered Arcane Missiles<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell max" style="grid-row:7;grid-column:2;" data-name="Arcane Power" data-rank="1/1" data-tip="">Arcane Power<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell max" style="grid-row:7;grid-column:3;" data-name="Spell Power" data-rank="2/2" data-tip="Increases critical strike damage bonus of all spells by 50%.">Spell Power<span class="talent-rank">2/2</span></div>
+          <div class="talent-cell max" style="grid-row:8;grid-column:2;" data-name="Mind Mastery" data-rank="5/5" data-tip="Increases spell damage by up to 25% of your total Intellect.">Mind Mastery<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell" style="grid-row:9;grid-column:2;" data-name="Slow" data-rank="0/1" data-tip="">Slow<span class="talent-rank">0/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Fire &middot; 0</h4>
+        <div class="talent-grid">
+          <div class="talent-cell" style="grid-row:1;grid-column:2;" data-name="Improved Fireball" data-rank="0/5" data-tip="Reduces the casting time of your Fireball spell by 0.1 sec. (Rank 1 of 5.)">Improved Fireball<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:1;grid-column:3;" data-name="Impact" data-rank="0/5" data-tip="Gives your Fire spells a 2% chance to stun the target for 2 sec. (Rank 1 of 5.)">Impact<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:1;" data-name="Ignite" data-rank="0/5" data-tip="Your critical strikes from Fire damage spells cause the target to burn for an additional 8% of your spell&#x27;s damage over 4 sec. (Rank 1 of 5.)">Ignite<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:2;" data-name="Flame Throwing" data-rank="0/2" data-tip="Increases the range of your Fire spells by 3 yards. (Rank 1 of 2.)">Flame Throwing<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:3;" data-name="Improved Fire Blast" data-rank="0/3" data-tip="Reduces the cooldown of your Fire Blast spell by 0.5 sec. (Rank 1 of 3.)">Improved Fire Blast<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:1;" data-name="Incinerate" data-rank="0/2" data-tip="Increases the critical strike chance of your Fire Blast and Scorch spells by 2%. (Rank 1 of 2.)">Incinerate<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:2;" data-name="Improved Flamestrike" data-rank="0/3" data-tip="Increases the critical strike chance of your Flamestrike spell by 5%. (Rank 1 of 3.)">Improved Flamestrike<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:3;" data-name="Pyroblast" data-rank="0/1" data-tip="">Pyroblast<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:4;" data-name="Burning Soul" data-rank="0/2" data-tip="Gives your Fire spells a 35% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 5%. (Rank 1 of 2.)">Burning Soul<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:1;" data-name="Improved Scorch" data-rank="0/3" data-tip="Your Scorch spells have a 33% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases the Fire damage dealt to your target by 3% and lasts 30 sec. Stacks up to 5 times. (Rank 1 of 3.)">Improved Scorch<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:2;" data-name="Molten Shields" data-rank="0/2" data-tip="Causes your Fire Ward to have a 10% chance to reflect Fire spells while active. In addition, your Molten Armor has a 50% chance to affect ranged and spell attacks. (Rank 1 of 2.)">Molten Shields<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:4;" data-name="Master of Elements" data-rank="0/3" data-tip="Your Fire and Frost spell criticals will refund 10% of their base mana cost. (Rank 1 of 3.)">Master of Elements<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:1;" data-name="Playing with Fire" data-rank="0/3" data-tip="Increases all spell damage caused by 1% and all spell damage taken by 1%. (Rank 1 of 3.)">Playing with Fire<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:2;" data-name="Critical Mass" data-rank="0/3" data-tip="Increases the critical strike chance of your Fire spells by 2%. (Rank 1 of 3.)">Critical Mass<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:3;" data-name="Blast Wave" data-rank="0/1" data-tip="">Blast Wave<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:1;" data-name="Blazing Speed" data-rank="0/2" data-tip="Gives you a 5% chance when hit by a melee or ranged attack to increase your movement speed by 50% and dispel all movement impairing effects. This effect lasts 8 sec. (Rank 1 of 2.)">Blazing Speed<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:3;" data-name="Fire Power" data-rank="0/5" data-tip="Increases the damage done by your Fire spells by 2%. (Rank 1 of 5.)">Fire Power<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:1;" data-name="Pyromaniac" data-rank="0/3" data-tip="Increases chance to critically hit and reduces the mana cost of all Fire spells by an additional 1%. (Rank 1 of 3.)">Pyromaniac<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:2;" data-name="Combustion" data-rank="0/1" data-tip="">Combustion<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:3;" data-name="Molten Fury" data-rank="0/2" data-tip="Increases damage of all spells against targets with less than 20% health by 10%. (Rank 1 of 2.)">Molten Fury<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:8;grid-column:3;" data-name="Empowered Fireball" data-rank="0/5" data-tip="Your Fireball spell gains an additional 3% of your bonus spell damage effects. (Rank 1 of 5.)">Empowered Fireball<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:9;grid-column:2;" data-name="Dragon&#x27;s Breath" data-rank="0/1" data-tip="">Dragon&#x27;s Breath<span class="talent-rank">0/1</span></div>
+        </div>
+      </div>
+      <div class="talent-tree">
+        <h4>Frost &middot; 21</h4>
+        <div class="talent-grid">
+          <div class="talent-cell" style="grid-row:1;grid-column:1;" data-name="Frost Warding" data-rank="0/2" data-tip="Increases the armor and resistances given by your Frost Armor and Ice Armor spells by 15%. In addition, gives your Frost Ward a 10% chance to reflect Frost spells and effects while active. (Rank 1 of 2.)">Frost Warding<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:1;grid-column:2;" data-name="Improved Frostbolt" data-rank="5/5" data-tip="Reduces the casting time of your Frostbolt spell by 0.5 sec.">Improved Frostbolt<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell max" style="grid-row:1;grid-column:3;" data-name="Elemental Precision" data-rank="3/3" data-tip="Reduces the mana cost and chance targets resist your Frost and Fire spells by 3%.">Elemental Precision<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell max" style="grid-row:2;grid-column:1;" data-name="Ice Shards" data-rank="5/5" data-tip="Increases the critical strike damage bonus of your Frost spells by 100%.">Ice Shards<span class="talent-rank">5/5</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:2;" data-name="Frostbite" data-rank="0/3" data-tip="Gives your Chill effects a 5% chance to freeze the target for 5 sec. (Rank 1 of 3.)">Frostbite<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:3;" data-name="Improved Frost Nova" data-rank="0/2" data-tip="Reduces the cooldown of your Frost Nova by 2 sec. (Rank 1 of 2.)">Improved Frost Nova<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:2;grid-column:4;" data-name="Permafrost" data-rank="0/3" data-tip="Increases the duration of your Chill effects by 1 sec and reduces the target&#x27;s speed by an additional 4%. (Rank 1 of 3.)">Permafrost<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:1;" data-name="Piercing Ice" data-rank="3/3" data-tip="Increases the damage done by your Frost spells by 6%.">Piercing Ice<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell max" style="grid-row:3;grid-column:2;" data-name="Icy Veins" data-rank="1/1" data-tip="">Icy Veins<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell" style="grid-row:3;grid-column:4;" data-name="Improved Blizzard" data-rank="0/3" data-tip="Adds a chill effect to your Blizzard spell. This effect lowers the target&#x27;s movement speed by 30%.  Lasts 1.5 sec. (Rank 1 of 3.)">Improved Blizzard<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:1;" data-name="Arctic Reach" data-rank="0/2" data-tip="Increases the range of your Frostbolt, Ice Lance and Blizzard spells and the radius of your Frost Nova and Cone of Cold spells by 10%. (Rank 1 of 2.)">Arctic Reach<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell max" style="grid-row:4;grid-column:2;" data-name="Frost Channeling" data-rank="3/3" data-tip="Reduces the mana cost of your Frost spells by 15% and reduces the threat caused by your Frost spells by 10%.">Frost Channeling<span class="talent-rank">3/3</span></div>
+          <div class="talent-cell" style="grid-row:4;grid-column:3;" data-name="Shatter" data-rank="0/5" data-tip="Increases the critical strike chance of all your spells against frozen targets by 10%. (Rank 1 of 5.)">Shatter<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:1;" data-name="Frozen Core" data-rank="0/3" data-tip="Reduces the damage taken by Frost and Fire effects by 2%. (Rank 1 of 3.)">Frozen Core<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell max" style="grid-row:5;grid-column:2;" data-name="Cold Snap" data-rank="1/1" data-tip="">Cold Snap<span class="talent-rank">1/1</span></div>
+          <div class="talent-cell" style="grid-row:5;grid-column:3;" data-name="Improved Cone of Cold" data-rank="0/3" data-tip="Increases the damage dealt by your Cone of Cold spell by 15%. (Rank 1 of 3.)">Improved Cone of Cold<span class="talent-rank">0/3</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:1;" data-name="Ice Floes" data-rank="0/2" data-tip="Reduces the cooldown of your Cone of Cold, Cold Snap, Ice Barrier and Ice Block spells by 10%. (Rank 1 of 2.)">Ice Floes<span class="talent-rank">0/2</span></div>
+          <div class="talent-cell" style="grid-row:6;grid-column:3;" data-name="Winter&#x27;s Chill" data-rank="0/5" data-tip="Gives your Frost damage spells a 20% chance to apply the Winter&#x27;s Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec. Stacks up to 5 times. (Rank 1 of 5.)">Winter&#x27;s Chill<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:2;" data-name="Ice Barrier" data-rank="0/1" data-tip="">Ice Barrier<span class="talent-rank">0/1</span></div>
+          <div class="talent-cell" style="grid-row:7;grid-column:3;" data-name="Arctic Winds" data-rank="0/5" data-tip="Increases all Frost damage you cause by 1% and reduces the chance melee and ranged attacks will hit you by 1%. (Rank 1 of 5.)">Arctic Winds<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:8;grid-column:2;" data-name="Empowered Frostbolt" data-rank="0/5" data-tip="Your Frostbolt spell gains an additional 2% of your bonus spell damage effects and an additional 1% chance to critically strike. (Rank 1 of 5.)">Empowered Frostbolt<span class="talent-rank">0/5</span></div>
+          <div class="talent-cell" style="grid-row:9;grid-column:2;" data-name="Summon Water Elemental" data-rank="0/1" data-tip="">Summon Water Elemental<span class="talent-rank">0/1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="talent-leveling">Leveling Order (1-70)</h2>
+    <p>The order to spend points on the way to the final build, main tree first. You get your first point at level 10 and your last at level 70. The Arcane tree is finished before a single point goes into Frost, because the Frost points do nothing for you until they reach Icy Veins.</p>
+    <table class="gear-table">
+        <thead><tr><th>Order</th><th>Talent</th><th>Points</th><th>Tree</th></tr></thead>
+        <tbody>
+            <tr><td>1</td><td><a href="https://www.wowhead.com/tbc/spell=11222">Arcane Focus</a> <em style="color:#9d9d9d;">(levels 10-14)</em></td><td>5/5</td><td>Arcane</td></tr>
+            <tr><td>2</td><td><a href="https://www.wowhead.com/tbc/spell=11213">Arcane Concentration</a> <em style="color:#9d9d9d;">(levels 15-19)</em></td><td>5/5</td><td>Arcane</td></tr>
+            <tr><td>3</td><td><a href="https://www.wowhead.com/tbc/spell=11242">Arcane Impact</a> <em style="color:#9d9d9d;">(levels 20-22)</em></td><td>3/3</td><td>Arcane</td></tr>
+            <tr><td>4</td><td><a href="https://www.wowhead.com/tbc/spell=11247">Magic Attunement</a> <em style="color:#9d9d9d;">(levels 23-24)</em></td><td>2/2</td><td>Arcane</td></tr>
+            <tr><td>5</td><td><a href="https://www.wowhead.com/tbc/spell=18464">Arcane Meditation</a> <em style="color:#9d9d9d;">(levels 25-27)</em></td><td>3/3</td><td>Arcane</td></tr>
+            <tr><td>6</td><td><a href="https://www.wowhead.com/tbc/spell=11210">Arcane Subtlety</a> <em style="color:#9d9d9d;">(levels 28-29)</em></td><td>2/2</td><td>Arcane</td></tr>
+            <tr><td>7</td><td><a href="https://www.wowhead.com/tbc/spell=12043">Presence of Mind</a> <em style="color:#9d9d9d;">(level 30)</em></td><td>1/1</td><td>Arcane</td></tr>
+            <tr><td>8</td><td><a href="https://www.wowhead.com/tbc/spell=11232">Arcane Mind</a> <em style="color:#9d9d9d;">(levels 31-35)</em></td><td>5/5</td><td>Arcane</td></tr>
+            <tr><td>9</td><td><a href="https://www.wowhead.com/tbc/spell=15058">Arcane Instability</a> <em style="color:#9d9d9d;">(levels 36-38)</em></td><td>3/3</td><td>Arcane</td></tr>
+            <tr><td>10</td><td><a href="https://www.wowhead.com/tbc/spell=31572">Arcane Potency</a> <em style="color:#9d9d9d;">(levels 39-41)</em></td><td>3/3</td><td>Arcane</td></tr>
+            <tr><td>11</td><td><a href="https://www.wowhead.com/tbc/spell=12042">Arcane Power</a> <em style="color:#9d9d9d;">(level 42)</em></td><td>1/1</td><td>Arcane</td></tr>
+            <tr><td>12</td><td><a href="https://www.wowhead.com/tbc/spell=35578">Spell Power</a> <em style="color:#9d9d9d;">(levels 43-44)</em></td><td>2/2</td><td>Arcane</td></tr>
+            <tr><td>13</td><td><a href="https://www.wowhead.com/tbc/spell=31584">Mind Mastery</a> <em style="color:#9d9d9d;">(levels 45-49)</em></td><td>5/5</td><td>Arcane</td></tr>
+            <tr><td>14</td><td><a href="https://www.wowhead.com/tbc/spell=11070">Improved Frostbolt</a> <em style="color:#9d9d9d;">(levels 50-54)</em></td><td>5/5</td><td>Frost</td></tr>
+            <tr><td>15</td><td><a href="https://www.wowhead.com/tbc/spell=29438">Elemental Precision</a> <em style="color:#9d9d9d;">(levels 55-57)</em></td><td>3/3</td><td>Frost</td></tr>
+            <tr><td>16</td><td><a href="https://www.wowhead.com/tbc/spell=11207">Ice Shards</a> <em style="color:#9d9d9d;">(levels 58-62)</em></td><td>5/5</td><td>Frost</td></tr>
+            <tr><td>17</td><td><a href="https://www.wowhead.com/tbc/spell=11151">Piercing Ice</a> <em style="color:#9d9d9d;">(levels 63-65)</em></td><td>3/3</td><td>Frost</td></tr>
+            <tr><td>18</td><td><a href="https://www.wowhead.com/tbc/spell=12472">Icy Veins</a> <em style="color:#9d9d9d;">(level 66)</em></td><td>1/1</td><td>Frost</td></tr>
+            <tr><td>19</td><td><a href="https://www.wowhead.com/tbc/spell=11160">Frost Channeling</a> <em style="color:#9d9d9d;">(levels 67-69)</em></td><td>3/3</td><td>Frost</td></tr>
+            <tr><td>20</td><td><a href="https://www.wowhead.com/tbc/spell=11958">Cold Snap</a> <em style="color:#9d9d9d;">(level 70)</em></td><td>1/1</td><td>Frost</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== ROTATION & DPS ===== -->
+    <h1 id="rotation">Rotation &amp; DPS</h1>
+    <p>Arcane's rotation is a mana curve, not a button sequence: you ramp your main nuke as far as your mana bar allows, drop back to a cheaper filler before you bottom out, and refill with every mana cooldown you have. How far you ramp depends on fight length, your mana pool, and your raid's mana support.</p>
+    <div class="info-box"><p><strong>Rotation data pending.</strong> Ability priority and spell tooltips are pulled from the spec's rotation guide so every ability links to the correct spell, rather than being written from memory. The sub-sections below fill in once that source is saved.</p></div>
+
+    <h2 id="rotation-priority">Single-Target Priority</h2>
+    <table class="gear-table">
+        <thead><tr><th>Priority</th><th>Ability</th><th>When</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="rotation-aoe">Multi-Target / AoE</h2>
+    <table class="gear-table">
+        <thead><tr><th>Ability</th><th>When</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="rotation-cooldowns">Cooldowns</h2>
+    <table class="gear-table">
+        <thead><tr><th>Cooldown</th><th>Effect</th><th>When to use</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="rotation-mana">Mana Management</h2>
+    <table class="gear-table">
+        <thead><tr><th>Tool</th><th>Effect</th><th>When to use</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="rotation-buffs">Keep These Up</h2>
+    <table class="gear-table">
+        <thead><tr><th>Buff</th><th>Effect</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== QUEST STRATEGY ===== -->
+    <h1 id="quest-strategy">Questing Strategy</h1>
+    <p>Quests reward caster gear, gold, rep, and XP all at once, but only if you batch them. Pick up everything at a hub before you start killing, and most slots in your pre-raid set come from solo questing.</p>
+
+    <div class="info-box"><p><strong>Universal rule:</strong> when you reach a quest hub, walk every NPC with a yellow ! before doing anything. Leave town with a full log and a loop that finishes several quests at once. The gear below is a low-effort head start before you grind heroics and badges.</p></div>
+
+    <h2 id="quest-pre-flight">Pre-Flight Checklist (Before Any Heroic Run)</h2>
+    <p>Grab these dailies <strong>before</strong> you queue or summon, they stack rep and badges onto a run you are doing anyway.</p>
+    <table class="gear-table">
+        <thead><tr><th>Pickup</th><th>NPC / Location</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td>Sha'tar daily heroic</td><td><a href="https://www.wowhead.com/tbc/npc=21432">Almaador</a> - Terrace of Light, Shattrath</td><td>+250 Sha'tar rep + bonus badge</td></tr>
+            <tr><td>Lower City daily heroic</td><td><a href="https://www.wowhead.com/tbc/npc=21655">Nakodu</a> - Lower City, Shattrath</td><td>+250 Lower City rep</td></tr>
+            <tr><td>Cooking / Fishing dailies</td><td>The Rokk / Old Man Barlo - Shattrath &amp; Terokkar</td><td>Lower City rep + gold</td></tr>
+            <tr><td>Aldor or Scryers daily</td><td>Aldor Rise / Scryers' Tier, Shattrath</td><td>+250 to your chosen faction (sets your shoulder enchant)</td></tr>
+            <tr><td>Skyguard / Ogri'la dailies (Phase 2+)</td><td>Blade's Edge Plateaus</td><td>Rep, gold, and gems</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="quest-fresh70-sweep">Fresh 70 Caster Quest Sweep</h2>
+    <p>Newly 70 or on an alt? Run these zones and take the spell-power reward from each quest. Together they fill most of your starting set. These are the same caster rewards every Mage spec wants, so they apply whether you are Arcane, Fire, or Frost.</p>
+    <h3>Terokkar Forest</h3>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Wrist</td><td><a href="https://www.wowhead.com/tbc/quest=10091">The Soul Devices</a></td><td><a href="https://www.wowhead.com/tbc/item=28174" data-wh-icon-size="small">Shattrath Wraps</a></td></tr>
+            <tr><td class="slot-label">Feet</td><td><a href="https://www.wowhead.com/tbc/quest=10095">Into the Heart of the Labyrinth</a></td><td><a href="https://www.wowhead.com/tbc/item=28179" data-wh-icon-size="small">Shattrath Jumpers</a></td></tr>
+            <tr><td class="slot-label">Neck</td><td><a href="https://www.wowhead.com/tbc/quest=10097">Brother Against Brother</a></td><td><a href="https://www.wowhead.com/tbc/item=29333" data-wh-icon-size="small">Torc of the Sethekk Prophet</a></td></tr>
+            <tr><td class="slot-label">Off Hand</td><td><a href="https://www.wowhead.com/tbc/quest=10098">Terokk's Legacy</a></td><td><a href="https://www.wowhead.com/tbc/item=27634" data-wh-icon-size="small">The Saga of Terokk</a></td></tr>
+            <tr><td class="slot-label">Chest</td><td><a href="https://www.wowhead.com/tbc/quest=10164">Everything Will Be Alright</a></td><td><a href="https://www.wowhead.com/tbc/item=29341" data-wh-icon-size="small">Auchenai Anchorite's Robe</a></td></tr>
+        </tbody>
+    </table>
+    <h3>Nagrand</h3>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Head</td><td><a href="https://www.wowhead.com/tbc/quest=9955">Cho'war the Pillager</a></td><td><a href="https://www.wowhead.com/tbc/item=25777" data-wh-icon-size="small">Ogre Slayer's Cover</a></td></tr>
+            <tr><td class="slot-label">Wand</td><td><a href="https://www.wowhead.com/tbc/quest=9852">The Ultimate Bloodsport</a></td><td><a href="https://www.wowhead.com/tbc/item=25640" data-wh-icon-size="small">Nesingwary Safari Stick</a></td></tr>
+        </tbody>
+    </table>
+    <h3>Blade's Edge Mountains</h3>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Neck</td><td><a href="https://www.wowhead.com/tbc/quest=10912">The Hound-Master</a></td><td><a href="https://www.wowhead.com/tbc/item=31692" data-wh-icon-size="small">Natasha's Ember Necklace</a></td></tr>
+        </tbody>
+    </table>
+    <h3>Netherstorm</h3>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Waist</td><td><a href="https://www.wowhead.com/tbc/quest=10704">How to Break Into the Arcatraz</a></td><td><a href="https://www.wowhead.com/tbc/item=31461" data-wh-icon-size="small">A'dal's Gift</a></td></tr>
+            <tr><td class="slot-label">Back</td><td><a href="https://www.wowhead.com/tbc/quest=10293">Hitting the Motherlode</a></td><td><a href="https://www.wowhead.com/tbc/item=29813" data-wh-icon-size="small">Cloak of Woven Energy</a></td></tr>
+            <tr><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/quest=10323">Shutting Down Manaforge Ara</a></td><td><a href="https://www.wowhead.com/tbc/item=30366" data-wh-icon-size="small">Manastorm Band</a></td></tr>
+            <tr><td class="slot-label">Wand</td><td><a href="https://www.wowhead.com/tbc/quest=10507">Turning Point</a></td><td><a href="https://www.wowhead.com/tbc/item=30859" data-wh-icon-size="small">Wand of the Seer</a></td></tr>
+        </tbody>
+    </table>
+    <h3>Shadowmoon Valley</h3>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Shoulder</td><td><a href="https://www.wowhead.com/tbc/quest=10588">The Cipher of Damnation</a></td><td><a href="https://www.wowhead.com/tbc/item=30925" data-wh-icon-size="small">Spaulders of the Torn-heart</a></td></tr>
+            <tr><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/quest=10769">Dissension Amongst the Ranks...</a></td><td><a href="https://www.wowhead.com/tbc/item=31075" data-wh-icon-size="small">Evoker's Mark of the Redemption</a></td></tr>
+        </tbody>
+    </table>
+
+    <div class="tip-box"><p><strong>Netherstorm and Shadowmoon are the densest.</strong> Their blood elf and demon kills also drop your Shattrath turn-in items (Sunfury Signets / Arcane Tomes for Scryers; Marks of Sargeras + Fel Armaments for Aldor), so quest there with faction turn-ins in mind.</p></div>
+
+    <h2 id="quest-attunements">Raid Attunement Quests (Gear + Access)</h2>
+    <p>These attunement chains unlock raids <strong>and</strong> hand out strong caster pieces. Do them as you gear up for each tier.</p>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Quest</th><th>Reward</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Ring</td><td><a href="https://www.wowhead.com/tbc/quest=11002">The Fall of Magtheridon</a></td><td><a href="https://www.wowhead.com/tbc/item=28793" data-wh-icon-size="small">Band of Crimson Fury</a></td></tr>
+            <tr><td class="slot-label">Neck</td><td><a href="https://www.wowhead.com/tbc/quest=11007">Kael'thas and the Verdant Sphere</a></td><td><a href="https://www.wowhead.com/tbc/item=30015" data-wh-icon-size="small">The Sun King's Talisman</a></td></tr>
+            <tr><td class="slot-label">Access</td><td><a href="https://www.wowhead.com/tbc/quest=10445">The Vials of Eternity</a></td><td>Opens <a href="https://www.wowhead.com/tbc/zone=3606">Hyjal Summit</a>. No gear reward itself, but it starts your <strong>The Scale of the Sands</strong> reputation, which is where <a href="https://www.wowhead.com/tbc/item=29294" data-wh-icon-size="small">Band of Eternity</a> actually comes from (rep reward, not a quest turn-in).</td></tr>
+        </tbody>
+    </table>
+    <div class="info-box"><p><strong>Karazhan key:</strong> the <em>Master's Key</em> chain (Black Morass + Shadow Labyrinth) is the most important early attunement, it gates Phase 1 and the Violet Eye rep that gives you a top caster ring.</p></div>
+
+    <!-- ===== REPUTATION ===== -->
+    <h1 id="reputation">Reputation</h1>
+    <p>Reputation unlocks heroic dungeons, your head and shoulder enchants, and key items. Grind these early to bring your gear online.</p>
+
+    <h2 id="rep-priority">Caster Priority Reputations</h2>
+    <ul>
+        <li><strong>The Sha'tar</strong> (Revered) for <a href="https://www.wowhead.com/tbc/item=29191" data-wh-icon-size="small">Glyph of Power</a>, your head enchant. This is the single highest-value reputation for a fresh Arcane mage.</li>
+        <li><strong>Keepers of Time</strong>, <strong>Lower City</strong>, <strong>Cenarion Expedition</strong>, <strong>Honor Hold / Thrallmar</strong> (Revered) for their heroic keys.</li>
+        <li><strong>The Violet Eye</strong> (Karazhan) for <a href="https://www.wowhead.com/tbc/item=29287" data-wh-icon-size="small">Violet Signet of the Archmage</a>, a top caster ring; wear the lower ranks while grinding.</li>
+        <li><strong>The Consortium</strong> and <strong>The Scale of the Sands</strong> (later) for rings and trinkets.</li>
+    </ul>
+
+    <h2 id="aldor-vs-scryers">Aldor vs Scryers</h2>
+    <p>Pick one Shattrath faction (mutually exclusive). For an Arcane Mage it mainly sets your <strong>shoulder enchant</strong>:</p>
+    <ul>
+        <li><strong>Aldor:</strong> <a href="https://www.wowhead.com/tbc/item=28886" data-wh-icon-size="small">Greater Inscription of Discipline</a> (+18 spell dmg, +10 crit), the raw-damage option.</li>
+        <li><strong>Scryers:</strong> <a href="https://www.wowhead.com/tbc/item=28909" data-wh-icon-size="small">Greater Inscription of the Orb</a> (+12 spell dmg, +15 crit), trades some damage for crit.</li>
+    </ul>
+    <p>Both are close; pick whichever matches your guild, trinket plans, and what your other casters are running.</p>
+
+    <!-- ===== PRE-RAID BIS ===== -->
+    <h1 id="pre-raid-bis">Pre-Raid Best in Slot</h1>
+    <p>Gear to target before stepping into Karazhan. Arcane is a caster set: reach the spell hit cap first, then stack spell damage. Crafted Tailoring pieces, Badge of Justice purchases, heroic dungeon drops, and reputation rewards carry most slots.</p>
+    <div class="info-box"><p><strong>Awaiting source data.</strong> Per-slot rankings, drop sources, and notes are filled in from the saved guide sources and verified item-by-item against the loot tables and live item stats. The slot structure below is ready for them.</p></div>
+
+    <div class="filter-bar">
+        <span class="filter-label">Filter by source:</span>
+        <button class="filter-btn active" onclick="filterGear('all')">All</button>
+        <button class="filter-btn" onclick="filterGear('badge')">🎖️ Badge</button>
+        <button class="filter-btn" onclick="filterGear('quest')">❗ Quest</button>
+        <button class="filter-btn" onclick="filterGear('heroic')">💀 Heroic</button>
+        <button class="filter-btn" onclick="filterGear('dungeon')">💀 Dungeon</button>
+        <button class="filter-btn" onclick="filterGear('crafted')">🔨 Crafted</button>
+        <button class="filter-btn" onclick="filterGear('rep')">📜 Reputation</button>
+        <button class="filter-btn" onclick="filterGear('pvp')">⚔️ PvP</button>
+    </div>
+
+    <h2 id="slot-head">Head</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-neck">Necklace</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-shoulder">Shoulder</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-back">Back</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-chest">Chest</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-wrist">Wrist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-hands">Hands</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-waist">Waist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-legs">Legs</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-feet">Feet</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-rings">Rings</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-trinkets">Trinkets</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-mainhand">Main Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-offhand">Off Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="slot-ranged">Wand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== BADGE PRIORITY ===== -->
+    <h1 id="badges">Badge of Justice Spending Priority</h1>
+    <p>Where to spend your first Badges of Justice for the most spell damage per badge.</p>
+    <table class="gear-table">
+        <thead><tr><th>Priority</th><th>Item</th><th>Cost</th><th>Why</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== PHASE 1 ===== -->
+    <h1 id="phase1">Phase 1 - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> / <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> / <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a></h1>
+    <p>Phase 1 opens Karazhan, Gruul's Lair and Magtheridon's Lair, and brings the <strong>Tier 4</strong> mage set, <em>Aldor Regalia</em>. The defining choice of the phase is not tier at all: the crafted <strong>Spellfire</strong> three-piece converts your Intellect straight into spell damage, and Arcane stacks more Intellect than any other caster, so it beats chasing the full tier set. Expect a mix of crafted, tier, and Karazhan drops, with Prince Malchezaar and Maiden of Virtue carrying more slots than any other bosses.</p>
+
+    <div class="tip-box"><p><strong>Set bonuses that actually matter:</strong><br>
+    <strong>Spellfire (3-set: <a href="https://www.wowhead.com/tbc/item=21848" data-wh-icon-size="small">Robe</a> + <a href="https://www.wowhead.com/tbc/item=21847" data-wh-icon-size="small">Gloves</a> + <a href="https://www.wowhead.com/tbc/item=21846" data-wh-icon-size="small">Belt</a>):</strong> increases spell damage by up to 7% of your total Intellect. This is the phase's biggest single gain for Arcane and the reason most of your chest, hands and waist slots are crafted rather than tier.<br>
+    <strong>Aldor Regalia (T4) 2-set:</strong> uninterruptible Fireball and Frostbolt. Arcane casts neither, so treat the 2-set as worthless and judge tier pieces purely on their own stats.<br>
+    <strong>Aldor Regalia (T4) 4-set:</strong> cuts 24 seconds off Presence of Mind. That one is genuinely good, but reaching it means dropping Spellfire, so it is a Phase 2 goal rather than a Phase 1 target.</p></div>
+
+    <h2 id="phase1-head">Head</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=34220" data-wh-icon-size="small">Chaotic Skyfire Diamond</a> (meta), <a href="https://www.wowhead.com/tbc/item=24056" data-wh-icon-size="small">Glowing Nightseye</a> to keep the socket bonus. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/item=29191" data-wh-icon-size="small">Glyph of Power</a> (The Sha'tar - Revered).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=29076" data-wh-icon-size="small">Collar of the Aldor</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a> (T4 token)</td><td>Your only meta socket in the whole set, so this is where the Chaotic Skyfire Diamond lives. Take it for the raw stats and the socket, not for a 2-set bonus Arcane cannot use.</td></tr>
+            <tr data-source="dungeon"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28278" data-wh-icon-size="small">Incanter's Cowl</a></td><td><span class="boss-icon">&#128128;</span> Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3849">The Mechanar</a> - <a href="https://www.wowhead.com/tbc/npc=19220">Pathaleon the Calculator</a></td><td>Holds the slot on a schedule you control, a five-man you can spam beats waiting on a 25-man token.</td></tr>
+            <tr data-source="crafted"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=24266" data-wh-icon-size="small">Spellstrike Hood</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoE)</td><td>Craft it with the matching pants, the 2-set proc keeps this competitive well past the point the item level says it should be.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-neck">Neck</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> none, no socketed caster necks this phase. &nbsp;<strong>&#128295; Enchant:</strong> no neck enchants exist in TBC.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28762" data-wh-icon-size="small">Adornment of Stolen Souls</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>Unanimous BiS, and it shares a boss with your tier head and main hand, so Prince clears tend to fill three slots at once.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28530" data-wh-icon-size="small">Brooch of Unquenchable Fury</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15687">Moroes</a></td><td>The hit-carrying neck, wear it while you are short of the cap and hand it off once other slots cover hit.</td></tr>
+            <tr data-source="dungeon"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=28134" data-wh-icon-size="small">Brooch of Heightened Potential</a></td><td><span class="boss-icon">&#128128;</span> Terokkar Forest - <a href="https://www.wowhead.com/tbc/zone=3789">Shadow Labyrinth</a> - <a href="https://www.wowhead.com/tbc/npc=18667">Blackheart the Inciter</a></td><td>Cheap way to buy hit before raiding, retire it the week Moroes or Prince cooperates.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-shoulder">Shoulder</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24059" data-wh-icon-size="small">Potent Noble Topaz</a> (yellow), <a href="https://www.wowhead.com/tbc/item=24030" data-wh-icon-size="small">Runed Living Ruby</a> (red). &nbsp;<strong>&#128295; Enchant (Scryers):</strong> <a href="https://www.wowhead.com/tbc/item=28909" data-wh-icon-size="small">Greater Inscription of the Orb</a>. &nbsp;<strong>(Aldor):</strong> <a href="https://www.wowhead.com/tbc/item=28886" data-wh-icon-size="small">Greater Inscription of Discipline</a>.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=29079" data-wh-icon-size="small">Pauldrons of the Aldor</a></td><td><span class="boss-icon">&#128009;</span> Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a> (T4 token)</td><td>Earns the slot on its own merits, not the set bonus, which Arcane cannot use. It wins mostly because the shoulder slot has no crafted competitor, so there is nothing else to want here.</td></tr>
+            <tr data-source="heroic"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=27796" data-wh-icon-size="small">Mana-Etched Spaulders</a></td><td><span class="boss-icon">&#128128;</span> Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">The Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a></td><td>Only worth wearing as part of the Mana-Etched 2-set, which is the cheapest route to the hit cap for a fresh 70.</td></tr>
+            <tr data-source="dungeon"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=27994" data-wh-icon-size="small">Mantle of Three Terrors</a></td><td><span class="boss-icon">&#128128;</span> Caverns of Time - <a href="https://www.wowhead.com/tbc/zone=2366">The Black Morass</a> - <a href="https://www.wowhead.com/tbc/npc=17879">Chrono Lord Deja</a></td><td>Normal-mode drop with real hit on it, a solid stopgap before heroic keys are done.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-back">Back</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> none, no socketed cloaks this phase. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=25084">Enchant Cloak - Subtlety</a> (threat reduction, Arcane pulls hard).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28766" data-wh-icon-size="small">Ruby Drape of the Mysticant</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>Sources genuinely split this slot. Wear this one while you are under the hit cap, it is the safer default for most fresh raiders.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28797" data-wh-icon-size="small">Brute Cloak of the Ogre-Magi</a></td><td><span class="boss-icon">&#128009;</span> Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a></td><td>The other half of the split, and the better cloak the moment your hit is handled elsewhere. Keep both if you can.</td></tr>
+            <tr data-source="dungeon"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=27981" data-wh-icon-size="small">Sethekk Oracle Cloak</a></td><td><span class="boss-icon">&#128128;</span> Terokkar Forest - <a href="https://www.wowhead.com/tbc/zone=3791">Sethekk Halls</a> - <a href="https://www.wowhead.com/tbc/npc=18473">Talon King Ikiss</a></td><td>Dungeon filler that covers hit, replace it the first time either raid cloak drops.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-chest">Chest</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24030" data-wh-icon-size="small">Runed Living Ruby</a> x2, ignore the Stamina socket bonus. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=27960">Enchant Chest - Exceptional Stats</a>.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="crafted"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=21848" data-wh-icon-size="small">Spellfire Robe</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoP)</td><td>The anchor of the Spellfire three-piece. Requires the Spellfire tailoring specialization, so commit to that branch before you spend the mats.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28602" data-wh-icon-size="small">Robe of the Elder Scribes</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a></td><td>Only take it if you are not running Spellfire, the proc does not cover the loss of the 7% Intellect bonus.</td></tr>
+            <tr data-source="raid"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=29077" data-wh-icon-size="small">Vestments of the Aldor</a></td><td><span class="boss-icon">&#128009;</span> Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a> (T4 token)</td><td>Three sockets are tempting, but wearing tier here breaks Spellfire. Most Arcane mages pass this token to someone who needs it more.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-wrist">Wrist</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24030" data-wh-icon-size="small">Runed Living Ruby</a> in socketed bracers. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=27917">Enchant Bracer - Spellpower</a>.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28515" data-wh-icon-size="small">Bands of Nefarious Deeds</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16457">Maiden of Virtue</a></td><td>Carries no hit at all, so it is the wrist you wear once you are already capped rather than the one that gets you there. Maiden is an early Kara boss, so it lands quickly.</td></tr>
+            <tr data-source="pvp"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28411" data-wh-icon-size="small">General's Silk Cuffs</a></td><td><span class="pvp-icon">&#9876;&#65039;</span> PvP - Honor + Warsong Gulch marks</td><td>Honor buys it outright with no arena rating, so it is the fastest fix for the slot. Part of its budget is Resilience that does nothing in a raid, so treat it as a stopgap rather than a target.</td></tr>
+            <tr data-source="crafted"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=24250" data-wh-icon-size="small">Bracers of Havok</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoE)</td><td>Cheap on the auction house, craft or buy it early and forget the slot until Karazhan.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-hands">Hands</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24030" data-wh-icon-size="small">Runed Living Ruby</a> x2. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=33997">Enchant Gloves - Major Spellpower</a>.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="crafted"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=21847" data-wh-icon-size="small">Spellfire Gloves</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoP)</td><td>The cheapest of the three Spellfire pieces to make, so craft this one first when you start the set.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28780" data-wh-icon-size="small">Soul-Eater's Handwraps</a></td><td><span class="boss-icon">&#128009;</span> Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>The strongest non-set hands in the phase, but only wear them once you have given up on Spellfire.</td></tr>
+            <tr data-source="raid"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=29080" data-wh-icon-size="small">Gloves of the Aldor</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15691">The Curator</a> (T4 token)</td><td>The tier token to grab if you are struggling for hit and not running Spellfire.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-waist">Waist</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24030" data-wh-icon-size="small">Runed Living Ruby</a>, <a href="https://www.wowhead.com/tbc/item=24056" data-wh-icon-size="small">Glowing Nightseye</a>. &nbsp;<strong>&#128295; Enchant:</strong> none, TBC has no belt enchant and no belt buckle.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="crafted"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=21846" data-wh-icon-size="small">Spellfire Belt</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoP)</td><td>The third Spellfire piece, and the one that finally switches the 7% Intellect bonus on. Worthless on its own, essential as the set closer.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28799" data-wh-icon-size="small">Belt of Divine Inspiration</a></td><td><span class="boss-icon">&#128009;</span> Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=18831">High King Maulgar</a></td><td>Bigger raw numbers than the Spellfire belt, so this becomes the upgrade when you break the set in Phase 2, not before.</td></tr>
+            <tr data-source="crafted"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=24256" data-wh-icon-size="small">Girdle of Ruination</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoE)</td><td>BoE and usually cheap, the standard placeholder while you gather Spellfire mats.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-legs">Legs</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24059" data-wh-icon-size="small">Potent Noble Topaz</a> x3 in the Trial-Fire Trousers. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/item=24274" data-wh-icon-size="small">Runic Spellthread</a>, or <a href="https://www.wowhead.com/tbc/item=24273" data-wh-icon-size="small">Mystic Spellthread</a> on a budget.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=29078" data-wh-icon-size="small">Legwraps of the Aldor</a></td><td><span class="boss-icon">&#128009;</span> Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a> (T4 token)</td><td>The one tier piece worth breaking a plan for, it carries so much hit that it frees up several other slots to go pure damage.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28594" data-wh-icon-size="small">Trial-Fire Trousers</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Opera Event (<a href="https://www.wowhead.com/tbc/npc=17534">Romulo and Julianne</a>)</td><td>The best gem platform in the phase, and Opera is a guaranteed weekly chance rather than a rare drop.</td></tr>
+            <tr data-source="crafted"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=24262" data-wh-icon-size="small">Spellstrike Pants</a></td><td><span class="craft-icon">&#128296;</span> Crafted - Tailoring (BoE)</td><td>Pair them with the hood for the 2-set proc, that combination stays relevant deep into Karazhan.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-feet">Feet</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24030" data-wh-icon-size="small">Runed Living Ruby</a>, <a href="https://www.wowhead.com/tbc/item=24059" data-wh-icon-size="small">Potent Noble Topaz</a>. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=34008">Enchant Boots - Boar's Speed</a>.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28517" data-wh-icon-size="small">Boots of Foretelling</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16457">Maiden of Virtue</a></td><td>Maiden covers your wrists and your feet, which makes her the most valuable early Kara boss for Arcane.</td></tr>
+            <tr data-source="dungeon"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28406" data-wh-icon-size="small">Sigil-Laced Boots</a></td><td><span class="boss-icon">&#128128;</span> Netherstorm - <a href="https://www.wowhead.com/tbc/zone=3848">The Arcatraz</a> - <a href="https://www.wowhead.com/tbc/npc=20912">Harbinger Skyriss</a></td><td>Drops on normal mode, so this is the easiest slot fix available to a fresh 70.</td></tr>
+            <tr data-source="heroic"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=29258" data-wh-icon-size="small">Boots of Ethereal Manipulation</a></td><td><span class="boss-icon">&#128128;</span> Netherstorm - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3847">The Botanica</a> - <a href="https://www.wowhead.com/tbc/npc=17977">Warp Splinter</a></td><td>Take these only if you are running dry on mana, otherwise a chunk of the item is dead weight for Arcane.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-rings">Rings</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> none, no socketed caster rings this phase. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=27924">Enchant Ring - Spellpower</a> (enchanters only, on both rings).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="rep"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=29287" data-wh-icon-size="small">Violet Signet of the Archmage</a></td><td><span class="rep-icon">&#128220;</span> The Violet Eye - Exalted</td><td>It upgrades for free as your Violet Eye reputation climbs, so equip the low version from your first Kara run and let it grow with you.</td></tr>
+            <tr data-source="quest"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28793" data-wh-icon-size="small">Band of Crimson Fury</a></td><td><span class="quest-icon">!</span> Hellfire Peninsula - Quest: <a href="https://www.wowhead.com/tbc/quest=11003">The Fall of Magtheridon</a></td><td>A guaranteed turn-in after your first Magtheridon kill, no drop luck involved. Do not forget to hand the quest in.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28753" data-wh-icon-size="small">Ring of Recurrence</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - Chess Event</td><td>Chess drops a guaranteed chest every week, making this the most predictable ring in the phase.</td></tr>
+            <tr data-source="heroic"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=28227" data-wh-icon-size="small">Sparking Arcanite Ring</a></td><td><span class="boss-icon">&#128128;</span> Caverns of Time - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=2367">Old Hillsbrad Foothills</a> - <a href="https://www.wowhead.com/tbc/npc=18096">Epoch Hunter</a></td><td>Covers hit while you grind out the Violet Eye reputation, which takes several full clears.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-trinkets">Trinkets</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> none. &nbsp;<strong>&#128295; Enchant:</strong> none, trinkets cannot be enchanted.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="badge"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=29370" data-wh-icon-size="small">Icon of the Silver Crescent</a></td><td><span class="badge-icon">&#127894;&#65039;</span> Shattrath - 41 Badge of Justice</td><td>Your first big badge purchase. Fire the on-use inside an Arcane Power window rather than on cooldown, the two stack into a real burst.</td></tr>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28785" data-wh-icon-size="small">The Lightning Capacitor</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15688">Terestian Illhoof</a></td><td>Arcane crits often enough to keep it firing, and it needs no button press, which suits an already busy rotation.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28789" data-wh-icon-size="small">Eye of Magtheridon</a></td><td><span class="boss-icon">&#128009;</span> Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>The on-equip damage is the entire reason to wear it. The proc only fires when a spell of yours is <em>resisted</em>, so it quietly dies as you approach the hit cap, which is the opposite of what you want from a trinket you keep upgrading into.</td></tr>
+            <tr data-source="heroic"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=27683" data-wh-icon-size="small">Quagmirran's Eye</a></td><td><span class="boss-icon">&#128128;</span> Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3717">The Slave Pens</a> - <a href="https://www.wowhead.com/tbc/npc=17942">Quagmirran</a></td><td>You can farm it on your own schedule instead of waiting on a raid, and the haste proc keeps it worth a slot even after you buy the badge trinket.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-mainhand">Main Hand</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> <a href="https://www.wowhead.com/tbc/item=24047" data-wh-icon-size="small">Brilliant Dawnstone</a> in socketed weapons. &nbsp;<strong>&#128295; Enchant:</strong> <a href="https://www.wowhead.com/tbc/spell=27981">Enchant Weapon - Sunfire</a> (Arcane and Fire damage, the correct one for this spec).</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28770" data-wh-icon-size="small">Nathrezim Mindblade</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15690">Prince Malchezaar</a></td><td>Consensus BiS and a third Prince drop, no boss in the phase gears Arcane harder. Expect to compete with warlocks and shadow priests for it.</td></tr>
+            <tr data-source="worldboss"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=30723" data-wh-icon-size="small">Talon of the Tempest</a></td><td><span class="boss-icon">&#128009;</span> Shadowmoon Valley - World Boss - <a href="https://www.wowhead.com/tbc/npc=17711">Doomwalker</a></td><td>World boss, so treat it as a lucky bonus rather than a plan, but the two sockets let it keep pace.</td></tr>
+            <tr data-source="raid"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=28802" data-wh-icon-size="small">Bloodmaw Magus-Blade</a></td><td><span class="boss-icon">&#128009;</span> Blade's Edge Mtns - <a href="https://www.wowhead.com/tbc/zone=3923">Gruul's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=19044">Gruul the Dragonkiller</a></td><td>Close enough to the Mindblade that the difference is noise, so take whichever drops first and never hold the slot open waiting for the "better" one.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-offhand">Off Hand</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> none. &nbsp;<strong>&#128295; Enchant:</strong> none, off-hand held items cannot be enchanted.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="badge"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=29271" data-wh-icon-size="small">Talisman of Kalecgos</a></td><td><span class="badge-icon">&#127894;&#65039;</span> Shattrath - 25 Badge of Justice</td><td>Arcane-specific damage, which is exactly why a cheap badge off-hand beats the raid drops for this spec and no other. Buy it the week you hit 70.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28734" data-wh-icon-size="small">Jewel of Infinite Possibilities</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=15689">Netherspite</a></td><td>The hit option for this slot, worth swapping in while you are still short of the cap.</td></tr>
+            <tr data-source="raid"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=28603" data-wh-icon-size="small">Talisman of Nightbane</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=17225">Nightbane</a></td><td>The fallback if your badges went elsewhere first, but 25 badges is cheap enough that this should not stay in your set for long.</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="phase1-ranged">Wand</h2>
+    <p class="gem-enchant-info"><strong>&#128142; Gems:</strong> none. &nbsp;<strong>&#128295; Enchant:</strong> none, wands cannot be enchanted in TBC.</p>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr data-source="raid"><td>BiS</td><td><a href="https://www.wowhead.com/tbc/item=28783" data-wh-icon-size="small">Eredar Wand of Obliteration</a></td><td><span class="boss-icon">&#128009;</span> Hellfire Peninsula - <a href="https://www.wowhead.com/tbc/zone=3836">Magtheridon's Lair</a> - <a href="https://www.wowhead.com/tbc/npc=17257">Magtheridon</a></td><td>Best in the phase and rarely contested, so it usually costs you nothing in loot priority.</td></tr>
+            <tr data-source="raid"><td>Alt BiS</td><td><a href="https://www.wowhead.com/tbc/item=28673" data-wh-icon-size="small">Tirisfal Wand of Ascendancy</a></td><td><span class="boss-icon">&#128009;</span> Deadwind Pass - <a href="https://www.wowhead.com/tbc/zone=3457">Karazhan</a> - <a href="https://www.wowhead.com/tbc/npc=16524">Shade of Aran</a></td><td>Quietly useful while capping, hit on a wand is easy to overlook.</td></tr>
+            <tr data-source="heroic"><td>Good</td><td><a href="https://www.wowhead.com/tbc/item=29350" data-wh-icon-size="small">The Black Stalk</a></td><td><span class="boss-icon">&#128128;</span> Zangarmarsh - <span class="heroic">Heroic</span> - <a href="https://www.wowhead.com/tbc/zone=3716">The Underbog</a> - <a href="https://www.wowhead.com/tbc/npc=17882">The Black Stalker</a></td><td>Any of these three is fine, the wand slot moves your damage the least of any slot. Do not chase it.</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ===== PHASE 2 ===== -->
+    <h1 id="phase2">Phase 2 - <a href="https://www.wowhead.com/tbc/zone=3607">Serpentshrine Cavern</a> / <a href="https://www.wowhead.com/tbc/zone=3845">Tempest Keep</a></h1>
+    <p>Phase 2 brings Serpentshrine Cavern and Tempest Keep, plus the <strong>Tier 5</strong> mage set. Expect large spell-damage jumps at most slots over your Phase 1 and crafted pieces.</p>
+
+    <h2 id="phase2-head">Head</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-neck">Neck</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-shoulder">Shoulder</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-back">Back</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-chest">Chest</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-wrist">Wrist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-hands">Hands</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-waist">Waist</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-legs">Legs</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-feet">Feet</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-rings">Rings</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-trinkets">Trinkets</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-mainhand">Main Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-offhand">Off Hand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h2 id="phase2-ranged">Wand</h2>
+    <table class="gear-table">
+        <thead><tr><th>Rank</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== PHASES 3-5 ===== -->
+    <h1 id="phase3">Phase 3 - <a href="https://www.wowhead.com/tbc/zone=3959">Black Temple</a> / <a href="https://www.wowhead.com/tbc/zone=3606">Hyjal Summit</a></h1>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h1 id="phase4">Phase 4 - <a href="https://www.wowhead.com/tbc/zone=3805">Zul'Aman</a></h1>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <h1 id="phase5">Phase 5 - <a href="https://www.wowhead.com/tbc/zone=4075">Sunwell Plateau</a></h1>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Item</th><th>Source</th><th>Notes</th></tr></thead>
+        <tbody><tr><td colspan="4" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== GEMS ===== -->
+    <h1 id="gems">Gems</h1>
+    <p>Arcane gemming is spell damage first, with hit gems only until you reach the spell hit cap. Match socket colors just far enough to keep a socket bonus that is actually worth the loss.</p>
+    <div class="info-box"><p><strong>Awaiting source data.</strong> Gem picks, including the meta and its activation requirements, are taken from the saved gem and enchant sources rather than from memory: the correct meta and the correct damage-school gems differ between mage specs.</p></div>
+    <table class="gear-table">
+        <thead><tr><th>Socket</th><th>Best Gem</th><th>When</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== ENCHANTS ===== -->
+    <h1 id="enchants">Enchants</h1>
+    <p>Every slot wants spell damage; hit enchants only matter until you cap.</p>
+    <div class="info-box"><p><strong>Awaiting source data.</strong> Note that the school-specific weapon enchants are not interchangeable between mage specs, so this table is filled from the Arcane sources rather than copied from another spec's guide. Your shoulder enchant comes from the Aldor / Scryers choice covered in the Reputation section.</p></div>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Enchant</th><th>Effect</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== CONSUMABLES ===== -->
+    <h1 id="consumables">Consumables</h1>
+    <p>Flask or the elixir pair, food, and mana sustain. Arcane burns more mana than any other caster, so the mana consumables are not optional filler, they are part of the rotation.</p>
+    <div class="info-box"><p><strong>Awaiting source data.</strong> Flasks and elixirs are school-specific in TBC, so the correct flask for Arcane damage is not the same one a Frost or Fire mage uses. This table is filled from the Arcane sources to avoid that trap.</p></div>
+    <table class="gear-table">
+        <thead><tr><th>Type</th><th>Item</th><th>Effect</th></tr></thead>
+        <tbody><tr><td colspan="3" style="text-align:center; color:#9d9d9d;">Awaiting data</td></tr></tbody>
+    </table>
+
+    <!-- ===== RAID BUFFS ===== -->
+    <h1 id="raid-buffs">Raid Buffs &amp; Debuffs</h1>
+    <p>As a caster your damage scales hard with the right party. Build a caster group and make sure the spell-damage debuffs land on the boss.</p>
+
+    <h2 id="class-buffs">Class Buffs That Benefit an Arcane Mage</h2>
+    <table class="gear-table">
+        <thead><tr><th>Class</th><th>Buff</th><th>Effect</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">Mage</td><td><a href="https://www.wowhead.com/tbc/spell=27127">Arcane Brilliance</a></td><td>+int to the raid (you bring this)</td></tr>
+            <tr><td class="slot-label">Paladin</td><td><a href="https://www.wowhead.com/tbc/spell=27143">Greater Blessing of Wisdom</a></td><td>mana regen, worth more to Arcane than to any other caster</td></tr>
+            <tr><td class="slot-label">Paladin</td><td><a href="https://www.wowhead.com/tbc/spell=25898">Greater Blessing of Kings</a></td><td>+10% all stats</td></tr>
+            <tr><td class="slot-label">Priest</td><td><a href="https://www.wowhead.com/tbc/spell=32999">Prayer of Spirit</a></td><td>+spirit (regen + some spell power)</td></tr>
+            <tr><td class="slot-label">Shaman</td><td><a href="https://www.wowhead.com/tbc/spell=3738">Wrath of Air Totem</a></td><td>+101 spell damage to the party</td></tr>
+            <tr><td class="slot-label">Shaman</td><td><a href="https://www.wowhead.com/tbc/spell=2825">Bloodlust</a> / <a href="https://www.wowhead.com/tbc/spell=32182">Heroism</a></td><td>+30% haste for 40 sec</td></tr>
+        </tbody>
+    </table>
+
+    <h2 id="offensive-debuffs">Debuffs to Keep on the Boss</h2>
+    <ul>
+        <li><a href="https://www.wowhead.com/tbc/spell=27228">Curse of the Elements</a> (Warlock), +10% magic damage taken, the big one</li>
+        <li><a href="https://www.wowhead.com/tbc/spell=33198">Misery</a> (Shadow Priest), +3% spell hit and damage taken; it is the debuff that lets you drop gear hit and re-spend those item budgets on spell damage</li>
+    </ul>
+    <div class="info-box"><p><strong>Note the difference from Frost:</strong> the stacking frost crit debuff does nothing for your damage, so an Arcane Mage's party value comes from the generic magic-damage and spell-hit debuffs above, not from a school-specific one.</p></div>
+
+    <h2 id="ideal-party">Ideal Caster Party</h2>
+    <p>This 5-man subgroup gives an Arcane Mage everything: spell damage, spell crit, spell hit relief, and mana return.</p>
+    <table class="gear-table">
+        <thead><tr><th>Slot</th><th>Spec</th><th>Brings</th></tr></thead>
+        <tbody>
+            <tr><td class="slot-label">1</td><td><span style="color:#69CCF0;">Arcane Mage</span> (you)</td><td><a href="https://www.wowhead.com/tbc/spell=27127">Arcane Brilliance</a>, sheep CC, conjured mana gems</td></tr>
+            <tr><td class="slot-label">2</td><td><span style="color:#0070DE;">Elemental Shaman</span></td><td><a href="https://www.wowhead.com/tbc/spell=30706">Totem of Wrath</a> (+3% crit, +spell dmg), <a href="https://www.wowhead.com/tbc/spell=3738">Wrath of Air</a>, <a href="https://www.wowhead.com/tbc/spell=2825">Bloodlust</a></td></tr>
+            <tr><td class="slot-label">3</td><td><span style="color:#FF7D0A;">Balance Druid</span></td><td><a href="https://www.wowhead.com/tbc/spell=24907">Moonkin Aura</a> (+5% spell crit party-wide)</td></tr>
+            <tr><td class="slot-label">4</td><td><span style="color:#FFFFFF;">Shadow Priest</span></td><td><a href="https://www.wowhead.com/tbc/spell=33198">Misery</a> + mana return from Vampiric Touch, the single best partner for a mana-hungry Arcane Mage</td></tr>
+            <tr><td class="slot-label">5</td><td><span style="color:#9482C9;">Warlock</span></td><td><a href="https://www.wowhead.com/tbc/spell=27228">Curse of the Elements</a></td></tr>
+        </tbody>
+    </table>
+    <div class="info-box"><p><strong>Drums of Battle:</strong> one <a href="https://www.wowhead.com/tbc/item=29529" data-wh-icon-size="small">Drums of Battle</a> user per party (+80 haste), great in a caster group. <strong>Totem of Wrath + Moonkin Aura</strong> together give +8% spell crit.</p></div>
+
+    <!-- ===== USEFUL LINKS ===== -->
+    <h1 id="useful-links">Useful Links</h1>
+    <p>The sources these rankings are built from, plus handy tools:</p>
+    <ul>
+        <li><a href="https://wowtbc.gg/bis-list/arcane-mage/">wowtbc.gg, Arcane Mage BiS list</a> (per-phase, the basis for the gear tables)</li>
+        <li><a href="https://www.wowhead.com/tbc/guide/classes/mage/arcane/dps-bis-gear-pve-pre-raid">Wowhead, Arcane Mage Pre-Raid BiS</a></li>
+        <li><a href="https://www.icy-veins.com/tbc-classic/arcane-mage-dps-pve-rotation-cooldowns-abilities">Icy Veins, Arcane Mage rotation and cooldowns</a></li>
+        <li><a href="https://www.icy-veins.com/tbc-classic/arcane-mage-dps-pve-spec-builds-talents">Icy Veins, Arcane Mage specs, builds and talents</a></li>
+        <li><a href="https://www.icy-veins.com/tbc-classic/arcane-mage-dps-pve-stat-priority">Icy Veins, Arcane Mage stat priority</a></li>
+        <li><a href="https://www.warcrafttavern.com/tbc/guides/arcane-mage-pve-best-in-slot-bis-gear/">Warcraft Tavern, Arcane Mage BiS hub</a></li>
+        <li><a href="https://www.wowhead.com/tbc/">Wowhead TBC database</a> and <a href="https://www.wowhead.com/tbc/talent-calc/mage">talent calculator</a></li>
+    </ul>
+
+    <!-- ===== EXPORT TO ATLASLOOT ===== -->
+    <h1 id="export-atlasloot">Export to AtlasLoot</h1>
+    <p>Send every gear pick in this guide straight into <strong>AtlasLoot</strong> so the recommended items show up as favourites (gold stars) on the in-game loot tables. Requires the <em>AtlasLoot Wishlist</em> addon (v1.3+).</p>
+    <p class="tip-box">Just want one slot or one phase? Every gear table has its own <strong>Export to AtlasLoot</strong> button that lets you grab that single slot or that whole phase. Use the export below for the entire guide at once. While the gear tables are still awaiting data the export will come back empty.</p>
+    <ol>
+        <li>Pick which phases to include (all on by default), then click <strong>Copy Export String</strong>.</li>
+        <li>In game, type <code>/alimport</code> (or click <strong>Import</strong> on the AtlasLoot Wishlist tab).</li>
+        <li>Name the list (e.g. "Arcane Mage"), paste with <kbd>Ctrl+V</kbd>, and click <strong>Import</strong>.</li>
+        <li>Browse any raid or dungeon in AtlasLoot: this guide's items are now favourited, and each slot's BiS pick is flagged as the main item.</li>
+    </ol>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('al-picker')">Choose Phases</button>
+        <label class="al-opt"><input type="checkbox" id="al-bis-only" onchange="buildAtlasLootExport()"> BiS rows only</label>
+    </div>
+    <div id="al-picker" class="spoiler-content">
+        <div id="al-phase-list"><!-- phase checkboxes injected by JS --></div>
+    </div>
+    <textarea class="bbcode-area" id="atlasloot-export" readonly style="height: 90px;"></textarea><br>
+    <button class="copy-btn" onclick="copyText('atlasloot-export')">Copy Export String</button>
+    <span id="al-count" class="al-count"></span>
+
+    <h2>Link to This Page</h2>
+    <p>Copy a link to share this guide:</p>
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+    </div>
+    <div id="bblink" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wow_class_guides/mage/arcane/classguide-mage-arcane.html]WoW Classic TBC Arcane Mage DPS Guide[/url]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+    </div>
+    <div id="mdlink" class="spoiler-content">
+        <textarea class="bbcode-area" id="md-link" readonly>[WoW Classic TBC Arcane Mage DPS Guide](https://supertron42.github.io/wow_class_guides/mage/arcane/classguide-mage-arcane.html)</textarea>
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+    </div>
+
+</div>
+
+<script>
+function toggleSpoiler(id) {
+    var el = document.getElementById(id);
+    var isOpen = el.classList.contains('show');
+    var all = document.querySelectorAll('.spoiler-content');
+    for (var i = 0; i < all.length; i++) {
+        all[i].classList.remove('show');
+    }
+    if (!isOpen) {
+        el.classList.add('show');
+    }
+}
+function copyText(id) {
+    var textarea = document.getElementById(id);
+    textarea.select();
+    document.execCommand('copy');
+    var btn = textarea.nextElementSibling;
+    var orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = orig; }, 1500);
+}
+
+// Filter gear by source type
+function filterGear(source) {
+    var rows = document.querySelectorAll('tr[data-source]');
+    for (var i = 0; i < rows.length; i++) {
+        if (source === 'all' || rows[i].getAttribute('data-source') === source) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+    // Update active button
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+    }
+    event.target.classList.add('active');
+}
+
+// Wrap every gear-table in a horizontally-scrollable container so wide tables
+// can scroll instead of pushing the page off-screen on small viewports.
+(function() {
+    var tables = document.querySelectorAll('.gear-table');
+    for (var i = 0; i < tables.length; i++) {
+        var t = tables[i];
+        if (t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('table-wrap')) continue;
+        var wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        t.parentNode.insertBefore(wrap, t);
+        wrap.appendChild(t);
+    }
+})();
+
+// Wrap each nav section's links in a collapsible container. All sections start
+// collapsed; the user expands what they need.
+(function() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var headers = Array.prototype.slice.call(nav.querySelectorAll('h3'));
+    headers.forEach(function(header) {
+        var section = document.createElement('div');
+        section.className = 'nav-section';
+        header.parentNode.insertBefore(section, header.nextSibling);
+        var next;
+        while ((next = section.nextElementSibling)) {
+            if (next.tagName === 'H3') break;
+            // Stop at the absolute-positioned "My Other Projects" footer
+            if (next.tagName === 'DIV' && next.style && next.style.position === 'absolute') break;
+            section.appendChild(next);
+        }
+        header.addEventListener('click', function() {
+            header.classList.toggle('open');
+            section.classList.toggle('open');
+        });
+    });
+
+    // Second pass: inside each section, group each run of .nav-sub links under the
+    // parent link above them into a collapsible .nav-subsection, so only the phase
+    // currently in view shows its slot list (the rest stay tucked away).
+    Array.prototype.slice.call(nav.querySelectorAll('.nav-section')).forEach(function(section) {
+        var kids = Array.prototype.slice.call(section.children);
+        for (var i = 0; i < kids.length; i++) {
+            var el = kids[i];
+            if (el.tagName === 'A' && !el.classList.contains('nav-sub')) {
+                var subs = [], j = i + 1;
+                while (j < kids.length && kids[j].tagName === 'A' && kids[j].classList.contains('nav-sub')) {
+                    subs.push(kids[j]); j++;
+                }
+                if (subs.length) {
+                    var sub = document.createElement('div');
+                    sub.className = 'nav-subsection';
+                    section.insertBefore(sub, subs[0]);
+                    subs.forEach(function(x) { sub.appendChild(x); });
+                    (function(parentLink, subEl) {
+                        parentLink.addEventListener('click', function() {
+                            var all = section.querySelectorAll('.nav-subsection');
+                            for (var k = 0; k < all.length; k++) all[k].classList.toggle('open', all[k] === subEl);
+                        });
+                    })(el, sub);
+                }
+            }
+        }
+    });
+})();
+
+// Mobile nav toggle
+function toggleNav() {
+    var nav = document.getElementById('nav');
+    var backdrop = document.querySelector('.nav-backdrop');
+    nav.classList.toggle('open');
+    backdrop.classList.toggle('show');
+}
+// Close drawer when a nav link is tapped on mobile
+(function() {
+    var links = document.querySelectorAll('#nav a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                document.getElementById('nav').classList.remove('open');
+                document.querySelector('.nav-backdrop').classList.remove('show');
+            }
+        });
+    }
+})();
+
+// Scrollspy: highlight the nav entry for the section currently in view, expand
+// that section (collapsing the others), and keep the active link visible.
+(function() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+
+    // Pair each in-page link with its target element, in document order.
+    var entries = [];
+    links.forEach(function(link) {
+        var target = document.getElementById(link.getAttribute('href').slice(1));
+        if (target) entries.push({ link: link, target: target });
+    });
+    if (!entries.length) return;
+
+    var sections = Array.prototype.slice.call(nav.querySelectorAll('.nav-section'));
+    var subsections = Array.prototype.slice.call(nav.querySelectorAll('.nav-subsection'));
+    var headers = Array.prototype.slice.call(nav.querySelectorAll('h3'));
+    var currentLink = null;
+    var ticking = false;
+
+    var scroller = document.getElementById('content');
+    function update() {
+        ticking = false;
+        // Activate a section when its heading crosses a "reading line" about a third
+        // of the way down the viewport, not only when it is jammed against the top.
+        var line = Math.max(120, window.innerHeight * 0.33);
+        // Bottom guard: when the page/content can't scroll any further, the lower
+        // sections can never reach the line, so force the last entry active.
+        var atBottom = false;
+        if (scroller && scroller.scrollHeight > scroller.clientHeight + 4) {
+            atBottom = (scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight) <= 2;
+        } else {
+            atBottom = (window.innerHeight + window.pageYOffset) >= (document.documentElement.scrollHeight - 2);
+        }
+        var active = entries[0];
+        if (atBottom) {
+            active = entries[entries.length - 1];
+        } else {
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].target.getBoundingClientRect().top <= line) {
+                    active = entries[i];
+                } else {
+                    break;
+                }
+            }
+        }
+        if (active.link === currentLink) return;
+        currentLink = active.link;
+
+        // The .nav-section wrapping the active link, and its preceding h3.
+        var section = active.link.parentNode;
+        while (section && !(section.classList && section.classList.contains('nav-section'))) {
+            section = section.parentNode;
+        }
+        var header = section ? section.previousElementSibling : null;
+        if (header && header.tagName !== 'H3') header = null;
+
+        entries.forEach(function(e) { e.link.classList.remove('active'); });
+        active.link.classList.add('active');
+
+        // Expand the active section, collapse the rest.
+        for (var s = 0; s < sections.length; s++) {
+            sections[s].classList.toggle('open', sections[s] === section);
+        }
+        for (var h = 0; h < headers.length; h++) {
+            var isActive = headers[h] === header;
+            headers[h].classList.toggle('active-section', isActive);
+            headers[h].classList.toggle('open', isActive);
+        }
+
+        // Open only the sub-group containing the active link (or whose parent link
+        // IS active); collapse every other phase's slot list.
+        for (var ss = 0; ss < subsections.length; ss++) {
+            var open = subsections[ss].contains(active.link) ||
+                       subsections[ss].previousElementSibling === active.link;
+            subsections[ss].classList.toggle('open', open);
+        }
+
+        // Scroll the active link into view inside the nav if it's off-screen.
+        var lr = active.link.getBoundingClientRect();
+        var nr = nav.getBoundingClientRect();
+        if (lr.top < nr.top || lr.bottom > nr.bottom) {
+            active.link.scrollIntoView({ block: 'nearest' });
+        }
+    }
+
+    function onScroll() {
+        if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }
+    }
+
+    // Capture phase so this also catches scrolling inside #content (which is the
+    // scroll container on desktop; the window scrolls on mobile).
+    window.addEventListener('scroll', onScroll, true);
+    window.addEventListener('resize', onScroll);
+    update();
+})();
+
+// ---- Export to AtlasLoot (GREP: export-atlasloot) ----
+// Builds AtlasLoot's native favourite-import string ("i:<id>:<note>,i:<id>,...")
+// from the gear tables. Notes carry the rank; a "BiS" note makes AtlasLoot flag
+// that item as the slot's main item. Only Pre-Raid + Phase gear sections are
+// scanned (gems/enchants/consumables/quests live under other <h1>s and are skipped).
+// Two entry points: the Resources section (whole guide / phase picker) and a
+// per-table "Export to AtlasLoot" button that offers this-slot vs entire-section.
+
+// Shared: turn a rows array ([{id,rank}]) into the import string + a unique count.
+// Dedupes by item id; if a later duplicate is ranked BiS, its note wins so the
+// slot still flags a main item.
+function alStringFromRows(rows, bisOnly) {
+    var seen = {}, entries = [];
+    rows.forEach(function(r) {
+        var isBis = /bis|best/i.test(r.rank);
+        if (bisOnly && !isBis) return;
+        if (seen[r.id] !== undefined) {
+            if (isBis && !/bis|best/i.test(entries[seen[r.id]].note)) {
+                entries[seen[r.id]].note = r.rank;
+            }
+            return;
+        }
+        seen[r.id] = entries.length;
+        entries.push({ id: r.id, note: r.rank });
+    });
+    var str = entries.map(function(e) {
+        var note = (e.note || '').replace(/[,:]/g, ' ').replace(/\s+/g, ' ').trim();
+        return note ? ('i:' + e.id + ':' + note) : ('i:' + e.id);
+    }).join(',');
+    return { str: str, count: entries.length };
+}
+
+function alFlashCopy(textarea, btn) {
+    textarea.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    if (btn) {
+        var orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+}
+
+// Resources-section export (whole guide, filtered by the phase checkboxes + BiS toggle).
+function buildAtlasLootExport() {
+    var out = document.getElementById('atlasloot-export');
+    if (!out) return;
+    var listEl = document.getElementById('al-phase-list');
+    var bisEl = document.getElementById('al-bis-only');
+    var bisOnly = bisEl && bisEl.checked;
+    var groups = window._alGroups || [];
+    var rows = [];
+    groups.forEach(function(g) {
+        var cb = listEl && listEl.querySelector('input[data-phase="' + g.key + '"]');
+        if (cb && !cb.checked) return;
+        rows = rows.concat(g.rows);
+    });
+    var res = alStringFromRows(rows, bisOnly);
+    out.value = res.str;
+    var c = document.getElementById('al-count');
+    if (c) c.textContent = res.count ? (res.count + ' items') : 'No items selected';
+}
+
+// Lazily build the per-table modal once, then reuse it.
+function alEnsureModal() {
+    if (document.getElementById('al-modal')) return;
+    var bd = document.createElement('div');
+    bd.id = 'al-modal';
+    bd.className = 'al-modal-backdrop';
+    bd.innerHTML =
+        '<div class="al-modal">' +
+            '<button type="button" class="al-modal-close" aria-label="Close">&times;</button>' +
+            '<h3 class="al-modal-title">Export to AtlasLoot Wishlist</h3>' +
+            '<p class="al-modal-sub" id="al-modal-sub"></p>' +
+            '<div class="al-modal-choices">' +
+                '<button type="button" class="al-choice" id="al-choice-slot"></button>' +
+                '<button type="button" class="al-choice" id="al-choice-section"></button>' +
+            '</div>' +
+            '<p class="al-modal-note">Want the <strong>entire guide</strong>? Go to the ' +
+                '<a href="#export-atlasloot" class="al-modal-reslink">Resources &rarr; Export to AtlasLoot</a> ' +
+                'section and follow the instructions there.</p>' +
+            '<textarea class="bbcode-area al-modal-out" id="al-modal-out" readonly style="height: 80px; display: none;"></textarea>' +
+            '<button type="button" class="copy-btn" id="al-modal-copy" style="display: none;">Copy to Clipboard</button>' +
+        '</div>';
+    document.body.appendChild(bd);
+    function hide() { bd.style.display = 'none'; }
+    bd.addEventListener('click', function(e) { if (e.target === bd) hide(); });
+    bd.querySelector('.al-modal-close').addEventListener('click', hide);
+    bd.querySelector('.al-modal-reslink').addEventListener('click', hide); // let the anchor jump
+    document.getElementById('al-modal-copy').addEventListener('click', function() {
+        alFlashCopy(document.getElementById('al-modal-out'), this);
+    });
+}
+
+// Open the modal for a single gear table: choose this slot vs the whole phase.
+function alOpenTableModal(group, slotName, tableRows) {
+    alEnsureModal();
+    var bd = document.getElementById('al-modal');
+    document.getElementById('al-modal-sub').textContent = group.label + ' - ' + slotName;
+    var slotRes = alStringFromRows(tableRows, false);
+    var secRes = alStringFromRows(group.rows, false);
+    var out = document.getElementById('al-modal-out');
+    var copy = document.getElementById('al-modal-copy');
+    out.value = ''; out.style.display = 'none'; copy.style.display = 'none';
+    function show(res) {
+        out.value = res.str;
+        out.style.display = '';
+        copy.style.display = '';
+        alFlashCopy(out, copy);
+    }
+    var slotBtn = document.getElementById('al-choice-slot');
+    var secBtn = document.getElementById('al-choice-section');
+    slotBtn.textContent = 'This slot only: ' + slotName + ' (' + slotRes.count + ' item' + (slotRes.count === 1 ? '' : 's') + ')';
+    secBtn.textContent = 'Entire ' + group.label + ' (' + secRes.count + ' items)';
+    slotBtn.onclick = function() { show(slotRes); };
+    secBtn.onclick = function() { show(secRes); };
+    bd.style.display = 'flex';
+}
+
+(function() {
+    var content = document.getElementById('content');
+    if (!content) return;
+    // Walk <h1> headings and gear tables in document order; bucket gear rows by phase,
+    // and inject a per-table export button (between each slot's <h2> and its table).
+    var nodes = content.querySelectorAll('h1, table.gear-table');
+    var groups = [], current = null;
+    Array.prototype.forEach.call(nodes, function(node) {
+        if (node.tagName === 'H1') {
+            var id = node.id || '';
+            if (id === 'pre-raid-bis') {
+                current = { key: 'prebis', label: 'Pre-Raid BiS', rows: [] };
+                groups.push(current);
+            } else {
+                var m = id.match(/^phase(\d+)$/);
+                if (m) {
+                    current = { key: id, label: 'Phase ' + m[1], rows: [] };
+                    groups.push(current);
+                } else {
+                    current = null; // non-gear section, skip its tables
+                }
+            }
+            return;
+        }
+        if (!current) return;
+        var grp = current;          // capture this table's phase group for the closure
+        var tableRows = [];
+        var rows = node.querySelectorAll('tr[data-source]');
+        Array.prototype.forEach.call(rows, function(tr) {
+            var a = tr.querySelector('a[href*="/item="]');
+            if (!a) return;
+            var mm = a.getAttribute('href').match(/\/item=(\d+)/);
+            if (!mm) return;
+            var rankCell = tr.querySelector('.slot-label');
+            var row = { id: mm[1], rank: rankCell ? rankCell.textContent.trim() : '', name: a.textContent.trim() };
+            grp.rows.push(row);
+            tableRows.push(row);
+        });
+        if (!tableRows.length) return;
+        // The slot heading is the nearest <h2> before this table (skip the
+        // gem-enchant-info <p> that sits between them).
+        var wrap = (node.closest && node.closest('.table-wrap')) || node;
+        var h2 = wrap.previousElementSibling;
+        while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
+        var slotName = h2 ? h2.textContent.trim() : 'Slot';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'al-table-btn';
+        btn.textContent = 'Export to AtlasLoot';
+        btn.addEventListener('click', function() { alOpenTableModal(grp, slotName, tableRows); });
+        wrap.parentNode.insertBefore(btn, wrap);
+    });
+    groups = groups.filter(function(g) { return g.rows.length > 0; }); // drop "Awaiting data" phases
+    window._alGroups = groups;
+
+    var listEl = document.getElementById('al-phase-list');
+    if (listEl) {
+        groups.forEach(function(g) {
+            var lbl = document.createElement('label');
+            var cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = true;
+            cb.setAttribute('data-phase', g.key);
+            cb.addEventListener('change', buildAtlasLootExport);
+            var span = document.createElement('span');
+            span.textContent = g.label + ' (' + g.rows.length + ')';
+            lbl.appendChild(cb);
+            lbl.appendChild(span);
+            listEl.appendChild(lbl);
+        });
+    }
+    buildAtlasLootExport();
+})();
+
+/* Talent tooltip (GREP: talent-tip) */
+(function(){
+  var tip=document.createElement('div'); tip.id='talent-tip'; document.body.appendChild(tip);
+  function show(e){var c=e.currentTarget;
+    tip.innerHTML='<span class="tt-name">'+c.getAttribute('data-name')+'</span><span class="tt-rank">Rank '+c.getAttribute('data-rank')+'</span><br>'+c.getAttribute('data-tip');
+    tip.style.display='block'; move(e);}
+  function move(e){var x=e.clientX+14,y=e.clientY+14,r=tip.getBoundingClientRect();
+    if(x+r.width>window.innerWidth)x=e.clientX-r.width-14;
+    if(y+r.height>window.innerHeight)y=e.clientY-r.height-14;
+    tip.style.left=Math.max(4,x)+'px'; tip.style.top=Math.max(4,y)+'px';}
+  function hide(){tip.style.display='none';}
+  document.querySelectorAll('.talent-cell[data-tip]').forEach(function(c){
+    c.addEventListener('mouseenter',show); c.addEventListener('mousemove',move); c.addEventListener('mouseleave',hide);});
+})();
+</script>
+</body>
+</html>

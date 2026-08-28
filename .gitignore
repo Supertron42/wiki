@@ -46,3 +46,6 @@ todo.html
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# --- Local desktop apps / tools (Balance Studio, Claude Console, file listers) - never publish ---
+/_apps/

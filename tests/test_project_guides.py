@@ -1,5 +1,6 @@
 """Shared guide/card regressions for source-verified software documentation.
-WIRING: projects.json drives cards; project-guide.css owns software page layout.
+WIRING: projects.json drives cards; project-guide.css owns software guide layout.
+The CM homepage adds scoped pages/collectionsmanager.css for its product layout.
 """
 from pathlib import Path
 from html.parser import HTMLParser
@@ -34,7 +35,11 @@ class GuideTests(unittest.TestCase):
     if page.redirect:continue
     with self.subTest(page=str(path)):
      parsed=Markup(text)
-     self.assertEqual(parsed.styles,['../assets/css/project-guide.css'])
+     expected_styles=['../assets/css/project-guide.css']
+     if slug=='collectionsmanager' and path.name=='index.html':
+      expected_styles.append('../assets/css/pages/collectionsmanager.css')
+      self.assertIn('cm-home',parsed.body.get('class','').split())
+     self.assertEqual(parsed.styles,expected_styles)
      self.assertIn('guide',parsed.body.get('class','').split())
      self.assertIn('nav',parsed.ids);self.assertIn('content',parsed.ids)
      self.assertEqual(parsed.h1,1);self.assertEqual(parsed.inline,0)

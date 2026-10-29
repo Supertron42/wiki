@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /wiki/
+
+Sitemap: https://supertron42.github.io/wiki/sitemap.xml

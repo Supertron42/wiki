@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | Dynamic Form Lists | Supertron</title><meta name="description" content="Restore entries lost from shared reference lists.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/dynamicformlists/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#4CAF50"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">Dynamic Form Lists</a><a href="index.html">Overview</a><a href="patchnotes.html" aria-current="page">Patch notes</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Review personal rules and installed compatibility packs in the Rules tab.
+- Create mod groups and choose the game and DLC starting point by right-clicking plugins.
+- See which rules affect a result and why that result was chosen.
+- Browse changed form lists under their plugins and compare each mod beside the final result.
+- Right-click a cell or drag it into the result to choose which changes to keep, then save and restart Skyrim.
+- Right-click a plugin to skip its restored changes or leave its records as the last mod left them.
+- Generate an optional ESP from your resolved lists using the JSON settings or PUISM.
+- Added support for Prisma UI Settings Menu (PUISM)
+- Can now create rules to better handle merges using PUISM &#x27;Compatibility&#x27; tab.
+- Tell Dynamic Form Lists to leave specific lists, entries or changes alone.
+- Export your compatibility rules as a ZIP for others to install with their mod manager.
+- Compatibility packs ignore missing mods, so one pack can work across different mod lists.
+
+#UPDATE
+- Save, undo or discard compatibility changes together across both tabs.
+- Reports use smaller text and start with every record collapsed, with counts for additions, removals and changed values.
+- Copy list details or individual changes directly from reports.
+- Kept existing entries in their original order and avoided adding unnecessary duplicates.
+- Choose your Skyrim version, including VR, from one download.
+- Keep your settings or install the optional default settings file.
+
+#FIXED
+- Reports now show removed entries and name the mods responsible for their changes.
+- Entries without a display name use their editor name so they are easier to identify.
+- Left lists alone when their settings or contents could not be read safely.
+- Fixed the error that prevented the installer from opening in Vortex.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary>
+<section id="optional-esp"><h3>Optional ESP generation</h3><p>New source changes require a fresh ClibDT build and game testing.</p><pre>#NEW
+- Generate an optional ESP from your resolved lists using the JSON settings or PUISM.
+- Added support for Prisma UI Settings Menu (PUISM)
+- Can now create rules to better handle merges using PUISM &#x27;Compatibility&#x27; tab.
+- Tell Dynamic Form Lists to leave specific lists, entries or changes alone.
+- Export your compatibility rules as a ZIP for others to install with their mod manager.
+- Compatibility packs ignore missing mods, so one pack can work across different mod lists.
+
+#UPDATE
+- Reports now group changes under each list, with addition and removal counts.
+- Copy list details or individual changes directly from reports.
+- Kept existing entries in their original order and avoided adding unnecessary duplicates.
+- Choose your Skyrim version, including VR, from one download.
+- Keep your settings or install the optional default settings file.
+
+#FIXED
+- Reports now show removed entries and name the mods responsible for their changes.
+- Entries without a display name use their editor name so they are easier to identify.
+- Left lists alone when their settings or contents could not be read safely.
+- Fixed the error that prevented the installer from opening in Vortex.
+</pre></section>
+
+<section id="release-settings-update"><h3>Upcoming settings update</h3><div>- Settings use the same General, Features and Compatibility order as the other mods.</div><p>These changes are in the project source. Updated builds and in-game testing are still needed.</p></section><section id="simple-current-changelog"><h3>Current update notes</h3><h4>0.1.0 (release candidate)</h4><pre>- Showed removed entry names and the mods responsible in reports.
+- Used editor names when entries have no display name.
+- Grouped report changes under each list.
+- Made reports easier to read, search and sort.
+- Added optional in-game settings through Prisma UI Settings Menu.
+- Kept existing settings when switching from INI to JSON.
+- Kept existing list entries in their original order.
+- Avoided adding unnecessary duplicate entries.
+- Added checks for lists already changed by scripts or other mods.
+- Stopped unsafe changes when settings or list data could not be read properly.
+- Made exclusions optional, with none enabled by default.
+- Made the optional xEdit script follow the same list rules.
+- Added a Skyrim version chooser to the installer.
+- Made the default settings file optional during installation.
+- Fixed an error that stopped the Vortex installer from opening.</pre><p>The latest source changes need new builds and in-game testing.</p></section><section><h3>Report layout (unreleased)</h3><pre>- Grouped report changes under the list they belong to.</pre><p>Requires a new DLL build to appear in reports generated by Skyrim.</p></section><section><h3>Readable change reports</h3><p>Reports now match the dark change sheet, with colored additions and removals, sortable columns, search, expandable details, and Mod changes selected by default.</p><p>Use Reason → Mod changes for the default view. Search by name, mod or record number, expand rows for exact values, and use Skipped to see exclusions or unapplied proposals. Missing names, sources and counts are not guessed. Rebuild the DLL and run Skyrim to generate the new report; the existing report paths and optional menu remain unchanged.</p><details><summary>Markdown release note</summary><textarea readonly>- **Matching change sheet.** Reports now match the dark change sheet, with colored additions and removals, sortable columns, search, expandable details, and Mod changes selected by default.</textarea><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value).then(()=>this.textContent='Copied',()=>{this.previousElementSibling.select();this.textContent='Press Ctrl+C';})">Copy Markdown</button></details><details><summary>BB Code release note</summary><textarea readonly>[b]Matching change sheet.[/b] Reports now match the dark change sheet, with colored additions and removals, sortable columns, search, expandable details, and Mod changes selected by default.</textarea><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value).then(()=>this.textContent='Copied',()=>{this.previousElementSibling.select();this.textContent='Press Ctrl+C';})">Copy BB Code</button></details></section>
+    <h2>Change Logs</h2>
+<p><strong>Unreleased, pending new builds.</strong> Choose your exclusions. No lists are excluded by default; named ordered-list exclusion remains available as an option.</p><h3 id="v0.1.0">Version 0.1.0 release candidate</h3><p>Unreleased source update; new builds, xEdit checks, and game testing are still required.</p><ul><li><strong>Optional shared menu.</strong> Edit settings through the shared menu or directly in the settings file, with no menu mod required.</li><li><strong>Existing preferences preserved.</strong> Previous INI settings are imported once and the original file is kept.</li><li><strong>Safer settings.</strong> Unreadable or unsupported settings stop restoration instead of silently changing lists with default preferences.</li><li><strong>Searchable reports.</strong> Open a dated report in a browser or through the optional menu, even with detailed logging disabled.</li><li><strong>Predictable list order.</strong> Existing entries keep their order and restored entries follow plugin order and their original order within each plugin.</li><li><strong>Ordered-list protection.</strong> Lists with names ending in OrderedList are left unchanged by default.</li><li><strong>Duplicate handling.</strong> Existing duplicate slots are preserved unless their entry is removed, and restoration does not introduce additional duplicates.</li><li><strong>Safer plugin reading.</strong> Incomplete records, invalid references, deleted lists, and excessive data sizes are rejected before changing an affected list.</li><li><strong>Script protection.</strong> Lists already changed by scripts or another runtime mod are left unchanged when that change can be detected.</li><li><strong>Complete list replacement.</strong> The replacement list is prepared before changing the game data.</li><li><strong>Matching xEdit rules.</strong> The optional companion script uses the same membership and ordering rules while preserving the final list name.</li><li><strong>Safer selected-plugin patches.</strong> Selecting contributors in xEdit keeps the final loaded plugin as the starting list.</li><li><strong>Updated build setup.</strong> CommonLibSSE-NG 7.5.1, consistent version information, and the corrected startup declaration prepare the project for new builds.</li><li><strong>Optional ESP.</strong> Normal use requires no ESP, and the companion script still opens in report-only mode by default.</li></ul><div class="btn-row"><button class="spoiler-btn" onclick="toggleSpoiler('notes020-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('notes020-bb')">BB Code</button></div><div id="notes020-md" class="spoiler-content"><textarea class="bbcode-area" id="notes020-md-text" readonly># 0.1.0 release candidate
+
+Unreleased source update; compilation and game testing remain required, and these notes must be reconciled with the last public release before publishing.
+
+- **Optional shared menu.** Edit settings through the shared menu or directly in the settings file, with no menu mod required.
+- **Existing preferences preserved.** Previous INI settings are imported once and the original file is kept.
+- **Safer settings.** Unreadable or unsupported settings stop restoration instead of silently changing lists with default preferences.
+- **Searchable reports.** Open a dated report in a browser or through the optional menu, even with detailed logging disabled.
+- **Predictable list order.** Existing entries keep their order and restored entries follow plugin order and their original order within each plugin.
+- **Ordered-list protection.** Lists with names ending in OrderedList are left unchanged by default.
+- **Duplicate handling.** Existing duplicate slots are preserved unless their entry is removed, and restoration does not introduce additional duplicates.
+- **Safer plugin reading.** Incomplete records, invalid references, deleted lists, and excessive data sizes are rejected before changing an affected list.
+- **Script protection.** Lists already changed by scripts or another runtime mod are left unchanged when that change can be detected.
+- **Complete list replacement.** The replacement list is prepared before changing the game data.
+- **Matching xEdit rules.** The optional companion script uses the same membership and ordering rules while preserving the final list name.
+- **Safer selected-plugin patches.** Selecting contributors in xEdit keeps the final loaded plugin as the starting list.
+- **Updated build setup.** CommonLibSSE-NG 7.5.1, consistent version information, and the corrected startup declaration prepare the project for new builds.
+- **Optional ESP.** Normal use requires no ESP, and the companion script still opens in report-only mode by default.
+</textarea><button class="copy-btn" onclick="copyText('notes020-md-text')">Copy to Clipboard</button></div><div id="notes020-bb" class="spoiler-content"><textarea class="bbcode-area" id="notes020-bb-text" readonly># 0.1.0 release candidate
+
+Unreleased source update; compilation and game testing remain required, and these notes must be reconciled with the last public release before publishing.
+
+- [b]Optional shared menu.[/b] Edit settings through the shared menu or directly in the settings file, with no menu mod required.
+- [b]Existing preferences preserved.[/b] Previous INI settings are imported once and the original file is kept.
+- [b]Safer settings.[/b] Unreadable or unsupported settings stop restoration instead of silently changing lists with default preferences.
+- [b]Searchable reports.[/b] Open a dated report in a browser or through the optional menu, even with detailed logging disabled.
+- [b]Predictable list order.[/b] Existing entries keep their order and restored entries follow plugin order and their original order within each plugin.
+- [b]Ordered-list protection.[/b] Lists with names ending in OrderedList are left unchanged by default.
+- [b]Duplicate handling.[/b] Existing duplicate slots are preserved unless their entry is removed, and restoration does not introduce additional duplicates.
+- [b]Safer plugin reading.[/b] Incomplete records, invalid references, deleted lists, and excessive data sizes are rejected before changing an affected list.
+- [b]Script protection.[/b] Lists already changed by scripts or another runtime mod are left unchanged when that change can be detected.
+- [b]Complete list replacement.[/b] The replacement list is prepared before changing the game data.
+- [b]Matching xEdit rules.[/b] The optional companion script uses the same membership and ordering rules while preserving the final list name.
+- [b]Safer selected-plugin patches.[/b] Selecting contributors in xEdit keeps the final loaded plugin as the starting list.
+- [b]Updated build setup.[/b] CommonLibSSE-NG 7.5.1, consistent version information, and the corrected startup declaration prepare the project for new builds.
+- [b]Optional ESP.[/b] Normal use requires no ESP, and the companion script still opens in report-only mode by default.
+</textarea><button class="copy-btn" onclick="copyText('notes020-bb-text')">Copy to Clipboard</button></div>
+    <p>Version history and release notes for Dynamic Form Lists.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 1.0.0 -->
+    <!-- ============================================================ -->
+
+    <h3 id="v1.0.0">Version 1.0.0 - Initial Release</h3>
+
+    <h4>Features</h4>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Restores missing form list entries.</b> When multiple mods edit the same form list, entries added by overridden mods are automatically restored at startup.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Respects intentional removals.</b> If a mod specifically removed an entry from a form list, it stays removed.</li>
+        <li><span class="tag tag-new">NEW</span> <b>xEdit companion script.</b> Added <code>ST - Dynamic Form Lists.pas</code> for SSEEdit. Info Mode checks for broken references, null FormIDs, duplicates, and empty lists. Patch Mode creates a merged ESP.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Skip specific mods via INI.</b> Add plugin filenames to the <code>skipMods</code> setting to exclude them from processing.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Skip specific form lists via INI.</b> Add EditorIDs to the <code>skipFormLists</code> setting to leave certain lists untouched.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Detailed optional logging.</b> Turn on <code>enablelogs</code> to see exactly which entries were restored for each form list.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb100')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md100')">Markdown</button>
+    </div>
+    <div id="bb100" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode100" readonly>[size=4][b][color=#dcdcaa]Version 1.0.0 - Initial Release[/color][/b][/size]
+
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Restores missing form list entries.[/b] When multiple mods edit the same form list, entries added by overridden mods are automatically restored at startup.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Respects intentional removals.[/b] If a mod specifically removed an entry from a form list, it stays removed.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]xEdit companion script.[/b] Added ST - Dynamic Form Lists.pas for SSEEdit. Info Mode checks for broken references, null FormIDs, duplicates, and empty lists. Patch Mode creates a merged ESP.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Skip specific mods via INI.[/b] Add plugin filenames to the skipMods setting to exclude them from processing.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Skip specific form lists via INI.[/b] Add EditorIDs to the skipFormLists setting to leave certain lists untouched.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Detailed optional logging.[/b] Turn on enablelogs to see exactly which entries were restored for each form list.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode100')">Copy to Clipboard</button>
+    </div>
+    <div id="md100" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown100" readonly># Version 1.0.0 - Initial Release
+
+## Features
+- **NEW** **Restores missing form list entries.** When multiple mods edit the same form list, entries added by overridden mods are automatically restored at startup.
+- **NEW** **Respects intentional removals.** If a mod specifically removed an entry from a form list, it stays removed.
+- **NEW** **xEdit companion script.** Added `ST - Dynamic Form Lists.pas` for SSEEdit. Info Mode checks for broken references, null FormIDs, duplicates, and empty lists. Patch Mode creates a merged ESP.
+- **NEW** **Skip specific mods via INI.** Add plugin filenames to the `skipMods` setting to exclude them from processing.
+- **NEW** **Skip specific form lists via INI.** Add EditorIDs to the `skipFormLists` setting to leave certain lists untouched.
+- **NEW** **Detailed optional logging.** Turn on `enablelogs` to see exactly which entries were restored for each form list.
+- **NEW** **SE, AE, and VR support.** Single plugin binary covers all Skyrim editions via CommonLibSSE-NG.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown100')">Copy to Clipboard</button>
+    </div>
+
+<h3>Link to This Page</h3><div class="btn-row">
+<button class="spoiler-btn" onclick="toggleSpoiler('share-bb')">BB Code</button>
+<button class="spoiler-btn" onclick="toggleSpoiler('share-md')">Markdown</button></div>
+<div id="share-bb" class="spoiler-content"><textarea class="bbcode-area" id="share-bb-text" readonly>[url=https://supertron42.github.io/wiki/dynamicformlists/patchnotes.html]Dynamic Form Lists Patch Notes[/url]</textarea><button class="copy-btn" onclick="copyText('share-bb-text')">Copy to Clipboard</button></div>
+<div id="share-md" class="spoiler-content"><textarea class="bbcode-area" id="share-md-text" readonly>[Dynamic Form Lists Patch Notes](https://supertron42.github.io/wiki/dynamicformlists/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('share-md-text')">Copy to Clipboard</button></div>
+
+
+<section id="public-author-api"><h3>Unreleased settings menu update</h3><p>- Use the updated optional settings menu while keeping your existing preferences.</p></section></details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron with SKSE, CommonLibSSE-NG, ClibUtil and xbyak. xEdit/TES5Edit and Wrye Bash were consulted for record formats and list behavior. The source references explain this mod’s own removal and ordering policy; it does not claim identical behavior to Wrye Bash. Preserve the project and dependency notices when redistributing.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[Dynamic Form Lists — Patch notes](https://supertron42.github.io/wiki/dynamicformlists/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/dynamicformlists/patchnotes.html]Dynamic Form Lists — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

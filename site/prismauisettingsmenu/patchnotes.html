@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | Prisma UI Settings Menu | Supertron</title><meta name="description" content="Edit supported mod settings and view reports inside Skyrim.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/prismauisettingsmenu/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#4EC9B0"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">Prisma UI Settings Menu</a><a href="index.html">Overview</a><a href="patchnotes.html" aria-current="page">Patch notes</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Review personal rules and installed compatibility packs in the Rules tab.
+- Create mod groups and choose the game and DLC starting point by right-clicking plugins.
+- See which rules affect a result and why that result was chosen.
+- Edit supported amounts, levels, ranks and values directly from a result cell in the Compatibility tab.
+- Right-click a plugin to skip its restored changes or leave its records as the last mod left them.
+- Other menu mods can open and close PUISM directly without simulating a key press.
+- Menu launchers can temporarily disable PUISMâ€™s opening shortcut while keeping Escape available.
+- Browse plugins and compare changed records beside their final result across all five Dynamic mods.
+- Left-click to select and right-click for choices, then save from the same Compatibility tab.
+- Find records that need attention with clear status marks, explanations, and a Next issue button.
+- Search installed plugins instead of typing their filenames into compatibility rules.
+- Use the question mark for simple explanations and examples of each compatibility choice.
+- Preview compatibility rules before saving them and search the rules you already added.
+- Export compatibility rules and custom mod names as ZIPs that others can install with a mod manager.
+- Choose an opening key with optional Ctrl, Shift or Alt to avoid other mod shortcuts.
+- Mod authors can add searchable plugins, live previews, appearance priorities and guided compatibility rules to their own menus.
+- The author kit includes example menus and code for reading shared settings without requiring PUISM.
+
+#UPDATE
+- Custom spell names now list mods that add spells without spell tomes.
+- Spell and tome settings now have separate columns, larger live name previews, and clearer spacing.
+- Save, undo or discard compatibility changes together across both tabs.
+- PUISM stays at the top of the mod list, with a divider below it.
+- Hide plugins with no changes by default, or uncheck the filter to show them.
+- Record comparisons show every source plugin, including mods that forward unchanged contents.
+- The window keeps its size when switching tabs or mods, with a corner handle to resize it.
+- Settings appear in Features, General and Compatibility order where those tabs are used.
+- Sliders are wider, and multiplier controls put 1x in the middle with a box for typing an exact value.
+- Preview Tome and Spell Identifier names before restarting Skyrim.
+- Tome and Spell Identifier&#x27;s mod-name list only shows mods active in your current game, one row per mod, with an optional preview of that mod&#x27;s names.
+- Reports open inside the menu, and returning keeps your settings and scroll position.
+- Reopening the menu remembers your last mod and tab.
+- Review imported settings before accepting them without replacing unrelated preferences.
+- Choose your Skyrim version, including VR, from one download.
+
+#FIXED
+- Show failed compatibility comparisons instead of labeling their records as unchanged.
+- Fixed right-click menus not opening on plugins and table cells.
+- Filtering the plugin list no longer triggers a settings save.
+- Improved movement and mouse-control recovery when the menu closes or fails to open.
+- Loading a save cancels old menu recovery so it cannot interfere with the newly loaded game.
+- Save messages now show whether your settings were actually written.
+- Export messages stay with the correct mod when you switch pages.
+- Compatibility exports wait for your latest choices to finish saving.
+- Switching pages during an import no longer lets the previous screen overwrite the imported settings.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary><section id="safety-review-20260913"><h3>Safety improvements (unreleased)</h3><pre>- Added a check that confirms whether the menu received or released input control.
+
+- Added clearer log messages when the menu cannot open or close correctly.</pre><p>Source checks passed. New ClibDT builds and game testing are still needed.</p></section><h2>Prisma UI Settings Menu Patch Notes</h2>
+
+<p><strong>Build maintenance (unreleased).</strong> The startup declaration no longer depends on the removed SKSEAPI name, avoiding the reported compile error with CommonLibSSE-NG 7.5.1.</p><h3 id="v0.3.0">Version 0.3.0 (release candidate)</h3><p>Pending new builds and in-game validation; reconcile these source-relative notes with the last public release before publishing.</p><ul><li><strong>Updated game preparation.</strong> The build setup uses the current support library for Skyrim 1.7.104, with game testing required before release.</li><li><span class="tag tag-improve">IMPROVED</span> <b>One optional menu.</b> Edit all four mods while keeping each fully usable without the hub.</li><li><span class="tag tag-improve">IMPROVED</span> <b>Reliable controls.</b> Reset defaults, edit exclusions, and see whether settings were saved successfully.</li><li><span class="tag tag-improve">IMPROVED</span> <b>Shared reports.</b> Open the report registered by the selected mod.</li></ul><div class="btn-row"><button class="spoiler-btn" onclick="toggleSpoiler('release-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('release-bb')">BB Code</button></div>
+
+<div id="release-md" class="spoiler-content"><textarea class="bbcode-area" id="release-md-text" readonly># Version 0.3.0 (release candidate)
+
+- **One optional menu.** Edit all four mods while keeping each fully usable without the hub.
+
+- **Reliable controls.** Reset defaults, edit exclusions, and see whether settings were saved successfully.
+
+- **Shared reports.** Open the report registered by the selected mod.</textarea><button class="copy-btn" onclick="copyText('release-md-text')">Copy to Clipboard</button></div>
+
+<div id="release-bb" class="spoiler-content"><textarea class="bbcode-area" id="release-bb-text" readonly>[b]Version 0.3.0 (release candidate)[/b]
+
+[list]
+
+[*][b]One optional menu.[/b] Edit all four mods while keeping each fully usable without the hub.
+
+[*][b]Reliable controls.[/b] Reset defaults, edit exclusions, and see whether settings were saved successfully.
+
+[*][b]Shared reports.[/b] Open the report registered by the selected mod.
+
+[/list]</textarea><button class="copy-btn" onclick="copyText('release-bb-text')">Copy to Clipboard</button></div><h3>Link to this page</h3><div class="btn-row"><button class="spoiler-btn" onclick="toggleSpoiler('share-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('share-bb')">BB Code</button></div>
+
+<div id="share-md" class="spoiler-content"><textarea class="bbcode-area" id="share-md-text" readonly>[Prisma UI Settings Menu Patch Notes](https://supertron42.github.io/wiki/prismauisettingsmenu/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('share-md-text')">Copy to Clipboard</button></div>
+
+<div id="share-bb" class="spoiler-content"><textarea class="bbcode-area" id="share-bb-text" readonly>[url=https://supertron42.github.io/wiki/prismauisettingsmenu/patchnotes.html]Prisma UI Settings Menu Patch Notes[/url]</textarea><button class="copy-btn" onclick="copyText('share-bb-text')">Copy to Clipboard</button></div><section id="public-author-api"><h3>Unreleased settings menu update</h3><p>- Export results stay with the correct mod when you switch menus.</p><p>- Reopening settings clears old save waits so sharing settings is available again.</p><p>- Shared settings keep loading when unrelated files have non-English names.</p><p>- Invalid menu files are rejected before they can produce missing or conflicting controls.</p><p>- Authors can reuse the advanced menu tools with their own mods.</p><p>- Share and review approved settings while keeping other preferences intact.</p><p>- The author kit includes examples and a settings-pack reader that works without PUISM.</p></section><section><h3>Compatibility comparisons</h3><p>Changed records remain visible when a comparison cannot be read. Records needing attention are shown in the normal browser instead of being labeled unchanged.</p><p>Update Dynamic Music and Sounds and the shared settings menu page before testing. Sound comparisons that cannot identify an existing file remain unavailable.</p></section>
+</details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron using the <a href="https://github.com/PrismaUI-SKSE/PrismaUI-Wiki">Prisma UI</a> framework, SKSE, CommonLibSSE-NG, ClibUtil and xbyak. Prisma UI’s rendering stack and each dependency retain their own requirements and license notices. Participating mod authors own their setting definitions and gameplay behavior.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[Prisma UI Settings Menu — Patch notes](https://supertron42.github.io/wiki/prismauisettingsmenu/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/prismauisettingsmenu/patchnotes.html]Prisma UI Settings Menu — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

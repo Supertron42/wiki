@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | ClibDT6 | Supertron</title><meta name="description" content="Create, build and package Skyrim plugins with managed development tools.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/clibdt/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#3D7EFF"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">ClibDT6</a><a href="index.html">Overview</a><a href="backup.html">Backup and restore</a><a href="compile-project.html">Compile and test copies</a><a href="create-project.html">Create or import a project</a><a href="explorer.html">Find project and output folders</a><a href="getting-started.html">First project</a><a href="install-toolchain.html">Development tools and libraries</a><a href="patchnotes.html" aria-current="page">Patch notes</a><a href="release-project.html">Prepare a release</a><a href="set-paths.html">Paths and existing projects</a><a href="settings.html">Toolkit settings</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Limit CPU use during mod compilation so games and other apps have more room to run.
+- Check project library updates before applying them, with clear results for every selected project.
+- Review conflicting files and choose their original library version inside ClibDT.
+- Choose clean shared libraries when updating old projects while keeping the previous library copies and selections saved.
+- Stop compilation from Compile Project or the console without starting the remaining queued builds.
+- Remember whether to skip test-folder copies separately for each game-version choice.
+- Refresh tools and libraries after installing something outside ClibDT.
+- Cancel a Linux build without shutting down your other WSL work.
+- Build the Linux release from Windows with one WSL button.
+- Choose Windows or Linux when packaging ClibDT and preparing a Nexus release.
+- Install and find GitHub Desktop with one button on Windows.
+- Search project lists in Multi compile and Update Existing Projects.
+- Choose a default opening size or let ClibDT remember the window size when closed.
+- Set up the compiler from the source download before building your own copy of ClibDT.
+- Choose to free space when connecting projects while keeping library edits and Git history.
+- Prepare matching ClibDT app and source downloads together and upload them from Developer tools.
+- Use a temporary Nexus API key without saving it.
+- Resume a prepared release without repeating uploads Nexus already confirmed.
+- Use existing project and library folders when connecting an older workspace.
+- Choose an SKSE download in Tools and Libraries and keep each version in its own game folder.
+- Install downloaded SKSE ZIP or 7z archives with the loader, scripts and source files in their proper places.
+- Review the build behind each saved installer choice before packaging.
+- Choose projects and Skyrim versions in Multi compile and build them one after another.
+- Remember your Multi compile selections only when you choose to save them.
+- Open a changelog for the selected project version directly from Compile Project.
+- Choose a named release license or include your own license file.
+- Back up your own folders and restore them into a new folder without overwriting existing files.
+- Save Nexus release details separately for each project.
+
+#UPDATE
+- Open forms in the tool area and use the Back arrow to return without covering the sidebar or console.
+- Show which project is being rechecked and updated so longer library updates do not look stuck.
+- Select only projects shown by search, with a clear warning about selected projects hidden from view.
+- Keep space for the main tool when resizing the console.
+- Use one backup destination field and keep long folder paths from hiding buttons.
+- Edit fixed opening dimensions only when window-size remembering is off.
+- Save local ZIPs directly in Packages, with numbered filenames when a package already exists.
+- Keep release downloads clean with the app or source files, the license and one combined third-party notice file.
+- Choose an SKSE download or use an archive you already have without reading through a wall of details.
+- Install CommonLib from one GitHub link, with optional version overrides under Advanced.
+- Keep forms readable with shorter explanations and expandable details.
+- Keep forms inside the tool area with scrolling when the window is smaller.
+- Open ClibDT.exe without a version number in the application filename.
+- Open at 1280 by 720 by default, with remembering the last size turned off.
+- Use cleaner vector artwork and matching small icons for a sharper ClibDT logo.
+- Include the GPL-3.0-only license with ClibDT app and source downloads.
+- Find SKSE version management under Shared libraries instead of Optional tools.
+- Choose one combined desktop DLL or select an individual game target below the divider, with VR last.
+- Make a separate workspace copy only when you choose to.
+- Remember your selected project, build options and release and backup folders between sessions.
+- Keep Release Project on its own build setting so it does not change a Debug compilation.
+- Refresh release notes when the matching changelog changes, while keeping your own edits when it has not changed.
+- Save path changes in the background and use the new paths in every build.
+- Detect complete Visual Studio installations before offering another compiler installation.
+- Keep each installed Xmake version in its own folder so updates preserve the previous version.
+- Show compiler and download progress without making the rest of the window wait.
+- Let you cancel large downloads, library checks and backup verification while they are working.
+- The console starts about 66% taller so more output is visible at once.
+- AE refers to the latest supported Skyrim version, with a separate choice for Skyrim 1.6.x.
+- Update Existing Projects sits beside each installed library version in Tools and Libraries.
+- Review selected projects and confirm the library changes before applying them.
+- Release with debug info keeps the matching PDB with the compiled mod.
+- Source ZIPs default to the src folder, with an optional choice to include source and build files.
+- Replacing a source ZIP keeps a verified copy of the previous ZIP.
+- Saved paths can supply Windows user environment variables without replacing PATH.
+- Manual SKSE setup explains where the files belong for each game version.
+
+#FIXED
+- Supply OpenVR when an older library copy never installed its SDK, while keeping partial private copies protected.
+- Identify older CommonLib copies from their source files so stale version labels do not block safe updates.
+- Keep untouched OpenVR examples out of updated libraries while preserving edited files.
+- Read complete Git file listings so large library comparisons are not cut short.
+- Recognize Windows text line endings so unchanged library files are not mistaken for edits.
+- Keep original-version comparison downloads separate from older saved libraries so recovery does not require moving folders.
+- Recover recorded original library versions without changing the version selected for new projects.
+- Combine edits in different parts of a library file instead of rejecting the whole file.
+- Preserve local library edits and Git history when updating older projects.
+- Keep interrupted updates from hiding local edits during the next update.
+- Stop treating ClibDT’s own CommonLib build-file comment as a conflicting private edit.
+- Explain when an imported library fingerprint is not a GitHub commit.
+- Keep edited release notes when repackaging the same version.
+- Ignore publication reviews returned to a closed or replaced dialog.
+- Remove missing projects from Multi compile selections.
+- Stop rereading shared-library details on every screen redraw.
+- Keep build records available when using a custom compiler cache.
+- Build correctly when started from PowerShell 7.
+- Clear the saved-key editor and its undo history after saving or removing a Nexus key.
+- Prevent new uploads from inheriting options to archive an unrelated previous file.
+- Show failed SKSE folder reads as failures instead of empty storage.
+- Keep xbyak include paths correct when connecting projects to shared libraries.
+- Avoid missing-folder warnings from optional library include paths.
+- Run installer signature checks with the temporary permission needed by Windows Sandbox.
+- Keep local ClibDT packaging separate from mod publication settings.
+- Stop library updates if the selected versions change after you review them.
+- Reject a Windows executable selected for a Linux package, or the other way around.
+- Keep personal settings, caches and unrelated files out of both ClibDT source packagers.
+- Stop packaging if public documents or license files change while the ZIP is being made.
+- Stop installer packaging if its saved choices change before the ZIP is finished.
+- Restore saved backup folders and extra copy destinations when importing an older workspace.
+- Keep existing version-matched changelogs available in Compile Project and Release Project.
+- Repair settings missed by an earlier import without reconnecting the projects.
+- Keep the ClibDT icon sharp at small and large Windows display sizes.
+- Import older projects with version labels such as 0.1.1a without changing their release names.
+- Show that existing-folder imports prepare build setup instead of claiming to copy the whole project.
+- Keep project folders in place instead of forcing a nested ClibDT6 copy.
+- Restore previous setup files if connecting a workspace fails.
+- Show the correct required and optional tool totals after moving SKSE to optional tools.
+- Empty nul files no longer stop project imports, and each skipped file is recorded without changing the original project.
+- Keep the selected sidebar tool visible when opening it or resizing the window, without blocking normal scrolling.
+- Settings and project files saved with a Windows UTF-8 header now load without losing existing preferences or library choices.
+- Queued application updates no longer depend on PowerShell loading an extra file-check function.
+- Newer Xmake downloads use Windows certificate checks instead of accepting a failed certificate check.
+- Skyrim-running checks use Windows directly to avoid false stops when the compiler is busy.
+- Test copies remove obsolete menus and debug symbols only when they are unchanged files previously copied by ClibDT.
+- Failed test copies restore removed files as well as replaced files.
+- Fixed Windows builds stopping while preparing the selected Visual Studio compiler.
+- Keep compiler output in your selected workspace while using shorter Windows folder names when available.
+- Include version information in new CMake projects so Linux-built mods can pass release checks.
+- Command-line tasks no longer wait forever when a leftover child keeps the console channel open.
+- Restored project copies show their folder names when another project has the same name.
+- Background update checks and publishing drafts no longer save old settings over an active path change.
+- Installer choices that mention Skyrim 1.6 warn when their saved mapping uses another build.
+- Legacy import keeps source files inside nested folders named build or dist.
+- Saving the application build no longer fails because of an empty backup path in PowerShell.
+- Typing settings or adjusting the accent color no longer saves to disk on every tiny change.
+- Large compiler output no longer builds up an unlimited queue behind the console.
+- Imported form choices no longer reset the saved project selection.
+- Release review checks a large ZIP once and lets you cancel while it works.
+- Unsaved path edits no longer change where another tool writes files.
+- Removing the Skyrim path also clears its saved Windows variable.
+- Old imported paths no longer override the tool locations you currently selected.
+- A crashed operation no longer leaves its folders permanently locked.
+- Canceling tool detection no longer starts another scan automatically.
+- Old progress messages no longer replace the status of a newer operation.
+- One damaged project no longer hides the rest of your projects.
+- Tool detection now explains when Git, Xmake or CMake is too old for the starter project.
+- SKSE detection checks the selected Skyrim installation instead of a loader left in another folder.
+- Releases reject debug symbols that belong to a different DLL.
+- Saved installers reject conflicting files that would be installed together.
+- Installer XML is checked before the package is saved.
+- Failed or canceled mod copies restore the files they replaced when recovery can finish safely.
+- Backups stop if their source files change before the backup finishes.
+- Shared library updates check copied files before switching a project to the new version.
+- New library links resolve to an exact revision before installation.
+- Large files are copied and archived in chunks to reduce memory use.
+- Application source packages include the existing license notices and icon credits.
+- Windows self-builds can wait for the running application to close before replacing it.
+- Linux build scripts now use the correct line endings and create a matching build record.
+- One clearly named CLibDT6.exe replaces the scattered application copies.
+- Compiled mod copies and plain releases include authored settings and menu files from the project Data folder.
+- Release checks shared library files again before packaging a mod.
+- Editing a changelog no longer makes an unchanged DLL need another build.
+- Successfully compiled Skyrim versions stay valid when Xmake switches to another checked dependency lock file.
+- Release review no longer repeatedly scans project files while drawing the window.
+- A failed batch build no longer prevents the remaining selected builds.
+- ClibDT checks that Skyrim is closed before compiling or copying a mod.
+- DLL checks reject a missing SKSE entrypoint or a name or version that does not match the project.
+- New shared library downloads skip unnecessary OpenVR examples.
+- Identifiable private library edits are preserved when they do not conflict with the new version.
+- Unclear or conflicting library edits leave the project selection unchanged and explain why.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary>
+
+<h2>ClibDT Change Log</h2>
+<p><strong>Build maintenance (unreleased).</strong> The new-project template avoids the outdated startup declaration that fails with CommonLibSSE-NG 7.5.1; rebuild ClibDT to include this template change.</p>
+<p>All notable changes to ClibDT are documented here.</p>
+
+
+<section aria-label="Share this page"><h4>Link to this page</h4>
+<button class="spoiler-btn" onclick="toggleClibDTShare('clibdt-share-md')">Markdown</button>
+<button class="spoiler-btn" onclick="toggleClibDTShare('clibdt-share-bb')">BB Code</button>
+<div id="clibdt-share-md" class="spoiler-content"><textarea id="clibdt-text-md" class="bbcode-area" readonly>[ClibDT guide](https://supertron42.github.io/wiki/clibdt/patchnotes.html)</textarea><button class="spoiler-btn" onclick="copyClibDTShare('clibdt-text-md',this)">Copy</button></div><div id="clibdt-share-bb" class="spoiler-content"><textarea id="clibdt-text-bb" class="bbcode-area" readonly>[url=https://supertron42.github.io/wiki/clibdt/patchnotes.html]ClibDT guide[/url]</textarea><button class="spoiler-btn" onclick="copyClibDTShare('clibdt-text-bb',this)">Copy</button></div></section><div class="version" id="v5.3"><h3>Version 5.3 (unreleased)</h3><p>Prepared for testing. Game compatibility is not yet certified.</p><ul>
+<li>Package the same source version again with the previous ZIP backed up automatically.</li>
+<li>Make Source ZIP includes only the selected mod's src folder.</li>
+<li>Package ClibDT's own source without rebuilding its EXE.</li>
+<li>Source packaging stops if required files are missing or change during packaging.</li>
+<li>Project dots update automatically when relevant files or finished builds change.</li>
+<li>Project dots recheck only changed files while monitoring is active, so small edits show their result much sooner.</li>
+<li>Returning to Compile Project keeps the cached colors for the selected game version and configuration.</li>
+<li>Green means the saved build matches, red means compilation is needed, and grey means a result is unknown or the check is unavailable.</li>
+<li>Unavailable checks retry automatically, and an edit updates only the affected project.</li>
+<li>Multi compile shows the same icons without changing your checked projects.</li>
+<li>Checks run in the background, and Check changes forces a fresh read when you want to verify every project.</li>
+<li>Dot caches speed up the display while packaging and publishing still perform their own full validation.</li>
+<li>Skyrim 1.6.x has its own choice in Compile Project and Release Project, with separate output folders, release names and portable setup instructions.</li><li>Packaging and Nexus publishing now have their own Release Project tool under Projects. Saved Mod IDs are retained, and builds are checked before packaging or publishing.</li><li>Active operations stay open when changing tools or closing the main window.</li><li>Current Skyrim support. Projects can use CommonLibSSE-NG 7.5.1 to prepare builds for Skyrim 1.7.104.</li><li>Library updates. Update CommonLib prepares the selected project and keeps its previous library and dependency settings in a backup.</li><li>Correct build selection. Switching between SE, AE and VR clears the other choices and keeps each build separate.</li><li>Reliable versions. The project version stays consistent between ClibDT, the build settings and the finished mod.</li><li>Checked packages. Release packages require a matching current build and preserve previous packages.</li><li>Matching SKSE. The installer points Steam 1.7.104 users to SKSE 2.3.1 and keeps older game choices separate.</li><li>Toolkit releases. ClibDT can build and package its own current executable together with complete source files.</li></ul></div>
+<div class="version" id="v5.2">
+<h3>Version 5.2 <span></span></h3>
+
+<h4><span class="badge badge-added">ADDED</span> New Features</h4>
+<ul>
+    <li>Edit project version and description when compiling</li>
+    <li>Open changelog button in Developer tool</li>
+    <li>Change program version from Developer tool</li>
+    <li>Faster widget loading when opening Set Paths and Install Tools</li>
+    <li>Show output location after successful project compilation</li>
+    <li>Major improvements to backup tool</li>
+    <li>Program now opens to Create Project if Set Paths is already configured</li>
+</ul>
+
+<h4><span class="badge badge-fixed">FIXED</span> Bug Fixes</h4>
+<ul>
+    <li>Fixed module import errors when running compiled executable</li>
+    <li>Improved MSVC build tools detection and initialization</li>
+    <li>Reduced startup delays for tool widgets</li>
+    <li>Install Tools now uses Build Tools path from Set Paths</li>
+    <li>Compile Project now uses Build Tools path from Set Paths</li>
+    <li>Explorer widget now shows correct backup destination path from settings</li>
+    <li>Project backups now save to devroot/backups/{project_name} folder</li>
+</ul>
+
+<h4><span class="badge badge-changed">CHANGED</span> Changes</h4>
+<ul>
+    <li>Renamed Backup tool to Custom Backup</li>
+    <li>Disabled UPX compression to reduce antivirus false positives</li>
+</ul>
+
+<h4><span class="badge badge-removed">REMOVED</span> Removed</h4>
+<ul>
+    <li>Removed automatic version checking from settings</li>
+</ul>
+</div>
+
+
+<div class="version" id="v5.1.1">
+<h3>Version 5.1.1</h3>
+
+<h4><span class="badge badge-fixed">FIXED</span> Bug Fixes</h4>
+<ul>
+    <li>Create Project now reads Set Paths values from settings when environment variables are not refreshed, so defaults show up reliably</li>
+    <li>Compile Project no longer reads UI widgets from a background thread; values are captured before the build starts</li>
+    <li>Compile Project now uses runtime flags safely during xmake configure/build</li>
+    <li>Clean action no longer fails just because Mods Path is missing</li>
+    <li>Removed dead files and unused PyInstaller hiddenimports to match the actual app wiring</li>
+</ul>
+
+<h4><span class="badge badge-improved">IMPROVED</span> Improvements</h4>
+<ul>
+    <li>Pin bar setup is no longer tied to window sizing logic, reducing UI side effects</li>
+    <li>Tool discovery is simpler and no longer writes debug logs to disk</li>
+    <li>Project list, xmake, and Mods Path lookups now fall back to settings when env vars are missing</li>
+    <li>Project names are sanitized visibly so users see the final folder name</li>
+</ul>
+
+<h4><span class="badge badge-added">ADDED</span> New Features</h4>
+<ul>
+    <li>Settings fallbacks for project roots and tool paths in Create Project and Compile Project</li>
+</ul>
+</div>
+
+</details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron. ClibDT6’s original code is GPL-3.0-only. Its native interface uses egui/eframe and the Rust ecosystem; it works with Git, Xmake, Microsoft C++ tools and CommonLibSSE-NG. Those projects and bundled dependencies retain their own licenses. The toolkit’s Third Party Notices, ThirdPartyLicenses and Tool Icon Credits preserve the full attributions.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[ClibDT6 — Patch notes](https://supertron42.github.io/wiki/clibdt/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/clibdt/patchnotes.html]ClibDT6 — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

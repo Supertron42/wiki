@@ -1,0 +1,180 @@
+/* WIRING: used by skyrim.html */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding-top: 30px;
+}
+
+.landing-container {
+    text-align: center;
+    padding: 40px;
+}
+.hero-header {
+    width: min(900px, 92vw);
+    margin: 0 auto 18px;
+}
+.hero-title {
+    font-family: "Orbitron", "Bank Gothic", "Eurostile", "Rajdhani", "Trebuchet MS", sans-serif;
+    font-size: clamp(30px, 5.2vw, 54px);
+    letter-spacing: 8px;
+    color: #dff6ff;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(120, 220, 255, 0.55), 0 0 30px rgba(120, 220, 255, 0.25);
+}
+.hero-bar {
+    height: 2px;
+    width: min(420px, 70vw);
+    margin: 12px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(218, 142, 53, 0.75), rgba(86, 156, 214, 0.75), transparent);
+    box-shadow: 0 0 10px rgba(86, 156, 214, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+.hero-bar::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -20%;
+    width: 20%;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    filter: blur(1px);
+    animation: sweep-light 2.2s linear infinite;
+}
+@keyframes sweep-light {
+    0% { transform: translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    50% { opacity: 1; }
+    90% { opacity: 0.6; }
+    100% { transform: translateX(600%); opacity: 0; }
+}
+
+h1 {
+    font-size: 28px;
+    color: #4ec9b0;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #9cdcfe;
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+.wiki-card {
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 8px;
+    padding: 30px 40px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    aspect-ratio: 16 / 9;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s, box-shadow 0.2s;
+    --glow-border: #569cd6;
+    --glow-core: rgba(86, 156, 214, 0.6);
+    --glow-outer: rgba(86, 156, 214, 0.35);
+    user-select: none;
+    -webkit-user-select: none;
+}
+.wiki-card h2,
+.wiki-card p,
+.wiki-card img {
+    pointer-events: none;
+}
+.wiki-card:hover {
+    border-color: var(--glow-border);
+    background: #2a2d2e;
+    transform: translateY(-5px);
+    box-shadow: 0 0 6px 1px var(--glow-core), 0 0 14px 2px var(--glow-outer);
+}
+
+.wiki-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+}
+
+.wiki-card h2 {
+    color: #4ec9b0;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.wiki-card p {
+    color: #9cdcfe;
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
+.wiki-card a {
+    display: inline-block;
+    background: #DA8E35;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background 0.15s;
+}
+.wiki-card a:hover {
+    background: #c47d2e;
+}
+
+.kofi-container {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+@keyframes poop-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(120px) rotate(360deg); opacity: 0; }
+}
+.poop-drop {
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    animation: poop-fall 1s ease-in forwards;
+    z-index: 100;
+}
+.back-link {
+    position: fixed;
+    top: 18px;
+    left: 20px;
+    z-index: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9cdcfe;
+    text-decoration: none;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.back-link:hover {
+    color: #dff6ff;
+    border-color: #569cd6;
+    background: #2a2d2e;
+}

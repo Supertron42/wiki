@@ -1,0 +1,11 @@
+# Adjust to the project's actual build system; do not ignore source by extension.
+__pycache__/
+*.py[cod]
+.venv/
+/build/
+/dist/
+/target/
+.env
+.env.*
+.DS_Store
+Thumbs.db

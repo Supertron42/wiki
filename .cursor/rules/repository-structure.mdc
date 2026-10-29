@@ -1,0 +1,11 @@
+---
+description: Keep the wiki website and future project documentation clean and structured
+alwaysApply: true
+---
+
+Read `AGENTS.md` and `docs/STRUCTURE.md` before editing this repository.
+Use `projects.json` for project registration and publish only `site/`.
+Keep private work, research, backups and application source outside the checkout.
+For WoW guide edits, also read `docs/WOW-AUTHORING.md`.
+Run the validation commands in `CONTRIBUTING.md` before finishing.
+Keep the detailed rules in AGENTS.md; do not create a competing copy here.

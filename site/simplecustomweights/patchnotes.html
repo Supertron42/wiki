@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | Simple Custom Weights | Supertron</title><meta name="description" content="Choose how much equipment and supplies weigh.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/simplecustomweights/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#E53935"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">Simple Custom Weights</a><a href="index.html">Overview</a><a href="compatibility.html">Compatibility</a><a href="instructions.html">Get started</a><a href="papyrus.html">Reload weights from a script</a><a href="patchnotes.html" aria-current="page">Patch notes</a><a href="settings.html">Weight settings</a><a href="troubleshooting.html">Check unexpected weights</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Give notes and letters their own weight without changing books and journals.
+- Adjust leather and hides separately from other miscellaneous items.
+- Adjust ores and ingots separately from other miscellaneous items.
+- Added support for Prisma UI Settings Menu (PUISM)
+- Type an exact multiplier from 0.1x to 10x instead of dragging a slider.
+
+#UPDATE
+- Removed repeated slider explanations while keeping useful details about each weight category.
+- All weight multiplier sliders run from 0.1x to 10x, with normal weight at 1x in the middle.
+- Key, lockpick and gold weights have their own section below the multipliers.
+- Set key and lockpick weights from 0.01 to 5, or keep their original weights.
+- Set gold weight from 0 to 1.
+- Set each arrow or bolt to an exact weight from 0 to 1 in steps of 0.01 in desktop Skyrim.
+- Keep arrows and bolts weightless with 0, even when minimum item weight is enabled.
+- Keep your old arrow multiplier until you choose an exact weight or restore original weights.
+- Choose your Skyrim version, including VR, from one download.
+- Keep your settings or install the optional default settings file.
+- Import existing INI preferences into JSON without losing your settings.
+
+#FIXED
+- Pickaxes and woodcutting axes now use Tool weight.
+- Misc weight no longer replaces more specific book or tool settings.
+- Logs now explain skipped items and show the resulting pickaxe and woodcutting axe weights.
+- Reloading settings no longer multiplies already changed item weights again.
+- Invalid weight settings now use defaults instead of leaving items with broken weights.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary><h2>Change logs</h2><pre>#NEW
+- Give notes and letters their own weight without changing books and journals.
+- Adjust leather and hides separately from other miscellaneous items.
+- Adjust ores and ingots separately from other miscellaneous items.
+- Added support for Prisma UI Settings Menu (PUISM)
+- Type an exact multiplier from 0.1x to 10x instead of dragging a slider.
+
+#UPDATE
+- All weight multiplier sliders run from 0.1x to 10x, with normal weight at 1x in the middle.
+- Key, lockpick and gold weights have their own section below the multipliers.
+- Set key and lockpick weights from 0.01 to 5, or keep their original weights.
+- Set gold weight from 0 to 1.
+- Set each arrow or bolt to an exact weight from 0 to 1 in steps of 0.01 in desktop Skyrim.
+- Keep arrows and bolts weightless with 0, even when minimum item weight is enabled.
+- Keep your old arrow multiplier until you choose an exact weight or restore original weights.
+- Choose your Skyrim version, including VR, from one download.
+- Keep your settings or install the optional default settings file.
+- Import existing INI preferences into JSON without losing your settings.
+
+#FIXED
+- Pickaxes and woodcutting axes now use Tool weight.
+- Misc weight no longer replaces more specific book or tool settings.
+- Logs now explain skipped items and show the resulting pickaxe and woodcutting axe weights.
+- Reloading settings no longer multiplies already changed item weights again.
+- Invalid weight settings now use defaults instead of leaving items with broken weights.
+</pre><h3>Link to this page</h3><details><summary>BBCode</summary><textarea id="bb-link" readonly>[url=https://supertron42.github.io/wiki/simplecustomweights/patchnotes.html]Simple Custom Weights[/url]</textarea><button onclick="copyLink('bb-link')">Copy</button></details><details><summary>Markdown</summary><textarea id="md-link" readonly>[Simple Custom Weights](https://supertron42.github.io/wiki/simplecustomweights/patchnotes.html)</textarea><button onclick="copyLink('md-link')">Copy</button></details><p><a href="https://ko-fi.com/supertron"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi"></a></p></details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron. The source retains the SKSE team’s interfaces, CommonLibSSE-NG, powerof3’s ClibUtil and herumi’s xbyak notices where included. Optional Prisma UI integrations also credit the Prisma UI framework. Each dependency keeps its own license; the project’s included license and notices remain the redistribution reference.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[Simple Custom Weights — Patch notes](https://supertron42.github.io/wiki/simplecustomweights/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/simplecustomweights/patchnotes.html]Simple Custom Weights — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

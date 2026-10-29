@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "base_url": "https://supertron42.github.io/wiki/",
+  "projects": [
+    {
+      "slug": "collectionsmanager",
+      "name": "Collections Manager",
+      "description": "Install Nexus collections, review installers and manage modding tools in MO2.",
+      "color": "#DA8E35",
+      "category": "skyrim",
+      "entry": "collectionsmanager/index.html",
+      "source_url": null,
+      "image": "collectionsmanager/cm02thumbnail.webp"
+    },
+    {
+      "slug": "clibdt",
+      "name": "ClibDT6",
+      "description": "Create, build and package Skyrim plugins with managed development tools.",
+      "color": "#3D7EFF",
+      "category": "skyrim",
+      "entry": "clibdt/index.html",
+      "source_url": null,
+      "image": "clibdt/clibdt_bg.png"
+    },
+    {
+      "slug": "simplecustomweights",
+      "name": "Simple Custom Weights",
+      "description": "Choose how much equipment and supplies weigh.",
+      "color": "#E53935",
+      "category": "skyrim",
+      "entry": "simplecustomweights/index.html",
+      "source_url": null,
+      "image": "simplecustomweights/cardthumbnail.webp"
+    },
+    {
+      "slug": "morecolorfului",
+      "name": "More Colorful UI",
+      "description": "Color action labels such as Take, Steal, Open and Talk.",
+      "color": "#9B59B6",
+      "category": "skyrim",
+      "entry": "morecolorfului/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "dynamiccontainerloot",
+      "name": "Dynamic Container Loot",
+      "description": "Restore container loot lost when several mods edit the same container.",
+      "color": "#00BCD4",
+      "category": "skyrim",
+      "entry": "dynamiccontainerloot/index.html",
+      "source_url": null,
+      "image": "dynamiccontainerloot/thumbnail.webp"
+    },
+    {
+      "slug": "dynamicleveledlists",
+      "name": "Dynamic Leveled Lists",
+      "description": "Restore item, NPC and spell lists while respecting list limits.",
+      "color": "#E53935",
+      "category": "skyrim",
+      "entry": "dynamicleveledlists/index.html",
+      "source_url": null,
+      "image": "dynamicleveledlists/dynamic leveled lists thumbnail.webp"
+    },
+    {
+      "slug": "npcspawner",
+      "name": "NPC Spawner",
+      "description": "Start controlled NPC spawning for gameplay and testing.",
+      "color": "#FF6B35",
+      "category": "skyrim",
+      "entry": "npcspawner/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "dynamicformlists",
+      "name": "Dynamic Form Lists",
+      "description": "Restore entries lost from shared reference lists.",
+      "color": "#4CAF50",
+      "category": "skyrim",
+      "entry": "dynamicformlists/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "dynamicmusicandsounds",
+      "name": "Dynamic Music and Sounds",
+      "description": "Restore music tracks, palette layers and sound variants lost to conflicts.",
+      "color": "#FF9800",
+      "category": "skyrim",
+      "entry": "dynamicmusicandsounds/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "dynamicnpcs",
+      "name": "Dynamic NPCs",
+      "description": "Restore NPC changes and choose which appearance mod wins.",
+      "color": "#4EC9B0",
+      "category": "skyrim",
+      "entry": "dynamicnpcs/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "arcanearchery",
+      "name": "Arcane Archery",
+      "description": "A spell-arrow source preview; visual effects still need game testing.",
+      "color": "#9C27B0",
+      "category": "skyrim",
+      "entry": "arcanearchery/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "armornormalizer",
+      "name": "Armor Normalizer",
+      "description": "Bring recognized modded armor closer to vanilla material tiers.",
+      "color": "#43A047",
+      "category": "skyrim",
+      "entry": "armornormalizer/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "prismauisettingsmenu",
+      "name": "Prisma UI Settings Menu",
+      "description": "Edit supported mod settings and view reports inside Skyrim.",
+      "color": "#4EC9B0",
+      "category": "skyrim",
+      "entry": "prismauisettingsmenu/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "runtimesanitychecker",
+      "name": "Runtime Sanity Checker",
+      "description": "Scan loaded data for specific problems and read the findings.",
+      "color": "#FFC107",
+      "category": "skyrim",
+      "entry": "runtimesanitychecker/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "tomeandspellidentifier",
+      "name": "Tome and Spell Identifier",
+      "description": "Add difficulty, school and custom source labels to spells and tomes.",
+      "color": "#4EC9B0",
+      "category": "skyrim",
+      "entry": "tomeandspellidentifier/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "wow_class_guides",
+      "name": "WoW Class and Raid Guides",
+      "description": "TBC Classic Anniversary class, gear and raid guides.",
+      "color": "#C79C6E",
+      "category": "wow",
+      "entry": "wow_class_guides/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "dynamic-location-discovery",
+      "name": "Dynamic Location Discovery",
+      "description": "An unreleased alpha for discovery text and return-location messages.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "dynamic-location-discovery/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "auto-arrow-retrieval",
+      "name": "Auto Arrow Retrieval",
+      "description": "An experimental chance to recover equipped ammo after a player kill.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "auto-arrow-retrieval/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "location-discovery",
+      "name": "Location Discovery",
+      "description": "A legacy prototype for muting discovery sound and hiding Discovered.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "location-discovery/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "stability-tester",
+      "name": "Stability Tester",
+      "description": "An experimental hotkey scan of plugin files.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "stability-tester/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "what-is-my-name",
+      "name": "What Is My Name",
+      "description": "An experimental character-name suggestion at character creation.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "what-is-my-name/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "tk-dodge-ng",
+      "name": "TK Dodge NG",
+      "description": "A DLL port of TK Dodge RE; original animation files are still required.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "tk-dodge-ng/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "adjustable-prices",
+      "name": "Adjustable Prices",
+      "description": "An unfinished Skyrim source scaffold; no working price controls are present.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "adjustable-prices/index.html",
+      "source_url": null
+    },
+    {
+      "slug": "weapon-and-armor-material-mod",
+      "name": "Weapon and Armor Material Mod",
+      "description": "An unfinished material-assignment project with no plugin implementation yet.",
+      "category": "skyrim",
+      "color": "#4ec9b0",
+      "entry": "weapon-and-armor-material-mod/index.html",
+      "source_url": null
+    }
+  ]
+}

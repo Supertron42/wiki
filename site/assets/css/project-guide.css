@@ -1,0 +1,54 @@
+/* Shared guide components: retain the wiki's dark palette and project accent. */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body.guide { margin: 0; background: #1e1e1e; color: #d4d4d4; font: 16px/1.7 "Segoe UI", Arial, sans-serif; }
+.guide a { color: #8dceff; text-underline-offset: .18em; overflow-wrap: anywhere; }
+.guide a:hover { color: #c4e6ff; }
+.guide :focus-visible, .project-hub :focus-visible { outline: 2px solid #8dceff; outline-offset: 4px; }
+.guide #nav { position: fixed; inset: 0 auto 0 0; width: 250px; padding: 24px 18px; overflow: auto; background: #252526; border-right: 1px solid #3c3c3c; }
+.guide #nav .project-name { display: block; color: var(--accent, #4ec9b0); font-size: 20px; font-weight: 700; margin: 0 0 18px; }
+.guide #nav a { display: block; padding: 6px 10px; border-radius: 4px; text-decoration: none; }
+.guide #nav a[aria-current=page], .guide #nav a:hover { background: #343434; color: #fff; }
+.guide #nav .nav-label { color: #aaa; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; margin: 22px 10px 6px; }
+.guide #content { margin-left: 250px; max-width: 1110px; padding: 36px clamp(22px, 4vw, 56px) 70px; }
+.guide h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.2; color: var(--accent, #4ec9b0); margin: 0 0 18px; }
+.guide h2 { color: #eee; font-size: 25px; line-height: 1.3; margin: 34px 0 14px; border-bottom: 1px solid #3c3c3c; padding-bottom: 9px; }
+.guide h3 { font-size: 19px; color: #ddd; margin: 25px 0 10px; }
+.guide p, .guide ul, .guide ol { margin: 0 0 18px; }
+.guide li { margin: 7px 0; }
+.guide .intro { font-size: 19px; color: #eee; max-width: 70ch; }
+.guide .notice { border-left: 3px solid var(--accent, #4ec9b0); background: #252526; padding: 15px 18px; border-radius: 0 5px 5px 0; margin: 22px 0; }
+.guide .notice p:last-child { margin-bottom: 0; }
+.guide code { color: #e8ce9b; font-size: .91em; overflow-wrap: anywhere; }
+.guide pre { max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; background: #252526; border: 1px solid #444; padding: 18px; border-radius: 5px; font: 14px/1.7 Consolas, monospace; }
+.guide .table-wrap { overflow-x: auto; margin: 18px 0 24px; }
+.guide table { border-collapse: collapse; width: 100%; }
+.guide th, .guide td { text-align: left; vertical-align: top; border: 1px solid #444; padding: 11px 13px; }
+.guide th { background: #303033; color: #eee; }
+.guide summary { cursor: pointer; font-weight: 600; padding: 12px 0; color: #eee; }
+.guide .release-history { border-top: 1px solid #444; margin-top: 30px; }
+.guide .share-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+.guide .spoiler-btn, .guide .copy-btn { background: #343434; color: #eee; border: 1px solid #666; border-radius: 4px; font: inherit; padding: 8px 13px; cursor: pointer; }
+.guide .spoiler-content { display: none; margin-top: 14px; }
+.guide .spoiler-content.show { display: block; }
+.guide textarea { width: 100%; min-height: 85px; color: #ddd; background: #252526; border: 1px solid #666; padding: 12px; margin-bottom: 10px; font: 14px/1.5 Consolas, monospace; }
+.guide .project-banner { display: block; max-width: 100%; max-height: 220px; object-fit: contain; margin: 22px 0; border-radius: 6px; }
+.guide section, .guide .legacy-anchor { scroll-margin-top: 18px; }
+.guide footer { margin-top: 40px; }
+.project-hub { width: 100%; max-width: 1100px; margin: 48px auto; padding: 0 24px; text-align: left; font: 16px/1.65 "Segoe UI", Arial, sans-serif; color: #d4d4d4; }
+.project-hub > h2 { font-size: 28px; color: #4ec9b0; margin: 0 0 12px; }
+.project-hub > p { margin: 0 0 25px; }
+.project-hub a { color: #8dceff; }
+.landing-container { width: 100%; max-width: 1180px; }
+.landing-container .hero-header, .landing-container canvas { max-width: 100%; }
+.landing-container canvas { height: auto; }
+@media (max-width: 800px) {
+  .guide #nav { position: static; width: auto; border-right: 0; border-bottom: 1px solid #444; padding: 20px; }
+  .guide #nav a { display: inline-block; padding: 7px 10px; }
+  .guide #nav .project-name, .guide #nav .nav-label { display: block; }
+  .guide #nav .nav-label { margin-top: 14px; }
+  .guide #content { margin-left: 0; padding: 28px 20px 50px; }
+  .guide h2 { font-size: 23px; }
+  .project-hub { padding: 0 18px; }
+  .landing-container { padding: 24px 12px; }
+}

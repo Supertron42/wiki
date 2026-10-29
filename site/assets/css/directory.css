@@ -1,0 +1,25 @@
+/* Shared styles for the project directory and new project starter pages. */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body.directory { margin: 0; background: #1e1e1e; color: #d4d4d4; font: 15px/1.65 "Segoe UI", Arial, sans-serif; }
+.directory main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 60px; }
+.directory a { color: #7dcfff; }
+.directory h1 { color: #4ec9b0; }
+.directory nav { margin-bottom: 32px; }
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+.project-card { background: #252526; padding: 20px; border: 1px solid #3c3c3c; border-top: 3px solid var(--accent, #4ec9b0); border-radius: 6px; }
+.project-card h2 { color: var(--accent, #4ec9b0); font-size: 19px; margin: 4px 0 12px; }
+.project-category { color: #aaa; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.project-card a + a { margin-left: 16px; }
+.directory footer { margin-top: 36px; }
+.directory .spoiler-btn, .directory .copy-btn { padding: 8px 14px; border: 1px solid #555; border-radius: 4px; background: #343434; color: #eee; cursor: pointer; }
+.directory .spoiler-content { display: none; margin-top: 12px; }
+.directory .spoiler-content.show { display: block; }
+.directory textarea { display: block; width: 100%; min-height: 72px; margin-bottom: 8px; background: #252526; color: #d4d4d4; border: 1px solid #555; padding: 10px; }
+
+/* One card layout across the directory and game hubs. */
+.project-card { display: flex; flex-direction: column; }
+.project-card > p:last-child { margin-top: auto; padding-top: 8px; }
+.project-card-image { width: 100%; height: 135px; object-fit: cover; border-radius: 3px; margin-bottom: 12px; }
+
+.project-card p { margin: 0 0 14px; }

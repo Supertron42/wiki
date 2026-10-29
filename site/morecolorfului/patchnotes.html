@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | More Colorful UI | Supertron</title><meta name="description" content="Color action labels such as Take, Steal, Open and Talk.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/morecolorfului/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#9B59B6"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">More Colorful UI</a><a href="index.html">Overview</a><a href="instructions.html">Get started</a><a href="patchnotes.html" aria-current="page">Patch notes</a><a href="settings.html">Action color settings</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Added support for Prisma UI Settings Menu (PUISM)
+
+#UPDATE
+- Updated the default word colors, including a green Toggle action.
+- Resetting colors in the settings menu now restores the updated palette.
+- Choose your Skyrim version, including VR, from one download.
+- Keep your settings or install the optional default settings file.
+
+#FIXED
+- When action names overlap, the longest matching name now gets the correct color.
+- Default colors now work even if the settings menu definition is missing.
+- The startup report now opens from its correct location in the settings menu.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary>
+<section id="release-settings-update"><h3>Upcoming settings update</h3><div>- The default palette now includes all saved Immersive And PURE colors and a green Toggle action.</div><p>These changes are in the project source. Updated builds and in-game testing are still needed.</p></section>
+    <h2>Patch Notes</h2>
+<section id="release-1.8.0"><h3>1.8.0 build candidate</h3><ul><li><strong>One download:</strong> Choose Skyrim 1.5.97, 1.6.x, 1.7.104 or VR in the installer.</li><li><strong>Optional settings:</strong> Keep your preferences or install the included standard JSON settings.</li><li><strong>In-game settings:</strong> Change preferences with the optional Prisma UI Settings Menu, then restart Skyrim.</li><li><strong>Standalone colors:</strong> Standard colors work without the settings menu definition.</li><li><strong>Color matching:</strong> The longest matching action name wins consistently.</li><li><strong>Reports:</strong> The startup HTML log appears in the current settings menu report location.</li><li><strong>Startup compatibility.</strong> The startup declaration no longer depends on the removed SKSEAPI name, avoiding the reported compile error with CommonLibSSE-NG 7.5.1.</li></ul><p>Compiled files still need testing in Skyrim before gameplay compatibility is confirmed.</p><details><summary>Copy Markdown patch notes</summary><textarea readonly>- **One download:** Choose Skyrim 1.5.97, 1.6.x, 1.7.104 or VR in the installer.
+- **Optional settings:** Keep your preferences or install the included standard JSON settings.
+- **In-game settings:** Change preferences with the optional Prisma UI Settings Menu, then restart Skyrim.
+- **Standalone colors:** Standard colors work without the settings menu definition.
+- **Color matching:** The longest matching action name wins consistently.
+- **Reports:** The startup HTML log appears in the current settings menu report location.
+- **Startup compatibility.** The startup declaration no longer depends on the removed SKSEAPI name, avoiding the reported compile error with CommonLibSSE-NG 7.5.1.</textarea><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copy</button></details><details><summary>Copy BBCode patch notes</summary><textarea readonly>[list]
+[*]One download: Choose Skyrim 1.5.97, 1.6.x, 1.7.104 or VR in the installer.
+[*]Optional settings: Keep your preferences or install the included standard JSON settings.
+[*]In-game settings: Change preferences with the optional Prisma UI Settings Menu, then restart Skyrim.
+[*]Standalone colors: Standard colors work without the settings menu definition.
+[*]Color matching: The longest matching action name wins consistently.
+[*]Reports: The startup HTML log appears in the current settings menu report location.
+[*]Startup compatibility. The startup declaration no longer depends on the removed SKSEAPI name, avoiding the reported compile error with CommonLibSSE-NG 7.5.1.
+[/list]</textarea><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copy</button></details></section>
+
+<p><strong>Build maintenance (unreleased).</strong> The startup declaration no longer depends on the removed SKSEAPI name, avoiding the reported compile error with CommonLibSSE-NG 7.5.1.</p>
+    <p>Version history and changelog for More Colorful UI.</p>
+
+    <div class="version">
+        <h4>Version 1.0.0</h4>
+        <div class="date">January 2026</div>
+        <ul>
+            <li><span class="tag tag-new">New</span> Initial release</li>
+            <li><span class="tag tag-new">New</span> Prefix-based activation text coloring</li>
+            <li><span class="tag tag-new">New</span> INI-based configuration</li>
+            <li><span class="tag tag-new">New</span> Support for Skyrim SE, AE, and VR</li>
+        </ul>
+    </div>
+
+    <div>
+        <a href="https://ko-fi.com/supertron" target="_blank"><img src="../collectionsmanager/support on kofi.png" alt="Support me on Ko-fi"></a>
+    </div>
+
+
+<section id="public-author-api"><h3>Unreleased settings menu update</h3><p>- Use the updated optional settings menu while keeping your existing preferences.</p></section></details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron. The source retains the SKSE team’s interfaces, CommonLibSSE-NG, powerof3’s ClibUtil and herumi’s xbyak notices where included. Optional Prisma UI integrations also credit the Prisma UI framework. Each dependency keeps its own license; the project’s included license and notices remain the redistribution reference.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[More Colorful UI — Patch notes](https://supertron42.github.io/wiki/morecolorfului/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/morecolorfului/patchnotes.html]More Colorful UI — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

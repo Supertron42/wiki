@@ -1,0 +1,604 @@
+/* WIRING: used by wow_class_guides/mage/arcane/classguide-mage-arcane.html */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #d4d4d4;
+}
+
+/* Left Navigation */
+#nav {
+    width: 200px;
+    min-width: 200px;
+    background: #252526;
+    border-right: 1px solid #3c3c3c;
+    padding: 10px 0;
+    overflow-y: auto;
+    position: fixed;
+    height: 100%;
+}
+#nav .nav-grouplabel {
+    color: #4ec9b0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 10px 15px 4px 15px;
+}
+#nav h3 {
+    color: #69CCF0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 30px 5px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+}
+#nav h3:first-child {
+    margin-top: 0;
+}
+#nav h3:hover {
+    color: #a6dcf5;
+}
+#nav h3::after {
+    content: '\25B8';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.15s ease;
+    font-size: 10px;
+    color: #69CCF0;
+}
+#nav h3.open::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+/* Scrollspy: highlight the section header you're currently reading */
+#nav h3.active-section {
+    color: #4ec9b0;
+}
+#nav h3.active-section::after {
+    color: #4ec9b0;
+}
+#nav .nav-section {
+    display: none;
+    padding-bottom: 4px;
+}
+#nav .nav-section.open {
+    display: block;
+}
+/* Per-phase sub-group: the slot links under a phase only show when that phase
+   is the one in view, so phases don't blend into one long list. */
+#nav .nav-subsection {
+    display: none;
+}
+#nav .nav-subsection.open {
+    display: block;
+}
+#nav a {
+    display: block;
+    color: #d4d4d4;
+    text-decoration: none;
+    padding: 6px 15px 6px 25px;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+}
+#nav a:hover {
+    background: #2a2d2e;
+    color: #fff;
+    border-left-color: #69CCF0;
+}
+#nav a.active {
+    background: #2a2d2e;
+    border-left-color: #4ec9b0;
+}
+/* Nested sub-items (e.g. per-slot links under a raid phase): deeper indent,
+   dimmer + smaller text, and a vertical guide line so they read as children
+   of the phase above instead of blending into the phase-level links. */
+#nav a.nav-sub {
+    padding-left: 40px;
+    font-size: 11px;
+    color: #9d9d9d;
+    position: relative;
+}
+#nav a.nav-sub:hover {
+    color: #fff;
+}
+#nav a.nav-sub::before {
+    content: '';
+    position: absolute;
+    left: 26px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #3c3c3c;
+}
+#nav a.nav-sub.active::before {
+    border-left-color: #4ec9b0;
+}
+
+/* Main Content */
+#content {
+    flex: 1;
+    padding: 20px 30px;
+    margin-left: 200px;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 22px;
+    color: #69CCF0;
+    border-bottom: 2px solid #69CCF0;
+    padding-bottom: 8px;
+    margin: 30px 0 15px;
+}
+h1:first-child {
+    margin-top: 0;
+}
+h2 {
+    font-size: 16px;
+    color: #dcdcaa;
+    margin: 25px 0 10px;
+}
+/* Breathing room when jumping to a section via nav/scrollspy anchors */
+h1[id], h2[id] {
+    scroll-margin-top: 16px;
+}
+h3 {
+    font-size: 14px;
+    color: #4ec9b0;
+    margin: 15px 0 8px;
+}
+p {
+    margin: 10px 0;
+}
+ul {
+    margin: 10px 0 10px 20px;
+}
+li {
+    margin: 4px 0;
+}
+a {
+    color: #569cd6;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+code {
+    background: #2d2d2d;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    color: #ce9178;
+}
+
+/* Info Box */
+.info-box {
+    background: #252526;
+    border-left: 3px solid #69CCF0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.info-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Tip Box */
+.tip-box {
+    background: #252526;
+    border-left: 3px solid #4ec9b0;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.tip-box p {
+    margin: 0;
+    color: #9cdcfe;
+    font-size: 12px;
+}
+
+/* Warning Box */
+.warn-box {
+    background: #252526;
+    border-left: 3px solid #DA8E35;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+}
+.warn-box p {
+    margin: 0;
+    color: #dcdcaa;
+    font-size: 12px;
+}
+
+/* Gem & Enchant per-slot info */
+.gem-enchant-info {
+    background: #1f1f23;
+    border-left: 2px solid #69CCF0;
+    padding: 8px 12px;
+    margin: 8px 0 4px 0;
+    border-radius: 0 3px 3px 0;
+    font-size: 12px;
+    color: #c0c0c0;
+}
+.gem-enchant-info strong { color: #69CCF0; }
+.gem-enchant-info em { color: #9d9d9d; font-style: italic; }
+.socket-red { color: #ff5050; font-weight: bold; }
+.socket-yellow { color: #ffd700; font-weight: bold; }
+.socket-blue { color: #5599ff; font-weight: bold; }
+.socket-meta { color: #d49aff; font-weight: bold; }
+
+/* Gear Table */
+.gear-table {
+    width: auto;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12px;
+    table-layout: auto;
+}
+.gear-table th {
+    background: #2d2d2d;
+    color: #69CCF0;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    /* Sticky headers: stay pinned while scrolling long tables */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.gear-table td {
+    padding: 8px 12px;
+    border: 1px solid #3c3c3c;
+    vertical-align: top;
+    overflow-wrap: break-word;
+}
+/* Shrink-to-fit: tables size to their own content. Cap the last column (Notes)
+   so a long note wraps instead of stretching the whole table wide. */
+.gear-table td:last-child {
+    max-width: 360px;
+}
+/* Keep short labels and badge/honor counts on one line */
+.gear-table td.slot-label,
+.gear-table td:first-child {
+    white-space: nowrap;
+}
+.gear-table tr:nth-child(even) {
+    background: #252526;
+}
+.gear-table tr:hover {
+    background: #2a2d2e;
+}
+
+/* Wowhead link overrides */
+.gear-table a[href*="wowhead.com"] {
+    text-decoration: none;
+    font-weight: 500;
+}
+.gear-table a[href*="wowhead.com"]:hover {
+    text-decoration: underline;
+}
+
+/* Stat highlight */
+.stat { color: #4ec9b0; font-weight: bold; }
+.slot-label { color: #dcdcaa; font-weight: bold; }
+
+/* Quest icon */
+.quest-icon {
+    color: #FFD100;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 3px;
+}
+
+/* Source type icons */
+.boss-icon, .badge-icon, .rep-icon, .craft-icon, .pvp-icon, .drop-icon {
+    margin-right: 3px;
+    font-size: 12px;
+}
+
+/* Heroic tag */
+.heroic {
+    color: #ff6600;
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(255, 102, 0, 0.5);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 15px 0;
+    padding: 10px 12px;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    align-items: center;
+}
+.filter-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: 2px solid transparent;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: all 0.15s;
+}
+.filter-btn:hover {
+    background: #4a4a4a;
+}
+.filter-btn.active {
+    border-color: #69CCF0;
+    background: #2a2d2e;
+    color: #fff;
+}
+.filter-label {
+    color: #9d9d9d;
+    font-size: 11px;
+    padding: 4px 0;
+    margin-right: 4px;
+}
+
+/* Copy Link Buttons */
+.spoiler-btn {
+    background: #3c3c3c;
+    color: #d4d4d4;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.spoiler-btn:hover {
+    background: #4a4a4a;
+}
+.spoiler-content {
+    display: none;
+    margin: 10px 0;
+}
+.spoiler-content.show {
+    display: block;
+}
+.bbcode-area {
+    width: 100%;
+    background: #1a1a2e;
+    color: #ce9178;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    resize: none;
+    height: 50px;
+}
+.copy-btn {
+    background: #69CCF0;
+    color: #1e1e1e;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 5px;
+    font-size: 11px;
+}
+.copy-btn:hover {
+    background: #b8895e;
+}
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Export to AtlasLoot picker (GREP: export-atlasloot) */
+.al-opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-count {
+    margin-left: 10px;
+    color: #888;
+    font-size: 12px;
+}
+#al-phase-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 2px;
+    color: #d4d4d4;
+    font-size: 13px;
+    cursor: pointer;
+}
+.al-opt input,
+#al-phase-list input { accent-color: #4ec9b0; }
+
+/* Per-table "Export to AtlasLoot" button + its slot/section modal */
+.al-table-btn {
+    display: inline-block;
+    margin: 0 0 8px;
+    background: #2d2d2d;
+    color: #4ec9b0;
+    border: 1px solid #4ec9b0;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.al-table-btn:hover { background: #4ec9b0; color: #1a1a1a; }
+.al-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.al-modal {
+    background: #1e1e1e;
+    border: 1px solid #4ec9b0;
+    border-radius: 8px;
+    padding: 20px 22px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+.al-modal-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: none; border: none;
+    color: #888; font-size: 22px;
+    line-height: 1; cursor: pointer;
+}
+.al-modal-close:hover { color: #fff; }
+.al-modal-title { margin: 0 0 4px; color: #dcdcaa; font-size: 16px; }
+.al-modal-sub { margin: 0 0 14px; color: #4ec9b0; font-size: 13px; }
+.al-modal-choices { display: flex; flex-direction: column; gap: 8px; }
+.al-choice {
+    background: #2d2d2d; color: #d4d4d4;
+    border: 1px solid #3c3c3c; border-radius: 4px;
+    padding: 10px 12px; font-size: 13px; cursor: pointer;
+    text-align: left;
+}
+.al-choice:hover { border-color: #4ec9b0; color: #fff; }
+.al-modal-note { margin: 12px 0 0; font-size: 11px; color: #999; }
+.al-modal-note a { color: #4ec9b0; }
+.al-modal-out { margin-top: 12px; }
+
+/* Scroll-wrapper around tables so wide tables don't bleed off the viewport */
+.table-wrap {
+    width: 100%;
+    max-width: 100%;
+    /* visible on desktop so sticky table headers can pin to the page scroll;
+       switched to auto on phones (media query below) for horizontal scroll */
+    overflow-x: visible;
+    -webkit-overflow-scrolling: touch;
+    margin: 15px 0;
+}
+.table-wrap .gear-table {
+    margin: 0;
+}
+
+/* Mobile nav hamburger + backdrop (hidden on desktop) */
+.nav-toggle {
+    display: none;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1001;
+    background: #2d2d2d;
+    color: #69CCF0;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+.nav-toggle:hover { background: #3c3c3c; }
+.nav-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+.nav-backdrop.show { display: block; }
+
+/* Low-res monitors / small laptops: tighten padding so wide tables fit */
+@media (max-width: 1100px) {
+    #content { padding: 16px 18px; }
+    #nav { width: 180px; min-width: 180px; }
+    #content { margin-left: 180px; }
+}
+
+/* Tablet / phone */
+@media (max-width: 768px) {
+    body {
+        display: block;
+        height: auto;
+    }
+    .nav-toggle { display: block; }
+    #nav {
+        display: block;
+        width: 240px;
+        min-width: 240px;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+        z-index: 999;
+    }
+    #nav.open { transform: translateX(0); }
+    #content {
+        margin-left: 0;
+        padding: 48px 12px 20px;
+    }
+    h1 { font-size: 19px; margin: 22px 0 12px; }
+    h2 { font-size: 15px; margin: 18px 0 8px; }
+    h3 { font-size: 13px; }
+    body { font-size: 12px; }
+    .gear-table { font-size: 11px; }
+    .gear-table th,
+    .gear-table td { padding: 6px 8px; }
+    .gear-table th {
+        font-size: 10px;
+        white-space: normal;
+        /* Drop sticky on phones: the scroll wrapper below owns scrolling here */
+        position: static;
+    }
+    /* Phones: restore horizontal scroll for wide tables */
+    .table-wrap { overflow-x: auto; }
+    /* Allow first column to wrap on phones so tables narrow further */
+    .gear-table td.slot-label,
+    .gear-table td:first-child { white-space: normal; }
+    .filter-bar { padding: 8px; gap: 4px; }
+    .filter-btn { font-size: 10px; padding: 3px 7px; }
+    .filter-label { font-size: 10px; }
+    .info-box, .tip-box, .warn-box { padding: 10px 12px; }
+    .info-box p, .tip-box p, .warn-box p { font-size: 11px; }
+    .bbcode-area { font-size: 10px; height: 60px; }
+    .btn-row { flex-wrap: wrap; }
+}
+/* Talent tree grid (GREP: talent-trees) */
+.talent-trees{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.talent-tree{flex:1 1 260px;min-width:230px;background:#1e1e1e;border:1px solid #3c3c3c;border-radius:6px;padding:10px}
+.talent-tree h4{margin:0 0 8px;color:#4ec9b0;font-size:14px;border:none;padding:0}
+.talent-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(48px,auto);gap:5px}
+.talent-cell{border:1px solid #3c3c3c;border-radius:4px;padding:3px 4px 11px;font-size:10px;line-height:1.15;text-align:center;display:flex;align-items:center;justify-content:center;position:relative;background:#252526;color:#9d9d9d;min-height:48px;box-sizing:border-box}
+.talent-cell.on{border-color:#4ec9b0;background:rgba(78,201,176,0.14);color:#d4d4d4}
+.talent-cell.max{border-color:#e0b341;box-shadow:0 0 5px rgba(224,179,65,0.35)}
+.talent-rank{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:bold;color:#6a6a6a}
+.talent-cell.on .talent-rank,.talent-cell.max .talent-rank{color:#e0b341}
+/* Talent hover tooltip (GREP: talent-tip) */
+#talent-tip{position:fixed;z-index:9999;max-width:280px;background:#0a0a12;border:1px solid #4ec9b0;border-radius:5px;padding:8px 10px;font-size:12px;color:#d4d4d4;line-height:1.4;pointer-events:none;display:none;box-shadow:0 4px 14px rgba(0,0,0,.6)}
+#talent-tip .tt-name{color:#4ec9b0;font-weight:bold}
+#talent-tip .tt-rank{color:#e0b341;font-size:11px;margin-left:6px}
+.talent-cell[data-tip]{cursor:help}

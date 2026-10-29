@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | Runtime Sanity Checker | Supertron</title><meta name="description" content="Scan loaded data for specific problems and read the findings.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/runtimesanitychecker/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#FFC107"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">Runtime Sanity Checker</a><a href="index.html">Overview</a><a href="patchnotes.html" aria-current="page">Patch notes</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Added a startup scan for perks whose effect data does not match what the perk is supposed to do.
+- Added a startup scan for magic effects whose settings do not match the type of effect they claim to be.
+- Added a startup scan for AI packages that point at a broken or unrecognized target.
+- Added a startup scan for quest aliases that point at something missing.
+- Added a startup scan for scripts that failed to set up correctly or whose properties point at something that no longer resolves.
+- Added a searchable report of every finding, written next to the SKSE log and to the optional in-game menu&#x27;s report page.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary>
+    <h2>Change Logs</h2>
+    <p>Version history and release notes for Runtime Sanity Checker.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <h3 id="v0.1.0">Version 0.1.0 - Initial Source Alpha</h3>
+    <p><strong>Not yet built or tested in-game.</strong> These notes describe the current source; a ClibDT build and in-game validation are still required before a public release.</p>
+
+    <h4>Features</h4>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Perk check.</b> Flags perks whose effect data does not match what the perk is supposed to do.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Magic effect check.</b> Flags magic effects whose settings do not match the type of effect they claim to be.</li>
+        <li><span class="tag tag-new">NEW</span> <b>AI package check.</b> Flags AI packages that point at a broken or unrecognized target.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Quest alias check.</b> Flags quest aliases that point at something missing or out of range.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Script check.</b> Flags scripts attached to any record that failed to set up correctly, or whose properties point at something that no longer resolves.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Findings report.</b> A searchable report of everything found, written next to the SKSE log and to the optional in-game menu's report page.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Per-check toggles.</b> Each check can be turned off independently in the JSON settings file or the optional in-game menu.</li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb010')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md010')">Markdown</button>
+    </div>
+    <div id="bb010" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode010" readonly>[size=4][b][color=#dcdcaa]Version 0.1.0 - Initial Source Alpha[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Perk check.[/b] Flags perks whose effect data does not match what the perk is supposed to do.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Magic effect check.[/b] Flags magic effects whose settings do not match the type of effect they claim to be.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]AI package check.[/b] Flags AI packages that point at a broken or unrecognized target.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Quest alias check.[/b] Flags quest aliases that point at something missing or out of range.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Script check.[/b] Flags scripts attached to any record that failed to set up correctly, or whose properties point at something that no longer resolves.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Findings report.[/b] A searchable report of everything found, written next to the SKSE log and to the optional in-game menu's report page.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Per-check toggles.[/b] Each check can be turned off independently in the JSON settings file or the optional in-game menu.
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode010')">Copy to Clipboard</button>
+    </div>
+    <div id="md010" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown010" readonly># Version 0.1.0 - Initial Source Alpha
+
+## Features
+- **NEW** **Perk check.** Flags perks whose effect data does not match what the perk is supposed to do.
+- **NEW** **Magic effect check.** Flags magic effects whose settings do not match the type of effect they claim to be.
+- **NEW** **AI package check.** Flags AI packages that point at a broken or unrecognized target.
+- **NEW** **Quest alias check.** Flags quest aliases that point at something missing or out of range.
+- **NEW** **Script check.** Flags scripts attached to any record that failed to set up correctly, or whose properties point at something that no longer resolves.
+- **NEW** **Findings report.** A searchable report of everything found, written next to the SKSE log and to the optional in-game menu's report page.
+- **NEW** **Per-check toggles.** Each check can be turned off independently in the JSON settings file or the optional in-game menu.</textarea>
+        <button class="copy-btn" onclick="copyText('markdown010')">Copy to Clipboard</button>
+    </div>
+</details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron. The source retains the SKSE team’s interfaces, CommonLibSSE-NG, powerof3’s ClibUtil and herumi’s xbyak notices where included. Optional Prisma UI integrations also credit the Prisma UI framework. Each dependency keeps its own license; the project’s included license and notices remain the redistribution reference.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[Runtime Sanity Checker — Patch notes](https://supertron42.github.io/wiki/runtimesanitychecker/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/runtimesanitychecker/patchnotes.html]Runtime Sanity Checker — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

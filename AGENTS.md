@@ -1,0 +1,28 @@
+# Repository instructions for people and automation
+
+- Read this file and `docs/STRUCTURE.md` before changing this repository.
+- This repository owns the documentation website at `https://supertron42.github.io/wiki/`.
+- Publish only `site/`. Keep source applications in their own repositories.
+- Use `projects.json` as the project registry. Do not invent source URLs.
+- Add a project with `python tools/site_tools.py new-project`; see `CONTRIBUTING.md`.
+- Keep existing public folder names, filenames and anchors stable. Preserve `wiki.html` redirects.
+- Put web pages and images under their registered `site/<slug>/` folder.
+- Put shared CSS/JavaScript in `site/assets/`; use the existing copy/spoiler utilities.
+- Keep page-specific CSS in `site/assets/css/pages/`; edit shared styles with all their users in mind.
+- Do not reintroduce `<style>` blocks or duplicate `copyText`, `copyLink` or `toggleSpoiler` functions.
+- Every new documentation page needs a title, `/wiki/` canonical URL, hub navigation and BB Code/Markdown share controls.
+- Keep project colors and existing layouts unless the user asks to redesign them.
+- In sidebar pages, put updates inside #content. Never append sections beside it or after the page footer.
+- Put maintenance scripts in `tools/`, regression checks in `tests/`, and internal project guidance in `docs/`.
+- Do not store backups, research downloads, paid products, application source, binaries or scratch files in this checkout.
+- Private working material belongs outside this repository; see `docs/STRUCTURE.md` for the sibling layout.
+- An ignored file is not private if it is already tracked. A file outside `site/` can still be public in the GitHub repository.
+- For WoW guide work, read `docs/WOW-AUTHORING.md` and preserve its reference-template/data-verification rules.
+- Treat local research and saved third-party pages as reference material, never as deployable website content.
+- Use American English. Verify feature claims against the corresponding source; distinguish released and upcoming behavior.
+- Preserve existing uncommitted work. Do not reset, discard or publish it as part of routine cleanup.
+- After changing pages or registry entries, run `python tools/site_tools.py sync`.
+- Before finishing, run `python -m unittest discover -s tests`, `node --test tests/site.test.cjs`, and `python tools/site_tools.py check`.
+- GitHub Actions runs the same checks before deployment. Do not bypass or weaken them to hide a failure.
+- Keep these instructions, `docs/STRUCTURE.md`, templates and checks consistent when the structure changes.
+- This cleanup does not authorize a Git commit, push, repository creation or production deployment; those need user direction.

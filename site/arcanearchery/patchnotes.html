@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | Arcane Archery | Supertron</title><meta name="description" content="Bind a spell to arrows and trigger it on impact.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/arcanearchery/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#9C27B0"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">Arcane Archery</a><a href="index.html">Overview</a><a href="patchnotes.html" aria-current="page">Patch notes</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Added support for Prisma UI Settings Menu (PUISM)
+- Drawn and flying arrows use the glow and artwork provided by your selected spell.
+- Drawing and holding your bow plays the selected spell&#x27;s charge and held sounds.
+- Struck characters briefly show the selected spell&#x27;s hit artwork.
+
+#UPDATE
+- Each arrow keeps the spell you selected when you fired it.
+- Choose arrow magicka costs from free to twice the normal spell cost.
+- Magicka is charged when an arrow launches successfully instead of when it hits.
+- Existing INI preferences and saved spell selections can be imported into the new settings.
+
+#FIXED
+- The same arrow can no longer trigger its spell more than once from repeated hits.
+- Arrow spells no longer temporarily change the original spell.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary>
+<section><h3>1.1.0 source preview</h3><p>Not compiled or game-tested.</p><ul><li>Spell effects belong to flying arrows instead of the player.</li><li>Each arrow keeps its selected spell until impact.</li><li>The original spell is no longer edited during casting.</li><li>JSON settings and optional Prisma UI Settings Menu support replace the unfinished MCM requirement.</li><li>1.7.x support and nocked-arrow previews remain pending.</li></ul></section>
+
+
+
+    <h2>Change Logs</h2>
+
+
+    <p>Version history and release notes for Arcane Archery.</p>
+
+
+
+
+
+    <div class="tip">
+
+
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+
+
+    </div>
+
+
+
+
+
+    <!-- ============================================================ -->
+
+
+    <!-- Version 1.1.0 -->
+
+
+    <!-- ============================================================ -->
+
+
+
+
+
+    <h3 id="v1.1.0">Version 1.1.0 - Visual and Combat Fixes</h3>
+
+
+
+
+
+    <h4>Fixes</h4>
+
+
+    <ul>
+
+
+        <li><span class="tag tag-fix">FIX</span> <b>3D spell aura on drawn arrows.</b> The glow around drawn spell-arrows is now a full 3D particle effect instead of a flat overlay.</li>
+
+
+        <li><span class="tag tag-fix">FIX</span> <b>Aura persists through camera switch.</b> Switching between first and third person no longer removes the spell glow from your arrows.</li>
+
+
+        <li><span class="tag tag-fix">FIX</span> <b>Spell damage now hits NPCs.</b> Spell-arrows now deal their full spell damage to NPCs and creatures.</li>
+
+
+        <li><span class="tag tag-fix">FIX</span> <b>Consistent magicka cost.</b> Magicka is now deducted reliably on every spell-arrow impact.</li>
+
+
+    </ul>
+
+
+
+
+
+    <div class="btn-row">
+
+
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb110')">BB Code for Forums</button>
+
+
+        <button class="spoiler-btn" onclick="toggleSpoiler('md110')">Markdown</button>
+
+
+    </div>
+
+
+    <div id="bb110" class="spoiler-content">
+
+
+        <textarea class="bbcode-area" id="bbcode110" readonly>[size=4][b][color=#dcdcaa]Version 1.1.0 - Visual and Combat Fixes[/color][/b][/size]
+
+
+[size=3][b][color=#9cdcfe]Fixes[/color][/b][/size]
+
+
+[list]
+
+
+[*][color=#c42b1c][b]FIX[/b][/color] [b]3D spell aura on drawn arrows.[/b] The glow around drawn spell-arrows is now a full 3D particle effect instead of a flat overlay.
+
+
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Aura persists through camera switch.[/b] Switching between first and third person no longer removes the spell glow from your arrows.
+
+
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Spell damage now hits NPCs.[/b] Spell-arrows now deal their full spell damage to NPCs and creatures.
+
+
+[*][color=#c42b1c][b]FIX[/b][/color] [b]Consistent magicka cost.[/b] Magicka is now deducted reliably on every spell-arrow impact.
+
+
+[/list]</textarea>
+
+
+        <button class="copy-btn" onclick="copyText('bbcode110')">Copy to Clipboard</button>
+
+
+    </div>
+
+
+    <div id="md110" class="spoiler-content">
+
+
+        <textarea class="bbcode-area" id="markdown110" readonly># Version 1.1.0 - Visual and Combat Fixes
+
+
+
+
+
+## Fixes
+
+
+- **FIX** **3D spell aura on drawn arrows.** The glow around drawn spell-arrows is now a full 3D particle effect instead of a flat overlay.
+
+
+- **FIX** **Aura persists through camera switch.** Switching between first and third person no longer removes the spell glow from your arrows.
+
+
+- **FIX** **Spell damage now hits NPCs.** Spell-arrows now deal their full spell damage to NPCs and creatures.
+
+
+- **FIX** **Consistent magicka cost.** Magicka is now deducted reliably on every spell-arrow impact.</textarea>
+
+
+        <button class="copy-btn" onclick="copyText('markdown110')">Copy to Clipboard</button>
+
+
+    </div>
+
+
+
+
+
+    <!-- ============================================================ -->
+
+
+    <!-- Version 1.0.0 -->
+
+
+    <!-- ============================================================ -->
+
+
+
+
+
+    <h3 id="v1.0.0">Version 1.0.0 - Initial Release</h3>
+
+
+
+
+
+    <h4>Features</h4>
+
+
+    <ul>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>Bind spells to arrows.</b> Equip a spell and arrows, press a hotkey, and every arrow you fire carries that spell.</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>Spells trigger on impact.</b> When a spell-bound arrow hits something, the spell goes off at the point of impact.</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>Configurable magicka cost.</b> Set how much magicka spell-arrows cost compared to normal casting (default: half cost).</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>Living targets only mode.</b> Optionally limit spell triggers to NPCs and creatures.</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>NPC spell-arrows.</b> Configure any NPC to fire spell-arrows through the INI file.</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>MCM menu.</b> All settings are adjustable in-game through SkyUI's Mod Configuration Menu.</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>Persistent bindings.</b> Spell-arrow bindings are saved with your game and survive load-order changes.</li>
+
+
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b> Works on all three Skyrim editions.</li>
+
+
+    </ul>
+
+
+
+
+
+    <div class="btn-row">
+
+
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb100')">BB Code for Forums</button>
+
+
+        <button class="spoiler-btn" onclick="toggleSpoiler('md100')">Markdown</button>
+
+
+    </div>
+
+
+    <div id="bb100" class="spoiler-content">
+
+
+        <textarea class="bbcode-area" id="bbcode100" readonly>[size=4][b][color=#dcdcaa]Version 1.0.0 - Initial Release[/color][/b][/size]
+
+
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+
+
+[list]
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Bind spells to arrows.[/b] Equip a spell and arrows, press a hotkey, and every arrow you fire carries that spell.
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Spells trigger on impact.[/b] When a spell-bound arrow hits something, the spell goes off at the point of impact.
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable magicka cost.[/b] Set how much magicka spell-arrows cost compared to normal casting (default: half cost).
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Living targets only mode.[/b] Optionally limit spell triggers to NPCs and creatures.
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]NPC spell-arrows.[/b] Configure any NPC to fire spell-arrows through the INI file.
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]MCM menu.[/b] All settings are adjustable in-game through SkyUI's Mod Configuration Menu.
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Persistent bindings.[/b] Spell-arrow bindings are saved with your game and survive load-order changes.
+
+
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b] Works on all three Skyrim editions.
+
+
+[/list]</textarea>
+
+
+        <button class="copy-btn" onclick="copyText('bbcode100')">Copy to Clipboard</button>
+
+
+    </div>
+
+
+    <div id="md100" class="spoiler-content">
+
+
+        <textarea class="bbcode-area" id="markdown100" readonly># Version 1.0.0 - Initial Release
+
+
+
+
+
+## Features
+
+
+- **NEW** **Bind spells to arrows.** Equip a spell and arrows, press a hotkey, and every arrow you fire carries that spell.
+
+
+- **NEW** **Spells trigger on impact.** When a spell-bound arrow hits something, the spell goes off at the point of impact.
+
+
+- **NEW** **Configurable magicka cost.** Set how much magicka spell-arrows cost compared to normal casting (default: half cost).
+
+
+- **NEW** **Living targets only mode.** Optionally limit spell triggers to NPCs and creatures.
+
+
+- **NEW** **NPC spell-arrows.** Configure any NPC to fire spell-arrows through the INI file.
+
+
+- **NEW** **MCM menu.** All settings are adjustable in-game through SkyUI's Mod Configuration Menu.
+
+
+- **NEW** **Persistent bindings.** Spell-arrow bindings are saved with your game and survive load-order changes.
+
+
+- **NEW** **SE, AE, and VR support.** Works on all three Skyrim editions.</textarea>
+
+
+        <button class="copy-btn" onclick="copyText('markdown100')">Copy to Clipboard</button>
+
+
+    </div>
+
+
+
+
+
+    <!-- ============================================================ -->
+
+
+    <!-- Link to This Page -->
+
+
+    <!-- ============================================================ -->
+
+
+
+
+
+    <h3>Link to This Page</h3>
+
+
+    <p>Copy a link to share this page from your Nexus description or documentation:</p>
+
+
+    <div class="btn-row">
+
+
+        <button class="spoiler-btn" onclick="toggleSpoiler('bblink')">BB Code</button>
+
+
+        <button class="spoiler-btn" onclick="toggleSpoiler('mdlink')">Markdown</button>
+
+
+    </div>
+
+
+    <div id="bblink" class="spoiler-content">
+
+
+        <textarea class="bbcode-area" id="bbcode-link" readonly>[url=https://supertron42.github.io/wiki/arcanearchery/patchnotes.html]Arcane Archery Change Logs[/url]</textarea>
+
+
+        <button class="copy-btn" onclick="copyText('bbcode-link')">Copy to Clipboard</button>
+
+
+    </div>
+
+
+    <div id="mdlink" class="spoiler-content">
+
+
+        <textarea class="bbcode-area" id="md-link" readonly>[Arcane Archery Change Logs](https://supertron42.github.io/wiki/arcanearchery/patchnotes.html)</textarea>
+
+
+        <button class="copy-btn" onclick="copyText('md-link')">Copy to Clipboard</button>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="public-author-api"><h3>Unreleased settings menu update</h3><p>- Use the updated optional settings menu while keeping your existing preferences.</p></section></details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron. The source retains the SKSE team’s interfaces, CommonLibSSE-NG, powerof3’s ClibUtil and herumi’s xbyak notices where included. Optional Prisma UI integrations also credit the Prisma UI framework. Each dependency keeps its own license; the project’s included license and notices remain the redistribution reference.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[Arcane Archery — Patch notes](https://supertron42.github.io/wiki/arcanearchery/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/arcanearchery/patchnotes.html]Arcane Archery — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

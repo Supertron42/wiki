@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch notes | NPC Spawner | Supertron</title><meta name="description" content="Start controlled NPC spawning for gameplay and testing.">
+<link rel="canonical" href="https://supertron42.github.io/wiki/npcspawner/patchnotes.html"><link rel="stylesheet" href="../assets/css/project-guide.css"><script src="../assets/js/site.js" defer></script>
+</head><body class="guide" style="--accent:#FF6B35"><nav id="nav" aria-label="Project navigation"><a class="project-name" href="index.html">NPC Spawner</a><a href="index.html">Overview</a><a href="patchnotes.html" aria-current="page">Patch notes</a><p class="nav-label">On this page</p><a href="#current-notes">Current source notes</a><a href="#release-history">Earlier notes</a><p class="nav-label">More projects</p><a href="../skyrim.html">Skyrim mods and tools</a><a href="../projects.html">All projects</a><a href="../index.html">All games</a></nav><main id="content"><h1>Patch notes</h1><p class="intro">Current source notes and the retained history of this project.</p><section id="current-notes"><h2>Current source notes</h2><p>These are the current source notes. A source change needs a matching tested download before it is available to players. Use the overview for current setup and limits.</p><pre class="change-notes">#NEW
+- Skip essential and protected NPCs by default, with an option to allow them in JSON or PUISM.
+- Added support for Prisma UI Settings Menu (PUISM)
+
+#UPDATE
+- Set the time between spawns from 1 to 20 seconds.
+- New settings spawn one NPC every 2 seconds and stop at 30 NPCs (configurable).
+- Optional health, stamina, magicka and carry-weight bonuses stay off until you enable them.
+- Choose your Skyrim version, including VR, from one download.
+
+#FIXED
+- Spawn and cleanup actions now wait for the game task queue instead of running inside keyboard input handling.
+- Loading a save cancels queued spawn and shortcut actions from the previous game.
+- New NPCs appear at their chosen position without first appearing at your feet.
+- Disabled NPCs wait for their 3D to unload before being marked for deletion.
+- Spawning and shortcut actions now wait while the game is paused.
+- Loading another game clears old spawn and deletion requests.
+- Turning player bonuses off removes the bonuses added by NPC Spawner, including after loading a save.
+- Invalid spawn limits and distances now fall back to defaults instead of hanging the game.
+</pre></section><section id="release-history"><h2>Earlier notes</h2><details class="release-history"><summary>Read the historical notes</summary>
+<section id="release-settings-update"><h3>Upcoming settings update</h3><div>- NPCs spawn every 2 seconds by default, with a limit of 30 and a distance of 512.
+- Optional player bonuses start at 1000 and can be set from 100 to 5000 using sliders or number boxes.
+- Hotkey choices have readable text on the dark background.</div><p>These changes are in the project source. Updated builds and in-game testing are still needed.</p></section><section id="safety-review-20260913"><h3>Safety improvements (unreleased)</h3><pre>- Stopped spawning and cleared old deletion requests when changing games.
+- Saved which stat boosts belong to NPC Spawner so they can be removed correctly after loading.
+- Removed error reporting that could interfere with another mod handling an error.</pre><p>Source checks passed. New ClibDT builds and game testing are still needed.</p></section>
+    <h2>Change Logs</h2>
+<section id="release-1.5.0"><h3>1.5.0 build candidate</h3><ul><li><strong>One download:</strong> Choose Skyrim 1.5.97, 1.6.x, 1.7.104 or VR in the installer.</li><li><strong>Optional settings:</strong> Keep your preferences or install the included standard JSON settings.</li><li><strong>In-game settings:</strong> Change preferences with the optional Prisma UI Settings Menu, then restart Skyrim.</li><li><strong>Existing preferences:</strong> Your old INI is imported once when JSON is missing, and the INI is kept.</li><li><strong>Safer settings:</strong> Invalid spawn limits and distances fall back to standard values instead of hanging the game.</li><li><strong>Paused menus:</strong> Spawning and shortcut actions wait while the game is paused.</li><li><strong>Stat boosts:</strong> Turning boosts off and reloading settings removes the previous boost.</li></ul><p>Compiled files still need testing in Skyrim before gameplay compatibility is confirmed.</p><details><summary>Copy Markdown patch notes</summary><textarea readonly>- **One download:** Choose Skyrim 1.5.97, 1.6.x, 1.7.104 or VR in the installer.
+- **Optional settings:** Keep your preferences or install the included standard JSON settings.
+- **In-game settings:** Change preferences with the optional Prisma UI Settings Menu, then restart Skyrim.
+- **Existing preferences:** Your old INI is imported once when JSON is missing, and the INI is kept.
+- **Safer settings:** Invalid spawn limits and distances fall back to standard values instead of hanging the game.
+- **Paused menus:** Spawning and shortcut actions wait while the game is paused.
+- **Stat boosts:** Turning boosts off and reloading settings removes the previous boost.</textarea><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copy</button></details><details><summary>Copy BBCode patch notes</summary><textarea readonly>[list]
+[*]One download: Choose Skyrim 1.5.97, 1.6.x, 1.7.104 or VR in the installer.
+[*]Optional settings: Keep your preferences or install the included standard JSON settings.
+[*]In-game settings: Change preferences with the optional Prisma UI Settings Menu, then restart Skyrim.
+[*]Existing preferences: Your old INI is imported once when JSON is missing, and the INI is kept.
+[*]Safer settings: Invalid spawn limits and distances fall back to standard values instead of hanging the game.
+[*]Paused menus: Spawning and shortcut actions wait while the game is paused.
+[*]Stat boosts: Turning boosts off and reloading settings removes the previous boost.
+[/list]</textarea><button onclick="navigator.clipboard.writeText(this.previousElementSibling.value)">Copy</button></details></section>
+
+    <p>Version history and release notes for NPC Spawner.</p>
+
+    <div class="tip">
+        <p>Newest releases appear at the top. Check back after updates to see what's changed.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Version 1.0.0 -->
+    <!-- ============================================================ -->
+
+    <h3 id="v1.0.0">Version 1.0.0 - Initial Release</h3>
+
+    <h4>Features</h4>
+    <ul>
+        <li><span class="tag tag-new">NEW</span> <b>Random NPC spawning.</b> Spawns a random NPC near the player on a configurable timer.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable spawn interval.</b> Set how many seconds between each spawn (default: 2 seconds).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable NPC limit.</b> Set the maximum number of spawned NPCs alive at once (default: 20). The oldest is removed when the limit is reached.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Configurable spawn radius.</b> Set how far from the player NPCs can appear (default: 512 game units).</li>
+        <li><span class="tag tag-new">NEW</span> <b>Smart NPC filtering.</b> Skips unique characters, children, the player template, and deleted records. Only spawns generic NPCs.</li>
+        <li><span class="tag tag-new">NEW</span> <b>INI auto-generation.</b> Creates a default INI file on first launch.</li>
+        <li><span class="tag tag-new">NEW</span> <b>Optional detailed logging.</b> Log every spawn and removal with NPC name, position, and count.</li>
+        <li><span class="tag tag-new">NEW</span> <b>SE, AE, and VR support.</b></li>
+    </ul>
+
+    <div class="btn-row">
+        <button class="spoiler-btn" onclick="toggleSpoiler('bb100')">BB Code for Forums</button>
+        <button class="spoiler-btn" onclick="toggleSpoiler('md100')">Markdown</button>
+    </div>
+    <div id="bb100" class="spoiler-content">
+        <textarea class="bbcode-area" id="bbcode100" readonly>[size=4][b][color=#dcdcaa]Version 1.0.0 - Initial Release[/color][/b][/size]
+[size=3][b][color=#9cdcfe]Features[/color][/b][/size]
+[list]
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Random NPC spawning.[/b] Spawns a random NPC near the player on a configurable timer.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable spawn interval.[/b] Set how many seconds between each spawn (default: 2 seconds).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable NPC limit.[/b] Set the maximum number of spawned NPCs alive at once (default: 20). The oldest is removed when the limit is reached.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Configurable spawn radius.[/b] Set how far from the player NPCs can appear (default: 512 game units).
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Smart NPC filtering.[/b] Skips unique characters, children, the player template, and deleted records. Only spawns generic NPCs.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]INI auto-generation.[/b] Creates a default INI file on first launch.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]Optional detailed logging.[/b] Log every spawn and removal with NPC name, position, and count.
+[*][color=#2E7D32][b]NEW[/b][/color] [b]SE, AE, and VR support.[/b]
+[/list]</textarea>
+        <button class="copy-btn" onclick="copyText('bbcode100')">Copy to Clipboard</button>
+    </div>
+    <div id="md100" class="spoiler-content">
+        <textarea class="bbcode-area" id="markdown100" readonly># Version 1.0.0 - Initial Release
+
+## Features
+- **NEW** **Random NPC spawning.** Spawns a random NPC near the player on a configurable timer.
+- **NEW** **Configurable spawn interval.** Set how many seconds between each spawn (default: 2 seconds).
+- **NEW** **Configurable NPC limit.** Set the maximum number of spawned NPCs alive at once (default: 20). The oldest is removed when the limit is reached.
+- **NEW** **Configurable spawn radius.** Set how far from the player NPCs can appear (default: 512 game units).
+- **NEW** **Smart NPC filtering.** Skips unique characters, children, the player template, and deleted records. Only spawns generic NPCs.
+- **NEW** **INI auto-generation.** Creates a default INI file on first launch.
+- **NEW** **Optional detailed logging.** Log every spawn and removal with NPC name, position, and count.
+- **NEW** **SE, AE, and VR support.**</textarea>
+        <button class="copy-btn" onclick="copyText('markdown100')">Copy to Clipboard</button>
+    </div>
+
+
+
+
+<section id="public-author-api"><h3>Unreleased settings menu update</h3><p>- Use the updated optional settings menu while keeping your existing preferences.</p></section></details></section><section id="credits"><h2>Credits</h2><p>Created by Supertron. The source retains the SKSE team’s interfaces, CommonLibSSE-NG, powerof3’s ClibUtil and herumi’s xbyak notices where included. Optional Prisma UI integrations also credit the Prisma UI framework. Each dependency keeps its own license; the project’s included license and notices remain the redistribution reference.</p></section><footer id="share"><h2>Share this guide</h2><div class="share-controls"><button class="spoiler-btn" onclick="toggleSpoiler('guide-md')">Markdown</button><button class="spoiler-btn" onclick="toggleSpoiler('guide-bb')">BB Code</button></div><div id="guide-md" class="spoiler-content"><textarea id="guide-md-text" readonly>[NPC Spawner — Patch notes](https://supertron42.github.io/wiki/npcspawner/patchnotes.html)</textarea><button class="copy-btn" onclick="copyText('guide-md-text')">Copy</button></div><div id="guide-bb" class="spoiler-content"><textarea id="guide-bb-text" readonly>[url=https://supertron42.github.io/wiki/npcspawner/patchnotes.html]NPC Spawner — Patch notes[/url]</textarea><button class="copy-btn" onclick="copyText('guide-bb-text')">Copy</button></div></footer></main></body></html>

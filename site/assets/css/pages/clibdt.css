@@ -1,0 +1,250 @@
+/* CLibDT product landing page with the compile view as a masked hero background.
+   WIRING: clibdt/index.html and clibdt/clibdt-compile.webp; shared guide
+   styles, site.js controls and the other projects' layouts remain shared. */
+.guide.dt-home {
+  --dt-bg: #10151d;
+  --dt-panel: #19202b;
+  --dt-line: #334253;
+  --dt-text: #edf1f7;
+  --dt-muted: #aebcce;
+  --dt-accent: #3D7EFF;
+  background: var(--dt-bg);
+  color: var(--dt-text);
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.65;
+}
+.dt-home a { color: #94b9ff; }
+.dt-home a:hover { color: #d1e0ff; }
+.dt-home :focus-visible { outline: 3px solid #afcaff; outline-offset: 5px; }
+.guide.dt-home #nav {
+  position: sticky;
+  inset: auto;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px 22px;
+  flex-wrap: wrap;
+  width: auto;
+  padding: 18px max(24px, calc((100vw - 1240px) / 2));
+  overflow: visible;
+  background: #10151d;
+  border: 0;
+  border-bottom: 1px solid var(--dt-line);
+}
+.guide.dt-home #nav a {
+  display: inline-flex;
+  padding: 4px 0;
+  color: #d9dce0;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 0;
+}
+.guide.dt-home #nav a:hover,
+.guide.dt-home #nav a[aria-current=page] { background: transparent; color: var(--dt-accent); }
+.guide.dt-home #nav .project-name {
+  margin: 0 auto 0 0;
+  color: var(--dt-text);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+.dt-home #nav .dt-nav-download { color: var(--dt-accent); font-weight: 700; }
+.dt-home .dt-nav-menu { position: relative; }
+.dt-home .dt-nav-menu summary {
+  padding: 4px 0;
+  color: #d9dce0;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.dt-home .dt-nav-menu[open] summary { color: var(--dt-accent); }
+.dt-home .dt-nav-menu > div {
+  position: absolute;
+  top: calc(100% + 17px);
+  right: 0;
+  width: 270px;
+  max-height: 70vh;
+  padding: 14px 20px;
+  overflow-y: auto;
+  background: #202327;
+  border: 1px solid #555b61;
+  border-radius: 3px;
+  box-shadow: 0 18px 50px #0008;
+}
+.guide.dt-home #nav .dt-nav-menu > div a { display: block; padding: 8px 0; }
+.guide.dt-home #content {
+  width: min(100%, 1240px);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 28px 64px;
+}
+.dt-home .dt-skip {
+  position: absolute;
+  left: 18px;
+  top: -100px;
+  z-index: 30;
+  padding: 10px 16px;
+  background: #3D7EFF;
+  color: #10151d;
+}
+.dt-home .dt-skip:focus { top: 10px; }
+.dt-home .dt-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 740px;
+  padding: clamp(70px, 8vw, 112px) 0 96px;
+}
+.dt-home .dt-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 -28px;
+  background-image:
+    linear-gradient(90deg, #10151d 0%, #10151df5 26%, #10151dd9 47%, #10151d26 100%),
+    linear-gradient(0deg, #10151d 0%, #10151d00 30%, #10151d00 80%, #10151d 100%),
+    url("../../../clibdt/clibdt-compile.webp");
+  background-size: cover, cover, auto 100%;
+  background-position: center, center, right center;
+  background-repeat: no-repeat;
+}
+.dt-home .dt-eyebrow {
+  margin: 0 0 22px;
+  color: var(--dt-accent);
+  font: 600 12px/1.5 Consolas, "Courier New", monospace;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.guide.dt-home h1 {
+  max-width: 1000px;
+  margin: 0 0 28px;
+  color: var(--dt-text);
+  font-size: clamp(46px, 6.8vw, 88px);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: 1.04;
+}
+.dt-home h1 span { color: var(--dt-accent); }
+.dt-home .intro { max-width: 660px; margin-bottom: 28px; font-size: clamp(18px, 2vw, 22px); color: #c8cbd0; }
+.dt-home .dt-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin: 26px 0 18px; }
+.guide.dt-home .dt-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 11px 20px;
+  border: 1px solid #666d74;
+  border-radius: 3px;
+  color: var(--dt-text);
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  text-align: center;
+}
+.guide.dt-home .dt-button:hover { border-color: #94b9ff; background: #1c2d49; }
+.guide.dt-home .dt-primary { border-color: #3D7EFF; background: #3D7EFF; color: #071221; }
+.guide.dt-home .dt-primary:hover { border-color: #afcaff; background: #afcaff; color: #071221; }
+.dt-home .dt-meta { color: var(--dt-muted); font-size: 12px; }
+.dt-home figcaption { margin-top: 12px; color: var(--dt-muted); font-size: 12px; }
+.dt-home .dt-section { margin: 0; padding: clamp(54px, 8vw, 102px) 0; border-bottom: 1px solid var(--dt-line); }
+.guide.dt-home section { scroll-margin-top: 110px; }
+.guide.dt-home h2 {
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+  color: var(--dt-text);
+  font-size: clamp(29px, 3.6vw, 46px);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -.035em;
+}
+.guide.dt-home h3 { margin: 0 0 12px; color: var(--dt-text); font-size: 20px; font-weight: 600; line-height: 1.35; letter-spacing: -.02em; }
+.dt-home .dt-section > p { max-width: 760px; color: #c8cbd0; }
+.dt-home .dt-feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; margin-top: 44px; }
+.dt-home .dt-feature-grid article { min-width: 0; padding-top: 24px; border-top: 1px solid #334e79; }
+.dt-home .dt-feature-grid p { color: var(--dt-muted); font-size: 15px; }
+.dt-home .dt-feature-grid a { font-size: 14px; }
+.dt-home .dt-spotlight { display: grid; grid-template-columns: minmax(0, .88fr) minmax(0, 1.35fr); gap: 32px; align-items: center; }
+.dt-home .dt-spotlight-copy { position: relative; z-index: 1; min-width: 0; }
+.dt-home .dt-spotlight-copy p { color: #c8cbd0; }
+.dt-home .dt-spotlight-media { min-width: 0; margin: 0; }
+.dt-home .dt-spotlight-media img { display: block; width: 100%; height: auto; border-radius: 4px; border: 1px solid #555b61; }
+.dt-home .dt-spotlight-media img {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 19%, #000);
+  mask-image: linear-gradient(to right, transparent, #000 19%, #000);
+}
+.dt-home .dt-spotlight.dt-image-left { grid-template-columns: minmax(0, 1.35fr) minmax(0, .88fr); }
+.dt-home .dt-image-left .dt-spotlight-media { order: -1; }
+.dt-home .dt-image-left .dt-spotlight-media img {
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 19%, #000);
+  mask-image: linear-gradient(to left, transparent, #000 19%, #000);
+}
+.dt-home .dt-spotlight-media figcaption { text-align: right; }
+.dt-home .dt-image-left .dt-spotlight-media figcaption { text-align: left; }
+.dt-home .dt-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; padding: 0; list-style: none; counter-reset: dt-step; margin: 38px 0; }
+.dt-home .dt-steps li { min-width: 0; counter-increment: dt-step; }
+.dt-home .dt-steps li::before { display: block; margin-bottom: 18px; color: var(--dt-accent); font: 500 14px/1.5 Consolas, monospace; content: "0" counter(dt-step); }
+.dt-home .dt-steps p { color: var(--dt-muted); font-size: 15px; }
+.dt-home .dt-guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px; margin-top: 38px; }
+.dt-home .dt-guide-grid article { min-width: 0; }
+.dt-home .dt-guide-grid ul { padding-left: 0; list-style: none; }
+.dt-home .dt-guide-grid li { margin: 9px 0; }
+.dt-home .dt-closing { padding: 76px 0; border: 0; }
+.dt-home .dt-closing h2 { max-width: 650px; font-size: clamp(37px, 5vw, 64px); }
+.guide.dt-home #credits { margin-top: 18px; padding-top: 34px; border-top: 1px solid var(--dt-line); }
+.guide.dt-home #credits h2, .guide.dt-home footer h2 { color: #d1d4d8; font-size: 18px; letter-spacing: 0; }
+.dt-home #credits p { max-width: 85ch; color: var(--dt-muted); font-size: 13px; }
+.dt-home footer { color: var(--dt-muted); font-size: 13px; }
+@media (max-width: 1000px) {
+  .guide.dt-home #nav { gap: 10px 16px; padding: 16px 24px; }
+  .dt-home .dt-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dt-home .dt-spotlight, .dt-home .dt-spotlight.dt-image-left { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .dt-home .dt-spotlight-copy { max-width: 760px; }
+  .dt-home .dt-image-left .dt-spotlight-media { order: 0; }
+  .dt-home .dt-spotlight-media img, .dt-home .dt-image-left .dt-spotlight-media img { -webkit-mask-image: none; mask-image: none; }
+  .dt-home .dt-spotlight-media figcaption { text-align: left; }
+}
+@media (max-width: 680px) {
+  .guide.dt-home #nav { position: static; gap: 8px 20px; padding: 14px 20px; max-height: 100vh; max-height: 100dvh; overflow-y: auto; }
+  .guide.dt-home #nav .project-name { flex-basis: 100%; }
+  .guide.dt-home #nav .dt-nav-technical { display: none; }
+  .dt-home .dt-nav-menu { min-width: 0; }
+  .dt-home .dt-nav-menu[open] { flex-basis: 100%; }
+  .dt-home .dt-nav-menu summary { white-space: normal; }
+  .dt-home .dt-nav-menu > div { position: static; top: auto; left: auto; right: auto; width: auto; max-height: none; margin-top: 10px; overflow: visible; box-shadow: none; }
+  .guide.dt-home #content { padding-right: 20px; padding-left: 20px; }
+  .dt-home .dt-hero { min-height: 0; padding: 52px 0 70px; }
+  .dt-home .dt-hero::before {
+    inset-inline: -20px;
+    background-image:
+      linear-gradient(90deg, #10151df5, #10151dde),
+      linear-gradient(0deg, #10151d, #10151d00 35%, #10151d00 80%, #10151d),
+      url("../../../clibdt/clibdt-compile.webp");
+    background-position: center, center, 60% center;
+  }
+  .dt-home .dt-eyebrow { font-size: 11px; }
+  .dt-home .dt-feature-grid, .dt-home .dt-steps, .dt-home .dt-guide-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .dt-home .dt-actions { align-items: stretch; }
+  .dt-home .dt-actions .dt-button { flex: 1 1 220px; }
+  .guide.dt-home section { scroll-margin-top: 24px; }
+  .dt-home .dt-meta { max-width: 40ch; }
+}
+@media print {
+  .guide.dt-home #nav, .dt-home .dt-skip, .dt-home .dt-actions, .dt-home #share { display: none; }
+  .guide.dt-home { background: white; color: black; }
+  .dt-home .dt-hero { min-height: 0; padding: 30px 0; }
+  .dt-home .dt-hero::before { display: none; }
+  .guide.dt-home h1, .guide.dt-home h2, .guide.dt-home h3, .dt-home p, .dt-home a { color: black; }
+  .dt-home .dt-spotlight-media img, .dt-home .dt-image-left .dt-spotlight-media img { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Source provenance remains in technical.html and the interface-view captions. */
+.dt-home .dt-view-link { display: inline-block; margin-top: 8px; }
+.dt-home .dt-build-note { max-width: 82ch; }
+.dt-home .dt-status { display: inline-block; color: #c6d9ff; background: #233555; padding: 3px 9px; margin-right: 7px; border-radius: 3px; }
+.dt-home .dt-section .dt-eyebrow, .dt-home .dt-spotlight-copy .dt-eyebrow { color: #94b9ff; }
+.dt-home .dt-hero .dt-eyebrow { color: #94b9ff; }
+.dt-home .dt-meta a { color: #94b9ff; }
+.dt-home .dt-guide-grid a { font-size: 15px; }

@@ -54,6 +54,8 @@ The sitemap is derived from actual HTML pages and excludes redirect stubs and th
 
 Current software guides share site/assets/css/project-guide.css and site/assets/js/site.js. Preserve registered colors with the --accent property; keep page content, headings and legacy anchor aliases inside #content. Historical patch-note anchors remain in their retained archive. Do not copy stylesheet rules into individual pages.
 
+The Collections Manager and ClibDT overview pages add their own scoped stylesheets in site/assets/css/pages/ for their product layouts. Their detailed guides continue to use the shared guide layout. ClibDT's technical.html documents the source-verified behavior and provenance of its offscreen interface images; retain the distinction between development builds, workspace examples and published releases when updating them.
+
 ## Preventing drift
 
 The checker rejects unregistered project directories, misplaced root content, private/development paths in site/, unapproved file types, embedded style blocks, duplicate shared utility functions, content appended outside #content, incorrect canonical URLs, broken local links/anchors and stale generated files. The workflow runs checks before uploading site/.

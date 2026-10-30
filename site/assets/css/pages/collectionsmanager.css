@@ -1,4 +1,5 @@
-/* CM product landing page. WIRING: collectionsmanager/index.html; shared guide
+/* CM product landing page with the Install view as a masked hero background.
+   WIRING: collectionsmanager/index.html and cm-hero-preview.png; shared guide
    styles, site.js controls and the other projects' layouts remain shared. */
 .guide.cm-home {
   --cm-bg: #151719;
@@ -88,7 +89,25 @@
   color: #151719;
 }
 .cm-home .cm-skip:focus { top: 10px; }
-.cm-home .cm-hero { padding: clamp(54px, 8vw, 112px) 0 0; }
+.cm-home .cm-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 740px;
+  padding: clamp(70px, 8vw, 112px) 0 96px;
+}
+.cm-home .cm-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 -28px;
+  background-image:
+    linear-gradient(90deg, #151719 0%, #151719f5 26%, #151719d9 47%, #15171926 100%),
+    linear-gradient(0deg, #151719 0%, #15171900 30%, #15171900 80%, #151719 100%),
+    url("../../../collectionsmanager/cm-hero-preview.png?v=2");
+  background-size: cover, cover, auto 100%;
+  background-position: center, center, right center;
+  background-repeat: no-repeat;
+}
 .cm-home .cm-eyebrow {
   margin: 0 0 22px;
   color: var(--cm-accent);
@@ -106,7 +125,7 @@
   line-height: 1.04;
 }
 .cm-home h1 span { color: var(--cm-accent); }
-.cm-home .intro { max-width: 760px; margin-bottom: 28px; font-size: clamp(18px, 2vw, 22px); color: #c8cbd0; }
+.cm-home .intro { max-width: 660px; margin-bottom: 28px; font-size: clamp(18px, 2vw, 22px); color: #c8cbd0; }
 .cm-home .cm-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin: 26px 0 18px; }
 .guide.cm-home .cm-button {
   display: inline-flex;
@@ -128,8 +147,7 @@
 .guide.cm-home .cm-primary { border-color: #eda64e; background: #eda64e; color: #1b1712; }
 .guide.cm-home .cm-primary:hover { border-color: #ffd294; background: #ffd294; color: #1b1712; }
 .cm-home .cm-meta { color: var(--cm-muted); font-size: 12px; }
-.cm-home .cm-product-view { margin: 48px 0 0; }
-.cm-home .cm-product-view img { display: block; width: 100%; height: auto; border: 1px solid #555b61; border-radius: 5px; }
+.cm-home .cm-view-link { display: inline-block; margin-top: 8px; }
 .cm-home figcaption { margin-top: 12px; color: var(--cm-muted); font-size: 12px; }
 .cm-home .cm-section { margin: 0; padding: clamp(54px, 8vw, 102px) 0; border-bottom: 1px solid var(--cm-line); }
 .guide.cm-home section { scroll-margin-top: 110px; }
@@ -198,18 +216,27 @@
   .cm-home .cm-nav-menu summary { white-space: normal; }
   .cm-home .cm-nav-menu > div { position: static; top: auto; left: auto; right: auto; width: auto; max-height: none; margin-top: 10px; overflow: visible; box-shadow: none; }
   .guide.cm-home #content { padding-right: 20px; padding-left: 20px; }
-  .cm-home .cm-hero { padding-top: 46px; }
+  .cm-home .cm-hero { min-height: 0; padding: 52px 0 70px; }
+  .cm-home .cm-hero::before {
+    inset-inline: -20px;
+    background-image:
+      linear-gradient(90deg, #151719f5, #151719de),
+      linear-gradient(0deg, #151719, #15171900 35%, #15171900 80%, #151719),
+      url("../../../collectionsmanager/cm-hero-preview.png?v=2");
+    background-position: center, center, 60% center;
+  }
   .cm-home .cm-eyebrow { font-size: 11px; }
   .cm-home .cm-feature-grid, .cm-home .cm-steps, .cm-home .cm-guide-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .cm-home .cm-actions { align-items: stretch; }
   .cm-home .cm-actions .cm-button { flex: 1 1 220px; }
-  .cm-home .cm-product-view { margin-top: 34px; }
   .guide.cm-home section { scroll-margin-top: 24px; }
   .cm-home .cm-meta { max-width: 40ch; }
 }
 @media print {
   .guide.cm-home #nav, .cm-home .cm-skip, .cm-home .cm-actions, .cm-home #share { display: none; }
   .guide.cm-home { background: white; color: black; }
+  .cm-home .cm-hero { min-height: 0; padding: 30px 0; }
+  .cm-home .cm-hero::before { display: none; }
   .guide.cm-home h1, .guide.cm-home h2, .guide.cm-home h3, .cm-home p, .cm-home a { color: black; }
   .cm-home .cm-spotlight-media img, .cm-home .cm-image-left .cm-spotlight-media img { -webkit-mask-image: none; mask-image: none; }
 }
